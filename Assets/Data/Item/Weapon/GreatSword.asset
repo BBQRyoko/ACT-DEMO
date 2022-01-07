@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0dd4ca184644ff34d888c9d3dc361aa2, type: 3}
+  m_Name: GreatSword
+  m_EditorClassIdentifier: 
+  Id: 0
+  itemIcon: {fileID: 0}
+  itemName: GreatSword
+  HasHeapUp: 0
+  ExecutableOperation: 0
+  modelPrefab: {fileID: 3158534588828042178, guid: 60320b22a93bea4448b34fa8ce1f5d57, type: 3}
+  isEquipped: 1
+  weaponAnimatorController: {fileID: 9100000, guid: 3b62c84dd2f00da4488051c514b620ad, type: 2}
+  regularSkills:
+  - {fileID: 11400000, guid: 4a6371e08e6ebd84bb49539772932855, type: 2}
+  - {fileID: 11400000, guid: 416909517e026214bac11c1b3b168b41, type: 2}
+  - {fileID: 11400000, guid: bdd0038ee62414b46a040cbe1ca38eef, type: 2}
+  specialSkills:
+  - {fileID: 11400000, guid: 71c9586be0c632b439579ddffb108ad9, type: 2}
+  - {fileID: 11400000, guid: 7a67c7e10d085f34eb0aba4e401cae0d, type: 2}
+  weaponAbilities:
+  - {fileID: 11400000, guid: 5c430d40cd64fe14e8b9739de8759dd4, type: 2}
