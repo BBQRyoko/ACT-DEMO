@@ -12504,13 +12504,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arrow_Prefab
       objectReference: {fileID: 0}
+    - target: {fileID: 1549689008057408197, guid: e0a2693f939140640857d832284967ee, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1549689008057408198, guid: e0a2693f939140640857d832284967ee, type: 3}
       propertyPath: m_RootOrder
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1549689008057408198, guid: e0a2693f939140640857d832284967ee, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.004000021
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1549689008057408198, guid: e0a2693f939140640857d832284967ee, type: 3}
       propertyPath: m_LocalPosition.y
