@@ -94,9 +94,4 @@ public class EnemyAnimatorManager : MainAnimatorManager
         enemyManager.isDodging = false;
     }
 
-
-    private void RangeAttack() 
-    {
-        enemyManager.HandleRangeAttack();
-    }
 }

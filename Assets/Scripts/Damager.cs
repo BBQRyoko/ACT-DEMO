@@ -38,6 +38,7 @@ public class Damager : MonoBehaviour
             if (playerStats != null)
             {
                 playerStats.TakeDamage(damage, hitDirection * hitFactor, true);
+                Destroy(transform.parent.gameObject);
             }
             else if (parryCollider != null)
             {
