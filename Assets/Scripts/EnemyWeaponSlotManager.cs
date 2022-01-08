@@ -6,6 +6,7 @@ public class EnemyWeaponSlotManager : MonoBehaviour
 {
     public EnemyManager enemyManager;
     public WeaponItem weaponItem;
+    [SerializeField] GameObject UnequipWeapon;
 
     public WeaponSlot equippedSlot;
     public DamageCollider weaponDamageCollider;
@@ -69,11 +70,19 @@ public class EnemyWeaponSlotManager : MonoBehaviour
         {
             LoadWeaponOnSlot(weaponItem);
             enemyManager.isEquipped = true;
+            if (UnequipWeapon != null) 
+            {
+                UnequipWeapon.SetActive(false);
+            }
         }
         else 
         {
             equippedSlot.UnloadWeapon();
             enemyManager.isEquipped = false;
+            if (UnequipWeapon != null)
+            {
+                UnequipWeapon.SetActive(true);
+            }
         }
     }
 }
