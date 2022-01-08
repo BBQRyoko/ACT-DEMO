@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class Damager : MonoBehaviour
 {
+    [SerializeField] bool isFlyingObject;
     public EnemyManager enemyManager;
     public int damage = 10;
     [SerializeField] float hitFactor;
+
+    public int damageForceType; // 0 = 小, 1 = 中, 2 = 大
 
     private void OnTriggerEnter(Collider other)
     {
@@ -37,8 +40,11 @@ public class Damager : MonoBehaviour
 
             if (playerStats != null)
             {
-                playerStats.TakeDamage(damage, hitDirection * hitFactor, true);
-                Destroy(transform.parent.gameObject);
+                playerStats.TakeDamage(damage, hitDirection * hitFactor, true, damageForceType);
+                if (isFlyingObject) 
+                {
+                    Destroy(transform.parent.gameObject);
+                }
             }
             else if (parryCollider != null)
             {

@@ -8,6 +8,11 @@ public class CombatStanceState : State
     public PursueState pursueState;
     public EnemyAttackAction[] enemyAttacks;
 
+    //特殊条件处理
+    [SerializeField] SpecialCondition[] conditionArray;
+    bool specialConditionTriggered;
+    int conditionAttackIndex;
+
     bool canCounterAttack;
     float distanceFromTarget;
     public bool randomDestinationSet = false;
@@ -20,6 +25,22 @@ public class CombatStanceState : State
         enemyAnimatorManager.animator.SetFloat("Vertical", verticalMovementVaule, 0.2f, Time.deltaTime);
         enemyAnimatorManager.animator.SetFloat("Horizontal", horizontalMovementVaule, 0.2f, Time.deltaTime);
         attackState.hasPerformedAttack = false;
+
+        if (conditionArray != null) 
+        {
+            foreach (SpecialCondition condition in conditionArray) 
+            {
+                if (condition.equationType == 2) 
+                {
+                    if (distanceFromTarget <= condition.range) 
+                    {
+                        specialConditionTriggered = true;
+                        conditionAttackIndex = condition.attackIndex;
+                        GetNewAttack(enemyManager);
+                    }
+                }
+            }
+        }
 
         if (enemyManager.isInteracting) 
         {
@@ -154,45 +175,56 @@ public class CombatStanceState : State
 
         if (!enemyManager.isFirstAttack)
         {
-            //随机攻击方式(未来重写方法，当前内容太少)
-            for (int i = 1; i < enemyAttacks.Length; i++)
+            if (!specialConditionTriggered)
             {
-                EnemyAttackAction enemyAttackAction = enemyAttacks[i];
-
-                if (distanceFromTarget <= enemyAttackAction.maxDistanceNeedToAttack && distanceFromTarget >= enemyAttackAction.minDistanceNeedToAttack)
+                //随机攻击方式(未来重写方法，当前内容太少)
+                for (int i = 1; i < enemyAttacks.Length; i++)
                 {
-                    if (viewableAngle <= enemyAttackAction.maxAttackAngle && viewableAngle >= enemyAttackAction.minAttackAngle)
+                    EnemyAttackAction enemyAttackAction = enemyAttacks[i];
+
+                    if (distanceFromTarget <= enemyAttackAction.maxDistanceNeedToAttack && distanceFromTarget >= enemyAttackAction.minDistanceNeedToAttack)
                     {
-                        maxScore += enemyAttackAction.attackScore;
+                        if (viewableAngle <= enemyAttackAction.maxAttackAngle && viewableAngle >= enemyAttackAction.minAttackAngle)
+                        {
+                            maxScore += enemyAttackAction.attackScore;
+                        }
                     }
                 }
-            }
 
-            int randomValue = Random.Range(0, maxScore);
-            int tempScore = 0;
+                int randomValue = Random.Range(0, maxScore);
+                int tempScore = 0;
 
-            for (int i = 1; i < enemyAttacks.Length; i++)
-            {
-                EnemyAttackAction enemyAttackAction = enemyAttacks[i];
-
-                if (distanceFromTarget <= enemyAttackAction.maxDistanceNeedToAttack && distanceFromTarget >= enemyAttackAction.minDistanceNeedToAttack)
+                for (int i = 1; i < enemyAttacks.Length; i++)
                 {
-                    if (viewableAngle <= enemyAttackAction.maxAttackAngle && viewableAngle >= enemyAttackAction.minAttackAngle)
+                    EnemyAttackAction enemyAttackAction = enemyAttacks[i];
+
+                    if (distanceFromTarget <= enemyAttackAction.maxDistanceNeedToAttack && distanceFromTarget >= enemyAttackAction.minDistanceNeedToAttack)
                     {
-                        if (attackState.curAttack != null)
-                            return;
-
-                        tempScore += enemyAttackAction.attackScore;
-
-                        if (tempScore > randomValue)
+                        if (viewableAngle <= enemyAttackAction.maxAttackAngle && viewableAngle >= enemyAttackAction.minAttackAngle)
                         {
-                            attackState.curAttack = enemyAttackAction;
+                            if (attackState.curAttack != null)
+                                return;
+
+                            tempScore += enemyAttackAction.attackScore;
+
+                            if (tempScore > randomValue)
+                            {
+                                attackState.curAttack = enemyAttackAction;
+                            }
                         }
                     }
                 }
             }
+            else 
+            {
+                EnemyAttackAction enemyAttackAction = enemyAttacks[0];
+
+                attackState.curAttack = enemyAttackAction;
+
+                specialConditionTriggered = false;
+            }
         }
-        else 
+        else
         {
             EnemyAttackAction enemyAttackAction = enemyAttacks[0];
 

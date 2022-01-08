@@ -29,9 +29,10 @@ public class AttackState : State
             }
             else if (enemyManager.curEnemyType == EnemyManager.enemyType.range) 
             {
-                enemyAnimatorManager.PlayTargetAnimation("Range_Attack", true);
-                enemyManager.curRecoveryTime = enemyManager.rangeRecoveryTime;
-                hasPerformedAttack = true;
+                AttackTarget(enemyAnimatorManager, enemyManager);
+                //enemyAnimatorManager.PlayTargetAnimation("Range_Attack", true);
+                //enemyManager.curRecoveryTime = enemyManager.rangeRecoveryTime;
+                //hasPerformedAttack = true;
             }
         }
 

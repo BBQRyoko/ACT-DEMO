@@ -272,7 +272,6 @@ public class EnemyManager : CharacterManager
         obj.transform.SetParent(null);
         obj.gameObject.SetActive(true);
         obj.StartFlyingObj(target);
-        Debug.Log("123");
     }
 
     void OnDrawGizmosSelected()

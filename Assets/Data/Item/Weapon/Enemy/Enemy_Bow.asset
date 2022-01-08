@@ -20,14 +20,6 @@ MonoBehaviour:
   modelPrefab: {fileID: 6640638428303676973, guid: 4d2382f36a0fbfd428af5e564f56b73f, type: 3}
   isEquipped: 1
   weaponAnimatorController: {fileID: 0}
-  regularSkills:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  specialSkills:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  regularSkills: []
+  specialSkills: []
   weaponAbilities: []

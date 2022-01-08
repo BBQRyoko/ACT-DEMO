@@ -29,7 +29,7 @@ public class PlayerStats : CharacterStats
         currStamina = maxStamina;
         staminaBar.SetMaxStamina(maxStamina);
     }
-    public void TakeDamage(int damage, Vector3 collisionDirection, bool isBoss) 
+    public void TakeDamage(int damage, Vector3 collisionDirection, bool isBoss, int forceType = 0) 
     {
         float viewableAngle = Vector3.SignedAngle(collisionDirection, playerManager.transform.forward, Vector3.up);
         currHealth = currHealth - damage;
@@ -54,11 +54,25 @@ public class PlayerStats : CharacterStats
             }
             else if (viewableAngle >= -90 && viewableAngle <= 0)
             {
-                animatorManager.PlayTargetAnimation("Hit_F", true, true);
+                if (forceType == 0)
+                {
+                    animatorManager.PlayTargetAnimation("Hit_F", true, true);
+                }
+                else if (forceType == 2) 
+                {
+                    animatorManager.PlayTargetAnimation("Hit_Large", true, true);
+                }
             }
             else if (viewableAngle <= 90 && viewableAngle > 0)
             {
-                animatorManager.PlayTargetAnimation("Hit_F", true, true);
+                if (forceType == 0)
+                {
+                    animatorManager.PlayTargetAnimation("Hit_F", true, true);
+                }
+                else if (forceType == 2)
+                {
+                    animatorManager.PlayTargetAnimation("Hit_Large", true, true);
+                }
             }
             
             //临时添加, 受到伤害直接打断攻击状态
