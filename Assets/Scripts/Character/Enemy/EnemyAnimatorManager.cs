@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyAnimatorManager : MainAnimatorManager
 {
+    CameraManager cameraManager;
     public EnemyManager enemyManager;
     Boss_CombatStanceState boss_CombatStanceState;
 
@@ -18,6 +19,7 @@ public class EnemyAnimatorManager : MainAnimatorManager
 
     private void Awake()
     {
+        cameraManager = FindObjectOfType<CameraManager>();
         animator = GetComponent<Animator>();
         enemyManager = GetComponentInParent<EnemyManager>();
         boss_CombatStanceState = GetComponentInChildren<Boss_CombatStanceState>();
@@ -92,6 +94,11 @@ public class EnemyAnimatorManager : MainAnimatorManager
     private void DodgingEnd() 
     {
         enemyManager.isDodging = false;
+    }
+
+    private void EnemyDangerWarning() 
+    {
+        cameraManager.DangerWarning(enemyManager);
     }
 
 }

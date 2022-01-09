@@ -33,6 +33,12 @@ public class CameraManager : MonoBehaviour
     public Image lockOnPrefab;
     Image lockOnMark;
 
+    //预警信号
+    public Image dangerMark_Prefab;
+    Image dangerMark;
+    EnemyManager curEnemy;
+
+
     //相机前方的有效单位
     public List<CharacterManager> availableTarget = new List<CharacterManager>();
     public Transform nearestLockOnTarget;
@@ -52,13 +58,18 @@ public class CameraManager : MonoBehaviour
         //ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);
     }
 
-    public void HandleAllCameraMovement() 
+    public void HandleAllCameraMovement()
     {
         float delta = Time.fixedDeltaTime;
         FollowTarget(delta);
         RotateCamera(delta);
         HandleCameraCollisions(delta);
         HandleLockOnMark();
+
+        if (dangerMark != null) 
+        {
+            dangerMark.transform.position = Camera.main.WorldToScreenPoint(new Vector3(curEnemy.transform.position.x, curEnemy.transform.position.y + 2f, curEnemy.transform.position.z));
+        }
     }
 
     public void FollowTarget(float delta)  //相机跟随
@@ -203,5 +214,12 @@ public class CameraManager : MonoBehaviour
         availableTarget.Clear();
         nearestLockOnTarget = null;
         currentLockOnTarget = null;
+    }
+
+    public void DangerWarning(EnemyManager enemyManager) 
+    {
+        dangerMark = Instantiate(dangerMark_Prefab, FindObjectOfType<Canvas>().transform).GetComponent<Image>();
+        curEnemy = enemyManager;
+        Destroy(dangerMark, 1f);
     }
 }
