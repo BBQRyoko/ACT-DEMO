@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57779812461a80b4b9efcd1cbae126d2, type: 3}
   m_Name: SideKick(Short)
   m_EditorClassIdentifier: 
-  range: 2
+  range: 1.75
   equationType: 2
   attackIndex: 0
+  cooldown: 7.5

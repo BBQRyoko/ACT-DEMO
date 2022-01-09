@@ -8,4 +8,5 @@ public class SpecialCondition : ScriptableObject
     public float range;
     public int equationType; // 0 is ==, 1 is >=, 2 is <=
     public int attackIndex;
+    public float cooldown;
 }

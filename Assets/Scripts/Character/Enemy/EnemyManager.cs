@@ -78,6 +78,9 @@ public class EnemyManager : CharacterManager
 
     [SerializeField] float mediumRange = 6f;
 
+    //TimerController
+    public float timer1;
+
     private void Awake()
     {
         enemyLocomotion = GetComponent<EnemyLocomotion>();
@@ -149,7 +152,8 @@ public class EnemyManager : CharacterManager
     }
     private void FixedUpdate()
     {
-        HandleStateMachine();      
+        HandleStateMachine();
+        GeneralTimerController();
     }
     private void LateUpdate()
     {
@@ -272,6 +276,18 @@ public class EnemyManager : CharacterManager
         obj.transform.SetParent(null);
         obj.gameObject.SetActive(true);
         obj.StartFlyingObj(target);
+    }
+
+    void GeneralTimerController() 
+    {
+        if (timer1 > 0)
+        {
+            timer1 -= Time.deltaTime;
+        }
+        else 
+        {
+            timer1 = 0;
+        }
     }
 
     void OnDrawGizmosSelected()

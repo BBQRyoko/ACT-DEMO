@@ -36,6 +36,7 @@ public class CombatStanceState : State
                     {
                         specialConditionTriggered = true;
                         conditionAttackIndex = condition.attackIndex;
+                        enemyManager.timer1 = condition.cooldown;
                         GetNewAttack(enemyManager);
                     }
                 }
@@ -217,7 +218,9 @@ public class CombatStanceState : State
             }
             else 
             {
-                EnemyAttackAction enemyAttackAction = enemyAttacks[0];
+                enemyManager.curRecoveryTime = 0;
+
+                EnemyAttackAction enemyAttackAction = enemyAttacks[conditionAttackIndex];
 
                 attackState.curAttack = enemyAttackAction;
 

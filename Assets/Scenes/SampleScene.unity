@@ -8175,7 +8175,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1342688170
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9110,6 +9110,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FlyingObjParent
       objectReference: {fileID: 0}
+    - target: {fileID: 1907222271183300522, guid: 2de91ea4223e4654898dbad4fdfe6252, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2de91ea4223e4654898dbad4fdfe6252, type: 3}
 --- !u!4 &1502211484 stripped
@@ -9893,6 +9897,18 @@ PrefabInstance:
     - target: {fileID: 66300833, guid: 85b47e44e8b279b48b9937b68f60edf5, type: 3}
       propertyPath: m_IsTrigger
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 685866795, guid: 85b47e44e8b279b48b9937b68f60edf5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 918513246, guid: 85b47e44e8b279b48b9937b68f60edf5, type: 3}
+      propertyPath: damage
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096738371, guid: 85b47e44e8b279b48b9937b68f60edf5, type: 3}
+      propertyPath: m_TraceTime
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 731835645779355998, guid: 85b47e44e8b279b48b9937b68f60edf5, type: 3}
       propertyPath: curAttack
@@ -13553,6 +13569,10 @@ PrefabInstance:
     - target: {fileID: 8333359809174083208, guid: 018b558b4aef90a4fa38fac7771d15f7, type: 3}
       propertyPath: m_Name
       value: DestructibleObject
+      objectReference: {fileID: 0}
+    - target: {fileID: 8333359809174083208, guid: 018b558b4aef90a4fa38fac7771d15f7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8333359809174083208, guid: 018b558b4aef90a4fa38fac7771d15f7, type: 3}
       propertyPath: m_StaticEditorFlags
