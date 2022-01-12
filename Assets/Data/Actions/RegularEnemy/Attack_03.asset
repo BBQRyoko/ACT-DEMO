@@ -15,6 +15,7 @@ MonoBehaviour:
   actionAnimation: Combo_02_2
   attackScore: 2
   recoveryTime: 1.5
+  independtCooldown: 5
   maxAttackAngle: 45
   minAttackAngle: -45
   minDistanceNeedToAttack: 0

@@ -16,6 +16,7 @@ public class EnemyManager : CharacterManager
     public NavMeshAgent navMeshAgent;
     public State curState;
     public CharacterStats curTarget;
+    public CombatCooldownManager combatCooldownManager;
 
     public enum enemyType {melee, range};
     public enemyType curEnemyType;
@@ -29,7 +30,9 @@ public class EnemyManager : CharacterManager
     //CombatRelated
     public bool isEquipped;
 
-    public bool isFirstAttack;
+    public bool isFirstStrike;
+    public float firstStrikeTimer;
+    public float defaultFirstStrikeTime;
     public bool isDodging;
     public float dodgeTimer;
 
@@ -115,7 +118,6 @@ public class EnemyManager : CharacterManager
     {
         HandleRecoveryTimer();
         HandleAbilityTimer();
-
         isRotatingWithRootMotion = enemyAnimatorManager.animator.GetBool("isRotatingWithRootMotion");
         canRotate = enemyAnimatorManager.animator.GetBool("canRotate");
 
@@ -135,25 +137,42 @@ public class EnemyManager : CharacterManager
             collider_Combat.enabled = false;
             Destroy(gameObject, 10f);
         }
+    }
 
-        //之后专门做一个Timer的function
-        if (isDodging)
+    void GeneralTimerManager() 
+    {
+        if (isDodging) //躲避时间
         {
             dodgeTimer = 7.5f;
         }
-        else 
+        else
         {
             dodgeTimer -= Time.deltaTime;
-            if (dodgeTimer <= 0) 
+            if (dodgeTimer <= 0)
             {
                 dodgeTimer = 0;
             }
         }
+
+        if (!isFirstStrike) 
+        { 
+            if (firstStrikeTimer > 0)
+            {
+                firstStrikeTimer -= Time.deltaTime;
+            }
+            else 
+            {
+                firstStrikeTimer = 0;
+            }
+        }
     }
+
     private void FixedUpdate()
     {
         HandleStateMachine();
         GeneralTimerController();
+        GeneralTimerManager();
+        combatCooldownManager.CountDownAllTimer();
     }
     private void LateUpdate()
     {

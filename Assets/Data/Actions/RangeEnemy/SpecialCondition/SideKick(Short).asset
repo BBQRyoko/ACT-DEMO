@@ -12,7 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57779812461a80b4b9efcd1cbae126d2, type: 3}
   m_Name: SideKick(Short)
   m_EditorClassIdentifier: 
-  range: 1.75
-  equationType: 2
-  attackIndex: 0
-  cooldown: 7.5
+  actionAnimation: SideKick
+  isSpecial: 1
+  attakPriority: 3
+  recoveryTime: 2
+  independtCooldown: 7
+  maxAttackAngle: 35
+  minAttackAngle: -35
+  minDistanceNeedToAttack: 0
+  maxDistanceNeedToAttack: 3
+  isImmune: 0
+  condition: 0
+  minRange: 0
+  maxRange: 2.5

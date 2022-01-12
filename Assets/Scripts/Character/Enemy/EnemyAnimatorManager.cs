@@ -6,7 +6,6 @@ public class EnemyAnimatorManager : MainAnimatorManager
 {
     CameraManager cameraManager;
     public EnemyManager enemyManager;
-    Boss_CombatStanceState boss_CombatStanceState;
 
     public float animatorSpeed;
 
@@ -22,7 +21,6 @@ public class EnemyAnimatorManager : MainAnimatorManager
         cameraManager = FindObjectOfType<CameraManager>();
         animator = GetComponent<Animator>();
         enemyManager = GetComponentInParent<EnemyManager>();
-        boss_CombatStanceState = GetComponentInChildren<Boss_CombatStanceState>();
     }
 
     private void Update()

@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Attack 00
   m_EditorClassIdentifier: 
   actionAnimation: FirstAttack
-  attackScore: 3
+  attakPriority: 3
   recoveryTime: 3
+  independtCooldown: 5
   maxAttackAngle: 90
   minAttackAngle: -90
   minDistanceNeedToAttack: 9

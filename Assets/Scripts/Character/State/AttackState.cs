@@ -8,6 +8,9 @@ public class AttackState : State
     public CombatStanceState combatStanceState;
     public PursueState pursueState;
     public EnemyAttackAction curAttack;
+    public int curRegularIndex;
+    public int curSpecialIndex;
+    public CombatCooldownManager combatCooldownManager;
 
     public bool hasPerformedAttack = false;
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
@@ -16,37 +19,39 @@ public class AttackState : State
 
         RotateTowardsTargetWhiletAttacking(enemyManager);
 
-        if (distanceFromTarget > enemyManager.maxAttackRange) 
+        if (distanceFromTarget > enemyManager.maxAttackRange) //如果突然离开最大攻击范围, 重新进入追击
         {
             return pursueState;
         }
 
         if (!hasPerformedAttack) 
         {
-            if (enemyManager.curEnemyType == EnemyManager.enemyType.melee)
-            {
-                AttackTarget(enemyAnimatorManager, enemyManager);
-            }
-            else if (enemyManager.curEnemyType == EnemyManager.enemyType.range) 
-            {
-                AttackTarget(enemyAnimatorManager, enemyManager);
-                //enemyAnimatorManager.PlayTargetAnimation("Range_Attack", true);
-                //enemyManager.curRecoveryTime = enemyManager.rangeRecoveryTime;
-                //hasPerformedAttack = true;
-            }
+            AttackTarget(enemyAnimatorManager, enemyManager); //进行普通攻击动画的播放
         }
 
-        return rotateTowardsTargetState;
+        return rotateTowardsTargetState; //攻击完进入转身state以确认玩家仍在范围之内
     }
     private void AttackTarget(EnemyAnimatorManager enemyAnimatorManager, EnemyManager enemyManager) 
     {
+        //使用Combat State中所决定的攻击动画, 并计算攻击恢复时间,是否霸体,技能独立CD
         enemyAnimatorManager.PlayTargetAnimation(curAttack.actionAnimation, true);
         enemyManager.curRecoveryTime = curAttack.recoveryTime;
         enemyManager.isImmuneAttacking = curAttack.isImmune;
+        if (!curAttack.isSpecial)
+        {
+            combatCooldownManager.regularAttackCooldownTimer[curRegularIndex] = curAttack.independtCooldown;
+        }
+        else 
+        {
+            combatCooldownManager.specialAttackCooldownTimer[curSpecialIndex] = curAttack.independtCooldown;
+            combatStanceState.specialConditionTriggered = false;
+        }
         hasPerformedAttack = true;
         curAttack = null;
     }
-    public void RotateTowardsTargetWhiletAttacking(EnemyManager enemyManager) //攻击始终朝着目标方向
+
+
+    public void RotateTowardsTargetWhiletAttacking(EnemyManager enemyManager) //攻击始终朝着目标方向, 保证出手时一定朝着目标位置(瞬间转向)
     {
         if (enemyManager.canRotate && enemyManager.isInteracting)
         {

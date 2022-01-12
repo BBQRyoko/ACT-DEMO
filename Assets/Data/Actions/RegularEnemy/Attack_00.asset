@@ -15,6 +15,7 @@ MonoBehaviour:
   actionAnimation: FirstAttack
   attackScore: 3
   recoveryTime: 1.5
+  independtCooldown: 7
   maxAttackAngle: 45
   minAttackAngle: -45
   minDistanceNeedToAttack: 0

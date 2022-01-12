@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Attack 03
   m_EditorClassIdentifier: 
   actionAnimation: SideKick
-  attackScore: 3
+  attakPriority: 3
   recoveryTime: 2
+  independtCooldown: 10
   maxAttackAngle: 90
   minAttackAngle: -90
   minDistanceNeedToAttack: 0

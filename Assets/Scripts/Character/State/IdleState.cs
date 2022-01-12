@@ -9,7 +9,7 @@ public class IdleState : State
 
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
     {
-        if (enemyManager.idleType == EnemyManager.IdleType.Stay) //原地状态的敌人
+        if (enemyManager.idleType == EnemyManager.IdleType.Stay) //站岗的敌人
         {
             enemyAnimatorManager.animator.SetFloat("Horizontal", -2, 0.1f, Time.deltaTime);
 
@@ -24,18 +24,21 @@ public class IdleState : State
 
             if (distanceFromTarget > 0.5f)
             {
-                enemyAnimatorManager.animator.SetFloat("Vertical", 1f, 0.1f, Time.deltaTime);   //朝着目标单位进行移动
+                enemyAnimatorManager.animator.SetFloat("Vertical", 1f, 0.1f, Time.deltaTime);   //跑回初始点
             }
             else if (distanceFromTarget <= 0.5f)
             {
                 enemyAnimatorManager.animator.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);   //站着idle状态
+                //定期转向90°
+                //后续添加
+                //现在可以和Boss公用
             }
 
             HandleRotateTowardsTarger(enemyManager);
             enemyManager.navMeshAgent.transform.localPosition = Vector3.zero;
             enemyManager.navMeshAgent.transform.localRotation = Quaternion.identity;
         }
-        else if(enemyManager.idleType == EnemyManager.IdleType.Patrol) //巡逻状态的敌人
+        else if(enemyManager.idleType == EnemyManager.IdleType.Patrol) //巡逻的敌人
         {
             enemyAnimatorManager.animator.SetFloat("Horizontal", -2, 0.1f, Time.deltaTime);
 
@@ -101,7 +104,7 @@ public class IdleState : State
         }
         #endregion
     }
-    public void HandleRotateTowardsTarger(EnemyManager enemyManager) //移动时保持朝着目标方向
+    public void HandleRotateTowardsTarger(EnemyManager enemyManager) //朝着设置的目标点进行移动
     {
 
             Vector3 direction = enemyManager.patrolPos[enemyManager.curPatrolIndex].position - transform.position;

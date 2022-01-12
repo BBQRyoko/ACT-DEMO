@@ -7,10 +7,11 @@ public class CombatStanceState : State
     public AttackState attackState;
     public PursueState pursueState;
     public EnemyAttackAction[] enemyAttacks;
+    public CombatCooldownManager combatCooldownManager;
 
     //特殊条件处理
-    [SerializeField] SpecialCondition[] conditionArray;
-    bool specialConditionTriggered;
+    public List<SpecialCondition> conditionList;
+    public bool specialConditionTriggered;
     int conditionAttackIndex;
 
     bool canCounterAttack;
@@ -25,58 +26,40 @@ public class CombatStanceState : State
         enemyAnimatorManager.animator.SetFloat("Vertical", verticalMovementVaule, 0.2f, Time.deltaTime);
         enemyAnimatorManager.animator.SetFloat("Horizontal", horizontalMovementVaule, 0.2f, Time.deltaTime);
         attackState.hasPerformedAttack = false;
+        SpecialActionWatcher(enemyManager);
+        HandleRotateTowardsTarger(enemyManager); //保持面对目标的朝向
 
-        if (conditionArray != null) 
-        {
-            foreach (SpecialCondition condition in conditionArray) 
-            {
-                if (condition.equationType == 2) 
-                {
-                    if (distanceFromTarget <= condition.range) 
-                    {
-                        specialConditionTriggered = true;
-                        conditionAttackIndex = condition.attackIndex;
-                        enemyManager.timer1 = condition.cooldown;
-                        GetNewAttack(enemyManager);
-                    }
-                }
-            }
-        }
-
-        if (enemyManager.isInteracting) 
+        if (enemyManager.isInteracting) //首先确认是否处在互动状态
         {
             enemyAnimatorManager.animator.SetFloat("Vertical", 0);
             enemyAnimatorManager.animator.SetFloat("Horizontal", 0);
             return this;
         }
 
-        if (distanceFromTarget > enemyManager.maxAttackRange)
+        if (distanceFromTarget > enemyManager.maxAttackRange)//距离大于攻击范围后退回追踪状态
         {
-            return pursueState; //距离大于攻击范围后退回追踪状态
+            if (enemyManager.firstStrikeTimer <= 0) { }
+            return pursueState; 
         }
 
-        if (!randomDestinationSet && !enemyManager.isFirstAttack)
+        if (specialConditionTriggered) 
+        {
+            randomDestinationSet = false;
+            return attackState;
+        }
+
+        if (!randomDestinationSet && !enemyManager.isFirstStrike) //如果不在踱步状态, 那就进入踱步状态(这块可以再优化)
         {
             randomDestinationSet = true;
             DecideCirclingAction(enemyAnimatorManager);
         }
 
-        HandleRotateTowardsTarger(enemyManager); //保持面对目标的朝向
-
-        if (randomDestinationSet && enemyManager.curTarget.GetComponent<PlayerManager>().isAttacking && canCounterAttack) 
-        {
-            enemyAnimatorManager.PlayTargetAnimation("Step_Back", true, true); //后撤垫步
-            enemyManager.isDodging = true;
-            canCounterAttack = false;
-            randomDestinationSet = false;
-            GetNewAttack(enemyManager);
-        }
-        else if (enemyManager.curRecoveryTime <= 0 && attackState.curAttack != null)
+        if (enemyManager.curRecoveryTime <= 0 && attackState.curAttack != null) //当踱步阶段结束, 且当前无攻击，进入攻击状态
         {
             randomDestinationSet = false;
-            return attackState; //距离小于攻击范围且攻击间隔完成后进入攻击状态
+            return attackState; 
         }
-        else
+        else //不然检索攻击方式
         {
             GetNewAttack(enemyManager);
         }
@@ -84,7 +67,7 @@ public class CombatStanceState : State
         return this;
     }
 
-    public void HandleRotateTowardsTarger(EnemyManager enemyManager)
+    public void HandleRotateTowardsTarger(EnemyManager enemyManager) //快速转向
     {
             Vector3 direction = enemyManager.curTarget.transform.position - transform.position;
             direction.y = 0;
@@ -103,7 +86,7 @@ public class CombatStanceState : State
     {
         WalkAroundTarget(enemyAnimator);
     }
-    private void WalkAroundTarget(EnemyAnimatorManager enemyAnimator) 
+    private void WalkAroundTarget(EnemyAnimatorManager enemyAnimator) //这个可以再多一点选项
     {
         if ((int)enemyAnimator.GetComponentInParent<EnemyManager>().curEnemyType == 0) //近战敌人
         {
@@ -166,7 +149,7 @@ public class CombatStanceState : State
         }
 
     }
-    private void GetNewAttack(EnemyManager enemyManager) //攻击从设置好的攻击列表中随机挑选下一次的攻击动画(近战)
+    private void GetNewAttack(EnemyManager enemyManager) //根据距离和位置主动决策攻击(会进行权重测试)
     {
         Vector3 targetDirection = enemyManager.curTarget.transform.position - transform.position;
         float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
@@ -174,67 +157,107 @@ public class CombatStanceState : State
 
         int maxScore = 0;
 
-        if (!enemyManager.isFirstAttack)
+        if (!enemyManager.isFirstStrike) //非第一次攻击
         {
-            if (!specialConditionTriggered)
+            for (int i = 1; i < enemyAttacks.Length; i++) //算总权重
             {
-                //随机攻击方式(未来重写方法，当前内容太少)
-                for (int i = 1; i < enemyAttacks.Length; i++)
-                {
-                    EnemyAttackAction enemyAttackAction = enemyAttacks[i];
+                EnemyAttackAction enemyAttackAction = enemyAttacks[i];
 
-                    if (distanceFromTarget <= enemyAttackAction.maxDistanceNeedToAttack && distanceFromTarget >= enemyAttackAction.minDistanceNeedToAttack)
+                if (distanceFromTarget <= enemyAttackAction.maxDistanceNeedToAttack && distanceFromTarget >= enemyAttackAction.minDistanceNeedToAttack)
+                {
+                    if (viewableAngle <= enemyAttackAction.maxAttackAngle && viewableAngle >= enemyAttackAction.minAttackAngle)
                     {
-                        if (viewableAngle <= enemyAttackAction.maxAttackAngle && viewableAngle >= enemyAttackAction.minAttackAngle)
+                        if (combatCooldownManager.regularAttackCooldownTimer[i] <= 0) //只算cd转好的攻击
                         {
-                            maxScore += enemyAttackAction.attackScore;
+                            maxScore += enemyAttackAction.attakPriority;
                         }
                     }
                 }
+            }
 
-                int randomValue = Random.Range(0, maxScore);
-                int tempScore = 0;
+            int randomValue = Random.Range(0, maxScore);
+            int tempScore = 0;
 
-                for (int i = 1; i < enemyAttacks.Length; i++)
+            for (int i = 1; i < enemyAttacks.Length; i++)
+            {
+                EnemyAttackAction enemyAttackAction = enemyAttacks[i];
+
+                if (distanceFromTarget <= enemyAttackAction.maxDistanceNeedToAttack && distanceFromTarget >= enemyAttackAction.minDistanceNeedToAttack)
                 {
-                    EnemyAttackAction enemyAttackAction = enemyAttacks[i];
-
-                    if (distanceFromTarget <= enemyAttackAction.maxDistanceNeedToAttack && distanceFromTarget >= enemyAttackAction.minDistanceNeedToAttack)
+                    if (viewableAngle <= enemyAttackAction.maxAttackAngle && viewableAngle >= enemyAttackAction.minAttackAngle)
                     {
-                        if (viewableAngle <= enemyAttackAction.maxAttackAngle && viewableAngle >= enemyAttackAction.minAttackAngle)
+                        if (combatCooldownManager.regularAttackCooldownTimer[i] <= 0) //只算cd转好的攻击
                         {
                             if (attackState.curAttack != null)
                                 return;
 
-                            tempScore += enemyAttackAction.attackScore;
+                            tempScore += enemyAttackAction.attakPriority;
 
                             if (tempScore > randomValue)
                             {
                                 attackState.curAttack = enemyAttackAction;
+                                attackState.curRegularIndex = i;
                             }
                         }
                     }
                 }
             }
-            else 
-            {
-                enemyManager.curRecoveryTime = 0;
-
-                EnemyAttackAction enemyAttackAction = enemyAttacks[conditionAttackIndex];
-
-                attackState.curAttack = enemyAttackAction;
-
-                specialConditionTriggered = false;
-            }
         }
-        else
+        else //第一次攻击
         {
             EnemyAttackAction enemyAttackAction = enemyAttacks[0];
 
             attackState.curAttack = enemyAttackAction;
 
-            enemyManager.isFirstAttack = false;
+            enemyManager.isFirstStrike = false;
+
+            enemyManager.firstStrikeTimer = enemyManager.defaultFirstStrikeTime;
         }
     }
 
+    void SpecialActionWatcher(EnemyManager enemyManager) 
+    {
+        if (conditionList != null) 
+        {
+            foreach (SpecialCondition specialCondition in conditionList) 
+            {
+                int index = conditionList.IndexOf(specialCondition);
+                if (combatCooldownManager.specialAttackCooldownTimer[index] <= 0)
+                {
+                    if (specialCondition.condition == SpecialCondition.conditionType.距离型)
+                    {
+                        if (distanceFromTarget >= specialCondition.minRange && distanceFromTarget <= specialCondition.maxRange)
+                        {
+                            attackState.curSpecialIndex = index;
+                            attackState.curAttack = specialCondition;
+                            specialConditionTriggered = true;
+                        }
+                    }
+                    else if (specialCondition.condition == SpecialCondition.conditionType.玩家攻击型)
+                    {
+                        if (randomDestinationSet && enemyManager.curTarget.GetComponent<PlayerManager>().isAttacking && canCounterAttack) 
+                        {
+                            enemyManager.isDodging = specialCondition.canDodge;
+                            canCounterAttack = false;
+                            attackState.curSpecialIndex = index;
+                            attackState.curAttack = specialCondition;
+                            specialConditionTriggered = true;
+                        }
+                    }
+                    else if (specialCondition.condition == SpecialCondition.conditionType.玩家蓄力硬直型)
+                    {
+
+                    }
+                    else if (specialCondition.condition == SpecialCondition.conditionType.玩家防御型)
+                    {
+
+                    }
+                    else if (specialCondition.condition == SpecialCondition.conditionType.飞行道具型)
+                    {
+
+                    }
+                }
+            }
+        }
+    }
 }
