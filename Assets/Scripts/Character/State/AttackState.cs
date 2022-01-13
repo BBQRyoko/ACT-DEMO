@@ -19,7 +19,7 @@ public class AttackState : State
 
         RotateTowardsTargetWhiletAttacking(enemyManager);
 
-        if (distanceFromTarget > enemyManager.maxAttackRange) //如果突然离开最大攻击范围, 重新进入追击
+        if (distanceFromTarget > enemyManager.maxAttackRange && !enemyManager.isFirstStrike) //如果突然离开最大攻击范围, 重新进入追击
         {
             return pursueState;
         }
@@ -45,6 +45,7 @@ public class AttackState : State
         {
             combatCooldownManager.specialAttackCooldownTimer[curSpecialIndex] = curAttack.independtCooldown;
             combatStanceState.specialConditionTriggered = false;
+            enemyManager.isFirstStrike = false;
         }
         hasPerformedAttack = true;
         curAttack = null;

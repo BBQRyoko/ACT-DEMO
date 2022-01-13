@@ -138,6 +138,11 @@ public class AnimatorManager : MainAnimatorManager
     {
         animator.speed = playRate;
     }
+
+    private void MovingDuringAnimation(float movingForce) 
+    {
+        playerManager.GetComponent<Rigidbody>().AddForce(Vector3.forward* movingForce, ForceMode.Impulse);
+    }
     private void AnimatorPlaySound(int clipNum) //选择播放的音频
     {
         //attackAudio.volume = 1;

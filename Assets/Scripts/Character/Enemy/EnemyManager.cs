@@ -121,15 +121,6 @@ public class EnemyManager : CharacterManager
         isRotatingWithRootMotion = enemyAnimatorManager.animator.GetBool("isRotatingWithRootMotion");
         canRotate = enemyAnimatorManager.animator.GetBool("canRotate");
 
-        if (isBoss) 
-        {
-            HandleTargetPositionCheck();
-            if (curTarget) 
-            {
-                enemyStats.healthBar.gameObject.SetActive(true);
-            }
-        }
-
         if (isDead) 
         {
             enemyRig.isKinematic = true;

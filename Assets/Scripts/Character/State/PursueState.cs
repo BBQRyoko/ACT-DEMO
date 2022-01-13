@@ -8,10 +8,12 @@ public class PursueState : State
     public CombatStanceState combatStanceState;
     public RotateTowardsTargetState rotateTowardsTargetState;
 
+    public float distanceFromTarget;
+
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
     {
         Vector3 targetDirection = enemyManager.curTarget.transform.position - enemyManager.transform.position;
-        float distanceFromTarget = Vector3.Distance(enemyManager.curTarget.transform.position, enemyManager.transform.position);
+        distanceFromTarget = Vector3.Distance(enemyManager.curTarget.transform.position, enemyManager.transform.position);
         float viewableAngle = Vector3.SignedAngle(targetDirection, enemyManager.transform.forward, Vector3.up);
         HandleRotateTowardsTarger(enemyManager);
 
@@ -71,7 +73,7 @@ public class PursueState : State
         }
         else 
         {
-            if (distanceFromTarget <= 2f) //完成首次攻击的要求
+            if (distanceFromTarget <= 6f) //完成首次攻击的要求
             {
                 return combatStanceState;
             }

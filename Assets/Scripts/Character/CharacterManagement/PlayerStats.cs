@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerStats : CharacterStats
 {
+    InputManager inputManager;
     PlayerManager playerManager;
     public HealthBar healthBar;
     public StaminaBar staminaBar;
@@ -17,6 +18,7 @@ public class PlayerStats : CharacterStats
 
     private void Awake()
     {
+        inputManager = GetComponent<InputManager>();
         playerManager = GetComponent<PlayerManager>();
         animatorManager = GetComponentInChildren<AnimatorManager>();
         playerAttacker = GetComponent<PlayerAttacker>();
@@ -34,6 +36,11 @@ public class PlayerStats : CharacterStats
         float viewableAngle = Vector3.SignedAngle(collisionDirection, playerManager.transform.forward, Vector3.up);
         currHealth = currHealth - damage;
         healthBar.SetCurrentHealth(currHealth);
+        if (inputManager.spAttack_Input) 
+        {
+            inputManager.spAttack_Input = false;
+            playerManager.isCharging = false;
+        }
 
         if (currHealth <= 0)
         {
@@ -74,16 +81,6 @@ public class PlayerStats : CharacterStats
                     animatorManager.PlayTargetAnimation("Hit_Large", true, true);
                 }
             }
-            
-            //临时添加, 受到伤害直接打断攻击状态
-            if (isBoss) 
-            {
-                playerManager.GetComponent<Rigidbody>().AddForce(-collisionDirection, ForceMode.Impulse); //到时候要根据情况调整击退的力度
-            }
-            playerManager.isAttacking = false;
-            animatorManager.animator.SetBool("isCharging", false);
-            playerAttacker.chargingLevel = 0;
-            playerAttacker.chargingTimer = 0;
         }
         
         //攻击被打断时保证取消状态

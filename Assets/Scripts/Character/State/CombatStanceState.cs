@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CombatStanceState : State
 {
+    public IdleState idleState;
     public AttackState attackState;
     public PursueState pursueState;
     public EnemyAttackAction[] enemyAttacks;
@@ -12,10 +13,9 @@ public class CombatStanceState : State
     //特殊条件处理
     public List<SpecialCondition> conditionList;
     public bool specialConditionTriggered;
-    int conditionAttackIndex;
 
     bool canCounterAttack;
-    float distanceFromTarget;
+    public float distanceFromTarget;
     public bool randomDestinationSet = false;
     float verticalMovementVaule = 0;
     float horizontalMovementVaule = 0;
@@ -29,6 +29,14 @@ public class CombatStanceState : State
         SpecialActionWatcher(enemyManager);
         HandleRotateTowardsTarger(enemyManager); //保持面对目标的朝向
 
+        //if (enemyManager.curTarget.currHealth <= 0) //玩家死亡(临时的, 之后要改)
+        //{
+        //    enemyAnimatorManager.PlayTargetAnimation("Unarm", true, true);
+        //    enemyManager.curTarget = null;
+        //    return idleState;
+        //}
+
+
         if (enemyManager.isInteracting) //首先确认是否处在互动状态
         {
             enemyAnimatorManager.animator.SetFloat("Vertical", 0);
@@ -36,10 +44,12 @@ public class CombatStanceState : State
             return this;
         }
 
-        if (distanceFromTarget > enemyManager.maxAttackRange)//距离大于攻击范围后退回追踪状态
+        if (distanceFromTarget > enemyManager.maxAttackRange && !enemyManager.isFirstStrike)//距离大于攻击范围后退回追踪状态
         {
-            if (enemyManager.firstStrikeTimer <= 0) { }
-            return pursueState; 
+            if (enemyManager.firstStrikeTimer <= 0) 
+            {
+            }
+            return pursueState;
         }
 
         if (specialConditionTriggered) 
@@ -91,24 +101,41 @@ public class CombatStanceState : State
         if ((int)enemyAnimator.GetComponentInParent<EnemyManager>().curEnemyType == 0) //近战敌人
         {
             float randomNum = Random.Range(0, 3);//随机模式, 1/3的概率是纯随机移动
-            if (distanceFromTarget <= 1.75)
+
+            if (distanceFromTarget <= 3)
             {
                 verticalMovementVaule = -0.5f;
-                if (enemyAnimator.GetComponentInParent<EnemyManager>().dodgeTimer <= 0) 
-                {
-                    canCounterAttack = true;
-                }
             }
-            else if (distanceFromTarget > 1.75 && distanceFromTarget < 2.25)
+            else if (distanceFromTarget > 3 && distanceFromTarget <= 6)
             {
-                enemyAnimator.animator.SetTrigger("canCombo");
                 verticalMovementVaule = 0;
             }
-            else if (distanceFromTarget >= 2.25 && distanceFromTarget < 2.75)
+            else if (distanceFromTarget > 7 && distanceFromTarget <= 12)
             {
-                enemyAnimator.animator.SetTrigger("canCombo");
                 verticalMovementVaule = 0.5f;
             }
+
+
+            //if (distanceFromTarget <= 1.75)
+            //{
+            //    verticalMovementVaule = -0.5f;
+            //    //if (enemyAnimator.GetComponentInParent<EnemyManager>().dodgeTimer <= 0) 
+            //    //{
+            //    //    canCounterAttack = true;
+            //    //}
+            //}
+            //else if (distanceFromTarget > 1.75 && distanceFromTarget < 2.25)
+            //{
+            //    //enemyAnimator.animator.SetTrigger("canCombo");
+            //    verticalMovementVaule = 0;
+            //}
+            //else if (distanceFromTarget >= 2.25 && distanceFromTarget < 2.75)
+            //{
+            //    //enemyAnimator.animator.SetTrigger("canCombo");
+            //    verticalMovementVaule = 0.5f;
+            //}
+
+
 
             horizontalMovementVaule = Random.Range(-1, 1);
             if (horizontalMovementVaule <= 1 && horizontalMovementVaule >= 0)
@@ -159,7 +186,7 @@ public class CombatStanceState : State
 
         if (!enemyManager.isFirstStrike) //非第一次攻击
         {
-            for (int i = 1; i < enemyAttacks.Length; i++) //算总权重
+            for (int i = 0; i < enemyAttacks.Length; i++) //算总权重
             {
                 EnemyAttackAction enemyAttackAction = enemyAttacks[i];
 
@@ -178,7 +205,7 @@ public class CombatStanceState : State
             int randomValue = Random.Range(0, maxScore);
             int tempScore = 0;
 
-            for (int i = 1; i < enemyAttacks.Length; i++)
+            for (int i = 0; i < enemyAttacks.Length; i++)
             {
                 EnemyAttackAction enemyAttackAction = enemyAttacks[i];
 
@@ -226,7 +253,7 @@ public class CombatStanceState : State
                 {
                     if (specialCondition.condition == SpecialCondition.conditionType.距离型)
                     {
-                        if (distanceFromTarget >= specialCondition.minRange && distanceFromTarget <= specialCondition.maxRange)
+                        if (distanceFromTarget >= specialCondition.minRange && distanceFromTarget <= specialCondition.maxRange && enemyManager.curRecoveryTime>=specialCondition.requiredRecoveryTime)
                         {
                             attackState.curSpecialIndex = index;
                             attackState.curAttack = specialCondition;
@@ -235,7 +262,15 @@ public class CombatStanceState : State
                     }
                     else if (specialCondition.condition == SpecialCondition.conditionType.玩家攻击型)
                     {
-                        if (randomDestinationSet && enemyManager.curTarget.GetComponent<PlayerManager>().isAttacking && canCounterAttack) 
+                        //if (randomDestinationSet && enemyManager.curTarget.GetComponent<PlayerManager>().isAttacking && canCounterAttack)
+                        //{
+                        //    enemyManager.isDodging = specialCondition.canDodge;
+                        //    canCounterAttack = false;
+                        //    attackState.curSpecialIndex = index;
+                        //    attackState.curAttack = specialCondition;
+                        //    specialConditionTriggered = true;
+                        //}
+                        if (randomDestinationSet && enemyManager.curTarget.GetComponent<PlayerManager>().isAttacking && distanceFromTarget <= 2.5f)
                         {
                             enemyManager.isDodging = specialCondition.canDodge;
                             canCounterAttack = false;
@@ -246,7 +281,12 @@ public class CombatStanceState : State
                     }
                     else if (specialCondition.condition == SpecialCondition.conditionType.玩家蓄力硬直型)
                     {
-
+                        if (randomDestinationSet && enemyManager.curTarget.GetComponent<PlayerManager>().isCharging && distanceFromTarget<=specialCondition.maxDistanceNeedToAttack) 
+                        {
+                            attackState.curSpecialIndex = index;
+                            attackState.curAttack = specialCondition;
+                            specialConditionTriggered = true;
+                        }
                     }
                     else if (specialCondition.condition == SpecialCondition.conditionType.玩家防御型)
                     {
@@ -255,6 +295,16 @@ public class CombatStanceState : State
                     else if (specialCondition.condition == SpecialCondition.conditionType.飞行道具型)
                     {
 
+                    }
+                    else if (specialCondition.condition == SpecialCondition.conditionType.先制型) 
+                    {
+                        if (distanceFromTarget <= specialCondition.firstStrikeDistance && enemyManager.isFirstStrike) 
+                        {
+                            attackState.curSpecialIndex = index;
+                            attackState.curAttack = specialCondition;
+                            specialConditionTriggered = true;
+                            enemyManager.firstStrikeTimer = enemyManager.defaultFirstStrikeTime;
+                        }
                     }
                 }
             }
