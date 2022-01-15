@@ -17,6 +17,7 @@ public class EnemyManager : CharacterManager
     public State curState;
     public CharacterStats curTarget;
     public CombatCooldownManager combatCooldownManager;
+    [SerializeField] ParryCollider parryCollider;
 
     public enum enemyType {melee, range};
     public enemyType curEnemyType;
@@ -29,6 +30,7 @@ public class EnemyManager : CharacterManager
 
     //CombatRelated
     public bool isEquipped;
+    public bool isParrying;
 
     public bool isFirstStrike;
     public float firstStrikeTimer;
@@ -118,6 +120,7 @@ public class EnemyManager : CharacterManager
     {
         HandleRecoveryTimer();
         HandleAbilityTimer();
+        HandleParryCollider();
         isRotatingWithRootMotion = enemyAnimatorManager.animator.GetBool("isRotatingWithRootMotion");
         canRotate = enemyAnimatorManager.animator.GetBool("canRotate");
 
@@ -157,7 +160,6 @@ public class EnemyManager : CharacterManager
             }
         }
     }
-
     private void FixedUpdate()
     {
         HandleStateMachine();
@@ -185,12 +187,10 @@ public class EnemyManager : CharacterManager
             }
         }
     }
-
     private void SwitchToNextState(State state) 
     {
         curState = state;
     }
-
     private void HandleTargetPositionCheck()  //Boss专用目标位置检测
     {
         if (curTarget) 
@@ -241,7 +241,6 @@ public class EnemyManager : CharacterManager
         }
        
     }
-
     private void HandleRecoveryTimer() //攻击间隔
     {
         if (curRecoveryTime > 0) 
@@ -257,7 +256,6 @@ public class EnemyManager : CharacterManager
             }
         }
     }
-
     private void HandleAbilityTimer() 
     {
         if (shoutTimer > 0)
@@ -273,13 +271,11 @@ public class EnemyManager : CharacterManager
             }
         }
     }
-
     public void PlayHittedSound() 
     {
         enemyAnimatorManager.hittedAudio.clip = enemyAnimatorManager.boss_sfx.hittedSFX_List[Random.Range(0, 4)];
         enemyAnimatorManager.hittedAudio.Play();
     }
-
     public void HandleRangeAttack() 
     {
         var obj = Instantiate(arrow, transform, false);
@@ -287,7 +283,29 @@ public class EnemyManager : CharacterManager
         obj.gameObject.SetActive(true);
         obj.StartFlyingObj(target);
     }
-
+    void HandleParryCollider() 
+    {
+        if (isParrying)
+        {
+            parryCollider.EnableParryCollider();
+        }
+        else 
+        {
+            parryCollider.DisableParryCollider();
+        }
+    }
+    public void HandleParryingCheck() 
+    {
+        if (parryCollider.parryTimes < 3)
+        {
+            enemyAnimatorManager.PlayTargetAnimation("Block_1", true, true);
+            parryCollider.parryTimes += 1;
+        }
+        else 
+        {
+            enemyAnimatorManager.PlayTargetAnimation("Counter", true, true);
+        }
+    }
     void GeneralTimerController() 
     {
         if (timer1 > 0)
@@ -299,7 +317,6 @@ public class EnemyManager : CharacterManager
             timer1 = 0;
         }
     }
-
     void OnDrawGizmosSelected()
     {
          Gizmos.color = Color.blue;

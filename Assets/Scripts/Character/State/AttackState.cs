@@ -16,7 +16,7 @@ public class AttackState : State
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
     {
         float distanceFromTarget = Vector3.Distance(enemyManager.curTarget.transform.position, enemyManager.transform.position);
-
+        enemyManager.isParrying = false;
         RotateTowardsTargetWhiletAttacking(enemyManager);
 
         if (distanceFromTarget > enemyManager.maxAttackRange && !enemyManager.isFirstStrike) //如果突然离开最大攻击范围, 重新进入追击
@@ -29,7 +29,14 @@ public class AttackState : State
             AttackTarget(enemyAnimatorManager, enemyManager); //进行普通攻击动画的播放
         }
 
-        return rotateTowardsTargetState; //攻击完进入转身state以确认玩家仍在范围之内
+        if (!enemyManager.isInteracting)
+        {
+            return rotateTowardsTargetState; //攻击完进入转身state以确认玩家仍在范围之内
+        }
+        else 
+        {
+            return this;
+        }
     }
     private void AttackTarget(EnemyAnimatorManager enemyAnimatorManager, EnemyManager enemyManager) 
     {
@@ -68,6 +75,5 @@ public class AttackState : State
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed/Time.deltaTime);
         }
-
     }
 }

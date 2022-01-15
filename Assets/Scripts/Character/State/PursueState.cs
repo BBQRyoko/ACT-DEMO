@@ -31,22 +31,25 @@ public class PursueState : State
         {
             enemyAnimatorManager.animator.SetFloat("Vertical", 0,0.1f, Time.deltaTime);
             return this;
-        }            
+        }
 
-        if (distanceFromTarget > enemyManager.maxAttackRange)
+        //这里之后改成isSprint, 通过其它地方来改变是否处于sprint状态来切换
+        if (enemyManager.isFirstStrike)
         {
+            if (distanceFromTarget > 6f)
+            {
+                enemyAnimatorManager.animator.SetFloat("Horizontal", 0f, 0.1f, Time.deltaTime);
+                enemyAnimatorManager.animator.SetFloat("Vertical", 2f, 0.1f, Time.deltaTime);   //朝着目标单位进行移动
+            }
+        }
+        else
+        {
+            if (distanceFromTarget > enemyManager.maxAttackRange)
+            {
+                enemyAnimatorManager.animator.SetFloat("Horizontal", 0f, 0.1f, Time.deltaTime);
+                enemyAnimatorManager.animator.SetFloat("Vertical", 1f, 0.1f, Time.deltaTime);
+            }
 
-            //这里之后改成isSprint, 通过其它地方来改变是否处于sprint状态来切换
-            if (!enemyManager.isFirstStrike) //起手的动作
-            {
-                enemyAnimatorManager.animator.SetFloat("Horizontal", 0f, 0.1f, Time.deltaTime);
-                enemyAnimatorManager.animator.SetFloat("Vertical", 1f, 0.1f, Time.deltaTime);   //朝着目标单位进行移动
-            }
-            else 
-            {
-                enemyAnimatorManager.animator.SetFloat("Horizontal", 0f, 0.1f, Time.deltaTime);
-                enemyAnimatorManager.animator.SetFloat("Vertical", 2f, 0.1f, Time.deltaTime);
-            }
         }
 
         //貌似用不到

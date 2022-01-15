@@ -15,6 +15,7 @@ public class CombatStanceState : State
     public bool specialConditionTriggered;
 
     bool canCounterAttack;
+    bool checkWhileWalking;
     public float distanceFromTarget;
     public bool randomDestinationSet = false;
     float verticalMovementVaule = 0;
@@ -27,7 +28,6 @@ public class CombatStanceState : State
         enemyAnimatorManager.animator.SetFloat("Horizontal", horizontalMovementVaule, 0.2f, Time.deltaTime);
         attackState.hasPerformedAttack = false;
         SpecialActionWatcher(enemyManager);
-        HandleRotateTowardsTarger(enemyManager); //保持面对目标的朝向
 
         //if (enemyManager.curTarget.currHealth <= 0) //玩家死亡(临时的, 之后要改)
         //{
@@ -35,7 +35,6 @@ public class CombatStanceState : State
         //    enemyManager.curTarget = null;
         //    return idleState;
         //}
-
 
         if (enemyManager.isInteracting) //首先确认是否处在互动状态
         {
@@ -46,13 +45,14 @@ public class CombatStanceState : State
 
         if (distanceFromTarget > enemyManager.maxAttackRange && !enemyManager.isFirstStrike)//距离大于攻击范围后退回追踪状态
         {
-            if (enemyManager.firstStrikeTimer <= 0) 
+            if (enemyManager.firstStrikeTimer <= 0)
             {
             }
             return pursueState;
         }
 
-        if (specialConditionTriggered) 
+
+        if (specialConditionTriggered)
         {
             randomDestinationSet = false;
             return attackState;
@@ -64,12 +64,53 @@ public class CombatStanceState : State
             DecideCirclingAction(enemyAnimatorManager);
         }
 
+        //之后写成function 踱步变向
+        if (checkWhileWalking)
+        {
+            if (verticalMovementVaule < 0f)
+            {
+                if (distanceFromTarget > 3f)
+                {
+                    verticalMovementVaule = 0f;
+                    GetNewAttack(enemyManager);
+                    checkWhileWalking = false;
+                }
+            }
+            else if (verticalMovementVaule > 0f)
+            {
+                if (distanceFromTarget <= 7f)
+                {
+                    verticalMovementVaule = 0f;
+                    GetNewAttack(enemyManager);
+                    checkWhileWalking = false;
+                }
+            }
+            else if (verticalMovementVaule == 0f) 
+            {
+                if (distanceFromTarget > 7f)
+                {
+                    verticalMovementVaule = 0.5f;
+                    GetNewAttack(enemyManager);
+                    checkWhileWalking = false;
+                }
+                else if(distanceFromTarget<=3f)
+                {
+                    verticalMovementVaule = -0.5f;
+                    GetNewAttack(enemyManager);
+                    checkWhileWalking = false;
+                }
+            }
+        }
+
+        HandleRotateTowardsTarger(enemyManager); //保持面对目标的朝向
+
         if (enemyManager.curRecoveryTime <= 0 && attackState.curAttack != null) //当踱步阶段结束, 且当前无攻击，进入攻击状态
         {
+            checkWhileWalking = false;
             randomDestinationSet = false;
             return attackState; 
         }
-        else //不然检索攻击方式
+        else if(enemyManager.curRecoveryTime <= 0.5f)
         {
             GetNewAttack(enemyManager);
         }
@@ -98,10 +139,10 @@ public class CombatStanceState : State
     }
     private void WalkAroundTarget(EnemyAnimatorManager enemyAnimator) //这个可以再多一点选项
     {
+        checkWhileWalking = true;
+
         if ((int)enemyAnimator.GetComponentInParent<EnemyManager>().curEnemyType == 0) //近战敌人
         {
-            float randomNum = Random.Range(0, 3);//随机模式, 1/3的概率是纯随机移动
-
             if (distanceFromTarget <= 3)
             {
                 verticalMovementVaule = -0.5f;
@@ -147,6 +188,15 @@ public class CombatStanceState : State
                 horizontalMovementVaule = -0.5f;
             }
 
+            //if (verticalMovementVaule >= -1 && verticalMovementVaule < -0.5)
+            //{
+            //    enemyAnimator.GetComponentInParent<EnemyManager>().isParrying = true;
+            //}
+            //else
+            //{
+            //    enemyAnimator.GetComponentInParent<EnemyManager>().isParrying = false;
+            //}
+
         }
         else if ((int)enemyAnimator.GetComponentInParent<EnemyManager>().curEnemyType == 1) //远程敌人
         {
@@ -174,6 +224,7 @@ public class CombatStanceState : State
                 horizontalMovementVaule = -0.5f;
             }
         }
+
 
     }
     private void GetNewAttack(EnemyManager enemyManager) //根据距离和位置主动决策攻击(会进行权重测试)
@@ -270,7 +321,7 @@ public class CombatStanceState : State
                         //    attackState.curAttack = specialCondition;
                         //    specialConditionTriggered = true;
                         //}
-                        if (randomDestinationSet && enemyManager.curTarget.GetComponent<PlayerManager>().isAttacking && distanceFromTarget <= 2.5f)
+                        if (randomDestinationSet && enemyManager.curTarget.GetComponent<PlayerManager>().isAttacking && distanceFromTarget <= 2.5f && !enemyManager.isParrying)
                         {
                             enemyManager.isDodging = specialCondition.canDodge;
                             canCounterAttack = false;

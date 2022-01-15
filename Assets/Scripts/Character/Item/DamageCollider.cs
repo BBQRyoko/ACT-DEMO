@@ -87,21 +87,32 @@ public class DamageCollider : MonoBehaviour
         else if (collision.tag == "Parry") 
         {
             ParryCollider parryCollider = collision.GetComponent<ParryCollider>();
-
-            if (parryCollider != null) 
+            EnemyManager enemyManager = parryCollider.GetComponentInParent<EnemyManager>();
+            if (enemyManager != null) 
             {
-                if (parryCollider.isPerfect)
-                {
-                    enemyManager.GetComponentInChildren<EnemyAnimatorManager>().PlayTargetAnimation("GetHit_Up", true, true);
-                    playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("WeaponAbility_01(Success)", true, true);
-                    playerManager.PerfectBlock();
-                }
-                else
-                {
-                    playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("WeaponAbility_01(Broken)", true, true);
-                }
-                DisableDamageCollider();
+                Debug.Log("123");
+                playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("GetHit_Up", true, true);
+                enemyManager.HandleParryingCheck();
+                //ParryCheck in EnemyManager
+                //如果小于等于2,3次时都是普通格挡
+                //第三次时弹开然后攻击
             }
+
+
+            //if (parryCollider != null) 
+            //{
+            //    if (parryCollider.isPerfect)
+            //    {
+            //        enemyManager.GetComponentInChildren<EnemyAnimatorManager>().PlayTargetAnimation("GetHit_Up", true, true);
+            //        playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("WeaponAbility_01(Success)", true, true);
+            //        playerManager.PerfectBlock();
+            //    }
+            //    else
+            //    {
+            //        playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("WeaponAbility_01(Broken)", true, true);
+            //    }
+            //    DisableDamageCollider();
+            //}
         }
     }
 

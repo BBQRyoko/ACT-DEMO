@@ -9,6 +9,7 @@ public class ParryCollider : MonoBehaviour
     public bool isPerfect;
     [SerializeField] float perfectTimer=0.4f;
     [SerializeField] float countDownTimer;
+    public int parryTimes;
 
     private void Awake()
     {

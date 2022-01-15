@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionAnimation: RegularAttack04
   isSpecial: 0
-  attakPriority: 2
+  attakPriority: 10
   recoveryTime: 3.5
   independtCooldown: 10
   maxAttackAngle: 120

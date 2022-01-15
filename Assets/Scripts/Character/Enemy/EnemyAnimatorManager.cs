@@ -40,7 +40,7 @@ public class EnemyAnimatorManager : MainAnimatorManager
         if (enemyManager.isRotatingWithRootMotion) 
         {
             enemyManager.transform.rotation *= animator.deltaRotation;
-        }
+        }    
     }
 
     private void CheckingPlayerPosition() //用于Boss的行为转变
@@ -99,6 +99,30 @@ public class EnemyAnimatorManager : MainAnimatorManager
         //attackAudio.volume = 1;
         //bossAudio.clip = boss_sfx.curSFX_List[clipNum];
         //bossAudio.Play();
+    }
+
+    private void RotateTowardsTarget() 
+    {
+        Vector3 direction = enemyManager.curTarget.transform.position - transform.position;
+        direction.y = 0;
+        direction.Normalize();
+
+        if (direction == Vector3.zero)
+        {
+            direction = transform.forward;
+        }
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed);
+    }
+
+    private void ResetFirstStrike() 
+    {
+        if (enemyManager.firstStrikeTimer <= 0) 
+        {
+            enemyManager.isFirstStrike = true;
+            enemyManager.curState = enemyManager.transform.GetComponentInChildren<PursueState>();
+        }
     }
 
     private void DodgingEnd() 
