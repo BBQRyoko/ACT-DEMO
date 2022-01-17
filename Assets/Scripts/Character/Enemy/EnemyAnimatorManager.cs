@@ -43,35 +43,6 @@ public class EnemyAnimatorManager : MainAnimatorManager
         }    
     }
 
-    private void CheckingPlayerPosition() //用于Boss的行为转变
-    {
-        if (enemyManager.curTargetAngle == 0 && enemyManager.curTargetDistance == 0) //Combo Check
-        {
-            if (enemyManager.comboCount > 0) 
-            {
-                animator.SetBool("canCombo", true);
-                enemyManager.comboCount -= 1;
-            }
-        }
-        else if (enemyManager.curTargetAngle == 0 && enemyManager.curTargetDistance == 1) //Combo Check
-        {
-            if (enemyManager.comboCount > 0)
-            {
-                animator.SetBool("canCombo", true);
-                enemyManager.comboCount -= 1;
-            }
-        }
-    }
-
-    private void shoutStun() //在动画中使用该功能
-    {
-        Collider[] targetInArea = Physics.OverlapSphere(transform.position, enemyManager.shoutRadius, enemyManager.playerLayer);
-        foreach (Collider player in targetInArea)
-        {
-            player.GetComponent<PlayerManager>().GetDebuff(3.5f);
-        }
-    }
-
     private void AnimatorPlaySpeed(float playRate) //控制动画器的播放速度
     {
         animator.speed = playRate;
@@ -96,9 +67,7 @@ public class EnemyAnimatorManager : MainAnimatorManager
 
     private void AnimatorPlaySound(int clipNum) //选择播放的音频
     {
-        //attackAudio.volume = 1;
-        //bossAudio.clip = boss_sfx.curSFX_List[clipNum];
-        //bossAudio.Play();
+
     }
 
     private void RotateTowardsTarget() 
@@ -114,6 +83,15 @@ public class EnemyAnimatorManager : MainAnimatorManager
 
         Quaternion targetRotation = Quaternion.LookRotation(direction);
         enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed);
+    }
+    void OpenParryCollider() 
+    {
+        enemyManager.isParrying = true;
+    }
+
+    void CloseParryCollider() 
+    {
+        enemyManager.isParrying = false;
     }
 
     private void ResetFirstStrike() 

@@ -32,36 +32,20 @@ public class EnemyStats : CharacterStats
     private void Start()
     {
         currHealth = maxHealth;
-        if(enemyManager.isBoss) healthBar.SetMaxHealth(maxHealth);
+        if (healthBar) 
+        {
+            healthBar.SetMaxHealth(maxHealth);
+        }
     }
 
     private void Update()
     {
-        if (enemyManager.isBoss) //仅Boss使用的阶段转换和耐力受身
-        {
-            if (currHealth > phase2RequiredHealth)
-            {
-                stage = 0;
-            }
-            else if (currHealth <= phase2RequiredHealth && !phaseChanged)
-            {
-                enemyManager.shoutTimer = 0;
-                enemyManager.shouted = false;
-                PhaseChange();
-            }
-
-            if (curStamina >= staminaGauge)  //耐力低于设定值时会播放个倒地动画
-            {
-                animatorManager.PlayTargetAnimation("Dead", true);
-                curStamina = 0;
-            }
-        }
     }
     public void TakeDamage(int damage, Vector3 collisionDir, CharacterStats characterStats = null)
     {
         float viewableAngle = Vector3.SignedAngle(collisionDir, enemyManager.transform.forward, Vector3.up);
-
         currHealth = currHealth - damage;
+        healthBar.SetCurrentHealth(currHealth);
 
         if (currHealth <= 0)
         {

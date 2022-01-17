@@ -31,6 +31,7 @@ public class EnemyManager : CharacterManager
     //CombatRelated
     public bool isEquipped;
     public bool isParrying;
+    public bool isBlocking;
 
     public bool isFirstStrike;
     public float firstStrikeTimer;
@@ -123,6 +124,7 @@ public class EnemyManager : CharacterManager
         HandleParryCollider();
         isRotatingWithRootMotion = enemyAnimatorManager.animator.GetBool("isRotatingWithRootMotion");
         canRotate = enemyAnimatorManager.animator.GetBool("canRotate");
+        isBlocking = enemyAnimatorManager.animator.GetBool("isBlocking");
 
         if (isDead) 
         {
@@ -296,7 +298,7 @@ public class EnemyManager : CharacterManager
     }
     public void HandleParryingCheck() 
     {
-        if (parryCollider.parryTimes < 3)
+        if (parryCollider.parryTimes < 100)
         {
             enemyAnimatorManager.PlayTargetAnimation("Block_1", true, true);
             parryCollider.parryTimes += 1;

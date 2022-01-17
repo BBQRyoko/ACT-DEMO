@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionAnimation: LongRangeAttack01
   isSpecial: 0
-  attakPriority: 10
-  recoveryTime: 6
-  independtCooldown: 15
+  attakPriority: 5
+  recoveryTime: 3.5
+  independtCooldown: 10
   maxAttackAngle: 35
   minAttackAngle: -35
   minDistanceNeedToAttack: 6.5

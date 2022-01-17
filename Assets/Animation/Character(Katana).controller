@@ -14,9 +14,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.8833327
+  m_TransitionDuration: 0.60225165
   m_TransitionOffset: 0
-  m_ExitTime: 0.6760746
+  m_ExitTime: 0.49012884
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -756,7 +756,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 0d58300c05b67aa418ba0822a7280aa5, type: 2}
+  m_Motion: {fileID: 7400000, guid: e680f8faee72df14bb2500d061d6f538, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -2137,9 +2137,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.7384871
-  m_TransitionOffset: 0.0119142635
-  m_ExitTime: 0.66064256
+  m_TransitionDuration: 0.9751237
+  m_TransitionOffset: 0
+  m_ExitTime: 0.31395754
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -2823,7 +2823,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: ff8c3aaeef5ea1b459147a6ca8b4e3b1, type: 2}
+  m_Motion: {fileID: 7400000, guid: 42d4fb8fc2f08554ab3a9fecf6bb5735, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -4019,9 +4019,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.27027982
   m_TransitionOffset: 0
-  m_ExitTime: 0.6428572
+  m_ExitTime: 0.7325148
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -4354,7 +4354,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 4bb97755b3cec004fa31316345864739, type: 2}
+  m_Motion: {fileID: 7400000, guid: a2268616656708c4886ef5335f4da0a5, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -4636,9 +4636,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.5765065
-  m_TransitionOffset: 0.2568938
-  m_ExitTime: 0.7401577
+  m_TransitionDuration: 0.53096104
+  m_TransitionOffset: 0
+  m_ExitTime: 0.5270971
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0

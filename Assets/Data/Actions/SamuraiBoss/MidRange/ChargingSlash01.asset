@@ -15,8 +15,8 @@ MonoBehaviour:
   actionAnimation: ChargingSlash01
   isSpecial: 0
   attakPriority: 4
-  recoveryTime: 6
-  independtCooldown: 15
+  recoveryTime: 4.5
+  independtCooldown: 8
   maxAttackAngle: 90
   minAttackAngle: -90
   minDistanceNeedToAttack: 3

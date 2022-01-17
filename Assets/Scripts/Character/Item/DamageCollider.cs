@@ -37,8 +37,35 @@ public class DamageCollider : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider collision)
-    {
-        if (collision.tag == "Player")
+    {   
+        
+        if (collision.tag == "Parry")
+        {
+            Debug.Log("123");
+            ParryCollider parryCollider = collision.GetComponent<ParryCollider>();
+            EnemyManager enemyManager = parryCollider.GetComponentInParent<EnemyManager>();
+            if (enemyManager != null)
+            {
+                playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("GetHit_Up", true, true);
+                enemyManager.HandleParryingCheck();
+            }
+
+            //if (parryCollider != null) 
+            //{
+            //    if (parryCollider.isPerfect)
+            //    {
+            //        enemyManager.GetComponentInChildren<EnemyAnimatorManager>().PlayTargetAnimation("GetHit_Up", true, true);
+            //        playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("WeaponAbility_01(Success)", true, true);
+            //        playerManager.PerfectBlock();
+            //    }
+            //    else
+            //    {
+            //        playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("WeaponAbility_01(Broken)", true, true);
+            //    }
+            //    DisableDamageCollider();
+            //}
+        }
+        else if (collision.tag == "Player")
         {
             Vector3 hitDirection = transform.position - playerManager.transform.position;
             hitDirection.y = 0;
@@ -62,13 +89,14 @@ public class DamageCollider : MonoBehaviour
         }
         else if (collision.tag == "Enemy")
         {
+            Debug.Log("321");
             Vector3 hitDirection = transform.position - collision.transform.position;
             hitDirection.y = 0;
             hitDirection.Normalize();
 
             EnemyStats enemyStats = collision.GetComponent<EnemyStats>();
 
-            if (enemyStats != null && enemyStats.currHealth != 0 && !enemyStats.GetComponent<EnemyManager>().isDodging)
+            if (enemyStats != null && enemyStats.currHealth != 0 && !enemyStats.GetComponent<EnemyManager>().isDodging && !enemyStats.GetComponent<EnemyManager>().isBlocking)
             {
                 enemyStats.TakeDamage(curDamage, hitDirection, playerManager.GetComponent<PlayerStats>());
                 HitPause(duration);
@@ -83,36 +111,6 @@ public class DamageCollider : MonoBehaviour
             {
                 destructibleObject.ObjectDestroy();
             }
-        }
-        else if (collision.tag == "Parry") 
-        {
-            ParryCollider parryCollider = collision.GetComponent<ParryCollider>();
-            EnemyManager enemyManager = parryCollider.GetComponentInParent<EnemyManager>();
-            if (enemyManager != null) 
-            {
-                Debug.Log("123");
-                playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("GetHit_Up", true, true);
-                enemyManager.HandleParryingCheck();
-                //ParryCheck in EnemyManager
-                //如果小于等于2,3次时都是普通格挡
-                //第三次时弹开然后攻击
-            }
-
-
-            //if (parryCollider != null) 
-            //{
-            //    if (parryCollider.isPerfect)
-            //    {
-            //        enemyManager.GetComponentInChildren<EnemyAnimatorManager>().PlayTargetAnimation("GetHit_Up", true, true);
-            //        playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("WeaponAbility_01(Success)", true, true);
-            //        playerManager.PerfectBlock();
-            //    }
-            //    else
-            //    {
-            //        playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("WeaponAbility_01(Broken)", true, true);
-            //    }
-            //    DisableDamageCollider();
-            //}
         }
     }
 

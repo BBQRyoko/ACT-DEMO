@@ -16,7 +16,7 @@ MonoBehaviour:
   isSpecial: 0
   attakPriority: 3
   recoveryTime: 5.5
-  independtCooldown: 12
+  independtCooldown: 10
   maxAttackAngle: 90
   minAttackAngle: -90
   minDistanceNeedToAttack: 4

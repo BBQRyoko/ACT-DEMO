@@ -63,6 +63,13 @@ public class PlayerManager : CharacterManager
         playerStats.StaminaRegen();
         CheckForInteractableObject();
         PerfectTimer();
+
+        //Temp
+        if (!isInteracting)
+        {
+            cantBeInterrupted = false;
+        }
+
     }
     private void FixedUpdate()
     {
