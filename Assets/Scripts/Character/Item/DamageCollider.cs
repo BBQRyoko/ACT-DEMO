@@ -48,6 +48,7 @@ public class DamageCollider : MonoBehaviour
             {
                 playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("GetHit_Up", true, true);
                 enemyManager.HandleParryingCheck();
+                playerManager.GetComponent<PlayerAttacker>().comboCount = 0;
             }
 
             //if (parryCollider != null) 
