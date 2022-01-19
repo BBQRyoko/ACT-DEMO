@@ -6,4 +6,5 @@ public class Sample_SFX : MonoBehaviour
 {
     public AudioClip[] curSFX_List;
     public AudioClip[] hittedSFX_List;
+    public AudioClip[] blockedSFX_List;
 }

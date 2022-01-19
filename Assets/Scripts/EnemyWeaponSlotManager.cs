@@ -49,14 +49,14 @@ public class EnemyWeaponSlotManager : MonoBehaviour
         weaponDamageCollider.DisableDamageCollider();
     }
 
-    private void AnimatorPlaySound(int clipNum) //选择播放的音频
-    {
-
-    }
-
     private void RangeAttack() 
     {
         enemyManager.HandleRangeAttack();
+    }
+
+    private void RangeAttack2()
+    {
+        enemyManager.HandleRangeAttack2();
     }
 
     private void AttackOver()

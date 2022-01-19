@@ -9,6 +9,7 @@ TagManager:
   - Interactable
   - DestructibleObject
   - Parry
+  - DarkKnight
   layers:
   - Default
   - TransparentFX

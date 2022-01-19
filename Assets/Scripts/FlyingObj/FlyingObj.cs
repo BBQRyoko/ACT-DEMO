@@ -7,6 +7,9 @@ using UnityEngine;
 /// </summary>
 public class FlyingObj : MonoBehaviour
 {
+    FlyingObj flyingObj;
+
+    [SerializeField] bool darkKnightOnly;
     /// <summary>
     /// 转向速度
     /// </summary>
@@ -50,6 +53,7 @@ public class FlyingObj : MonoBehaviour
     private void Awake()
     {
         m_TriggerCallback = DefaultTriggerCondition;
+        flyingObj = GetComponent<FlyingObj>();
     }
 
     private void Update()
@@ -59,6 +63,14 @@ public class FlyingObj : MonoBehaviour
         TraceProcess(timeDelta);
         MoveProcess(timeDelta);
         CalcLifeTime(timeDelta);
+
+        if (darkKnightOnly) 
+        {
+            if (m_TraceTime <= 0) 
+            {
+                flyingObj.enabled = false;
+            }
+        }
     }
 
     /// <summary>

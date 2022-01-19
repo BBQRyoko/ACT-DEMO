@@ -67,8 +67,10 @@ public class EnemyManager : CharacterManager
     //Range Objects
     public FlyingObj arrow;
     public Transform shootPos;
+    public FlyingObj arrow2;
+    public Transform shootPos2;
     public Transform target;
-    public float rangeRecoveryTime;
+    public Transform target2;
 
     //BossOnly(距离方位检测)
     public int curTargetAngle; //0 - Front, 1 - Back, 2 - Flank
@@ -273,11 +275,6 @@ public class EnemyManager : CharacterManager
             }
         }
     }
-    public void PlayHittedSound() 
-    {
-        enemyAnimatorManager.hittedAudio.clip = enemyAnimatorManager.boss_sfx.hittedSFX_List[Random.Range(0, 4)];
-        enemyAnimatorManager.hittedAudio.Play();
-    }
     public void HandleRangeAttack() 
     {
         var obj = Instantiate(arrow, transform, false);
@@ -285,15 +282,26 @@ public class EnemyManager : CharacterManager
         obj.gameObject.SetActive(true);
         obj.StartFlyingObj(target);
     }
+    public void HandleRangeAttack2()
+    {
+        var obj = Instantiate(arrow2, transform, false);
+        obj.transform.SetParent(null);
+        obj.gameObject.SetActive(true);
+        obj.StartFlyingObj(target2);
+    }
+
     void HandleParryCollider() 
     {
-        if (isParrying)
+        if (parryCollider) 
         {
-            parryCollider.EnableParryCollider();
-        }
-        else 
-        {
-            parryCollider.DisableParryCollider();
+            if (isParrying)
+            {
+                parryCollider.EnableParryCollider();
+            }
+            else
+            {
+                parryCollider.DisableParryCollider();
+            }
         }
     }
     public void HandleParryingCheck() 

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0dd4ca184644ff34d888c9d3dc361aa2, type: 3}
+  m_Name: Enemy_GreatSword
+  m_EditorClassIdentifier: 
+  Id: 0
+  itemIcon: {fileID: 0}
+  itemName: FireSword_Enemy
+  HasHeapUp: 0
+  ExecutableOperation: 0
+  modelPrefab: {fileID: 3158534588828042178, guid: 3d4c2286fcbec3b4bbe10aca9c5ebaca, type: 3}
+  isEquipped: 1
+  weaponAnimatorController: {fileID: 0}
+  regularSkills:
+  - {fileID: 0}
+  specialSkills:
+  - {fileID: 0}
+  - {fileID: 0}
+  weaponAbilities: []

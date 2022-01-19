@@ -76,7 +76,7 @@ public class PursueState : State
         }
         else 
         {
-            if (distanceFromTarget <= 6f) //完成首次攻击的要求
+            if (distanceFromTarget <= combatStanceState.conditionList[0].firstStrikeDistance) //完成首次攻击的要求
             {
                 return combatStanceState;
             }

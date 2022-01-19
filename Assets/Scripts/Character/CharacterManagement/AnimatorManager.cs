@@ -114,8 +114,6 @@ public class AnimatorManager : MainAnimatorManager
                 {
                     playerLocmotion.rig.velocity = new Vector3(0, playerLocmotion.rig.velocity.y, 0);
                     StartCoroutine(Pause(10));
-                    hittedAudio.clip = sample_SFX.hittedSFX_List[0];
-                    hittedAudio.Play();
                 }
                 else
                 {
@@ -138,14 +136,14 @@ public class AnimatorManager : MainAnimatorManager
     {
         animator.speed = playRate;
     }
-
+    
     private void MovingDuringAnimation(float movingForce) 
     {
         playerManager.GetComponent<Rigidbody>().AddForce(Vector3.forward* movingForce, ForceMode.Impulse);
     }
     private void AnimatorPlaySound(int clipNum) //选择播放的音频
     {
-        //attackAudio.volume = 1;
+        attackAudio.volume = 0.07f;
         attackAudio.clip = sample_SFX.curSFX_List[clipNum];
         attackAudio.Play();
     }

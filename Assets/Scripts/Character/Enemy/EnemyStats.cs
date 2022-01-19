@@ -45,7 +45,10 @@ public class EnemyStats : CharacterStats
     {
         float viewableAngle = Vector3.SignedAngle(collisionDir, enemyManager.transform.forward, Vector3.up);
         currHealth = currHealth - damage;
-        healthBar.SetCurrentHealth(currHealth);
+        if (healthBar) 
+        {
+            healthBar.SetCurrentHealth(currHealth);
+        }
 
         if (currHealth <= 0)
         {

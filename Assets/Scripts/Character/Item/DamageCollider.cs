@@ -6,7 +6,10 @@ public class DamageCollider : MonoBehaviour
 {
     public EnemyManager enemyManager;
     public PlayerManager playerManager;
+    public AudioSource attackAudio;
     Collider damageCollider;
+
+    public Sample_SFX sample_SFX;
 
     int curDamage = 10;
 
@@ -41,14 +44,19 @@ public class DamageCollider : MonoBehaviour
         
         if (collision.tag == "Parry")
         {
-            Debug.Log("123");
             ParryCollider parryCollider = collision.GetComponent<ParryCollider>();
             EnemyManager enemyManager = parryCollider.GetComponentInParent<EnemyManager>();
             if (enemyManager != null)
             {
-                playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("GetHit_Up", true, true);
+                attackAudio.volume = 0.2f;
+                int i = sample_SFX.blockedSFX_List.Length;
+                int random = Random.Range(0,i-1);
+                attackAudio.clip = sample_SFX.blockedSFX_List[random];
+                attackAudio.Play();
+                //playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("GetHit_Up", true, true);
                 enemyManager.HandleParryingCheck();
-                playerManager.GetComponent<PlayerAttacker>().comboCount = 0;
+                HitPause(duration);
+                damageCollider.enabled = false;
             }
 
             //if (parryCollider != null) 
@@ -90,7 +98,6 @@ public class DamageCollider : MonoBehaviour
         }
         else if (collision.tag == "Enemy")
         {
-            Debug.Log("321");
             Vector3 hitDirection = transform.position - collision.transform.position;
             hitDirection.y = 0;
             hitDirection.Normalize();
@@ -99,6 +106,11 @@ public class DamageCollider : MonoBehaviour
 
             if (enemyStats != null && enemyStats.currHealth != 0 && !enemyStats.GetComponent<EnemyManager>().isDodging && !enemyStats.GetComponent<EnemyManager>().isBlocking)
             {
+                attackAudio.volume = 0.15f;
+                int i = sample_SFX.hittedSFX_List.Length;
+                int random = Random.Range(0, i - 1);
+                attackAudio.clip = sample_SFX.hittedSFX_List[random];
+                attackAudio.Play();
                 enemyStats.TakeDamage(curDamage, hitDirection, playerManager.GetComponent<PlayerStats>());
                 HitPause(duration);
                 playerManager.isHitting = true;

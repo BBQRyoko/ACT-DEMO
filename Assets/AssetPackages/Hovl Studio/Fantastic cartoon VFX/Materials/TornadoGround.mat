@@ -4,8 +4,9 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: TornadoGround
   m_Shader: {fileID: 4800000, guid: f7356c7b8ae37d442bd94188e69e6cb0, type: 3}
   m_ShaderKeywords: _FRESNEL_ON _UPCUTOFF_ON
@@ -38,6 +39,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _Cutoff: 0.5
     - _DirectionSpeedofwawes: -0.5
@@ -48,12 +50,13 @@ Material:
     - _Numberofwaves: 1
     - _Numberofwawes: 1
     - _Sizeofwawes: -0.2
+    - _TwistWaves: 1
     - _U_Speed: -0.3
     - _UpCutoff: 1
     - _V_Speed: -0.7
     - __dirty: 1
     m_Colors:
-    - _Color: {r: 1, g: 0.47175142, b: 0.11792451, a: 1}
+    - _Color: {r: 0.13197397, g: 0.07075472, b: 0.2830189, a: 1}
     - _FrenselColor: {r: 1, g: 1, b: 1, a: 1}
     - _Fresnelcolor: {r: 1, g: 1, b: 1, a: 1}
     - _Reel: {r: 1, g: 0.4, b: 5, a: 0}
@@ -62,3 +65,4 @@ Material:
     - _TwistScale: {r: 1, g: 0.1, b: 5, a: 0}
     - _WavesspeedsizeXYTwistspeedsizeZW: {r: -1, g: 0.1, b: 4, a: 0.05}
     - _color: {r: 0.78039217, g: 0.5647059, b: 0.1764706, a: 0.5019608}
+  m_BuildTextureStacks: []

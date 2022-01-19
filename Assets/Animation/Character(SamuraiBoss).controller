@@ -61,9 +61,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0
   m_TransitionOffset: 0
-  m_ExitTime: 0.6875
+  m_ExitTime: 1
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -81,7 +81,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8021a89e983e054cadecdf138d58907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isBlocking: 
+  isBlockingBool: 
   isBlockStatus: 0
 --- !u!1101 &-8987847211218836285
 AnimatorStateTransition:
@@ -401,7 +401,7 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 06c6cae9a0e2e5341a8928f23a9274e2, type: 2}
+    m_Motion: {fileID: 7400000, guid: d9c8b4646714acf4f854e76571843dc2, type: 2}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -545,7 +545,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Block_1
-  m_Speed: 1
+  m_Speed: 2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -3703406334808348044}
@@ -1385,9 +1385,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0
   m_TransitionOffset: 0
-  m_ExitTime: 0.6875
+  m_ExitTime: 1
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -2272,8 +2272,6 @@ MonoBehaviour:
   isPlayer: 0
   isInteractingBool: isInteracting
   isInteractingStatus: 0
-  cantBeInterruptedBool: 
-  cantBeInterruptedStatus: 0
   isUsingRootMotionBool: isUsingRootMotion
   isUsingRootMotionStatus: 0
   isRotatingWithRootMotion: isRotatingWithRootMotion
@@ -2390,7 +2388,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Block_2
-  m_Speed: 1
+  m_Speed: 2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -9063140362706019578}
@@ -3205,7 +3203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8021a89e983e054cadecdf138d58907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isBlocking: isBlocking
+  isBlockingBool: 
   isBlockStatus: 0
 --- !u!1107 &5784012451648686164
 AnimatorStateMachine:

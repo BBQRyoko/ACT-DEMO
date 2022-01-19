@@ -6,15 +6,22 @@ public class EnemyAnimatorManager : MainAnimatorManager
 {
     CameraManager cameraManager;
     public EnemyManager enemyManager;
-
     public float animatorSpeed;
-
     public Collider damageCollider;
 
-    //VFX
-    public AudioSource bossAudio;
-    public AudioSource hittedAudio;
-    public Sample_SFX boss_sfx;
+    //Rotate Related
+    public bool rotatingWithPlayer;
+
+    //SFX
+    public AudioSource attackAudio;
+    public Sample_SFX sample_SFX;
+
+    [Header("DarkKnight Only")]
+    [SerializeField] GameObject TornadoArea;
+    [SerializeField] GameObject TornadoSlash;
+    [SerializeField] float tornadoSlashTimer;
+    public bool tornadoSlashEnhance;
+
 
     private void Awake()
     {
@@ -26,6 +33,27 @@ public class EnemyAnimatorManager : MainAnimatorManager
     private void Update()
     {
         animatorSpeed = animator.speed;
+
+        if (rotatingWithPlayer)
+        {
+            RotateHandler();
+        }
+        else
+        {
+            enemyManager.rotationSpeed = 1f;
+        }
+
+        //DarkKnightOnly
+        if (tornadoSlashEnhance)
+        {
+            TornadoSlash.SetActive(true);
+            animator.speed = 1.25f;
+        }
+        else 
+        {
+            TornadoSlash.SetActive(false);
+            animator.speed = 1f;
+        }
     }
 
     private void OnAnimatorMove()
@@ -67,10 +95,28 @@ public class EnemyAnimatorManager : MainAnimatorManager
 
     private void AnimatorPlaySound(int clipNum) //选择播放的音频
     {
-
+        attackAudio.volume = 0.07f;
+        attackAudio.clip = sample_SFX.curSFX_List[clipNum];
+        attackAudio.Play();
     }
 
     private void RotateTowardsTarget() 
+    {
+        if (rotatingWithPlayer)
+        {
+            rotatingWithPlayer = false;
+        }
+        else 
+        {
+            rotatingWithPlayer = true;
+        }
+    }
+    private void ChangeRotateSpeed(float rotateSpeed) 
+    {
+        enemyManager.rotationSpeed = rotateSpeed;
+    }
+
+    private void RotateHandler() 
     {
         Vector3 direction = enemyManager.curTarget.transform.position - transform.position;
         direction.y = 0;
@@ -113,4 +159,26 @@ public class EnemyAnimatorManager : MainAnimatorManager
         cameraManager.DangerWarning(enemyManager);
     }
 
+    //DarkKnight Only
+    void CombatGroundInitial() 
+    {
+        TornadoArea.SetActive(true);
+        TornadoArea.transform.parent = null;
+    }
+    void TornadoSlashBegin(int time) 
+    {
+        StartCoroutine(Timer(time));
+    }
+    public void TornadoSlashSpawn() 
+    {
+        TornadoSlash.SetActive(true);
+    }
+
+    IEnumerator Timer(int dur) //播放器暂停
+    {
+        float pauseTime = dur;
+        yield return new WaitForSecondsRealtime(pauseTime);
+        animator.SetTrigger("loopStop");
+        tornadoSlashEnhance = false;
+    }
 }

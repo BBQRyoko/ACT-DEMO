@@ -26,7 +26,6 @@ public class Damager : MonoBehaviour
                 if (!playerStats.GetComponent<PlayerManager>().damageAvoid) 
                 {
                     playerStats.TakeDamage(damage, hitDirection * hitFactor, true);
-                    enemyManager.PlayHittedSound();
                 }
             }
         }

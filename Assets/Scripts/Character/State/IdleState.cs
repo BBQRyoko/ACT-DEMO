@@ -94,7 +94,10 @@ public class IdleState : State
         #region 切换至追踪模式
         if (enemyManager.curTarget != null)
         {
-            enemyAnimatorManager.PlayTargetAnimation("Equip", true, true);
+            if (!enemyManager.isEquipped) 
+            {
+                enemyAnimatorManager.PlayTargetAnimation("Equip", true, true);
+            }
             enemyAnimatorManager.animator.SetFloat("Horizontal", 0, 0.1f, Time.deltaTime);
             return pursueState; //当发现目标后, 进入追踪模式
         }

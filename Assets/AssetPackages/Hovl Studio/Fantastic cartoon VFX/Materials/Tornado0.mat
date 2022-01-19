@@ -39,6 +39,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _Cutoff: 0.5
     - _DirectionSpeedofwawes: -0.5
@@ -55,7 +56,7 @@ Material:
     - _V_Speed: -0.7
     - __dirty: 1
     m_Colors:
-    - _Color: {r: 1, g: 0.39841667, b: 0, a: 1}
+    - _Color: {r: 0.092337094, g: 0.08597365, b: 0.26415092, a: 0.4117647}
     - _FrenselColor: {r: 1, g: 1, b: 1, a: 1}
     - _Fresnelcolor: {r: 1.1486983, g: 1.1486983, b: 1.1486983, a: 1}
     - _Reel: {r: 1, g: 0.4, b: 5, a: 0}
@@ -64,3 +65,4 @@ Material:
     - _TwistScale: {r: 1, g: 0.1, b: 5, a: 0}
     - _WavesspeedsizeXYTwistspeedsizeZW: {r: -1, g: 0.2, b: 4, a: 0.6}
     - _color: {r: 1, g: 0.6, b: 0, a: 1}
+  m_BuildTextureStacks: []
