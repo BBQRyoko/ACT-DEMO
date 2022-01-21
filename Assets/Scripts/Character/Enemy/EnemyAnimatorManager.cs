@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyAnimatorManager : MainAnimatorManager
 {
+    [SerializeField] bool isDarkKnight;
     CameraManager cameraManager;
     public EnemyManager enemyManager;
     public float animatorSpeed;
@@ -44,15 +45,18 @@ public class EnemyAnimatorManager : MainAnimatorManager
         }
 
         //DarkKnightOnly
-        if (tornadoSlashEnhance)
+        if (isDarkKnight) 
         {
-            TornadoSlash.SetActive(true);
-            animator.speed = 1.25f;
-        }
-        else 
-        {
-            TornadoSlash.SetActive(false);
-            animator.speed = 1f;
+            if (tornadoSlashEnhance)
+            {
+                TornadoSlash.SetActive(true);
+                animator.speed = 1.25f;
+            }
+            else
+            {
+                TornadoSlash.SetActive(false);
+                animator.speed = 1f;
+            }
         }
     }
 

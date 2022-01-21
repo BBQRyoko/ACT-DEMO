@@ -51,7 +51,6 @@ public class CombatStanceState : State
             return pursueState;
         }
 
-
         if (specialConditionTriggered)
         {
             randomDestinationSet = false;
@@ -137,95 +136,33 @@ public class CombatStanceState : State
     {
         WalkAroundTarget(enemyAnimator);
     }
-    private void WalkAroundTarget(EnemyAnimatorManager enemyAnimator) //这个可以再多一点选项
+    private void WalkAroundTarget(EnemyAnimatorManager enemyAnimator)
     {
         checkWhileWalking = true;
 
-        if ((int)enemyAnimator.GetComponentInParent<EnemyManager>().curEnemyType == 0) //近战敌人
+        //需要精修距离与最大攻击距离间的关系
+        if (distanceFromTarget >= 0 && distanceFromTarget <= 3 * enemyAnimator.GetComponentInParent<EnemyManager>().maxAttackRange / 4)
         {
-            if (distanceFromTarget <= 3)
-            {
-                verticalMovementVaule = -0.5f;
-            }
-            else if (distanceFromTarget > 3 && distanceFromTarget <= 6)
-            {
-                verticalMovementVaule = 0;
-            }
-            else if (distanceFromTarget > 7 && distanceFromTarget <= 12)
-            {
-                verticalMovementVaule = 0.5f;
-            }
-
-
-            //if (distanceFromTarget <= 1.75)
-            //{
-            //    verticalMovementVaule = -0.5f;
-            //    //if (enemyAnimator.GetComponentInParent<EnemyManager>().dodgeTimer <= 0) 
-            //    //{
-            //    //    canCounterAttack = true;
-            //    //}
-            //}
-            //else if (distanceFromTarget > 1.75 && distanceFromTarget < 2.25)
-            //{
-            //    //enemyAnimator.animator.SetTrigger("canCombo");
-            //    verticalMovementVaule = 0;
-            //}
-            //else if (distanceFromTarget >= 2.25 && distanceFromTarget < 2.75)
-            //{
-            //    //enemyAnimator.animator.SetTrigger("canCombo");
-            //    verticalMovementVaule = 0.5f;
-            //}
-
-
-
-            horizontalMovementVaule = Random.Range(-1, 1);
-            if (horizontalMovementVaule <= 1 && horizontalMovementVaule >= 0)
-            {
-                horizontalMovementVaule = 0.5f;
-            }
-            else if (horizontalMovementVaule >= -1 && horizontalMovementVaule < 0)
-            {
-                horizontalMovementVaule = -0.5f;
-            }
-
-            //if (verticalMovementVaule >= -1 && verticalMovementVaule < -0.5)
-            //{
-            //    enemyAnimator.GetComponentInParent<EnemyManager>().isParrying = true;
-            //}
-            //else
-            //{
-            //    enemyAnimator.GetComponentInParent<EnemyManager>().isParrying = false;
-            //}
-
+            verticalMovementVaule = -0.5f;
         }
-        else if ((int)enemyAnimator.GetComponentInParent<EnemyManager>().curEnemyType == 1) //远程敌人
+        else if (distanceFromTarget > 3 * enemyAnimator.GetComponentInParent<EnemyManager>().maxAttackRange / 4 && distanceFromTarget < enemyAnimator.GetComponentInParent<EnemyManager>().maxAttackRange)
         {
-            float randomNum = Random.Range(0, 3);//随机模式, 1/3的概率是纯随机移动
-            if (distanceFromTarget >= 0 && distanceFromTarget <= 3*enemyAnimator.GetComponentInParent<EnemyManager>().maxAttackRange/4)
-            {
-                verticalMovementVaule = -0.5f;
-            }
-            else if (distanceFromTarget > 3 * enemyAnimator.GetComponentInParent<EnemyManager>().maxAttackRange / 4 && distanceFromTarget < enemyAnimator.GetComponentInParent<EnemyManager>().maxAttackRange)
-            {
-                verticalMovementVaule = 0;
-            }
-            else if (distanceFromTarget > enemyAnimator.GetComponentInParent<EnemyManager>().maxAttackRange)
-            {
-                verticalMovementVaule = 0.5f;
-            }
-
-            horizontalMovementVaule = Random.Range(-1, 1);
-            if (horizontalMovementVaule <= 1 && horizontalMovementVaule >= 0)
-            {
-                horizontalMovementVaule = 0.5f;
-            }
-            else if (horizontalMovementVaule >= -1 && horizontalMovementVaule < 0)
-            {
-                horizontalMovementVaule = -0.5f;
-            }
+            verticalMovementVaule = 0;
+        }
+        else if (distanceFromTarget > enemyAnimator.GetComponentInParent<EnemyManager>().maxAttackRange)
+        {
+            verticalMovementVaule = 0.5f;
         }
 
-
+        horizontalMovementVaule = Random.Range(-1, 1);
+        if (horizontalMovementVaule <= 1 && horizontalMovementVaule >= 0)
+        {
+            horizontalMovementVaule = 0.5f;
+        }
+        else if (horizontalMovementVaule >= -1 && horizontalMovementVaule < 0)
+        {
+            horizontalMovementVaule = -0.5f;
+        }
     }
     private void GetNewAttack(EnemyManager enemyManager) //根据距离和位置主动决策攻击(会进行权重测试)
     {
@@ -292,7 +229,6 @@ public class CombatStanceState : State
             enemyManager.firstStrikeTimer = enemyManager.defaultFirstStrikeTime;
         }
     }
-
     void SpecialActionWatcher(EnemyManager enemyManager) 
     {
         if (conditionList != null) 

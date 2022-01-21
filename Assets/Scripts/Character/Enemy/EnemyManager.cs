@@ -16,17 +16,9 @@ public class EnemyManager : CharacterManager
     public NavMeshAgent navMeshAgent;
     public State curState;
     public CharacterStats curTarget;
-    public CombatCooldownManager combatCooldownManager;
+    CombatCooldownManager combatCooldownManager;
+
     [SerializeField] ParryCollider parryCollider;
-
-    public enum enemyType {melee, range};
-    public enemyType curEnemyType;
-
-    //木桩
-    public bool isDummy;
-
-    //Boss
-    public bool isBoss;
 
     //CombatRelated
     public bool isEquipped;
@@ -37,10 +29,10 @@ public class EnemyManager : CharacterManager
     public float firstStrikeTimer;
     public float defaultFirstStrikeTime;
     public bool isDodging;
-    public float dodgeTimer;
+    float dodgeTimer;
 
     //待机模式
-    public enum IdleType {Stay, Patrol};
+    public enum IdleType {Stay, Patrol, Boss};
     public IdleType idleType;
     public List<Transform> patrolPos = new List<Transform>();
     public int curPatrolIndex = 0;
@@ -48,46 +40,28 @@ public class EnemyManager : CharacterManager
     public bool isPreformingAction;
     public bool isInteracting;
     public bool isImmuneAttacking;
-    public float rotationSpeed = 0.8f;
-    public float maxAttackRange = 3f;
-    public float moveSpeed=1f;
 
-    [Header("AI Setting")]
+    [Header("敌人主要参数")]
+    public float rotationSpeed = 0.8f;
+    public float moveSpeed = 1f;
+    [SerializeField] bool gizmoOn;
+    public float alertRadius = 15;
     public float detectionRadius = 10;
-    public float pursueMaxDistance = 12;
+    public float maxAttackRange = 3f;
+    public float pursueMaxDistance = 16;
 
     public float maxDetectionAngle = 70;
     public float minDetectionAngle = -70;
 
     public float curRecoveryTime = 0;
-    public bool canDoCombo;
-    public int comboCount;
-    public int maxComboCount;
 
-    //Range Objects
+    [Header("飞行道具参数, 当前一个角色最多可以有两种不同类型/属性的飞行道具")]
     public FlyingObj arrow;
     public Transform shootPos;
     public FlyingObj arrow2;
     public Transform shootPos2;
     public Transform target;
     public Transform target2;
-
-    //BossOnly(距离方位检测)
-    public int curTargetAngle; //0 - Front, 1 - Back, 2 - Flank
-    public int curTargetDistance; //0 - Short, 1 - Mid, 2 - Long
-
-    public float distanceFromTarget;
-    public float viewableAngle;
-
-    public bool shouted;
-    public float shoutTimer;
-    public float shoutRadius;
-    public LayerMask playerLayer; //在EnemyAnimator中使用
-
-    [SerializeField] float mediumRange = 6f;
-
-    //TimerController
-    public float timer1;
 
     private void Awake()
     {
@@ -96,6 +70,7 @@ public class EnemyManager : CharacterManager
         enemyStats = GetComponent<EnemyStats>();
         navMeshAgent = GetComponentInChildren<NavMeshAgent>();
         enemyRig = GetComponent<Rigidbody>();
+        combatCooldownManager = GetComponentInChildren<CombatCooldownManager>();
         navMeshAgent.enabled = false;
     }
 
@@ -109,20 +84,10 @@ public class EnemyManager : CharacterManager
                 patrolPos.Add(child);
             }
         }
-
-        if (curEnemyType == enemyType.range) //临时做给远程单位的
-        {
-            maxAttackRange = 15f;
-            detectionRadius = 18f;
-            pursueMaxDistance = 25f;
-        }
-
-        comboCount = maxComboCount;
     }
     private void Update()
     {
         HandleRecoveryTimer();
-        HandleAbilityTimer();
         HandleParryCollider();
         isRotatingWithRootMotion = enemyAnimatorManager.animator.GetBool("isRotatingWithRootMotion");
         canRotate = enemyAnimatorManager.animator.GetBool("canRotate");
@@ -167,21 +132,16 @@ public class EnemyManager : CharacterManager
     private void FixedUpdate()
     {
         HandleStateMachine();
-        GeneralTimerController();
         GeneralTimerManager();
         combatCooldownManager.CountDownAllTimer();
     }
     private void LateUpdate()
     {
         isInteracting = enemyAnimatorManager.animator.GetBool("isInteracting");
-        if (comboCount == 0) 
-        {
-            //enemyAnimatorManager.animator.SetBool("canCombo", false);
-        }
     }
     private void HandleStateMachine() //单位状态机管理
     {
-        if (curState != null && !isDead && !isDummy)
+        if (curState != null && !isDead)
         {
             State nextState = curState.Tick(this, enemyStats, enemyAnimatorManager);
 
@@ -195,56 +155,8 @@ public class EnemyManager : CharacterManager
     {
         curState = state;
     }
-    private void HandleTargetPositionCheck()  //Boss专用目标位置检测
-    {
-        if (curTarget) 
-        {
-            Vector3 targetDirection = curTarget.transform.position - transform.position;
-            distanceFromTarget = Vector3.Distance(curTarget.transform.position, transform.position);
-            float viewableAngle = Vector3.SignedAngle(targetDirection, transform.forward, Vector3.up);
-
-            //Angle Check
-            if (viewableAngle >= 0 && viewableAngle < 45)
-            {
-                curTargetAngle = 0;
-            }
-            else if (viewableAngle < 0 && viewableAngle > -45)
-            {
-                curTargetAngle = 0;
-            }
-            else if (viewableAngle >= 45 && viewableAngle < 110)
-            {
-                curTargetAngle = 2;
-            }
-            else if (viewableAngle <= -45 && viewableAngle > -110)
-            {
-                curTargetAngle = 2;
-            }
-            else if (viewableAngle >= 110 && viewableAngle <= 180)
-            {
-                curTargetAngle = 1;
-            }
-            else if (viewableAngle <= -110 && viewableAngle >= -180)
-            {
-                curTargetAngle = 1;
-            }
-
-            //Distance Check
-            if (distanceFromTarget > 0 && distanceFromTarget <= maxAttackRange)
-            {
-                curTargetDistance = 0;
-            }
-            else if (distanceFromTarget > maxAttackRange && distanceFromTarget <= mediumRange)
-            {
-                curTargetDistance = 1;
-            }
-            else if (distanceFromTarget > mediumRange)
-            {
-                curTargetDistance = 2;
-            }
-        }
+ 
        
-    }
     private void HandleRecoveryTimer() //攻击间隔
     {
         if (curRecoveryTime > 0) 
@@ -257,21 +169,6 @@ public class EnemyManager : CharacterManager
             if (curRecoveryTime <= 0) 
             {
                 isPreformingAction = false;
-            }
-        }
-    }
-    private void HandleAbilityTimer() 
-    {
-        if (shoutTimer > 0)
-        {
-            shoutTimer -= Time.deltaTime;
-        }
-
-        if (shouted)
-        {
-            if (shoutTimer <= 0)
-            {
-                shouted = false;
             }
         }
     }
@@ -316,20 +213,20 @@ public class EnemyManager : CharacterManager
             enemyAnimatorManager.PlayTargetAnimation("Counter", true, true);
         }
     }
-    void GeneralTimerController() 
+
+    private void OnDrawGizmosSelected()
     {
-        if (timer1 > 0)
+        if (gizmoOn) 
         {
-            timer1 -= Time.deltaTime;
+            //警戒范围
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireSphere(transform.position, alertRadius);
+            //察觉范围
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, detectionRadius);
+            //攻击范围
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, maxAttackRange);
         }
-        else 
-        {
-            timer1 = 0;
-        }
-    }
-    void OnDrawGizmosSelected()
-    {
-         Gizmos.color = Color.blue;
-         Gizmos.DrawWireSphere(transform.position, shoutRadius);
     }
 }

@@ -9,25 +9,14 @@ public class EnemyStats : CharacterStats
     IdleState idleState;
     EnemyAnimatorManager animatorManager;
 
-    //Boss
-    public HealthBar healthBar;
+    //Boss 血条
+    [SerializeField] HealthBar healthBar;
 
-    public int stage; // 0 - 1, 1-2...
-    public int phase2RequiredHealth;
-    public bool canBeDamaged;
-
-    public int staminaGauge;
-    public int curStamina;
-
-    bool phaseChanged;
-
-    public GameObject phaseVFX;
     private void Awake()
     {
         enemyManager = GetComponent<EnemyManager>();
         animator = GetComponentInChildren<Animator>();
         animatorManager = GetComponentInChildren<EnemyAnimatorManager>();
-        if(!enemyManager.isBoss) idleState = GetComponentInChildren<IdleState>();
     }
     private void Start()
     {
@@ -81,28 +70,5 @@ public class EnemyStats : CharacterStats
 
             enemyManager.curTarget = characterStats;
         }
-    }
-
-    void PhaseChange() 
-    {
-        //播放转阶段动画
-        phaseChanged = true;
-        animatorManager.PlayTargetAnimation("FallDown", true);
-        //无法被伤害
-        stage = 1;
-        enemyManager.maxComboCount += 1;
-        staminaGauge = staminaGauge / 2; //二阶段的耐力上限改变
-        canBeDamaged = false;
-        StartCoroutine(phaseChangingTimer());
-    }
-
-    IEnumerator phaseChangingTimer() 
-    {
-        yield return new WaitForSeconds(5f);
-        animator.SetTrigger("phaseChanged");
-        phaseVFX.SetActive(true);
-        enemyManager.shoutTimer = 12f;
-        enemyManager.shouted = true;
-        canBeDamaged = true;
     }
 }

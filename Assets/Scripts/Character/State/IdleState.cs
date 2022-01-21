@@ -7,6 +7,11 @@ public class IdleState : State
     public PursueState pursueState;
     public LayerMask detectionLayer;
 
+    [Header("待机专属")]
+    [SerializeField] float defaultRotatePeriod = 7f;
+    float rotateTimer;
+    float alertTimer; //之后还要加进度条
+
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
     {
         if (enemyManager.idleType == EnemyManager.IdleType.Stay) //站岗的敌人
@@ -29,12 +34,12 @@ public class IdleState : State
             else if (distanceFromTarget <= 0.5f)
             {
                 enemyAnimatorManager.animator.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);   //站着idle状态
-                //定期转向90°
-                //后续添加
-                //现在可以和Boss公用
             }
 
             HandleRotateTowardsTarger(enemyManager);
+
+            //定期转向90°
+            //后续添加
             enemyManager.navMeshAgent.transform.localPosition = Vector3.zero;
             enemyManager.navMeshAgent.transform.localRotation = Quaternion.identity;
         }
@@ -71,7 +76,56 @@ public class IdleState : State
             enemyManager.navMeshAgent.transform.localRotation = Quaternion.identity;
         }
 
-        #region 敌人的可侦测范围设置
+        #region 敌人的预警范围设置
+        Collider[] alertCollider = Physics.OverlapSphere(enemyManager.transform.position, enemyManager.alertRadius, detectionLayer);
+        for (int i = 0; i < alertCollider.Length; i++)
+        {
+            CharacterStats characterStats = alertCollider[i].transform.GetComponent<CharacterStats>();
+
+            if (characterStats != null)
+            {
+                //Check Character ID
+                Vector3 targetDirection = characterStats.transform.position - transform.position;
+                float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
+
+                if (viewableAngle > enemyManager.minDetectionAngle && viewableAngle < enemyManager.maxDetectionAngle)
+                {
+                    if (alertTimer < 5)
+                    {
+                        alertTimer += Time.deltaTime;
+                    }
+                    else
+                    {
+                        enemyManager.curTarget = characterStats;
+                    }
+                }
+                else
+                {
+                    if (alertTimer > 0)
+                    {
+                        alertTimer -= Time.deltaTime;
+                    }
+                    else
+                    {
+                        alertTimer = 0;
+                    }
+                }
+            }
+            else 
+            {
+                if (alertTimer > 0)
+                {
+                    alertTimer -= Time.deltaTime;
+                }
+                else
+                {
+                    alertTimer = 0;
+                }
+            }
+        }
+        #endregion
+
+        #region 敌人的直接侦测范围设置
         Collider[] colliders = Physics.OverlapSphere(enemyManager.transform.position, enemyManager.detectionRadius, detectionLayer);
         for (int i = 0; i < colliders.Length; i++)
         {
@@ -109,18 +163,41 @@ public class IdleState : State
     }
     public void HandleRotateTowardsTarger(EnemyManager enemyManager) //朝着设置的目标点进行移动
     {
+        //定期转向90°
+        //后续添加
+        Vector3 direction = enemyManager.patrolPos[enemyManager.curPatrolIndex].position - transform.position;
+        direction.y = 0;
+        direction.Normalize();
 
-            Vector3 direction = enemyManager.patrolPos[enemyManager.curPatrolIndex].position - transform.position;
-            direction.y = 0;
-            direction.Normalize();
+        if (direction == Vector3.zero)
+        {
+            direction = transform.forward;
+        }
 
-            if (direction == Vector3.zero)
+        if (enemyManager.idleType == EnemyManager.IdleType.Stay) //站岗类专属的原地旋转
+        {
+            if (!enemyManager.curTarget && alertTimer <= 0) //在非警戒状态才会转
             {
-                direction = transform.forward;
+                if (rotateTimer > 0)
+                {
+                    rotateTimer -= Time.deltaTime;
+                }
+                else
+                {
+                    enemyManager.GetComponentInChildren<EnemyAnimatorManager>().PlayTargetAnimationWithRootRotation("TurnRight90", true);
+                    rotateTimer = defaultRotatePeriod;
+                }
             }
-
+            else
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed);
+            }
+        }
+        else 
+        {
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed);
-        
+        }
     }
 }
