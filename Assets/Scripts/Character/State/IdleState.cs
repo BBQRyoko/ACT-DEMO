@@ -14,7 +14,7 @@ public class IdleState : State
 
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
     {
-        if (enemyManager.idleType == EnemyManager.IdleType.Stay) //站岗的敌人
+        if (enemyManager.idleType == EnemyManager.IdleType.Stay || enemyManager.idleType == EnemyManager.IdleType.Boss) //站岗的敌人
         {
             enemyAnimatorManager.animator.SetFloat("Horizontal", -2, 0.1f, Time.deltaTime);
 
@@ -200,4 +200,5 @@ public class IdleState : State
             enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed);
         }
     }
+
 }
