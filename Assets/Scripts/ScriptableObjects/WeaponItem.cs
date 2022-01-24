@@ -16,6 +16,9 @@ public class WeaponItem : Item
     [Header("特殊连招")]
     public Skill[] specialSkills;
 
+    [Header("处决")]
+    public Skill[] executionSkill;
+
     [Header("武器技能")]
     public Skill[] weaponAbilities;
 }

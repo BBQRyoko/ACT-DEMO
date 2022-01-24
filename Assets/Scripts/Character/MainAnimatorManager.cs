@@ -21,4 +21,14 @@ public class MainAnimatorManager : MonoBehaviour
         animator.SetBool("isInteracting", isInteracting);
         animator.CrossFade(targetAnimation, 0.2f);
     }
+
+    private void ExecutionTriggerOn() 
+    {
+        transform.GetComponentInParent<Collider>().isTrigger = true;
+    }
+
+    private void ExecutionTriggerOff()
+    {
+        transform.GetComponentInParent<Collider>().isTrigger = false;
+    }
 }

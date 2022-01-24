@@ -370,11 +370,11 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _CamFarPlaneDist: 11432.541
+    - _CamFarPlaneDist: 26299.742
     - _CellSizeX: 1
     - _CellSizeZ: 1
     m_Colors:
-    - _CamWorldPos: {r: 7.465617, g: 8.177918, b: -5.193409, a: 0}
+    - _CamWorldPos: {r: -15.05827, g: 19.873638, b: 17.03361, a: 0}
     - _CellOffset: {r: 0, g: 0, b: 0, a: 0}
     - _LineColor: {r: 0, g: 0, b: 0, a: 1}
     - _PlaneColor: {r: 1, g: 1, b: 1, a: 0}
@@ -889,6 +889,25 @@ MonoBehaviour:
       _indentContent: 0
       _surroundWithBox: 0
       _viewData: {fileID: 0}
+--- !u!114 &45921959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77d29ee4f4417784faa4dc20e5b669a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _view:
+    _isVisible: 1
+    _toggleVisibilityBeforeRender: 0
+    _visibilityToggleLabel: 
+    _visibilityToggleIndent: 0
+    _indentContent: 0
+    _surroundWithBox: 0
 --- !u!114 &48199650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13399,15 +13418,23 @@ MonoBehaviour:
     _pivotPointCollection:
       _indexOfActivePoint: 0
       _pivotPoints:
-      - {x: 0, y: 0, z: 0}
+      - {x: 34, y: 0, z: 21}
+      - {x: 32.483135, y: 0, z: 14.931356}
+      - {x: 35.516865, y: 0, z: 14.931356}
+      - {x: 35.516865, y: 0, z: 27.068644}
+      - {x: 32.483135, y: 0, z: 27.068644}
     _unprojectedPivotPoints:
-    - {x: 0, y: 0, z: 0}
-    _area: 0
+    - {x: 34, y: 0, z: 21}
+    - {x: 32.483135, y: 0, z: 14.931356}
+    - {x: 35.516865, y: 0, z: 14.931356}
+    - {x: 35.516865, y: 0, z: 27.068644}
+    - {x: 32.483135, y: 0, z: 27.068644}
+    _area: 36.821247
   _guidePivotPointsRenderSettings: {fileID: 1832218769}
   _objectVertexSnapSessionRenderSettings: {fileID: 1128924337}
   _settings: {fileID: 322191482}
   _persistentObjectPlacementGuideData:
-    _lastUsedWorldPosition: {x: 0, y: 0, z: 0}
+    _lastUsedWorldPosition: {x: 34, y: 4.07816e-15, z: 21.834288}
   _pathObjectPlacement:
     _objectPlacementPath:
       _settings: {fileID: 1245656980}
@@ -13499,16 +13526,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderSettings: {fileID: 788933277}
-  _cellSizeSettings: {fileID: 0}
+  _cellSizeSettings: {fileID: 581095054}
   _dimensionSettings:
     _dimensionType: 1
     _finiteDimensionSettings:
       _xAxisCellIndexRange:
-        _min: 10
-        _max: 10
+        _min: -114
+        _max: 114
       _zAxisCellIndexRange:
-        _min: 10
-        _max: 10
+        _min: -114
+        _max: 114
   _renderableCoordinateSystem:
     _localAxes:
     - {x: 1, y: 0, z: 0}
@@ -13518,7 +13545,7 @@ MonoBehaviour:
     - {x: 0, y: 0, z: 1}
     - {x: -0, y: -0, z: -1}
     _transformMatrix:
-      _translation: {x: 0, y: 0, z: 0}
+      _translation: {x: -0.10025406, y: 5.0977e-16, z: -0.10025406}
       _rotation: {x: 0, y: 0, z: 0, w: 1}
       _scale: {x: 1, y: 1, z: 1}
     _renderSettings: {fileID: 656809019}
@@ -14070,6 +14097,29 @@ MonoBehaviour:
     _visibilityToggleIndent: 0
     _indentContent: 0
     _surroundWithBox: 0
+--- !u!114 &581095054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44fa35add9de71e408f329d474da7cd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cellSizeX: 0.20050655
+  _cellSizeZ: 0.20050655
+  _view:
+    _isVisible: 1
+    _toggleVisibilityBeforeRender: 0
+    _visibilityToggleLabel: 
+    _visibilityToggleIndent: 0
+    _indentContent: 0
+    _surroundWithBox: 0
+    _xAxisName: X
+    _zAxisName: Z
 --- !u!114 &584142017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20808,7 +20858,7 @@ MonoBehaviour:
   _enableObjectToObjectSnap: 0
   _objectToObjectSnapEpsilon: 0.5
   _xzGridYOffsetStep: 1
-  _objectColliderSnapSurfaceGridSettings: {fileID: 0}
+  _objectColliderSnapSurfaceGridSettings: {fileID: 2114806801}
   _view:
     _isVisible: 1
     _toggleVisibilityBeforeRender: 1
@@ -22080,7 +22130,7 @@ MonoBehaviour:
     - _unityPrefab: {fileID: 1210462115111494, guid: 10b1d697ddf0bd44aaac5c25840cf485, type: 3}
       _initialWorldRotation: {x: 0, y: -0, z: -0, w: 1}
       _initialWorldScale: {x: 1, y: 1, z: 1}
-      _instantiationSettings: {fileID: 0}
+      _instantiationSettings: {fileID: 45921959}
       _activationSettings: {fileID: 1551666398}
       _tagAssociations: {fileID: 1214456805}
       _name: SM_Veh_SandBoat_02
@@ -22093,7 +22143,7 @@ MonoBehaviour:
         _visibilityToggleIndent: 0
         _indentContent: 0
         _surroundWithBox: 1
-    _indexOfMarkedEntity: -1
+    _indexOfMarkedEntity: 1
   _prefabFilter: {fileID: 425213143}
   _pathFolderNames:
   - Assets
@@ -24369,7 +24419,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _associatedTags:
   - {fileID: 576550034}
-  _prefabTagFilter: {fileID: 0}
+  _prefabTagFilter: {fileID: 1993558550}
   _view:
     _isVisible: 1
     _toggleVisibilityBeforeRender: 1
@@ -24384,7 +24434,7 @@ MonoBehaviour:
       _visibilityToggleIndent: 0
       _indentContent: 0
       _surroundWithBox: 0
-      _viewData: {fileID: 0}
+      _viewData: {fileID: 1488419238}
 --- !u!114 &1215264570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29928,6 +29978,26 @@ MonoBehaviour:
     _visibilityToggleIndent: 0
     _indentContent: 0
     _surroundWithBox: 0
+--- !u!114 &1362831383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6d04e599fddc1a42acf83f8e8cd8530, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _nameFilter: 
+  _view:
+    _isVisible: 1
+    _toggleVisibilityBeforeRender: 0
+    _visibilityToggleLabel: 
+    _visibilityToggleIndent: 0
+    _indentContent: 0
+    _surroundWithBox: 0
 --- !u!114 &1366449362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31769,6 +31839,23 @@ MonoBehaviour:
       _indentContent: 0
       _surroundWithBox: 0
       _viewData: {fileID: 0}
+--- !u!114 &1488419238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a54a49fa16d59f94b8e69c83aa4f51b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _namesOfSelectedTags:
+    _serializedList:
+    - Vehicles
+  _hasSelectionChanged: 0
+  _prefabTagScrollPosition: {x: 0, y: 0}
 --- !u!114 &1491237460
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34968,11 +35055,11 @@ MonoBehaviour:
       _surroundWithBox: 1
   _xzSnapGrid: {fileID: 1371313062}
   _objectSnapSurface:
-    _isValid: 0
+    _isValid: 1
     _objectBoxSnapSurfaceGrid:
       _grid: {fileID: 530076289}
     _surfaceQuad:
-      _xzSize: {x: 0, y: 0}
+      _xzSize: {x: 1, y: 1}
       _coordinateSystem:
         _localAxes:
         - {x: 1, y: 0, z: 0}
@@ -34982,11 +35069,11 @@ MonoBehaviour:
         - {x: 0, y: 0, z: 1}
         - {x: -0, y: -0, z: -1}
         _transformMatrix:
-          _translation: {x: 0, y: 0, z: 0}
+          _translation: {x: 33.5, y: 0, z: 21.5}
           _rotation: {x: 0, y: 0, z: 0, w: 1}
           _scale: {x: 1, y: 1, z: 1}
-    _mouseCursorPickPoint: {x: 0, y: 0, z: 0}
-    _type: 0
+    _mouseCursorPickPoint: {x: 33.83363, y: 0.0000009536743, z: 21.178013}
+    _type: 1
     _surfaceObject: {fileID: 0}
   _wasInitialized: 1
 --- !u!114 &1698167323
@@ -39749,6 +39836,26 @@ MonoBehaviour:
       _indentContent: 0
       _surroundWithBox: 0
       _viewData: {fileID: 0}
+--- !u!114 &1993558550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb7dddb8030b07e45ab418e26eaafa46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _nameFilter: {fileID: 1362831383}
+  _view:
+    _isVisible: 1
+    _toggleVisibilityBeforeRender: 0
+    _visibilityToggleLabel: 
+    _visibilityToggleIndent: 0
+    _indentContent: 0
+    _surroundWithBox: 1
 --- !u!114 &1994587341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41451,6 +41558,26 @@ MonoBehaviour:
     _isVisible: 0
     _toggleVisibilityBeforeRender: 1
     _visibilityToggleLabel: Z Axis Settings
+    _visibilityToggleIndent: 1
+    _indentContent: 1
+    _surroundWithBox: 0
+--- !u!114 &2114806801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ff1ca95cd0235e4191088cb1414547b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _desiredCellSize: 0.2
+  _view:
+    _isVisible: 1
+    _toggleVisibilityBeforeRender: 1
+    _visibilityToggleLabel: Object Surface Grid Settings
     _visibilityToggleIndent: 1
     _indentContent: 1
     _surroundWithBox: 0

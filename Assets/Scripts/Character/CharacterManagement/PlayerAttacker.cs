@@ -11,6 +11,10 @@ public class PlayerAttacker : MonoBehaviour
     public Sample_VFX sample_VFX_R;
     public Sample_VFX sample_VFX_S;
 
+    //处决
+    public Collider[] colliders;
+    public EnemyManager executionTarget;
+    [SerializeField] Vector3 executionOffset;
 
     //普通攻击
     public int comboCount;
@@ -32,30 +36,44 @@ public class PlayerAttacker : MonoBehaviour
         AttackComboTimer();
         ChargingTimer();
         HoldingStatus();
+        ExecutionHandler();
     }
     public void HandleRegularAttack(WeaponItem weapon) //左键普攻
     {
-        playerLocmotion.HandleRotateTowardsTarger();
         //使用指定武器信息中的普通攻击
-        if (!playerManager.cantBeInterrupted && playerManager.isGround) 
+        if (!playerManager.cantBeInterrupted && playerManager.isGround && !playerManager.isGettingDamage) 
         {
+            playerLocmotion.HandleRotateTowardsTarger();
             playerManager.cantBeInterrupted = true;
+            Debug.Log(playerManager.cantBeInterrupted);
             animatorManager.animator.SetBool("isAttacking", true);
             attackTimer = internalDuration;
-            comboCount++;
-            if (comboCount > 3)
+
+            //可处决
+            if (executionTarget)
             {
-                comboCount = 1;
+                animatorManager.PlayTargetAnimation(weapon.executionSkill[0].skillName, true, true); //处决
+                executionTarget.HandleExecuted(weapon.executionSkill[1].skillName);
+                //sample_VFX_R.curVFX_List[comboCount - 1].Play();
             }
-            //播放指定的攻击动画
-            animatorManager.PlayTargetAnimation(weapon.regularSkills[comboCount-1].skillName, true, true);
-            sample_VFX_R.curVFX_List[comboCount - 1].Play();
+            //普通攻击
+            else 
+            {
+                comboCount++;
+                if (comboCount > 3)
+                {
+                    comboCount = 1;
+                }
+                //播放指定的攻击动画
+                animatorManager.PlayTargetAnimation(weapon.regularSkills[comboCount - 1].skillName, true, true);
+                sample_VFX_R.curVFX_List[comboCount - 1].Play();
+            }
         }
     }
     public void HandleSpecialAttack(WeaponItem weapon) //右键特殊攻击
     {
         playerLocmotion.HandleRotateTowardsTarger();
-        if (!playerManager.cantBeInterrupted && playerManager.isGround)
+        if (!playerManager.cantBeInterrupted && playerManager.isGround && !playerManager.isGettingDamage)
         {
             playerManager.cantBeInterrupted = true;
             animatorManager.animator.SetBool("isAttacking", true);
@@ -156,5 +174,31 @@ public class PlayerAttacker : MonoBehaviour
             playerManager.cantBeInterrupted = false;
             //animatorManager.PlayTargetAnimation("WeaponAbility_01(End)", true, true);
         }
+    }
+
+    void ExecutionHandler() 
+    {
+        colliders = Physics.OverlapSphere(transform.position + executionOffset, 4f);
+
+        if (colliders != null)
+        {
+            foreach (Collider collider in colliders) 
+            {
+                if (collider.GetComponent<EnemyManager>() != null) 
+                {
+                    EnemyManager enemyManager = collider.GetComponent<EnemyManager>();
+                    if (enemyManager.isWeak)
+                    {
+                        executionTarget = enemyManager;
+                    }
+                }
+            }
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position + executionOffset, 4f);
     }
 }

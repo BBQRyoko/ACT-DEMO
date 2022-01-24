@@ -15,6 +15,9 @@ public class RestBool : StateMachineBehaviour
     public string isRotatingWithRootMotion = "isRotatingWithRootMotion";
     public bool isRotatingWithRootMotionStatus = false;
 
+    public string isGettingDamageBool;
+    public bool isGettingDamageStatus;
+
     public string canCombo;
     public bool canComboStatus;
 
@@ -24,6 +27,7 @@ public class RestBool : StateMachineBehaviour
         animator.SetBool(isInteractingBool, isInteractingStatus);
         animator.SetBool(isUsingRootMotionBool, isUsingRootMotionStatus);
         animator.SetBool(isRotatingWithRootMotion, isRotatingWithRootMotionStatus);
+        animator.SetBool(isGettingDamageBool, isGettingDamageStatus);
         animator.SetBool(canCombo, canComboStatus);
         animator.speed = 1;
 

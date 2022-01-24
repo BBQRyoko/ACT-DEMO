@@ -29,6 +29,7 @@ public class PlayerManager : CharacterManager
     public bool isHitting;
     public bool isAttacking;
     public bool cantBeInterrupted;
+    public bool isGettingDamage;
     public bool hitRecover;
     public bool isStunned;
     public bool damageAvoid;
@@ -63,13 +64,6 @@ public class PlayerManager : CharacterManager
         playerStats.StaminaRegen();
         CheckForInteractableObject();
         PerfectTimer();
-
-        //Temp
-        if (!isInteracting)
-        {
-            cantBeInterrupted = false;
-        }
-
     }
     private void FixedUpdate()
     {
@@ -83,7 +77,8 @@ public class PlayerManager : CharacterManager
         isUsingRootMotion = animator.GetBool("isUsingRootMotion");
         isCharging = animator.GetBool("isCharging");
         isHolding = animator.GetBool("isHolding");
-        animator.SetBool("cantBeInterrupted", cantBeInterrupted);
+        isWeak = animator.GetBool("isWeak");
+        isGettingDamage = animator.GetBool("isGettingDamage");
         animator.SetBool("isStunned", isStunned);
         animator.SetBool("isGround", isGround); 
         animator.SetBool("isFalling", isFalling);

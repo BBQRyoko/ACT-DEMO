@@ -12,10 +12,6 @@ public class PlayerStats : CharacterStats
 
     AnimatorManager animatorManager;
 
-    public float currStamina;
-    [SerializeField] float maxStamina = 100;
-    [SerializeField] float staminaRegen = 5;
-
     private void Awake()
     {
         inputManager = GetComponent<InputManager>();
@@ -93,9 +89,9 @@ public class PlayerStats : CharacterStats
         staminaBar.SetCurrentStamina(currStamina);
     }
 
-    public void StaminaRegen() 
+    public void StaminaRegen()
     {
-        if (!playerManager.isInteracting && !playerManager.isSprinting &&currStamina < maxStamina) 
+        if (!playerManager.isInteracting && !playerManager.isSprinting && currStamina < maxStamina)
         {
             currStamina = currStamina + staminaRegen * Time.deltaTime;
         }

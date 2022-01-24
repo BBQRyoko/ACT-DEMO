@@ -1,7 +1,7 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!65 &6344704719472595021
-BoxCollider:
+--- !u!136 &7702406605262559873
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -10,9 +10,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.21, y: 1.0207641, z: 0.2641822}
-  m_Center: {x: 0.0008109496, y: 0.7602457, z: -0.0025266623}
+  m_Radius: 0.2
+  m_Height: 1.1109035
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.7909054, z: -0.032571357}
 --- !u!114 &8595983402756454766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27,6 +28,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyManager: {fileID: 0}
   playerManager: {fileID: 0}
+  attackAudio: {fileID: 0}
+  sample_SFX: {fileID: 0}
   duration: 6
 --- !u!1 &6640638428303676973
 GameObject:

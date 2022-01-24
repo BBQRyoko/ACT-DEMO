@@ -128,6 +128,12 @@ public class EnemyManager : CharacterManager
                 firstStrikeTimer = 0;
             }
         }
+
+        //处决状态Timer
+        if (isWeak) 
+        {
+            
+        }
     }
     private void FixedUpdate()
     {
@@ -138,6 +144,7 @@ public class EnemyManager : CharacterManager
     private void LateUpdate()
     {
         isInteracting = enemyAnimatorManager.animator.GetBool("isInteracting");
+        isWeak = enemyAnimatorManager.animator.GetBool("isWeak");
     }
     private void HandleStateMachine() //单位状态机管理
     {
@@ -201,18 +208,40 @@ public class EnemyManager : CharacterManager
             }
         }
     }
-    public void HandleParryingCheck() 
+    public void HandleParryingCheck(float staminaDamage) 
     {
-        if (parryCollider.parryTimes < 100)
+        if (staminaDamage < enemyStats.currStamina)
         {
             enemyAnimatorManager.PlayTargetAnimation("Block_1", true, true);
-            parryCollider.parryTimes += 1;
         }
-        else 
+        else if(staminaDamage >= enemyStats.currStamina)
         {
-            enemyAnimatorManager.PlayTargetAnimation("Counter", true, true);
+            enemyAnimatorManager.PlayTargetAnimation("ParryBreak", true, true);
         }
+
+        enemyStats.currStamina -= staminaDamage;
+
+        if (enemyStats.currStamina <= 0) 
+        {
+            enemyStats.currStamina = 0;
+        }
+
+        //if (parryCollider.parryTimes < 100)
+        //{
+        //    enemyAnimatorManager.PlayTargetAnimation("Block_1", true, true);
+        //    parryCollider.parryTimes += 1;
+        //}
+        //else 
+        //{
+        //    enemyAnimatorManager.PlayTargetAnimation("Counter", true, true);
+        //}
     }
+
+    public void HandleExecuted(string skillName) 
+    {
+        enemyAnimatorManager.PlayTargetAnimation(skillName, true, true);
+    }
+
 
     private void OnDrawGizmosSelected()
     {
@@ -229,4 +258,5 @@ public class EnemyManager : CharacterManager
             Gizmos.DrawWireSphere(transform.position, maxAttackRange);
         }
     }
+
 }

@@ -15,8 +15,9 @@ public class CombatStanceState : State
     public bool specialConditionTriggered;
 
     bool canCounterAttack;
-    bool checkWhileWalking;
-    public float distanceFromTarget;
+    public float walkingTimer;
+    [SerializeField] bool notFirstWalking;
+    float distanceFromTarget;
     public bool randomDestinationSet = false;
     float verticalMovementVaule = 0;
     float horizontalMovementVaule = 0;
@@ -63,50 +64,21 @@ public class CombatStanceState : State
             DecideCirclingAction(enemyAnimatorManager);
         }
 
-        //之后写成function 踱步变向
-        if (checkWhileWalking)
+        if (walkingTimer > 0)
         {
-            if (verticalMovementVaule < 0f)
-            {
-                if (distanceFromTarget > 3f)
-                {
-                    verticalMovementVaule = 0f;
-                    GetNewAttack(enemyManager);
-                    checkWhileWalking = false;
-                }
-            }
-            else if (verticalMovementVaule > 0f)
-            {
-                if (distanceFromTarget <= 7f)
-                {
-                    verticalMovementVaule = 0f;
-                    GetNewAttack(enemyManager);
-                    checkWhileWalking = false;
-                }
-            }
-            else if (verticalMovementVaule == 0f) 
-            {
-                if (distanceFromTarget > 7f)
-                {
-                    verticalMovementVaule = 0.5f;
-                    GetNewAttack(enemyManager);
-                    checkWhileWalking = false;
-                }
-                else if(distanceFromTarget<=3f)
-                {
-                    verticalMovementVaule = -0.5f;
-                    GetNewAttack(enemyManager);
-                    checkWhileWalking = false;
-                }
-            }
+            walkingTimer -= Time.fixedDeltaTime;
+        }
+        else 
+        {
+            WalkAroundTarget(enemyAnimatorManager);
         }
 
         HandleRotateTowardsTarger(enemyManager); //保持面对目标的朝向
 
-        if (enemyManager.curRecoveryTime <= 0 && attackState.curAttack != null) //当踱步阶段结束, 且当前无攻击，进入攻击状态
+        if (enemyManager.curRecoveryTime <= 0 && attackState.curAttack != null && !enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted) //当踱步阶段结束, 当前无攻击，且玩家在非正在攻击状态时，进入攻击状态
         {
-            checkWhileWalking = false;
             randomDestinationSet = false;
+            notFirstWalking = false;
             return attackState; 
         }
         else if(enemyManager.curRecoveryTime <= 0.5f)
@@ -138,31 +110,102 @@ public class CombatStanceState : State
     }
     private void WalkAroundTarget(EnemyAnimatorManager enemyAnimator)
     {
-        checkWhileWalking = true;
+        walkingTimer = 1.5f;
 
-        //需要精修距离与最大攻击距离间的关系
-        if (distanceFromTarget >= 0 && distanceFromTarget <= 3 * enemyAnimator.GetComponentInParent<EnemyManager>().maxAttackRange / 4)
+        if (!notFirstWalking)
         {
-            verticalMovementVaule = -0.5f;
+            //需要精修距离与最大攻击距离间的关系
+            if (distanceFromTarget >= 0 && distanceFromTarget <= 3)
+            {
+                verticalMovementVaule = -0.5f;
+            }
+            else if (distanceFromTarget > 3 && distanceFromTarget < 7f)
+            {
+                verticalMovementVaule = 0;
+            }
+            else if (distanceFromTarget > 7f)
+            {
+                verticalMovementVaule = 0.5f;
+            }
+
+            horizontalMovementVaule = Random.Range(-1, 1);
+            if (horizontalMovementVaule <= 1 && horizontalMovementVaule >= 0)
+            {
+                horizontalMovementVaule = 0.5f;
+            }
+            else if (horizontalMovementVaule >= -1 && horizontalMovementVaule < 0)
+            {
+                horizontalMovementVaule = -0.5f;
+            }
+
+            notFirstWalking = true;
         }
-        else if (distanceFromTarget > 3 * enemyAnimator.GetComponentInParent<EnemyManager>().maxAttackRange / 4 && distanceFromTarget < enemyAnimator.GetComponentInParent<EnemyManager>().maxAttackRange)
+        else 
         {
-            verticalMovementVaule = 0;
-        }
-        else if (distanceFromTarget > enemyAnimator.GetComponentInParent<EnemyManager>().maxAttackRange)
-        {
-            verticalMovementVaule = 0.5f;
+            if (verticalMovementVaule < 0f)
+            {
+                if (distanceFromTarget > 3f)
+                {
+                    verticalMovementVaule = 0f;
+                }
+            }
+            else if (verticalMovementVaule > 0f)
+            {
+                if (distanceFromTarget <= 7f)
+                {
+                    verticalMovementVaule = 0f;
+                }
+            }
+            else if (verticalMovementVaule == 0f)
+            {
+                if (distanceFromTarget > 3f)
+                {
+                    verticalMovementVaule = 0.5f;
+                }
+                else if (distanceFromTarget <= 3f)
+                {
+                    verticalMovementVaule = -0.5f;
+                }
+            }
+
+            horizontalMovementVaule = Random.Range(-1, 1);
+            if (horizontalMovementVaule <= 1 && horizontalMovementVaule >= 0)
+            {
+                horizontalMovementVaule = 0.5f;
+            }
+            else if (horizontalMovementVaule >= -1 && horizontalMovementVaule < 0)
+            {
+                horizontalMovementVaule = -0.5f;
+            }
         }
 
-        horizontalMovementVaule = Random.Range(-1, 1);
-        if (horizontalMovementVaule <= 1 && horizontalMovementVaule >= 0)
-        {
-            horizontalMovementVaule = 0.5f;
-        }
-        else if (horizontalMovementVaule >= -1 && horizontalMovementVaule < 0)
-        {
-            horizontalMovementVaule = -0.5f;
-        }
+        ////需要精修距离与最大攻击距离间的关系
+        //if (distanceFromTarget >= 0 && distanceFromTarget <= 3 * enemyAnimator.GetComponentInParent<EnemyManager>().maxAttackRange / 4)
+        //{
+        //    verticalMovementVaule = -0.5f;
+        //}
+        //else if (distanceFromTarget > 3 * enemyAnimator.GetComponentInParent<EnemyManager>().maxAttackRange / 4 && distanceFromTarget < enemyAnimator.GetComponentInParent<EnemyManager>().maxAttackRange)
+        //{
+        //    verticalMovementVaule = 0;
+        //}
+        //else if (distanceFromTarget > enemyAnimator.GetComponentInParent<EnemyManager>().maxAttackRange)
+        //{
+        //    verticalMovementVaule = 0.5f;
+        //}
+
+        //horizontalMovementVaule = Random.Range(-1, 1);
+        //if (horizontalMovementVaule <= 1 && horizontalMovementVaule > 0.25)
+        //{
+        //    horizontalMovementVaule = 0.5f;
+        //}
+        //else if (horizontalMovementVaule >= -1 && horizontalMovementVaule < -0.25)
+        //{
+        //    horizontalMovementVaule = -0.5f;
+        //}
+        //else if (horizontalMovementVaule >= -0.25 && horizontalMovementVaule <= 0.25)
+        //{
+        //    horizontalMovementVaule = 0f;
+        //}
     }
     private void GetNewAttack(EnemyManager enemyManager) //根据距离和位置主动决策攻击(会进行权重测试)
     {

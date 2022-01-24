@@ -9,5 +9,6 @@ public class CharacterManager : MonoBehaviour
     public bool isRotatingWithRootMotion;
     public bool canRotate;
 
+    public bool isWeak;
     public bool isDead;
 }

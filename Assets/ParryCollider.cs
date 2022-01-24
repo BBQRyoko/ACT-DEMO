@@ -6,6 +6,7 @@ public class ParryCollider : MonoBehaviour
 {
     PlayerManager playerManager;
     Collider blockCollider;
+
     public bool isPerfect;
     [SerializeField] float perfectTimer=0.4f;
     [SerializeField] float countDownTimer;

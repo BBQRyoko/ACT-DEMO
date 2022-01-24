@@ -21,14 +21,15 @@ public class EnemyStats : CharacterStats
     private void Start()
     {
         currHealth = maxHealth;
+        currStamina = maxStamina;
         if (healthBar) 
         {
             healthBar.SetMaxHealth(maxHealth);
         }
     }
-
     private void Update()
     {
+        StaminaRegen();
     }
     public void TakeDamage(int damage, Vector3 collisionDir, CharacterStats characterStats = null)
     {
@@ -66,9 +67,15 @@ public class EnemyStats : CharacterStats
                     animatorManager.PlayTargetAnimation("Hit_F", true, true);
                 }
             }
-
-
             enemyManager.curTarget = characterStats;
+        }
+    }
+
+    public void StaminaRegen()
+    {
+        if (!enemyManager.isInteracting && currStamina < maxStamina)
+        {
+            currStamina = currStamina + staminaRegen * Time.deltaTime;
         }
     }
 }

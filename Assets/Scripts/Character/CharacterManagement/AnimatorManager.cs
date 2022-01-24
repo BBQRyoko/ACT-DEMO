@@ -131,6 +131,7 @@ public class AnimatorManager : MainAnimatorManager
             }
         }
     }
+
     //Animator Events Editor  
     private void AnimatorPlaySpeed(float playRate) //控制动画器的播放速度
     {

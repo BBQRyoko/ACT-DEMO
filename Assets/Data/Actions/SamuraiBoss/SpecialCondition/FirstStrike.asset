@@ -25,5 +25,6 @@ MonoBehaviour:
   condition: 5
   minRange: 0
   maxRange: 0
+  requiredRecoveryTime: 0
   canDodge: 0
   firstStrikeDistance: 6
