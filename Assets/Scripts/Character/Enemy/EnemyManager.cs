@@ -22,8 +22,11 @@ public class EnemyManager : CharacterManager
 
     //CombatRelated
     public bool isEquipped;
+    public bool canDefend;
+    public float defensiveRatio; 
     public bool isParrying;
     public bool isBlocking;
+    public bool isDamaged;
 
     public bool isFirstStrike;
     public float firstStrikeTimer;
@@ -91,7 +94,6 @@ public class EnemyManager : CharacterManager
         HandleParryCollider();
         isRotatingWithRootMotion = enemyAnimatorManager.animator.GetBool("isRotatingWithRootMotion");
         canRotate = enemyAnimatorManager.animator.GetBool("canRotate");
-        isBlocking = enemyAnimatorManager.animator.GetBool("isBlocking");
 
         if (isDead) 
         {
@@ -139,6 +141,7 @@ public class EnemyManager : CharacterManager
     {
         HandleStateMachine();
         GeneralTimerManager();
+        DefendCheck();
         combatCooldownManager.CountDownAllTimer();
     }
     private void LateUpdate()
@@ -194,6 +197,20 @@ public class EnemyManager : CharacterManager
         obj.StartFlyingObj(target2);
     }
 
+    void DefendCheck() 
+    {
+        float horizontalMovementVaule = enemyAnimatorManager.animator.GetFloat("Horizontal");
+
+        if (horizontalMovementVaule <= 2.5f && horizontalMovementVaule >= 1)
+        {
+            isParrying = true;
+        }
+        else 
+        {
+            isParrying = false;
+        }
+    }
+
     void HandleParryCollider() 
     {
         if (parryCollider) 
@@ -213,6 +230,7 @@ public class EnemyManager : CharacterManager
         if (staminaDamage < enemyStats.currStamina)
         {
             enemyAnimatorManager.PlayTargetAnimation("Block_1", true, true);
+            isBlocking = true;
         }
         else if(staminaDamage >= enemyStats.currStamina)
         {
@@ -220,21 +238,10 @@ public class EnemyManager : CharacterManager
         }
 
         enemyStats.currStamina -= staminaDamage;
-
         if (enemyStats.currStamina <= 0) 
         {
             enemyStats.currStamina = 0;
         }
-
-        //if (parryCollider.parryTimes < 100)
-        //{
-        //    enemyAnimatorManager.PlayTargetAnimation("Block_1", true, true);
-        //    parryCollider.parryTimes += 1;
-        //}
-        //else 
-        //{
-        //    enemyAnimatorManager.PlayTargetAnimation("Counter", true, true);
-        //}
     }
 
     public void HandleExecuted(string skillName) 

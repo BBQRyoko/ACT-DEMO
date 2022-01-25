@@ -66,6 +66,7 @@ public class EnemyStats : CharacterStats
                 {
                     animatorManager.PlayTargetAnimation("Hit_F", true, true);
                 }
+                enemyManager.isDamaged = true;
             }
             enemyManager.curTarget = characterStats;
         }

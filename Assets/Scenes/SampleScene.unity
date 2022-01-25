@@ -7468,14 +7468,26 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6548037998201386454, guid: 4e0c14b3848b7c7478b409436bc3f124, type: 3}
+      propertyPath: m_MinSpeed
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8567083513710098916, guid: 4e0c14b3848b7c7478b409436bc3f124, type: 3}
       propertyPath: maxStamina
-      value: 100
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 8567083513710098919, guid: 4e0c14b3848b7c7478b409436bc3f124, type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 1403256870}
+    - target: {fileID: 8567083513710098919, guid: 4e0c14b3848b7c7478b409436bc3f124, type: 3}
+      propertyPath: canDefend
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8567083513710098919, guid: 4e0c14b3848b7c7478b409436bc3f124, type: 3}
+      propertyPath: defensiveRatio
+      value: 1.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e0c14b3848b7c7478b409436bc3f124, type: 3}
 --- !u!1001 &1302349994
@@ -12199,7 +12211,7 @@ PrefabInstance:
       objectReference: {fileID: 1337373198}
     - target: {fileID: 3287524700922566930, guid: efd7e76efc396a84bb4727b57e96a491, type: 3}
       propertyPath: weaponWeightRatio
-      value: 2.5
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 5049088434509090377, guid: efd7e76efc396a84bb4727b57e96a491, type: 3}
       propertyPath: m_IsActive
@@ -12285,6 +12297,10 @@ PrefabInstance:
       propertyPath: healthBar
       value: 
       objectReference: {fileID: 276247684}
+    - target: {fileID: 8863336871239422558, guid: efd7e76efc396a84bb4727b57e96a491, type: 3}
+      propertyPath: maxHealth
+      value: 1000
+      objectReference: {fileID: 0}
     - target: {fileID: 8863336871239422558, guid: efd7e76efc396a84bb4727b57e96a491, type: 3}
       propertyPath: maxStamina
       value: 150

@@ -15,7 +15,7 @@ MonoBehaviour:
   actionAnimation: RegularAttack03
   isSpecial: 0
   attakPriority: 3
-  recoveryTime: 4
+  recoveryTime: 6
   independtCooldown: 15
   maxAttackAngle: 90
   minAttackAngle: -90

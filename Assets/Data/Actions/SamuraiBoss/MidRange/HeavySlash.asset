@@ -15,7 +15,7 @@ MonoBehaviour:
   actionAnimation: HeavySlash
   isSpecial: 0
   attakPriority: 5
-  recoveryTime: 4.5
+  recoveryTime: 5
   independtCooldown: 8
   maxAttackAngle: 90
   minAttackAngle: -90
