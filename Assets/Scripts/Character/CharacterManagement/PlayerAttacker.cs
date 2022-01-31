@@ -45,7 +45,6 @@ public class PlayerAttacker : MonoBehaviour
         {
             playerLocmotion.HandleRotateTowardsTarger();
             playerManager.cantBeInterrupted = true;
-            Debug.Log(playerManager.cantBeInterrupted);
             animatorManager.animator.SetBool("isAttacking", true);
             attackTimer = internalDuration;
 
@@ -97,7 +96,6 @@ public class PlayerAttacker : MonoBehaviour
     public void HandleWeaponAbility(WeaponItem weapon) //武器技能
     {
         playerLocmotion.HandleRotateTowardsTarger();
-
         if (!playerManager.cantBeInterrupted && playerManager.isGround && !playerManager.isAttacking )  
         {
             playerManager.cantBeInterrupted = true;

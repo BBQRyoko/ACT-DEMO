@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Attack_01
   m_EditorClassIdentifier: 
   actionAnimation: Combo_01
-  attackScore: 5
-  recoveryTime: 2.5
+  isSpecial: 0
+  attakPriority: 3
+  recoveryTime: 5
   independtCooldown: 3
   maxAttackAngle: 45
   minAttackAngle: -45

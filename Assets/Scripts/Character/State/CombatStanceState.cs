@@ -23,8 +23,6 @@ public class CombatStanceState : State
     float verticalMovementVaule = 0;
     float horizontalMovementVaule = 0;
 
-    [SerializeField] float defendRandomNum;
-
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
     {
         //确认单位与目标间的距离
@@ -62,7 +60,7 @@ public class CombatStanceState : State
             return attackState;
         }
 
-        DamageTakenWindow(enemyManager);
+        DamageTakenWindow(enemyManager, enemyAnimatorManager);
 
         if (!randomDestinationSet && !enemyManager.isFirstStrike) //如果不在踱步状态, 那就进入踱步状态(这块可以再优化)
         {
@@ -122,17 +120,16 @@ public class CombatStanceState : State
     private void WalkAroundTarget(EnemyManager enemyManager, EnemyAnimatorManager enemyAnimator)
     {
         walkingTimer = 2f;
-        defendRandomNum = Random.Range(0.001f, 1);
-        Debug.Log(defendRandomNum);
+        float defendRandomNum = Random.Range(0.001f, 1);
         EnemyStats enemyStats = enemyManager.GetComponent<EnemyStats>();
-        float defendProbility = (1-enemyStats.currHealth / enemyStats.maxHealth) * 0.5f * enemyManager.defensiveRatio;
+        float defendProbility = (1- ((float)enemyStats.currHealth / (float)enemyStats.maxHealth)) * 0.5f * enemyManager.defensiveRatio;
 
         if (defendProbility >= 1)
         {
             defendProbility = 0.9f;
         }
         //无防御踱步
-        if (!enemyManager.canDefend || defendRandomNum >= defendProbility)
+        if (enemyManager.defPriority<=0 || defendRandomNum >= defendProbility)
         {
             if (!notFirstWalking)
             {
@@ -213,7 +210,7 @@ public class CombatStanceState : State
                 }
             }
         }
-        else if (enemyManager.canDefend && defendRandomNum < defendProbility)
+        else if (enemyManager.defPriority>0 && defendRandomNum < defendProbility)
         //防御踱步
         {
             if (!notFirstWalking)
@@ -375,18 +372,72 @@ public class CombatStanceState : State
             enemyManager.firstStrikeTimer = enemyManager.defaultFirstStrikeTime;
         }
     }
-    void DamageTakenWindow(EnemyManager enemyManager) 
+    void DamageTakenWindow(EnemyManager enemyManager, EnemyAnimatorManager enemyAnimatorManager) 
     {
+        float dodgeProbility = 0;
+        float defendProbility = 0;
+        float rollAttackProbility = 0;
+
         //受击后行动变化
         if (enemyManager.isDamaged)
         {
-            enemyManager.isDamaged = false;
-            //积累到一定程度后, 切换到格挡
-            enemyManager.curRecoveryTime += 0.4f;
-            horizontalMovementVaule = 2f;
-            verticalMovementVaule = 0f;
-            isWalkingStop = true;
-            walkingTimer = 1f;
+            EnemyStats enemyStats = enemyManager.GetComponent<EnemyStats>();
+            PlayerStats playerStats = enemyManager.curTarget.GetComponent<PlayerStats>();
+
+            if (enemyManager.dodgePriority>0 && enemyManager.defPriority>0)
+            {
+                dodgeProbility = (1- (float)enemyStats.currHealth / (float)enemyStats.maxHealth) * enemyManager.dodgePriority;
+                defendProbility = (1- (float)enemyStats.currHealth / (float)enemyStats.maxHealth) * enemyManager.defPriority;
+            }
+            else if (enemyManager.dodgePriority > 0 && enemyManager.defPriority <= 0) 
+            {
+                defendProbility = (1 - (float)enemyStats.currHealth / (float)enemyStats.maxHealth) * enemyManager.defPriority;
+            }
+            else if (enemyManager.dodgePriority <= 0 && enemyManager.defPriority > 0)
+            {
+                dodgeProbility = (1 - (float)enemyStats.currHealth / (float)enemyStats.maxHealth) * enemyManager.dodgePriority;
+            }
+
+            if (enemyManager.rollAtkPriority > 0) //玩家血越低越容易触发 之后再改一下这个情况
+            {
+                rollAttackProbility = (1 - (float)playerStats.currHealth / (float)playerStats.maxHealth) * enemyManager.rollAtkPriority;
+            }
+
+            float TriggerProbility = Random.Range(0.001f,1f);
+            float DamageTakenRandomNum = Random.Range(0.001f, dodgeProbility + defendProbility + rollAttackProbility);
+            if (TriggerProbility <= dodgeProbility + defendProbility + rollAttackProbility) 
+            {
+                if (DamageTakenRandomNum > 0 && DamageTakenRandomNum <= dodgeProbility) //躲避
+                {
+                    if (enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted && distanceFromTarget<= 4f)
+                    {
+                        enemyManager.isDamaged = false;
+                        enemyManager.curRecoveryTime += 1f;
+                        enemyAnimatorManager.PlayTargetAnimation("AttackDodge", true, true);
+                        isWalkingStop = false;
+                        walkingTimer = 1f;
+                    }
+                }
+                else if (DamageTakenRandomNum > dodgeProbility && DamageTakenRandomNum <= dodgeProbility + defendProbility) //格挡
+                {
+                    enemyManager.isDamaged = false;
+                    //积累到一定程度后, 切换到格挡
+                    enemyManager.curRecoveryTime += 0.4f;
+                    horizontalMovementVaule = 2f;
+                    verticalMovementVaule = 0f;
+                    isWalkingStop = true;
+                    walkingTimer = 1f;
+                }
+                else if (DamageTakenRandomNum > dodgeProbility + defendProbility && DamageTakenRandomNum <= dodgeProbility + defendProbility + rollAttackProbility) //滚击
+                {
+                    if (enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted && distanceFromTarget <= 4f)
+                    {
+                        enemyManager.isDamaged = false;
+                        enemyAnimatorManager.PlayTargetAnimation("Roll", true, true);
+                        enemyManager.curRecoveryTime = 0.25f;
+                    }
+                }
+            }
         }
         else if (enemyManager.isBlocking)
         {
@@ -469,3 +520,4 @@ public class CombatStanceState : State
     }
 
 }
+

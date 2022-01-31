@@ -181,7 +181,6 @@ public class PlayerManager : CharacterManager
     }
     public void PerfectBlock() 
     {
-        Debug.Log("AT FILED!!!!");
         animatorManager.PlayTargetAnimation("WeaponAbility_01(Success)", true, true);
         GameObject AT_Field_Temp = Instantiate(aT_Field_Prefab, aT_position.position, Quaternion.identity);
         AT_Field_Temp.transform.SetParent(null);

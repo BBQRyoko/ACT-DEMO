@@ -69,6 +69,7 @@ public class EnemyStats : CharacterStats
                 enemyManager.isDamaged = true;
             }
             enemyManager.curTarget = characterStats;
+
         }
     }
 

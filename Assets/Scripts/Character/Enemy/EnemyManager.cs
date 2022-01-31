@@ -22,7 +22,9 @@ public class EnemyManager : CharacterManager
 
     //CombatRelated
     public bool isEquipped;
-    public bool canDefend;
+    public float defPriority;
+    public float dodgePriority;
+    public float rollAtkPriority;
     public float defensiveRatio; 
     public bool isParrying;
     public bool isBlocking;

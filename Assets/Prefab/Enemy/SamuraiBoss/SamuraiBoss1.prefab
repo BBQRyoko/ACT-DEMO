@@ -338,10 +338,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.44729757
-  m_Height: 1.377502
+  m_Radius: 0.57
+  m_Height: 1.6300786
   m_Direction: 1
-  m_Center: {x: -0.04837195, y: 1.0876004, z: 0.7618207}
+  m_Center: {x: -4.3287748e-14, y: 0.96131206, z: 0.7618207}
 --- !u!1001 &2226617473298371694
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -364,6 +364,10 @@ PrefabInstance:
     - target: {fileID: 4916177169487307192, guid: f6d745b711e762a4d82f33ee0b1997e7, type: 3}
       propertyPath: m_MaxSpeed
       value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916177169487307192, guid: f6d745b711e762a4d82f33ee0b1997e7, type: 3}
+      propertyPath: m_MinSpeed
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4916177169487307192, guid: f6d745b711e762a4d82f33ee0b1997e7, type: 3}
       propertyPath: m_Accelerated
@@ -489,6 +493,10 @@ PrefabInstance:
       propertyPath: maxHealth
       value: 200
       objectReference: {fileID: 0}
+    - target: {fileID: 1208374042252905409, guid: 937a8db5ddee21243afe62e61b4cddc2, type: 3}
+      propertyPath: maxStamina
+      value: 1000
+      objectReference: {fileID: 0}
     - target: {fileID: 1208374042252905410, guid: 937a8db5ddee21243afe62e61b4cddc2, type: 3}
       propertyPath: arrow
       value: 
@@ -506,6 +514,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4025204120211422388}
     - target: {fileID: 1208374042252905410, guid: 937a8db5ddee21243afe62e61b4cddc2, type: 3}
+      propertyPath: defPriority
+      value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 1208374042252905410, guid: 937a8db5ddee21243afe62e61b4cddc2, type: 3}
+      propertyPath: dodgePriority
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1208374042252905410, guid: 937a8db5ddee21243afe62e61b4cddc2, type: 3}
       propertyPath: isFirstStrike
       value: 1
       objectReference: {fileID: 0}
@@ -514,12 +530,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6410503039507523160}
     - target: {fileID: 1208374042252905410, guid: 937a8db5ddee21243afe62e61b4cddc2, type: 3}
+      propertyPath: defensiveRatio
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1208374042252905410, guid: 937a8db5ddee21243afe62e61b4cddc2, type: 3}
       propertyPath: maxAttackRange
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1208374042252905410, guid: 937a8db5ddee21243afe62e61b4cddc2, type: 3}
       propertyPath: detectionRadius
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1208374042252905410, guid: 937a8db5ddee21243afe62e61b4cddc2, type: 3}
+      propertyPath: rollAtkPriority
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 1208374042252905410, guid: 937a8db5ddee21243afe62e61b4cddc2, type: 3}
       propertyPath: pursueMaxDistance

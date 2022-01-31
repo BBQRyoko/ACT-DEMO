@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: HeavyAttack
   m_EditorClassIdentifier: 
   actionAnimation: Combo_02
-  attackScore: 3
-  recoveryTime: 2
+  isSpecial: 0
+  attakPriority: 3
+  recoveryTime: 8
+  independtCooldown: 7
   maxAttackAngle: 35
   minAttackAngle: -35
   minDistanceNeedToAttack: 0
