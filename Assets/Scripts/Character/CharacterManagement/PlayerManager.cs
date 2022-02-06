@@ -23,10 +23,12 @@ public class PlayerManager : CharacterManager
     public bool isSprinting; 
     public bool isRolling;
     public bool isJumping; //跳跃上升阶段
+    public bool interactObject;
 
     //战斗
     public bool isWeaponEquipped;
     public bool isHitting;
+    public bool attackRotate;
     public bool isAttacking;
     public bool cantBeInterrupted;
     public bool isGettingDamage;
@@ -35,6 +37,8 @@ public class PlayerManager : CharacterManager
     public bool damageAvoid;
 
     //武器切换相关
+    public bool katanaUnlock;
+    public bool finalWeaponUnlock;
     public float perfectTimer;
     public bool isPerfect;
 
@@ -88,21 +92,21 @@ public class PlayerManager : CharacterManager
         HoldingAction();
         ChargingAction();
     }
-    private void CheckForInteractableObject() 
+    private void CheckForInteractableObject()
     {
         RaycastHit hit;
 
-        if (Physics.SphereCast(transform.position, 0.4f, transform.forward, out hit, 0.8f, cameraManager.ignoreLayers, QueryTriggerInteraction.Collide)) 
+        if (Physics.SphereCast(transform.position, 0.4f, transform.forward, out hit, 0.8f, cameraManager.ignoreLayers, QueryTriggerInteraction.Collide))
         {
-            if (hit.collider.tag == "Interactable") 
+            if (hit.collider.tag == "Interactable")
             {
                 Interactable interactableObject = hit.collider.gameObject.GetComponent<Interactable>();
 
-                if (interactableObject != null) 
+                if (interactableObject != null)
                 {
                     string interactableText = interactableObject.interactableText;
 
-                    if (inputManager.interact_Input && !isWeaponEquipped) 
+                    if (interactObject && !isWeaponEquipped)
                     {
                         hit.collider.GetComponent<Interactable>().Interact(this);
                     }

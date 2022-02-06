@@ -6,7 +6,7 @@ public class Damager : MonoBehaviour
 {
     [SerializeField] bool isFlyingObject;
     public EnemyManager enemyManager;
-    public int damage = 10;
+    public int curDamage = 10;
     [SerializeField] float hitFactor;
 
     public int damageForceType; // 0 = 小, 1 = 中, 2 = 大
@@ -25,7 +25,7 @@ public class Damager : MonoBehaviour
             {
                 if (!playerStats.GetComponent<PlayerManager>().damageAvoid) 
                 {
-                    playerStats.TakeDamage(damage, hitDirection * hitFactor, true);
+                    playerStats.TakeDamage(curDamage, hitDirection * hitFactor, true);
                 }
             }
         }
@@ -39,7 +39,7 @@ public class Damager : MonoBehaviour
 
             if (playerStats != null)
             {
-                playerStats.TakeDamage(damage, hitDirection * hitFactor, true, damageForceType);
+                playerStats.TakeDamage(curDamage, hitDirection * hitFactor, true, damageForceType);
                 if (isFlyingObject) 
                 {
                     Destroy(transform.parent.gameObject);

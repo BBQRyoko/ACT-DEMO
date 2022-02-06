@@ -11,7 +11,7 @@ public class WeaponSlotManager : MonoBehaviour
 
     [SerializeField] DamageCollider weaponDamageCollider;
     [SerializeField] ParryCollider parryCollider;
-    [SerializeField] GameObject mainArmedWeapon;
+    public GameObject mainArmedWeapon;
     [SerializeField] GameObject[] armedWeaponSlot = new GameObject[2];
 
 

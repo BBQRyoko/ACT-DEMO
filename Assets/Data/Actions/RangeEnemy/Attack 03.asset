@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: Attack 03
   m_EditorClassIdentifier: 
   actionAnimation: SideKick
+  isSpecial: 0
+  isFlyingObject: 0
+  damagePoint: 5
   attakPriority: 3
   recoveryTime: 2
   independtCooldown: 10

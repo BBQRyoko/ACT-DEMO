@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 9180415534080699355}
   - component: {fileID: 9180415534080699344}
   m_Layer: 7
-  m_Name: DestructibleObject
+  m_Name: ItemBox
   m_TagString: DestructibleObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,7 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8333359809174083208}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 16.25, y: -3, z: -8.25}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children: []
@@ -99,7 +99,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 122
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!65 &9180415534080699355
 BoxCollider:
@@ -126,5 +126,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c149db6a51b8a842a39c2dcc77e6b9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemContained: {fileID: 9036971625581490844, guid: 2f7c628ade28b694c8561fa84f6b4fc1, type: 3}
   brokenPieces: {fileID: 3524568174750835614, guid: 88f6ed2fb8515d648a9d78e813c71325, type: 3}
+  containedItem:
+  - {fileID: 4051078704872175434, guid: 08a0d998f6604a1438968abfe194432f, type: 3}

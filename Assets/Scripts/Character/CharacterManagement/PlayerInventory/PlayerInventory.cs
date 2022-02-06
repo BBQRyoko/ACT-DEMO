@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
+    PlayerManager playerManager;
     WeaponSlotManager WeaponSlotManager;
 
     public WeaponItem[] unequippedWeaponItems = new WeaponItem[2];
@@ -12,6 +13,7 @@ public class PlayerInventory : MonoBehaviour
 
     private void Awake()
     {
+        playerManager = GetComponent<PlayerManager>();
         WeaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
         items = new List<InventoryItemData>();
     }
@@ -19,7 +21,10 @@ public class PlayerInventory : MonoBehaviour
     private void Start()
     {
         WeaponSlotManager.LoadWeaponOnSlot(unequippedWeaponItems[0],0);
-        WeaponSlotManager.LoadWeaponOnSlot(unequippedWeaponItems[1],1);
+        if (playerManager.katanaUnlock) //之后写到解锁太刀的地方去
+        {
+            WeaponSlotManager.LoadWeaponOnSlot(unequippedWeaponItems[1], 1);
+        }
     }
     /// <summary>
     /// 增加道具

@@ -6,8 +6,10 @@ using UnityEngine;
 public class EnemyAttackAction : EnemyAction
 {
     public bool isSpecial;
+    public bool isFlyingObject;
 
     [Header("攻击基础参数")]
+    public int damagePoint = 10;
     public int attakPriority = 3;
     public float recoveryTime = 2;
     public float independtCooldown = 7;

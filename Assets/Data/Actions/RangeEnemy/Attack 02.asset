@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: Attack 02
   m_EditorClassIdentifier: 
   actionAnimation: Combo_02
+  isSpecial: 0
+  isFlyingObject: 1
+  damagePoint: 15
   attakPriority: 3
   recoveryTime: 5
   independtCooldown: 2

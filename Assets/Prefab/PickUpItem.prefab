@@ -12,14 +12,13 @@ GameObject:
   - component: {fileID: 9036971625581490843}
   - component: {fileID: 9036971625581490842}
   - component: {fileID: 9036971625581490845}
-  - component: {fileID: 9036971625581490841}
   m_Layer: 7
   m_Name: PickUpItem
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &9036971625581490840
 Transform:
   m_ObjectHideFlags: 0
@@ -97,18 +96,3 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &9036971625581490841
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9036971625581490844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec57731446a9ead40b6e0c91b6d8734c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  radius: 0.6
-  interactableText: "\u4F60\u83B7\u5F97\u4E86\u4E00\u628A\u94A5\u5319"
-  item: {fileID: 11400000, guid: c092665c4006e7346838040f27eac673, type: 2}

@@ -8,6 +8,8 @@ public class PlayerAttacker : MonoBehaviour
     PlayerManager playerManager;
     PlayerLocmotion playerLocmotion;
     AnimatorManager animatorManager;
+    WeaponSlotManager weaponSlotManager;
+
     public Sample_VFX sample_VFX_R;
     public Sample_VFX sample_VFX_S;
 
@@ -30,6 +32,7 @@ public class PlayerAttacker : MonoBehaviour
         playerManager = GetComponent<PlayerManager>();
         playerLocmotion = GetComponent<PlayerLocmotion>();
         animatorManager = GetComponentInChildren<AnimatorManager>();
+        weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
     }
     private void Update()
     {
@@ -49,9 +52,10 @@ public class PlayerAttacker : MonoBehaviour
             attackTimer = internalDuration;
 
             //可处决
-            if (executionTarget)
+            if (executionTarget) //无消耗
             {
                 animatorManager.PlayTargetAnimation(weapon.executionSkill[0].skillName, true, true); //处决
+                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.executionSkill[0].damagePoint;
                 executionTarget.HandleExecuted(weapon.executionSkill[1].skillName);
                 //sample_VFX_R.curVFX_List[comboCount - 1].Play();
             }
@@ -65,7 +69,10 @@ public class PlayerAttacker : MonoBehaviour
                 }
                 //播放指定的攻击动画
                 animatorManager.PlayTargetAnimation(weapon.regularSkills[comboCount - 1].skillName, true, true);
-                sample_VFX_R.curVFX_List[comboCount - 1].Play();
+                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint;
+                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                playerManager.GetComponent<PlayerStats>().currStamina -= weapon.regularSkills[comboCount - 1].staminaCost;
+                //sample_VFX_R.curVFX_List[comboCount - 1].Play();
             }
         }
     }
@@ -87,6 +94,9 @@ public class PlayerAttacker : MonoBehaviour
             {
                 ////其余都播放特殊攻击的动作
                 animatorManager.PlayTargetAnimation(weapon.specialSkills[comboCount - 1].skillName, true, true);
+                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint;
+                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                playerManager.GetComponent<PlayerStats>().currStamina -= weapon.regularSkills[comboCount - 1].staminaCost;
                 sample_VFX_S.curVFX_List[comboCount - 1].Play();
                 comboCount = 0;
             }

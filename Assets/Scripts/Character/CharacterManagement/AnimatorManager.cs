@@ -16,6 +16,9 @@ public class AnimatorManager : MainAnimatorManager
     public Sample_VFX sample_VFX_S;
     public Sample_SFX sample_SFX;
 
+    //Roll
+    public DamageCollider rollDamager;
+
     public float animatorPlaySpeed = 1;
 
     public bool ifSpeedChanged;
@@ -137,7 +140,6 @@ public class AnimatorManager : MainAnimatorManager
     {
         animator.speed = playRate;
     }
-    
     private void MovingDuringAnimation(float movingForce) 
     {
         playerManager.GetComponent<Rigidbody>().AddForce(Vector3.forward* movingForce, ForceMode.Impulse);
@@ -156,6 +158,17 @@ public class AnimatorManager : MainAnimatorManager
     {
         StartCoroutine(Pause(stopDuration));
     }
+    private void AttackRotateAllow() 
+    {
+        if (!playerManager.attackRotate)
+        {
+            playerManager.attackRotate = true;
+        }
+        else 
+        {
+            playerManager.attackRotate = false;
+        }
+    }
     private void hitRecoverAnnounce(int recoverLevel) 
     {
         if (recoverLevel >= 2)
@@ -172,15 +185,20 @@ public class AnimatorManager : MainAnimatorManager
         playerAttacker.chargingTimer = 0;
         playerAttacker.chargingLevel += 1;
     }
-    private void DamageAvoidActive() 
+    private void RollDamageAvoid() 
     {
-        playerManager.damageAvoid = true;
+        if (!playerManager.damageAvoid)
+        {
+            playerManager.damageAvoid = true;
+            rollDamager.EnableDamageCollider();
+        }
+        else 
+        {
+            playerManager.damageAvoid = false;
+            rollDamager.DisableDamageCollider();
+        }
     }
 
-    private void DamageAvoidDeactive()
-    {
-        playerManager.damageAvoid = false;
-    }
     IEnumerator Pause(int dur) //播放器暂停
     {
         float pauseTime = dur / 60f;

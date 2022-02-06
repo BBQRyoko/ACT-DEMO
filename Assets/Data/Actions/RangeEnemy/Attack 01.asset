@@ -13,8 +13,12 @@ MonoBehaviour:
   m_Name: Attack 01
   m_EditorClassIdentifier: 
   actionAnimation: Combo_01
-  attackScore: 3
+  isSpecial: 0
+  isFlyingObject: 1
+  damagePoint: 10
+  attakPriority: 3
   recoveryTime: 2
+  independtCooldown: 7
   maxAttackAngle: 90
   minAttackAngle: -90
   minDistanceNeedToAttack: 0

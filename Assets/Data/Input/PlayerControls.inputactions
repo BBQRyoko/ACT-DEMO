@@ -324,6 +324,17 @@
                 },
                 {
                     "name": "",
+                    "id": "9b115111-e6f3-4198-8ef8-f30d87599b4a",
+                    "path": "<Gamepad>/leftStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "a0473acf-197c-4d15-8edb-e559d92ad1c8",
                     "path": "<Keyboard>/space",
                     "interactions": "",
@@ -534,7 +545,7 @@
                 {
                     "name": "",
                     "id": "e8f8178b-6b61-407b-a893-0b2975c543f8",
-                    "path": "<Gamepad>/dpad/right",
+                    "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

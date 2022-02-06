@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Combo_S_01(Start)
   skillType: 1
+  damagePoint: 15
   VFXs: []
   SFXs: []

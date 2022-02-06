@@ -201,7 +201,14 @@ public class InputManager : MonoBehaviour
     {
         if (interact_Input) 
         {
-            playerManager.weaponEquiping();
+            if (playerManager.isWeaponEquipped)
+            {
+                playerManager.weaponEquiping();
+            }
+            else 
+            {
+                playerManager.interactObject = true;
+            }
         }
     }
     private void HandleLockOnInput() //手动锁定敌人
@@ -246,7 +253,7 @@ public class InputManager : MonoBehaviour
     }
     private void HandleWeaponSwitch() 
     {
-        if (weaponSwitch_Input) 
+        if (weaponSwitch_Input && playerManager.katanaUnlock) 
         {
             playerManager.GetComponentInChildren<WeaponSlotManager>().WeaponSwitch();
         }

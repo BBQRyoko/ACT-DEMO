@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5463391965432153659}
   - component: {fileID: 4334892509846763426}
   - component: {fileID: 4334892509846763425}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Crate_Piece_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!64 &4334892509846763425
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 3784641175912819488}
   - component: {fileID: 4334892509863478079}
   - component: {fileID: 4334892509863478078}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Crate_Piece_020
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -213,7 +213,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!64 &4334892509863478078
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -241,7 +241,7 @@ GameObject:
   - component: {fileID: 1027870966884773504}
   - component: {fileID: 4334892509913664222}
   - component: {fileID: 4334892509913664221}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Crate_Piece_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -327,7 +327,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!64 &4334892509913664221
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -355,7 +355,7 @@ GameObject:
   - component: {fileID: 2497883436395935214}
   - component: {fileID: 4334892510405370962}
   - component: {fileID: 4334892510405370961}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Crate_Piece_018
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -441,7 +441,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!64 &4334892510405370961
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -469,7 +469,7 @@ GameObject:
   - component: {fileID: 1376143834584520404}
   - component: {fileID: 4334892509808636905}
   - component: {fileID: 4334892509808636904}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Crate_Piece_015
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -555,7 +555,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!64 &4334892509808636904
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -583,7 +583,7 @@ GameObject:
   - component: {fileID: 8026427705917479829}
   - component: {fileID: 4334892509743537133}
   - component: {fileID: 4334892509743537132}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Crate_Piece_016
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -669,7 +669,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!64 &4334892509743537132
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -697,7 +697,7 @@ GameObject:
   - component: {fileID: 7236447046742807463}
   - component: {fileID: 4334892509909274671}
   - component: {fileID: 4334892509909274670}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Crate_Piece_014
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -783,7 +783,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!64 &4334892509909274670
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -811,7 +811,7 @@ GameObject:
   - component: {fileID: 1184388886849432256}
   - component: {fileID: 4334892509357092772}
   - component: {fileID: 4334892509357092771}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Crate_Piece_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -897,7 +897,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!64 &4334892509357092771
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -925,7 +925,7 @@ GameObject:
   - component: {fileID: 2490322824862192459}
   - component: {fileID: 4334892509342476259}
   - component: {fileID: 4334892509342476258}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Crate_Piece_011
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1011,7 +1011,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!64 &4334892509342476258
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1039,7 +1039,7 @@ GameObject:
   - component: {fileID: 8469310887904602947}
   - component: {fileID: 4334892510230803836}
   - component: {fileID: 4334892510230803835}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Crate_Piece_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1125,7 +1125,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!64 &4334892510230803835
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1149,7 +1149,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4297024173556627748}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wooden_Crate_Cracked
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1163,7 +1163,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3524568174750835614}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
   m_LocalPosition: {x: 16.75, y: -3, z: -8.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1189,7 +1189,7 @@ Transform:
   - {fileID: 522336371496308736}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
 --- !u!1 &3533941380496167179
 GameObject:
   m_ObjectHideFlags: 0
@@ -1203,7 +1203,7 @@ GameObject:
   - component: {fileID: 7932250377503392467}
   - component: {fileID: 4334892509008364088}
   - component: {fileID: 4334892509008364087}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Crate_Piece_010
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1289,7 +1289,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!64 &4334892509008364087
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1317,7 +1317,7 @@ GameObject:
   - component: {fileID: 2551297531365922711}
   - component: {fileID: 4334892510183786625}
   - component: {fileID: 4334892510183786624}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Crate_Piece_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1403,7 +1403,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!64 &4334892510183786624
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1431,7 +1431,7 @@ GameObject:
   - component: {fileID: 5109661745682022258}
   - component: {fileID: 4334892510854995983}
   - component: {fileID: 4334892510854995982}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Crate_Piece_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1517,7 +1517,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!64 &4334892510854995982
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1545,7 +1545,7 @@ GameObject:
   - component: {fileID: 6561280215433568880}
   - component: {fileID: 4334892510250894438}
   - component: {fileID: 4334892510250894437}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Crate_Piece_09
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1631,7 +1631,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!64 &4334892510250894437
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1659,7 +1659,7 @@ GameObject:
   - component: {fileID: 7102214860629418173}
   - component: {fileID: 4334892510105310834}
   - component: {fileID: 4334892510105310833}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Crate_Piece_013
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1745,7 +1745,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!64 &4334892510105310833
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1773,7 +1773,7 @@ GameObject:
   - component: {fileID: 7422890842625166950}
   - component: {fileID: 4334892510385524876}
   - component: {fileID: 4334892510385524875}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Crate_Piece_017
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1859,7 +1859,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!64 &4334892510385524875
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1887,7 +1887,7 @@ GameObject:
   - component: {fileID: 6273560075796954211}
   - component: {fileID: 4334892509618347997}
   - component: {fileID: 4334892509618347996}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Crate_Piece_012
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1973,7 +1973,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!64 &4334892509618347996
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2001,7 +2001,7 @@ GameObject:
   - component: {fileID: 7690693079322725362}
   - component: {fileID: 4334892510819841624}
   - component: {fileID: 4334892510819841623}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Crate_Piece_08
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2087,7 +2087,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!64 &4334892510819841623
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2115,7 +2115,7 @@ GameObject:
   - component: {fileID: 6399965411058314855}
   - component: {fileID: 4334892509170726430}
   - component: {fileID: 4334892509170726429}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Crate_Piece_019
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2201,7 +2201,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!64 &4334892509170726429
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2229,7 +2229,7 @@ GameObject:
   - component: {fileID: 3067004913451677488}
   - component: {fileID: 4334892508943346052}
   - component: {fileID: 4334892508943346051}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Crate_Piece_07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2315,7 +2315,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!64 &4334892508943346051
 MeshCollider:
   m_ObjectHideFlags: 0

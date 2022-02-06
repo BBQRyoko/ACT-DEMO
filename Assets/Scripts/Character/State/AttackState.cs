@@ -42,6 +42,14 @@ public class AttackState : State
     {
         //使用Combat State中所决定的攻击动画, 并计算攻击恢复时间,是否霸体,技能独立CD
         enemyAnimatorManager.PlayTargetAnimation(curAttack.actionAnimation, true);
+        if (!curAttack.isFlyingObject)
+        {
+            enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().weaponDamageCollider.curDamage = curAttack.damagePoint;
+        }
+        else 
+        {
+            enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().flyingObjectDamager.curDamage = curAttack.damagePoint;
+        }
         enemyManager.curRecoveryTime = curAttack.recoveryTime;
         enemyManager.isImmuneAttacking = curAttack.isImmune;
         if (!curAttack.isSpecial)

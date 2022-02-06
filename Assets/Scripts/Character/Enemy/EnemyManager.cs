@@ -44,16 +44,17 @@ public class EnemyManager : CharacterManager
 
     public bool isPreformingAction;
     public bool isInteracting;
+    public bool isGround;
     public bool isImmuneAttacking;
 
     [Header("敌人主要参数")]
     public float rotationSpeed = 0.8f;
     public float moveSpeed = 1f;
-    [SerializeField] bool gizmoOn;
     public float alertRadius = 15;
+    public float hearRadius = 20;
     public float detectionRadius = 10;
     public float maxAttackRange = 3f;
-    public float pursueMaxDistance = 16;
+    public float pursueMaxDistance = 25;
 
     public float maxDetectionAngle = 70;
     public float minDetectionAngle = -70;
@@ -254,18 +255,20 @@ public class EnemyManager : CharacterManager
 
     private void OnDrawGizmosSelected()
     {
-        if (gizmoOn) 
-        {
+
+            //听力范围
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position, hearRadius);
             //警戒范围
             Gizmos.color = Color.white;
             Gizmos.DrawWireSphere(transform.position, alertRadius);
-            //察觉范围
+            //视野范围
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, detectionRadius);
             //攻击范围
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, maxAttackRange);
-        }
+        
     }
 
 }

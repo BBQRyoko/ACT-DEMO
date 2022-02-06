@@ -6,11 +6,12 @@ public class IdleState : State
 {
     public PursueState pursueState;
     public LayerMask detectionLayer;
+    public LayerMask hearingLayer;
 
     [Header("待机专属")]
     [SerializeField] float defaultRotatePeriod = 7f;
     float rotateTimer;
-    float alertTimer; //之后还要加进度条
+    public float alertTimer; //之后还要加进度条
 
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
     {
@@ -70,11 +71,23 @@ public class IdleState : State
                     enemyManager.curPatrolIndex = 0;
                 }
             }
-
             HandleRotateTowardsTarger(enemyManager);
             enemyManager.navMeshAgent.transform.localPosition = Vector3.zero;
             enemyManager.navMeshAgent.transform.localRotation = Quaternion.identity;
         }
+
+        #region 敌人周遭影响设置
+        Collider[] hearCollider = Physics.OverlapSphere(enemyManager.transform.position, enemyManager.hearRadius, hearingLayer);
+        for (int i = 0; i < hearCollider.Length; i++)
+        {
+            EnemyManager enemyManager1 = hearCollider[i].transform.GetComponent<EnemyManager>();
+
+            if (enemyManager1 != null && enemyManager1.curTarget != null)
+            {
+                enemyManager.curTarget = enemyManager1.curTarget;
+            }
+        }
+        #endregion
 
         #region 敌人的预警范围设置
         Collider[] alertCollider = Physics.OverlapSphere(enemyManager.transform.position, enemyManager.alertRadius, detectionLayer);

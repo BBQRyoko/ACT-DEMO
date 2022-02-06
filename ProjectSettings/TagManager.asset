@@ -10,6 +10,7 @@ TagManager:
   - DestructibleObject
   - Parry
   - DarkKnight
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - ItemHolder
   - SomethingElse
   - Environment
   - Character

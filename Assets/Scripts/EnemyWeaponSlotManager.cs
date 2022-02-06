@@ -10,6 +10,7 @@ public class EnemyWeaponSlotManager : MonoBehaviour
 
     public WeaponSlot equippedSlot;
     public DamageCollider weaponDamageCollider;
+    public Damager flyingObjectDamager;
 
     private void Awake()
     {
