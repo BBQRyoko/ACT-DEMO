@@ -44,7 +44,7 @@ public class PursueState : State
         }
         else
         {
-            if (distanceFromTarget > enemyManager.maxAttackRange)
+            if (distanceFromTarget > enemyManager.maxCombatRange)
             {
                 enemyAnimatorManager.animator.SetFloat("Horizontal", 0f, 0.1f, Time.deltaTime);
                 enemyAnimatorManager.animator.SetFloat("Vertical", 1f, 0.1f, Time.deltaTime);
@@ -59,7 +59,7 @@ public class PursueState : State
         //一会儿根据距离和攻击再改
         if (!enemyManager.isFirstStrike)
         {
-            if (distanceFromTarget <= enemyManager.maxAttackRange) //追到目标
+            if (distanceFromTarget <= enemyManager.maxCombatRange) //追到目标
             {
                 return combatStanceState;
             }

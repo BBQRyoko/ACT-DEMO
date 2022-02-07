@@ -27,6 +27,12 @@ public class PlayerStats : CharacterStats
         currStamina = maxStamina;
         staminaBar.SetMaxStamina(maxStamina);
     }
+
+    private void Update()
+    {
+        healthBar.SetCurrentHealth(currHealth);
+    }
+
     public void TakeDamage(int damage, Vector3 collisionDirection, bool isBoss, int forceType = 0) 
     {
         float viewableAngle = Vector3.SignedAngle(collisionDirection, playerManager.transform.forward, Vector3.up);

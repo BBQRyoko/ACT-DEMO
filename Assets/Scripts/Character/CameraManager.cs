@@ -210,7 +210,7 @@ public class CameraManager : MonoBehaviour
         else 
         {
             lockOnMark.gameObject.SetActive(true);
-            lockOnMark.transform.position = Camera.main.WorldToScreenPoint(new Vector3(currentLockOnTarget.position.x, currentLockOnTarget.position.y+0.5f, currentLockOnTarget.position.z));
+            lockOnMark.transform.position = Camera.main.WorldToScreenPoint(new Vector3(currentLockOnTarget.position.x, currentLockOnTarget.position.y+1f, currentLockOnTarget.position.z));
         }
     }
     public void ClearLockOnTargets() 

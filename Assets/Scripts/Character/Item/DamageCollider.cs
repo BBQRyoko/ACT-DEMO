@@ -181,7 +181,7 @@ public class DamageCollider : MonoBehaviour
     IEnumerator Hitted(int dur) 
     {
         float pauseTime = dur / 60f;
-        Time.timeScale = 0f;
+        Time.timeScale = 0.1f;
         yield return new WaitForSecondsRealtime(pauseTime);
         Time.timeScale = 1f;
     }

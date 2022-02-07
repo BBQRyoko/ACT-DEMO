@@ -12,6 +12,7 @@ public class PlayerManager : CharacterManager
     PlayerStats playerStats;
     AnimatorManager animatorManager;
     WeaponSlotManager weaponSlotManager;
+    BaGuaManager baGuaManager;
     Rigidbody rig;
 
     [Header("运动状态")]
@@ -58,6 +59,7 @@ public class PlayerManager : CharacterManager
         inputManager = GetComponent<InputManager>();
         playerLocmotion = GetComponent<PlayerLocmotion>();
         playerStats = GetComponent<PlayerStats>();
+        baGuaManager = GetComponent<BaGuaManager>();
         animatorManager = GetComponentInChildren<AnimatorManager>();
         weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
         rig = GetComponent<Rigidbody>();
@@ -189,7 +191,21 @@ public class PlayerManager : CharacterManager
         GameObject AT_Field_Temp = Instantiate(aT_Field_Prefab, aT_position.position, Quaternion.identity);
         AT_Field_Temp.transform.SetParent(null);
     }
-
+    public void Respawn() 
+    {
+        if (isDead)
+        {
+            playerStats.currHealth = playerStats.maxHealth;
+            playerStats.currStamina = 150f;
+            baGuaManager.curEnergyCharge = 0f;
+            baGuaManager.energyGuage = 1;
+        }
+        else 
+        {
+            playerStats.currHealth = playerStats.maxHealth;
+            playerStats.currStamina = 150f;
+        }
+    }
     IEnumerator stunTimer(float dur) //播放器暂停
     {
         yield return new WaitForSecondsRealtime(dur);

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CheckPoint : InteractSystem
 {
+    PlayerManager playerManager;
+    GameManager gameManager;
     BaGuaManager baGuaManager;
 
     [Header("Ability")]
@@ -13,9 +15,10 @@ public class CheckPoint : InteractSystem
 
     private void Start()
     {
+        playerManager = FindObjectOfType<PlayerManager>();
+        gameManager = FindObjectOfType<GameManager>();
         baGuaManager = FindObjectOfType<BaGuaManager>();
     }
-
     public override void Interact()
     {
         base.Interact();
@@ -25,7 +28,6 @@ public class CheckPoint : InteractSystem
         }
         ProgressSave();
     }
-
     void Unlock()
     {
         if (UnlockAbility == Ability.Heal)
@@ -45,6 +47,7 @@ public class CheckPoint : InteractSystem
 
     void ProgressSave() 
     {
-        //Later
+        gameManager.curCheckPoint = transform;
+        playerManager.Respawn();
     }
 }

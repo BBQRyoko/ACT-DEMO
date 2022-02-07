@@ -21,6 +21,7 @@ public class EnemyManager : CharacterManager
     [SerializeField] ParryCollider parryCollider;
 
     //CombatRelated
+    public bool isUnique;
     public bool isEquipped;
     public float defPriority;
     public float dodgePriority;
@@ -53,7 +54,8 @@ public class EnemyManager : CharacterManager
     public float alertRadius = 15;
     public float hearRadius = 20;
     public float detectionRadius = 10;
-    public float maxAttackRange = 3f;
+    public float minCombatRange = 3f;
+    public float maxCombatRange = 3f;
     public float pursueMaxDistance = 25;
 
     public float maxDetectionAngle = 70;
@@ -267,7 +269,7 @@ public class EnemyManager : CharacterManager
             Gizmos.DrawWireSphere(transform.position, detectionRadius);
             //攻击范围
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, maxAttackRange);
+            Gizmos.DrawWireSphere(transform.position, maxCombatRange);
         
     }
 

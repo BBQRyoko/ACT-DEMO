@@ -46,7 +46,7 @@ public class CombatStanceState : State
             return this;
         }
 
-        if (distanceFromTarget > enemyManager.maxAttackRange && !enemyManager.isFirstStrike)//距离大于攻击范围后退回追踪状态
+        if (distanceFromTarget > enemyManager.maxCombatRange && !enemyManager.isFirstStrike)//距离大于攻击范围后退回追踪状态
         {
             if (enemyManager.firstStrikeTimer <= 0)
             {
@@ -70,10 +70,10 @@ public class CombatStanceState : State
 
         if (walkingTimer > 0) //实时改变行走逻辑
         {
-            if (enemyManager.curRecoveryTime <= 0.5f && !isWalkingStop)//临攻击前0.5s会停止走路
+            if (enemyManager.curRecoveryTime <= 0.25f && !isWalkingStop)//临攻击前0.25s会停止走路
             {
                 GetNewAttack(enemyManager);
-                ReadyToAttack(enemyManager);
+                //ReadyToAttack(enemyManager);
             }
             else 
             {
@@ -134,15 +134,15 @@ public class CombatStanceState : State
             if (!notFirstWalking)
             {
                 //需要精修距离与最大攻击距离间的关系
-                if (distanceFromTarget >= 0 && distanceFromTarget <= 3)
+                if (distanceFromTarget >= 0 && distanceFromTarget <= enemyManager.minCombatRange)
                 {
                     verticalMovementVaule = -0.5f;
                 }
-                else if (distanceFromTarget > 3 && distanceFromTarget < 7f)
+                else if (distanceFromTarget > enemyManager.minCombatRange && distanceFromTarget < enemyManager.maxCombatRange)
                 {
                     verticalMovementVaule = 0;
                 }
-                else if (distanceFromTarget > 7f)
+                else if (distanceFromTarget > enemyManager.maxCombatRange)
                 {
                     verticalMovementVaule = 0.5f;
                 }
@@ -172,25 +172,25 @@ public class CombatStanceState : State
                 {
                     if (verticalMovementVaule < 0f)
                     {
-                        if (distanceFromTarget > 3f)
+                        if (distanceFromTarget > enemyManager.minCombatRange)
                         {
                             verticalMovementVaule = 0f;
                         }
                     }
                     else if (verticalMovementVaule > 0f)
                     {
-                        if (distanceFromTarget <= 7f)
+                        if (distanceFromTarget <= enemyManager.maxCombatRange)
                         {
                             verticalMovementVaule = 0f;
                         }
                     }
                     else if (verticalMovementVaule == 0f)
                     {
-                        if (distanceFromTarget > 3f)
+                        if (distanceFromTarget > enemyManager.minCombatRange)
                         {
                             verticalMovementVaule = 0.5f;
                         }
-                        else if (distanceFromTarget <= 3f)
+                        else if (distanceFromTarget <= enemyManager.minCombatRange)
                         {
                             verticalMovementVaule = -0.5f;
                         }
@@ -210,21 +210,21 @@ public class CombatStanceState : State
                 }
             }
         }
-        else if (enemyManager.defPriority>0 && defendRandomNum < defendProbility)
         //防御踱步
+        else if (enemyManager.defPriority>0 && defendRandomNum < defendProbility)
         {
             if (!notFirstWalking)
             {
                 //需要精修距离与最大攻击距离间的关系
-                if (distanceFromTarget >= 0 && distanceFromTarget <= 3)
+                if (distanceFromTarget >= 0 && distanceFromTarget <= enemyManager.minCombatRange)
                 {
                     verticalMovementVaule = -0.5f;
                 }
-                else if (distanceFromTarget > 3 && distanceFromTarget < 7f)
+                else if (distanceFromTarget > enemyManager.minCombatRange && distanceFromTarget < enemyManager.maxCombatRange)
                 {
                     verticalMovementVaule = 0;
                 }
-                else if (distanceFromTarget > 7f)
+                else if (distanceFromTarget > enemyManager.maxCombatRange)
                 {
                     verticalMovementVaule = 0.5f;
                 }
@@ -254,25 +254,25 @@ public class CombatStanceState : State
                 {
                     if (verticalMovementVaule < 0f)
                     {
-                        if (distanceFromTarget > 3f)
+                        if (distanceFromTarget > enemyManager.minCombatRange)
                         {
                             verticalMovementVaule = 0f;
                         }
                     }
                     else if (verticalMovementVaule > 0f)
                     {
-                        if (distanceFromTarget <= 7f)
+                        if (distanceFromTarget <= enemyManager.maxCombatRange)
                         {
                             verticalMovementVaule = 0f;
                         }
                     }
                     else if (verticalMovementVaule == 0f)
                     {
-                        if (distanceFromTarget > 3f)
+                        if (distanceFromTarget > enemyManager.minCombatRange)
                         {
                             verticalMovementVaule = 0.5f;
                         }
-                        else if (distanceFromTarget <= 3f)
+                        else if (distanceFromTarget <= enemyManager.minCombatRange)
                         {
                             verticalMovementVaule = -0.5f;
                         }
@@ -294,7 +294,7 @@ public class CombatStanceState : State
         }
 
     }
-    private void ReadyToAttack(EnemyManager enemyManager) 
+    private void ReadyToAttack(EnemyManager enemyManager) //仿佛用不到
     {
         if (horizontalMovementVaule < 1) //普通走路
         {
@@ -304,9 +304,9 @@ public class CombatStanceState : State
         {
             horizontalMovementVaule = 2f;
         }
-
         verticalMovementVaule = 0f;
     }
+
     private void GetNewAttack(EnemyManager enemyManager) //根据距离和位置主动决策攻击(会进行权重测试)
     {
         Vector3 targetDirection = enemyManager.curTarget.transform.position - transform.position;

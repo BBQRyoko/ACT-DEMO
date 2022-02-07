@@ -53680,8 +53680,36 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.5
+  - time: 0.26666668
+    functionName: RotateTowardsTarget
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.28333333
+    functionName: MovingDuringAnimation
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 20
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.41666666
+    functionName: RotateTowardsTarget
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.48333332
     functionName: CloseWeaponDamageCollider
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.5833333
+    functionName: AttackOver
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

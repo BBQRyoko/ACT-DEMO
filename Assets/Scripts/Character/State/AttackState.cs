@@ -19,7 +19,7 @@ public class AttackState : State
         enemyManager.isParrying = false;
         RotateTowardsTargetWhiletAttacking(enemyManager);
 
-        if (distanceFromTarget > enemyManager.maxAttackRange && !enemyManager.isFirstStrike) //如果突然离开最大攻击范围, 重新进入追击
+        if (distanceFromTarget > enemyManager.maxCombatRange && !enemyManager.isFirstStrike) //如果突然离开最大攻击范围, 重新进入追击
         {
             return pursueState;
         }
