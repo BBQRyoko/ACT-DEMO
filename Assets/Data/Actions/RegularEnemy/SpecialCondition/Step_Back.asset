@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionAnimation: Step_Back
   isSpecial: 1
+  isFlyingObject: 0
+  damagePoint: 45
   attakPriority: 3
   recoveryTime: 2
   independtCooldown: 10
@@ -25,4 +27,6 @@ MonoBehaviour:
   condition: 1
   minRange: 0
   maxRange: 0
+  requiredRecoveryTime: 0
   canDodge: 1
+  firstStrikeDistance: 0

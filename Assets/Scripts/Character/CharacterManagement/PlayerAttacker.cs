@@ -54,9 +54,20 @@ public class PlayerAttacker : MonoBehaviour
             //可处决
             if (executionTarget) //无消耗
             {
-                animatorManager.PlayTargetAnimation(weapon.executionSkill[0].skillName, true, true); //处决
-                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.executionSkill[0].damagePoint;
-                executionTarget.HandleExecuted(weapon.executionSkill[1].skillName);
+                if (!executionTarget.isWeak) //背刺
+                {
+                    animatorManager.PlayTargetAnimation(weapon.executionSkill[0].skillName, true, true); //处决
+                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.executionSkill[0].damagePoint;
+                    executionTarget.getingExecute = true;
+                    executionTarget.HandleExecuted(weapon.executionSkill[1].skillName);
+                }
+                else //常规处决
+                {
+                    animatorManager.PlayTargetAnimation(weapon.executionSkill[0].skillName, true, true); //处决
+                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.executionSkill[2].damagePoint;
+                    executionTarget.getingExecute = true;
+                    executionTarget.HandleExecuted(weapon.executionSkill[3].skillName);
+                }
                 //sample_VFX_R.curVFX_List[comboCount - 1].Play();
             }
             //普通攻击
@@ -173,7 +184,6 @@ public class PlayerAttacker : MonoBehaviour
             }
         }
     }
-
     public void HoldingStatus() 
     {
         if (!inputManager.weaponAbility_Input && playerManager.isHolding) 
@@ -183,27 +193,18 @@ public class PlayerAttacker : MonoBehaviour
             //animatorManager.PlayTargetAnimation("WeaponAbility_01(End)", true, true);
         }
     }
-
     void ExecutionHandler() 
     {
-        colliders = Physics.OverlapSphere(transform.position + executionOffset, 4f);
-
-        if (colliders != null)
+        if (executionTarget && !executionTarget.isDead)
         {
-            foreach (Collider collider in colliders) 
-            {
-                if (collider.GetComponent<EnemyManager>() != null) 
-                {
-                    EnemyManager enemyManager = collider.GetComponent<EnemyManager>();
-                    if (enemyManager.isWeak)
-                    {
-                        executionTarget = enemyManager;
-                    }
-                }
-            }
+            playerManager.cameraManager.curExuectionTarget = executionTarget.transform;
+        }
+        else 
+        {
+            executionTarget = null;
+            playerManager.cameraManager.curExuectionTarget = null;
         }
     }
-
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

@@ -7,7 +7,7 @@ public class PlayerManager : CharacterManager
     //PlayerManager统一管理所有当前所处的状态, 与locomotion, input, camera的update
     Animator animator;
     InputManager inputManager;
-    CameraManager cameraManager;
+    public CameraManager cameraManager;
     PlayerLocmotion playerLocmotion;
     PlayerStats playerStats;
     AnimatorManager animatorManager;
@@ -24,7 +24,11 @@ public class PlayerManager : CharacterManager
     public bool isSprinting; 
     public bool isRolling;
     public bool isJumping; //跳跃上升阶段
+    public bool inInteractTrigger;
     public bool interactObject;
+
+    //通用
+    public int keyNum;
 
     //战斗
     public bool isWeaponEquipped;

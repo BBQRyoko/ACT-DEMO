@@ -198,7 +198,6 @@ public class AnimatorManager : MainAnimatorManager
             rollDamager.DisableDamageCollider();
         }
     }
-
     IEnumerator Pause(int dur) //播放器暂停
     {
         float pauseTime = dur / 60f;

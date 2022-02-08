@@ -18,19 +18,24 @@ public class EnemyManager : CharacterManager
     public CharacterStats curTarget;
     CombatCooldownManager combatCooldownManager;
 
+    [SerializeField] GameObject backStabArea;
+    [SerializeField] GameObject executedArea;
     [SerializeField] ParryCollider parryCollider;
 
     //CombatRelated
+    public bool canBeExecuted;
+    public bool getingExecute;
     public bool isUnique;
     public bool isEquipped;
     public float defPriority;
     public float dodgePriority;
     public float rollAtkPriority;
-    public float defensiveRatio; 
+    public float defensiveRatio;
     public bool isParrying;
     public bool isBlocking;
     public bool isDamaged;
 
+    public bool ambushEnemy;
     public bool isFirstStrike;
     public float firstStrikeTimer;
     public float defaultFirstStrikeTime;
@@ -38,7 +43,7 @@ public class EnemyManager : CharacterManager
     float dodgeTimer;
 
     //待机模式
-    public enum IdleType {Stay, Patrol, Boss};
+    public enum IdleType { Stay, Patrol, Boss };
     public IdleType idleType;
     public List<Transform> patrolPos = new List<Transform>();
     public int curPatrolIndex = 0;
@@ -71,6 +76,10 @@ public class EnemyManager : CharacterManager
     public Transform target;
     public Transform target2;
 
+    [Header("道具掉落")]
+    [SerializeField] GameObject[] containedItem;
+    bool itemDrop;
+
     private void Awake()
     {
         enemyLocomotion = GetComponent<EnemyLocomotion>();
@@ -81,7 +90,6 @@ public class EnemyManager : CharacterManager
         combatCooldownManager = GetComponentInChildren<CombatCooldownManager>();
         navMeshAgent.enabled = false;
     }
-
     private void Start()
     {
         enemyRig.isKinematic = false;
@@ -96,20 +104,21 @@ public class EnemyManager : CharacterManager
     private void Update()
     {
         HandleRecoveryTimer();
+        AmbushEnemy();
+        ExecutedArea();
         HandleParryCollider();
+        ItemDrop();
         isRotatingWithRootMotion = enemyAnimatorManager.animator.GetBool("isRotatingWithRootMotion");
         canRotate = enemyAnimatorManager.animator.GetBool("canRotate");
-
-        if (isDead) 
+        if (isDead)
         {
             enemyRig.isKinematic = true;
             collider_Self.enabled = false;
             collider_Combat.enabled = false;
-            Destroy(gameObject, 10f);
+            Destroy(gameObject.transform.parent.gameObject, 10f);
         }
     }
-
-    void GeneralTimerManager() 
+    void GeneralTimerManager()
     {
         if (isDodging) //躲避时间
         {
@@ -124,22 +133,22 @@ public class EnemyManager : CharacterManager
             }
         }
 
-        if (!isFirstStrike) 
-        { 
+        if (!isFirstStrike)
+        {
             if (firstStrikeTimer > 0)
             {
                 firstStrikeTimer -= Time.deltaTime;
             }
-            else 
+            else
             {
                 firstStrikeTimer = 0;
             }
         }
 
         //处决状态Timer
-        if (isWeak) 
+        if (isWeak)
         {
-            
+
         }
     }
     private void FixedUpdate()
@@ -166,28 +175,26 @@ public class EnemyManager : CharacterManager
             }
         }
     }
-    private void SwitchToNextState(State state) 
+    private void SwitchToNextState(State state)
     {
         curState = state;
     }
- 
-       
     private void HandleRecoveryTimer() //攻击间隔
     {
-        if (curRecoveryTime > 0) 
+        if (curRecoveryTime > 0)
         {
             curRecoveryTime -= Time.deltaTime;
         }
 
-        if (isPreformingAction) 
+        if (isPreformingAction)
         {
-            if (curRecoveryTime <= 0) 
+            if (curRecoveryTime <= 0)
             {
                 isPreformingAction = false;
             }
         }
     }
-    public void HandleRangeAttack() 
+    public void HandleRangeAttack()
     {
         var obj = Instantiate(arrow, transform, false);
         obj.transform.SetParent(null);
@@ -201,8 +208,7 @@ public class EnemyManager : CharacterManager
         obj.gameObject.SetActive(true);
         obj.StartFlyingObj(target2);
     }
-
-    void DefendCheck() 
+    void DefendCheck()
     {
         float horizontalMovementVaule = enemyAnimatorManager.animator.GetFloat("Horizontal");
 
@@ -210,15 +216,14 @@ public class EnemyManager : CharacterManager
         {
             isParrying = true;
         }
-        else 
+        else
         {
             isParrying = false;
         }
     }
-
-    void HandleParryCollider() 
+    void HandleParryCollider()
     {
-        if (parryCollider) 
+        if (parryCollider)
         {
             if (isParrying)
             {
@@ -230,31 +235,71 @@ public class EnemyManager : CharacterManager
             }
         }
     }
-    public void HandleParryingCheck(float staminaDamage) 
+    public void HandleParryingCheck(float staminaDamage)
     {
         if (staminaDamage < enemyStats.currStamina)
         {
             enemyAnimatorManager.PlayTargetAnimation("Block_1", true, true);
             isBlocking = true;
         }
-        else if(staminaDamage >= enemyStats.currStamina)
+        else if (staminaDamage >= enemyStats.currStamina)
         {
             enemyAnimatorManager.PlayTargetAnimation("ParryBreak", true, true);
         }
 
         enemyStats.currStamina -= staminaDamage;
-        if (enemyStats.currStamina <= 0) 
+        if (enemyStats.currStamina <= 0)
         {
             enemyStats.currStamina = 0;
         }
     }
-
+    void AmbushEnemy() 
+    {
+        if (ambushEnemy && !isEquipped)
+        {
+            enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().WeaponEquip();
+        }
+    }
+    public void ExecutedArea()
+    {
+        if (!curTarget && !isDead)
+        {
+            backStabArea.GetComponent<Collider>().enabled = true;
+            canBeExecuted = true;
+        }
+        else 
+        {
+            backStabArea.GetComponent<Collider>().enabled = false;
+            if (!isWeak)
+            {
+                //executedArea.GetComponent<Collider>().enabled = false;
+                canBeExecuted = false;
+            }
+            else
+            {
+                executedArea.GetComponent<Collider>().enabled = true;
+                canBeExecuted = true;
+            }
+        }
+    }
     public void HandleExecuted(string skillName) 
     {
         enemyAnimatorManager.PlayTargetAnimation(skillName, true, true);
     }
-
-
+    void ItemDrop() 
+    {
+        if (isDead && !itemDrop) 
+        {
+            foreach (GameObject curItem in containedItem)
+            {
+                GameObject item = Instantiate(curItem, transform.position, transform.rotation);
+                item.transform.parent = null;
+                float angel = Random.Range(-15f, 15f);
+                item.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(angel, Vector3.forward) * Vector3.up * 5f;
+            }
+            itemDrop = true;
+        }
+    }
     private void OnDrawGizmosSelected()
     {
 

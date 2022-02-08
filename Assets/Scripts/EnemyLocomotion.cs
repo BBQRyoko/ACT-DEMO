@@ -11,7 +11,7 @@ public class EnemyLocomotion : MonoBehaviour
 
     public Vector3 movementVelocity;
     float groundedGravity = -0.05f;
-    public float gravity;
+    public float gravity =-15;
     [SerializeField] LayerMask groundLayer;
     float rayCastHeightOffset = 0.5f;
     float radius = 0.15f;

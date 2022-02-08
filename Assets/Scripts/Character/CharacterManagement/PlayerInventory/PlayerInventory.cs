@@ -21,6 +21,9 @@ public class PlayerInventory : MonoBehaviour
     private void Start()
     {
         WeaponSlotManager.LoadWeaponOnSlot(unequippedWeaponItems[0],0);
+    }
+    public void UnlockKatana() 
+    {
         if (playerManager.katanaUnlock) //之后写到解锁太刀的地方去
         {
             WeaponSlotManager.LoadWeaponOnSlot(unequippedWeaponItems[1], 1);

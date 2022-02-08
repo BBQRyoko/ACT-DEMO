@@ -207,7 +207,10 @@ public class InputManager : MonoBehaviour
             }
             else 
             {
-                playerManager.interactObject = true;
+                if (playerManager.inInteractTrigger) 
+                {
+                    playerManager.interactObject = true;
+                }
             }
         }
     }

@@ -22,7 +22,6 @@ public class CombatStanceState : State
     public bool randomDestinationSet = false;
     float verticalMovementVaule = 0;
     float horizontalMovementVaule = 0;
-
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
     {
         //确认单位与目标间的距离
@@ -32,12 +31,12 @@ public class CombatStanceState : State
         attackState.hasPerformedAttack = false;
         SpecialActionWatcher(enemyManager);
 
-        //if (enemyManager.curTarget.currHealth <= 0) //玩家死亡(临时的, 之后要改)
-        //{
-        //    enemyAnimatorManager.PlayTargetAnimation("Unarm", true, true);
-        //    enemyManager.curTarget = null;
-        //    return idleState;
-        //}
+        if (enemyManager.curTarget.GetComponent<PlayerManager>().isDead) //玩家死亡(临时的, 之后要改)
+        {
+            enemyAnimatorManager.PlayTargetAnimation("Unarm", true, true);
+            enemyManager.curTarget = null;
+            return idleState;
+        }
 
         if (enemyManager.isInteracting) //首先确认是否处在互动状态
         {
@@ -98,7 +97,6 @@ public class CombatStanceState : State
 
         return this;
     }
-
     public void HandleRotateTowardsTarger(EnemyManager enemyManager) //快速转向
     {
         Vector3 direction = enemyManager.curTarget.transform.position - transform.position;
@@ -306,7 +304,6 @@ public class CombatStanceState : State
         }
         verticalMovementVaule = 0f;
     }
-
     private void GetNewAttack(EnemyManager enemyManager) //根据距离和位置主动决策攻击(会进行权重测试)
     {
         Vector3 targetDirection = enemyManager.curTarget.transform.position - transform.position;
@@ -409,7 +406,7 @@ public class CombatStanceState : State
             {
                 if (DamageTakenRandomNum > 0 && DamageTakenRandomNum <= dodgeProbility) //躲避
                 {
-                    if (enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted && distanceFromTarget<= 4f)
+                    if (enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted && distanceFromTarget<= enemyManager.minCombatRange)
                     {
                         enemyManager.isDamaged = false;
                         enemyManager.curRecoveryTime += 1f;
@@ -430,7 +427,7 @@ public class CombatStanceState : State
                 }
                 else if (DamageTakenRandomNum > dodgeProbility + defendProbility && DamageTakenRandomNum <= dodgeProbility + defendProbility + rollAttackProbility) //滚击
                 {
-                    if (enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted && distanceFromTarget <= 4f)
+                    if (enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted && distanceFromTarget <= enemyManager.minCombatRange)
                     {
                         enemyManager.isDamaged = false;
                         enemyAnimatorManager.PlayTargetAnimation("Roll", true, true);

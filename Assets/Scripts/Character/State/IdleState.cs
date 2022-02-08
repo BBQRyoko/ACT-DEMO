@@ -82,7 +82,7 @@ public class IdleState : State
         {
             EnemyManager enemyManager1 = hearCollider[i].transform.GetComponent<EnemyManager>();
 
-            if (enemyManager1 != null && enemyManager1.curTarget != null)
+            if (enemyManager1 != null && enemyManager1.curTarget != null && !enemyManager1.curTarget.GetComponent<PlayerManager>().isDead)
             {
                 enemyManager.curTarget = enemyManager1.curTarget;
             }
@@ -144,7 +144,7 @@ public class IdleState : State
         {
             CharacterStats characterStats = colliders[i].transform.GetComponent<CharacterStats>();
 
-            if (characterStats != null)
+            if (characterStats != null && characterStats.currHealth>0)
             {
                 //Check Character ID
                 Vector3 targetDirection = characterStats.transform.position - transform.position;

@@ -33,39 +33,31 @@ public class EnemyWeaponSlotManager : MonoBehaviour
         equippedSlot.LoadWeaponModel(weaponItem);
         LoadWeaponDamageCollider();
     }
-
     private void LoadWeaponDamageCollider()
     {
         weaponDamageCollider = equippedSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
     }
-
-
     private void OpenWeaponDamageCollider() //在animator里管理开启武器伤害碰撞器
     {
         weaponDamageCollider.EnableDamageCollider();
     }
-
     private void CloseWeaponDamageCollider() //在animator里管理关闭武器伤害碰撞器
     {
         weaponDamageCollider.DisableDamageCollider();
     }
-
     private void RangeAttack() 
     {
         enemyManager.HandleRangeAttack();
     }
-
     private void RangeAttack2()
     {
         enemyManager.HandleRangeAttack2();
     }
-
     private void AttackOver()
     {
         enemyManager.isImmuneAttacking = false;
     }
-
-    void WeaponEquip() 
+    public void WeaponEquip() 
     {
         if (equippedSlot.currentWeaponModel == null)
         {

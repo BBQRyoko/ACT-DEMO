@@ -23,7 +23,6 @@ public class EnemyAnimatorManager : MainAnimatorManager
     [SerializeField] float tornadoSlashTimer;
     public bool tornadoSlashEnhance;
 
-
     private void Awake()
     {
         cameraManager = FindObjectOfType<CameraManager>();
@@ -34,7 +33,6 @@ public class EnemyAnimatorManager : MainAnimatorManager
     private void Update()
     {
         animatorSpeed = animator.speed;
-
         if (rotatingWithPlayer)
         {
             RotateHandler();

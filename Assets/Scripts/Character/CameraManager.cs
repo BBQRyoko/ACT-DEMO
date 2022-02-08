@@ -33,6 +33,11 @@ public class CameraManager : MonoBehaviour
     public Image lockOnPrefab;
     Image lockOnMark;
 
+    //处决系统
+    public Transform curExuectionTarget;
+    public Image executePrefab;
+    Image executeMark;
+
     //预警信号
     public Image dangerMark_Prefab;
     Image dangerMark;
@@ -53,6 +58,7 @@ public class CameraManager : MonoBehaviour
         inputManager = FindObjectOfType<InputManager>();
         targetTransform = FindObjectOfType<PlayerManager>().transform;
         lockOnMark = Instantiate(lockOnPrefab, FindObjectOfType<Canvas>().transform).GetComponent<Image>();
+        executeMark = Instantiate(executePrefab, FindObjectOfType<Canvas>().transform).GetComponent<Image>();
         cameraTransform = Camera.main.transform;
         defaultPosition = cameraTransform.localPosition.z;
         //ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);
@@ -65,6 +71,7 @@ public class CameraManager : MonoBehaviour
         RotateCamera(delta);
         HandleCameraCollisions(delta);
         HandleLockOnMark();
+        HandleExecutingMark();
 
         if (currentLockOnTarget && currentLockOnTarget.GetComponentInParent<EnemyStats>().currHealth<=0) 
         {
@@ -210,7 +217,29 @@ public class CameraManager : MonoBehaviour
         else 
         {
             lockOnMark.gameObject.SetActive(true);
-            lockOnMark.transform.position = Camera.main.WorldToScreenPoint(new Vector3(currentLockOnTarget.position.x, currentLockOnTarget.position.y+1f, currentLockOnTarget.position.z));
+            lockOnMark.transform.position = Camera.main.WorldToScreenPoint(new Vector3(currentLockOnTarget.position.x, currentLockOnTarget.position.y + 1f, currentLockOnTarget.position.z));
+        }
+    }
+    public void HandleExecutingMark()
+    {
+        if (!inputManager.GetComponent<PlayerManager>().isDead) 
+        {
+            if (!curExuectionTarget)
+            {
+                executeMark.gameObject.SetActive(false);
+            }
+            else
+            {
+                if (curExuectionTarget.GetComponentInParent<EnemyManager>().canBeExecuted)
+                {
+                    executeMark.gameObject.SetActive(true);
+                    executeMark.transform.position = Camera.main.WorldToScreenPoint(new Vector3(curExuectionTarget.position.x, curExuectionTarget.position.y + 1f, curExuectionTarget.position.z));
+                }
+                else
+                {
+                    curExuectionTarget = null;
+                }
+            }
         }
     }
     public void ClearLockOnTargets() 
@@ -219,7 +248,6 @@ public class CameraManager : MonoBehaviour
         nearestLockOnTarget = null;
         currentLockOnTarget = null;
     }
-
     public void DangerWarning(EnemyManager enemyManager) 
     {
         dangerMark = Instantiate(dangerMark_Prefab, FindObjectOfType<Canvas>().transform).GetComponent<Image>();

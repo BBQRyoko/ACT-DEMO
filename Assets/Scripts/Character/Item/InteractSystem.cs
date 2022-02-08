@@ -5,14 +5,13 @@ using UnityEngine;
 public class InteractSystem : MonoBehaviour
 {
     [SerializeField] PlayerManager playerManager;
-    [SerializeField] GameObject interactPrompt;
+    public GameObject interactPrompt;
     bool promptOn;
     // Start is called before the first frame update
     void Awake()
     {
         playerManager = FindObjectOfType<PlayerManager>();
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -30,7 +29,6 @@ public class InteractSystem : MonoBehaviour
             interactPrompt.SetActive(false);
         }
     }
-
     public virtual void Interact() 
     {
         promptOn = false;
@@ -41,6 +39,7 @@ public class InteractSystem : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            other.GetComponent<PlayerManager>().inInteractTrigger = true;
             promptOn = true;
         }
         else
@@ -53,6 +52,7 @@ public class InteractSystem : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            other.GetComponent<PlayerManager>().inInteractTrigger = false; 
             promptOn = false;
         }
     }

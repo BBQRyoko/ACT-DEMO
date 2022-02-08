@@ -8,6 +8,7 @@ public class EnemyStats : CharacterStats
     Animator animator;
     IdleState idleState;
     EnemyAnimatorManager animatorManager;
+    EnemyWeaponSlotManager enemyWeaponSlotManager;
 
     //Boss 血条
     [SerializeField] HealthBar healthBar;
@@ -17,6 +18,7 @@ public class EnemyStats : CharacterStats
         enemyManager = GetComponent<EnemyManager>();
         animator = GetComponentInChildren<Animator>();
         animatorManager = GetComponentInChildren<EnemyAnimatorManager>();
+        enemyWeaponSlotManager = GetComponentInChildren<EnemyWeaponSlotManager>();
     }
     private void Start()
     {
@@ -43,12 +45,15 @@ public class EnemyStats : CharacterStats
         if (currHealth <= 0)
         {
             currHealth = 0;
-            animatorManager.PlayTargetAnimation("Dead", true);
+            if (!enemyManager.getingExecute) 
+            {
+                animatorManager.PlayTargetAnimation("Dead", true);
+            }
             enemyManager.isDead = true;
         }
         else
         {
-            if (!enemyManager.isImmuneAttacking)
+            if (!enemyManager.isImmuneAttacking && !enemyManager.getingExecute)
             {
                 if (viewableAngle >= 91 && viewableAngle <= 180)
                 {
@@ -68,8 +73,13 @@ public class EnemyStats : CharacterStats
                 }
                 enemyManager.isDamaged = true;
             }
-            enemyManager.curTarget = characterStats;
 
+            if (!enemyManager.isEquipped) 
+            {
+                enemyWeaponSlotManager.WeaponEquip();
+            }
+            enemyManager.getingExecute = false;
+            enemyManager.curTarget = characterStats;
         }
     }
 

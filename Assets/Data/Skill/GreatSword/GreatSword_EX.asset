@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 925f15faf6a65f94189f6e4e2885f970, type: 3}
   m_Name: GreatSword_EX
   m_EditorClassIdentifier: 
-  skillName: Execution
+  skillName: BackStab
   skillType: 0
-  damagePoint: 50
+  damagePoint: 100
+  staminaCost: 0
+  energyRestore: 40
   VFXs: []
   SFXs: []

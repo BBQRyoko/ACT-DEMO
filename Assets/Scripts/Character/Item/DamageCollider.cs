@@ -9,9 +9,9 @@ public class DamageCollider : MonoBehaviour
     public PlayerManager playerManager;
     public AudioSource attackAudio;
     Collider damageCollider;
+    bool isPlayer;
 
     public bool parryWindow_isOpen;
-
     public Sample_SFX sample_SFX;
 
     public int curDamage = 10;
@@ -36,6 +36,10 @@ public class DamageCollider : MonoBehaviour
         enemyManager = GetComponentInParent<EnemyManager>();
         attackAudio = characterManager.GetComponentInChildren<AudioSource>();
         sample_SFX = characterManager.GetComponentInChildren<Sample_SFX>();
+        if (transform.GetComponentInParent<PlayerManager>())
+        {
+            isPlayer = true;
+        }
     }
     public void EnableDamageCollider() 
     {
@@ -68,6 +72,7 @@ public class DamageCollider : MonoBehaviour
             ParryCollider parryCollider = collision.GetComponent<ParryCollider>();
             EnemyManager enemyManager = parryCollider.GetComponentInParent<EnemyManager>();
             PlayerManager playerManager = parryCollider.GetComponentInParent<PlayerManager>();
+            damageCollider.enabled = false;
 
             if (enemyManager != null) // 敌人的格挡
             {
@@ -84,7 +89,6 @@ public class DamageCollider : MonoBehaviour
                 playerManager.GetComponent<BaGuaManager>().curEnergyCharge += energyRestoreAmount/2;
                 enemyManager.HandleParryingCheck(staminaDamage);
                 HitPause(duration);
-                damageCollider.enabled = false;
             }
             else //玩家的格挡
             {
@@ -106,7 +110,7 @@ public class DamageCollider : MonoBehaviour
             //    DisableDamageCollider();
             //}
         }
-        else if (collision.tag == "Player")
+        else if (collision.tag == "Player" && !isPlayer)
         {
             Vector3 hitDirection = transform.position - playerManager.transform.position;
             hitDirection.y = 0;
@@ -128,7 +132,7 @@ public class DamageCollider : MonoBehaviour
                 }
             }
         }
-        else if (collision.tag == "Enemy")
+        else if (collision.tag == "Enemy" && isPlayer)
         {
             Vector3 hitDirection = transform.position - collision.transform.position;
             hitDirection.y = 0;
