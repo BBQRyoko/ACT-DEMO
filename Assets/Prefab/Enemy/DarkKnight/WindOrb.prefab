@@ -132441,8 +132441,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33bc1d6e72e646a4d8b090351212900a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isFlyingObject: 0
+  isFlyingObject: 1
+  isPlayerDamage: 0
   enemyManager: {fileID: 0}
-  damage: 10
+  curDamage: 10
   hitFactor: 0
-  damageForceType: 0

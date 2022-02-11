@@ -8,6 +8,8 @@ public class EnemyWeaponSlotManager : MonoBehaviour
     public WeaponItem weaponItem;
     [SerializeField] GameObject UnequipWeapon;
 
+    [SerializeField] float distanceToTarget;
+    [SerializeField] bool distanceCheck;
     public WeaponSlot equippedSlot;
     public DamageCollider weaponDamageCollider;
     public Damager flyingObjectDamager;
@@ -28,6 +30,10 @@ public class EnemyWeaponSlotManager : MonoBehaviour
         //    LoadWeaponOnSlot(weaponItem);
         //}
     }
+    private void Update()
+    {
+        ComboCheck();
+    }
     public void LoadWeaponOnSlot(WeaponItem weaponItem)
     {
         equippedSlot.LoadWeaponModel(weaponItem);
@@ -44,6 +50,31 @@ public class EnemyWeaponSlotManager : MonoBehaviour
     private void CloseWeaponDamageCollider() //在animator里管理关闭武器伤害碰撞器
     {
         weaponDamageCollider.DisableDamageCollider();
+    }
+    private void CanComboDistanceCheck() 
+    {
+        if (distanceCheck)
+        {
+            distanceCheck = false;
+        }
+        else 
+        {
+            distanceCheck = true;
+        }
+    }
+    private void ComboCheck() 
+    {
+        if (distanceCheck) 
+        {
+            distanceToTarget = Vector3.Distance(enemyManager.curTarget.transform.position, enemyManager.transform.position);
+            Animator animator = GetComponent<Animator>();
+            if (distanceToTarget <= enemyManager.maxCombatRange)
+            {
+                animator.SetTrigger("canCombo");
+                distanceCheck = false;
+                gameObject.GetComponent<EnemyAnimatorManager>().animatorSpeed = 1;
+            }
+        }
     }
     private void RangeAttack() 
     {

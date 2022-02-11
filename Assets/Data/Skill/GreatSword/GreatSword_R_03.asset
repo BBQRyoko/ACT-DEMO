@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Combo_R_03
   skillType: 0
-  damagePoint: 20
-  staminaCost: 25
+  damagePoint: 40
+  staminaCost: 45
   energyRestore: 75
   VFXs: []
   SFXs: []

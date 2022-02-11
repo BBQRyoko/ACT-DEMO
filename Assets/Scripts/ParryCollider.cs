@@ -38,12 +38,10 @@ public class ParryCollider : MonoBehaviour
     {
         blockCollider.enabled = true;
     }
-
     public void DisableParryCollider() 
     {
         blockCollider.enabled = false;
     }
-
     public void PerfectTiming() 
     {
         countDownTimer = perfectTimer;

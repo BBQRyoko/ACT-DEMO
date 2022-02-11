@@ -15,7 +15,7 @@ MonoBehaviour:
   skillName: BackStab
   skillType: 0
   damagePoint: 100
-  staminaCost: 0
-  energyRestore: 40
+  staminaCost: 10
+  energyRestore: 60
   VFXs: []
   SFXs: []

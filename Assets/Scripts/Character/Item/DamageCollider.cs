@@ -29,7 +29,6 @@ public class DamageCollider : MonoBehaviour
         damageCollider.isTrigger = true;
         damageCollider.enabled = false;
     }
-
     private void Start()
     {
         characterManager = GetComponentInParent<CharacterManager>();
@@ -54,41 +53,41 @@ public class DamageCollider : MonoBehaviour
     {
         curDamage = damage;
     }
-
     public void parryWindow_Open() 
     {
         parryWindow_isOpen = true;
     }
-
     public void parryWindow_Close()
     {
         parryWindow_isOpen = false;
     }
-
     private void OnTriggerEnter(Collider collision)
     {   
         if (collision.tag == "Parry")
         {
             ParryCollider parryCollider = collision.GetComponent<ParryCollider>();
             EnemyManager enemyManager = parryCollider.GetComponentInParent<EnemyManager>();
-            PlayerManager playerManager = parryCollider.GetComponentInParent<PlayerManager>();
-            damageCollider.enabled = false;
+            PlayerManager playerManager1 = parryCollider.GetComponentInParent<PlayerManager>(); //玩家格挡的情况
 
             if (enemyManager != null) // 敌人的格挡
             {
                 EnemyStats enemyStats = enemyManager.GetComponent<EnemyStats>();
-                float staminaDamage = (weaponWeightRatio+1) * curDamage;
+                float staminaDamage = (weaponWeightRatio) * curDamage;
                 //普通格挡
                 //音效处理
-                attackAudio.volume = 0.2f;
-                int i = sample_SFX.blockedSFX_List.Length;
-                int random = Random.Range(0, i - 1);
-                attackAudio.clip = sample_SFX.blockedSFX_List[random];
-                attackAudio.Play();
+                if (curDamage >= 5) 
+                {
+                    attackAudio.volume = 0.2f;
+                    int i = sample_SFX.blockedSFX_List.Length;
+                    int random = Random.Range(0, i - 1);
+                    attackAudio.clip = sample_SFX.blockedSFX_List[random];
+                    attackAudio.Play();
 
-                playerManager.GetComponent<BaGuaManager>().curEnergyCharge += energyRestoreAmount/2;
-                enemyManager.HandleParryingCheck(staminaDamage);
-                HitPause(duration);
+                    damageCollider.enabled = false;
+                    playerManager.GetComponent<BaGuaManager>().curEnergyCharge += energyRestoreAmount / 2;
+                    enemyManager.HandleParryingCheck(staminaDamage);
+                    HitPause(duration);
+                }
             }
             else //玩家的格挡
             {
@@ -140,7 +139,7 @@ public class DamageCollider : MonoBehaviour
 
             EnemyStats enemyStats = collision.GetComponent<EnemyStats>();
 
-            if (enemyStats != null && enemyStats.currHealth != 0 && !enemyStats.GetComponent<EnemyManager>().isDodging && !enemyStats.GetComponent<EnemyManager>().isBlocking)
+            if (enemyStats != null && enemyStats.currHealth != 0 && !enemyStats.GetComponent<EnemyManager>().isDodging && !enemyStats.GetComponent<EnemyManager>().isBlocking && curDamage >= 5)
             {
                 attackAudio.volume = 0.15f;
                 int i = sample_SFX.hittedSFX_List.Length;

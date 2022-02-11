@@ -21,6 +21,7 @@ public class PlayerManager : CharacterManager
 
     public bool isFalling; //下落时
     public bool isGround; //在地面时
+    public bool isCrouching; //下蹲时
     public bool isSprinting; 
     public bool isRolling;
     public bool isJumping; //跳跃上升阶段
@@ -52,6 +53,12 @@ public class PlayerManager : CharacterManager
     public bool isHolding;
     public bool isAttackDashing;
 
+    //火球
+    public FlyingObj fireBall;
+    public Transform shootPos;
+    public Transform target;
+    public Transform nullTarget;
+
     //完美格挡ATField
     [SerializeField] GameObject aT_Field_Prefab;
     [SerializeField] Transform aT_position;
@@ -70,14 +77,26 @@ public class PlayerManager : CharacterManager
     }
     private void Update()
     {
-        inputManager.HandleAllInputs();
+        if (!isDead) 
+        {
+            inputManager.HandleAllInputs();
+        }
         playerStats.StaminaRegen();
         CheckForInteractableObject();
         PerfectTimer();
     }
     private void FixedUpdate()
     {
-        playerLocmotion.HandleAllMovement();
+        if (!isDead)
+        {
+            playerLocmotion.HandleAllMovement();
+        }
+        else 
+        {
+            rig.isKinematic = true;
+            gameObject.GetComponent<Collider>().enabled = false;
+            playerLocmotion.characterColliderBlocker.enabled = false;
+        }
         cameraManager.HandleAllCameraMovement();
     }
     private void LateUpdate()
@@ -137,6 +156,13 @@ public class PlayerManager : CharacterManager
         {
             inputManager.spAttack_Input = true;
         }
+    }
+    public void HandleRangeAttack()
+    {
+        var obj = Instantiate(fireBall, transform, false);
+        obj.transform.SetParent(null);
+        obj.gameObject.SetActive(true);
+        obj.StartFlyingObj(target);
     }
     private void HoldingAction() //按键保持
     {

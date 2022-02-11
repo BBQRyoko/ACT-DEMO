@@ -83,7 +83,7 @@ public class AnimatorManager : MainAnimatorManager
         }
         #endregion
 
-        if (isSprinting) 
+        if (isSprinting)
         {
             v = 2;
             h = horizontalMovement;
@@ -91,9 +91,14 @@ public class AnimatorManager : MainAnimatorManager
 
         if (playerManager.isWeaponEquipped)
         {
+            playerManager.isCrouching = false;
             h = 2;
         }
-        else 
+        else if (playerManager.isCrouching) 
+        {
+            h = -1;
+        }
+        else
         {
             h = 0;
         }
@@ -179,6 +184,10 @@ public class AnimatorManager : MainAnimatorManager
         {
             playerManager.hitRecover = false;
         }
+    }
+    private void RangeAttack() 
+    {
+        playerManager.HandleRangeAttack();
     }
     private void ChargingLevelUpEvent() 
     {

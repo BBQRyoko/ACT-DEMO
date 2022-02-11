@@ -29,7 +29,6 @@ public class EnemyAnimatorManager : MainAnimatorManager
         animator = GetComponent<Animator>();
         enemyManager = GetComponentInParent<EnemyManager>();
     }
-
     private void Update()
     {
         animatorSpeed = animator.speed;
@@ -57,7 +56,6 @@ public class EnemyAnimatorManager : MainAnimatorManager
             }
         }
     }
-
     private void OnAnimatorMove()
     {
         enemyManager.enemyRig.drag = 0;
@@ -71,36 +69,30 @@ public class EnemyAnimatorManager : MainAnimatorManager
             enemyManager.transform.rotation *= animator.deltaRotation;
         }    
     }
-
     private void AnimatorPlaySpeed(float playRate) //控制动画器的播放速度
     {
         animator.speed = playRate;
     }
-
     private void MovingDuringAnimation(float movingForce)
     {
         Vector3 dir = new Vector3(enemyManager.curTarget.transform.position.x - enemyManager.transform.position.x, enemyManager.curTarget.transform.position.y - enemyManager.transform.position.y, enemyManager.curTarget.transform.position.z - enemyManager.transform.position.z);
         dir.Normalize();
         enemyManager.GetComponent<Rigidbody>().AddForce(dir * movingForce, ForceMode.Impulse);
     }
-
     public void EnableDamageCollider()
     {
         damageCollider.enabled = true;
     }
-
     public void DisableDamageCollider()
     {
         damageCollider.enabled = false;
     }
-
     private void AnimatorPlaySound(int clipNum) //选择播放的音频
     {
         attackAudio.volume = 0.07f;
         attackAudio.clip = sample_SFX.curSFX_List[clipNum];
         attackAudio.Play();
     }
-
     private void RotateTowardsTarget() 
     {
         if (rotatingWithPlayer)
@@ -116,7 +108,6 @@ public class EnemyAnimatorManager : MainAnimatorManager
     {
         enemyManager.rotationSpeed = rotateSpeed;
     }
-
     private void RotateHandler() 
     {
         Vector3 direction = enemyManager.curTarget.transform.position - transform.position;
@@ -135,12 +126,10 @@ public class EnemyAnimatorManager : MainAnimatorManager
     {
         enemyManager.isParrying = true;
     }
-
     void CloseParryCollider() 
     {
         enemyManager.isParrying = false;
     }
-
     private void ResetFirstStrike() 
     {
         if (enemyManager.firstStrikeTimer <= 0) 
@@ -149,17 +138,28 @@ public class EnemyAnimatorManager : MainAnimatorManager
             enemyManager.curState = enemyManager.transform.GetComponentInChildren<PursueState>();
         }
     }
-
     private void DodgingEnd() 
     {
-        enemyManager.isDodging = false;
+        if (enemyManager.isDodging)
+        {
+            enemyManager.isDodging = false;
+        }
+        else 
+        {
+            enemyManager.isDodging = true;
+        }
     }
-
+    void ExecuteDeadCheck() 
+    {
+        if (enemyManager.isDead) 
+        {
+            animator.SetTrigger("isDead");
+        }
+    }
     private void EnemyDangerWarning() 
     {
         cameraManager.DangerWarning(enemyManager);
     }
-
     //DarkKnight Only
     void CombatGroundInitial() 
     {

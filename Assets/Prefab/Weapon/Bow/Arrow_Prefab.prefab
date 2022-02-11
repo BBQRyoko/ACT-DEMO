@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45810cfd5e69ae845aba9239c7a756a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  darkKnightOnly: 0
   m_RotateSpeed: 180
   m_SlowDownSpeed: 2
   m_MinSpeed: 5
@@ -62,6 +63,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5284138699330138699}
     m_Modifications:
+    - target: {fileID: 1549689008057408192, guid: e0a2693f939140640857d832284967ee, type: 3}
+      propertyPath: isFlyingObject
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1549689008057408197, guid: e0a2693f939140640857d832284967ee, type: 3}
       propertyPath: m_Name
       value: Arrow

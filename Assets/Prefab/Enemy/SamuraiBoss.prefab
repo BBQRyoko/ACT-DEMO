@@ -37,6 +37,7 @@ Transform:
   - {fileID: 3424731298012376289}
   - {fileID: 861451865341492761}
   - {fileID: 7722938582671389652}
+  - {fileID: 7870899128272468569}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
@@ -85,6 +86,7 @@ MonoBehaviour:
   lockOnTransform: {fileID: 7722938582671389652}
   isRotatingWithRootMotion: 0
   canRotate: 0
+  isWeak: 0
   isDead: 0
   enemyRig: {fileID: 0}
   collider_Self: {fileID: 1208374042252905411}
@@ -92,49 +94,51 @@ MonoBehaviour:
   navMeshAgent: {fileID: 526451917340543513}
   curState: {fileID: 4226274724090533145}
   curTarget: {fileID: 0}
-  combatCooldownManager: {fileID: 3922085480809506581}
-  curEnemyType: 0
-  isDummy: 0
-  isBoss: 0
+  backStabArea: {fileID: 0}
+  executedArea: {fileID: 0}
+  parryCollider: {fileID: 0}
+  canBeExecuted: 0
+  getingExecute: 0
+  isUnique: 0
   isEquipped: 0
+  defPriority: 0
+  dodgePriority: 0
+  rollAtkPriority: 0
+  defensiveRatio: 0
+  isParrying: 0
+  isBlocking: 0
+  isDamaged: 0
+  ambushEnemy: 0
   isFirstStrike: 0
   firstStrikeTimer: 0
   defaultFirstStrikeTime: 0
   isDodging: 0
-  dodgeTimer: 0
   idleType: 0
   patrolPos: []
   curPatrolIndex: 0
   isPreformingAction: 0
   isInteracting: 0
+  isGround: 0
   isImmuneAttacking: 0
   rotationSpeed: 15
-  maxAttackRange: 3.5
   moveSpeed: 0.5
+  alertRadius: 15
+  hearRadius: 20
   detectionRadius: 10
+  minCombatRange: 3
+  maxCombatRange: 3
+  combatPursueStartRange: 6
   pursueMaxDistance: 11
   maxDetectionAngle: 80
   minDetectionAngle: -80
   curRecoveryTime: 0
-  canDoCombo: 0
-  comboCount: 0
-  maxComboCount: 0
   arrow: {fileID: 0}
   shootPos: {fileID: 0}
+  arrow2: {fileID: 0}
+  shootPos2: {fileID: 0}
   target: {fileID: 0}
-  rangeRecoveryTime: 0
-  curTargetAngle: 0
-  curTargetDistance: 0
-  distanceFromTarget: 0
-  viewableAngle: 0
-  shouted: 0
-  shoutTimer: 0
-  shoutRadius: 0
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 2048
-  mediumRange: 6
-  timer1: 0
+  target2: {fileID: 0}
+  containedItem: []
 --- !u!114 &1208374042252905409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,13 +153,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 150
   currHealth: 0
+  eyePos: {fileID: 0}
+  currStamina: 0
+  maxStamina: 100
+  staminaRegen: 5
   healthBar: {fileID: 0}
-  stage: 0
-  phase2RequiredHealth: 0
-  canBeDamaged: 0
-  staminaGauge: 0
-  curStamina: 0
-  phaseVFX: {fileID: 0}
 --- !u!114 &1208374042252905408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,6 +170,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ca390cdc67212145ba406b4f5c1c5e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movementVelocity: {x: 0, y: 0, z: 0}
+  gravity: -15
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
   characterCollider: {fileID: 1208374042252905411}
   characterColliderBlocker: {fileID: 8185154535665135450}
 --- !u!1 &2071627103071265413
@@ -256,6 +263,36 @@ Transform:
   - {fileID: 4933732991132888370}
   m_Father: {fileID: 1208374042252905415}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2710297767543256253
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7870899128272468569}
+  m_Layer: 9
+  m_Name: EyePos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7870899128272468569
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2710297767543256253}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.5000001, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1208374042252905415}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3460758531570671635
 GameObject:
@@ -366,6 +403,17 @@ MonoBehaviour:
   detectionLayer:
     serializedVersion: 2
     m_Bits: 2048
+  hearingLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  blockingLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  lookPos: {fileID: 0}
+  targetPos: {fileID: 0}
+  colliders: []
+  defaultRotatePeriod: 7
+  alertTimer: 0
 --- !u!1 &6372356393585709964
 GameObject:
   m_ObjectHideFlags: 0
@@ -524,8 +572,11 @@ MonoBehaviour:
   enemyManager: {fileID: 1208374042252905410}
   weaponItem: {fileID: 11400000, guid: a3f4812c8d8dbc24fb982b0c23d5f330, type: 2}
   UnequipWeapon: {fileID: 0}
+  distanceToTarget: 0
+  distanceCheck: 0
   equippedSlot: {fileID: 0}
   weaponDamageCollider: {fileID: 0}
+  flyingObjectDamager: {fileID: 0}
 --- !u!114 &756202752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -540,12 +591,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
   canRotate: 0
+  isDarkKnight: 0
   enemyManager: {fileID: 0}
   animatorSpeed: 0
   damageCollider: {fileID: 0}
-  bossAudio: {fileID: 0}
-  hittedAudio: {fileID: 0}
-  boss_sfx: {fileID: 0}
+  rotatingWithPlayer: 0
+  attackAudio: {fileID: 0}
+  sample_SFX: {fileID: 0}
+  TornadoArea: {fileID: 0}
+  TornadoSlash: {fileID: 0}
+  tornadoSlashTimer: 0
+  tornadoSlashEnhance: 0
 --- !u!1 &8969174664184950996
 GameObject:
   m_ObjectHideFlags: 0
@@ -590,6 +646,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   combatStanceState: {fileID: 2600708476836152090}
+  viewableAngle: 0
 --- !u!1 &9092546115096881894
 GameObject:
   m_ObjectHideFlags: 0
@@ -664,6 +721,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39f4c110f24500b40bfaa18c945b1acc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  idleState: {fileID: 0}
   attackState: {fileID: 8664193003017456906}
   pursueState: {fileID: 7034920978096530719}
   enemyAttacks:
@@ -674,6 +732,9 @@ MonoBehaviour:
   combatCooldownManager: {fileID: 3922085480809506581}
   conditionList: []
   specialConditionTriggered: 0
+  walkingTimer: 0
+  notFirstWalking: 0
+  isWalkingStop: 0
   randomDestinationSet: 0
 --- !u!1 &9186326331850650153
 GameObject:
@@ -721,6 +782,7 @@ MonoBehaviour:
   idleState: {fileID: 4226274724090533145}
   combatStanceState: {fileID: 2600708476836152090}
   rotateTowardsTargetState: {fileID: 4005548969999705861}
+  distanceFromTarget: 0
 --- !u!1001 &8703184365337744628
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -786,6 +848,11 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 3732a2045f8d1c44a8a178fdb3255873, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a3d63e24f853705488ac04e22173bc16, type: 3}
+--- !u!1 &8703184365337889474 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 155190, guid: a3d63e24f853705488ac04e22173bc16, type: 3}
+  m_PrefabInstance: {fileID: 8703184365337744628}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8703184365338146698 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 402302, guid: a3d63e24f853705488ac04e22173bc16, type: 3}
@@ -799,10 +866,5 @@ GameObject:
 --- !u!4 &8703184365338118818 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 450134, guid: a3d63e24f853705488ac04e22173bc16, type: 3}
-  m_PrefabInstance: {fileID: 8703184365337744628}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &8703184365337889474 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 155190, guid: a3d63e24f853705488ac04e22173bc16, type: 3}
   m_PrefabInstance: {fileID: 8703184365337744628}
   m_PrefabAsset: {fileID: 0}

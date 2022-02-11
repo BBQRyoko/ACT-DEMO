@@ -8,6 +8,7 @@ public class CharacterStats : MonoBehaviour
 
     public int maxHealth;
     public int currHealth;
+    public Transform eyePos;
 
     public float currStamina;
     [SerializeField] protected float maxStamina = 100;

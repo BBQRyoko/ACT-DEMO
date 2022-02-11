@@ -15,7 +15,7 @@ MonoBehaviour:
   actionAnimation: Step_Back
   isSpecial: 1
   isFlyingObject: 0
-  damagePoint: 45
+  damagePoint: 40
   attakPriority: 3
   recoveryTime: 2
   independtCooldown: 10

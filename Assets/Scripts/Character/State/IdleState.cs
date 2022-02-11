@@ -7,6 +7,10 @@ public class IdleState : State
     public PursueState pursueState;
     public LayerMask detectionLayer;
     public LayerMask hearingLayer;
+    public LayerMask blockingLayer;
+
+    [SerializeField] Collider[] colliders;
+
 
     [Header("待机专属")]
     [SerializeField] float defaultRotatePeriod = 7f;
@@ -84,7 +88,14 @@ public class IdleState : State
 
             if (enemyManager1 != null && enemyManager1.curTarget != null && !enemyManager1.curTarget.GetComponent<PlayerManager>().isDead)
             {
-                enemyManager.curTarget = enemyManager1.curTarget;
+                PlayerStats playerStats = enemyManager1.curTarget.GetComponent<PlayerStats>();
+                Vector3 targetDir = new Vector3(playerStats.eyePos.position.x - enemyStats.eyePos.transform.position.x, playerStats.eyePos.position.y - enemyStats.eyePos.transform.position.y, playerStats.eyePos.position.z - enemyStats.eyePos.transform.position.z);
+                float distance = Vector3.Distance(enemyStats.eyePos.transform.position, playerStats.eyePos.position);
+                bool hitInfo = Physics.Raycast(enemyStats.eyePos.position, targetDir, distance, blockingLayer);
+                if (!hitInfo) 
+                {
+                    enemyManager.curTarget = enemyManager1.curTarget;
+                }
             }
         }
         #endregion
@@ -94,8 +105,11 @@ public class IdleState : State
         for (int i = 0; i < alertCollider.Length; i++)
         {
             CharacterStats characterStats = alertCollider[i].transform.GetComponent<CharacterStats>();
+            Vector3 targetDir = new Vector3(characterStats.eyePos.position.x - enemyStats.eyePos.transform.position.x, characterStats.eyePos.position.y - enemyStats.eyePos.transform.position.y, characterStats.eyePos.position.z - enemyStats.eyePos.transform.position.z);
+            float distance = Vector3.Distance(enemyStats.eyePos.transform.position, characterStats.eyePos.position);
+            bool hitInfo = Physics.Raycast(enemyStats.eyePos.position, targetDir, distance, blockingLayer);
 
-            if (characterStats != null)
+            if (characterStats != null && !hitInfo)
             {
                 //Check Character ID
                 Vector3 targetDirection = characterStats.transform.position - transform.position;
@@ -124,7 +138,7 @@ public class IdleState : State
                     }
                 }
             }
-            else 
+            else
             {
                 if (alertTimer > 0)
                 {
@@ -139,12 +153,14 @@ public class IdleState : State
         #endregion
 
         #region 敌人的直接侦测范围设置
-        Collider[] colliders = Physics.OverlapSphere(enemyManager.transform.position, enemyManager.detectionRadius, detectionLayer);
+        colliders = Physics.OverlapSphere(enemyManager.transform.position, enemyManager.detectionRadius, detectionLayer);
         for (int i = 0; i < colliders.Length; i++)
         {
             CharacterStats characterStats = colliders[i].transform.GetComponent<CharacterStats>();
-
-            if (characterStats != null && characterStats.currHealth>0)
+            Vector3 targetDir = new Vector3(characterStats.eyePos.position.x - enemyStats.eyePos.transform.position.x, characterStats.eyePos.position.y- enemyStats.eyePos.transform.position.y, characterStats.eyePos.position.z - enemyStats.eyePos.transform.position.z);
+            float distance = Vector3.Distance(enemyStats.eyePos.transform.position, characterStats.eyePos.position);
+            bool hitInfo = Physics.Raycast(enemyStats.eyePos.position, targetDir, distance, blockingLayer);
+            if (characterStats != null && characterStats.currHealth>0 && !hitInfo)
             {
                 //Check Character ID
                 Vector3 targetDirection = characterStats.transform.position - transform.position;
@@ -213,5 +229,4 @@ public class IdleState : State
             enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed);
         }
     }
-
 }

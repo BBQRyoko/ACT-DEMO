@@ -9,7 +9,6 @@ public class PlayerStats : CharacterStats
     public HealthBar healthBar;
     public StaminaBar staminaBar;
     PlayerAttacker playerAttacker;
-
     AnimatorManager animatorManager;
 
     private void Awake()
@@ -33,11 +32,12 @@ public class PlayerStats : CharacterStats
         healthBar.SetCurrentHealth(currHealth);
     }
 
-    public void TakeDamage(int damage, Vector3 collisionDirection, bool isBoss, int forceType = 0) 
+    public void TakeDamage(int damage, Vector3 collisionDirection, bool isBoss) 
     {
         float viewableAngle = Vector3.SignedAngle(collisionDirection, playerManager.transform.forward, Vector3.up);
         currHealth = currHealth - damage;
         healthBar.SetCurrentHealth(currHealth);
+
         if (inputManager.spAttack_Input) 
         {
             inputManager.spAttack_Input = false;
@@ -63,25 +63,11 @@ public class PlayerStats : CharacterStats
             }
             else if (viewableAngle >= -90 && viewableAngle <= 0)
             {
-                if (forceType == 0)
-                {
-                    animatorManager.PlayTargetAnimation("Hit_F", true, true);
-                }
-                else if (forceType == 2) 
-                {
-                    animatorManager.PlayTargetAnimation("Hit_Large", true, true);
-                }
+                animatorManager.PlayTargetAnimation("Hit_F", true, true);
             }
             else if (viewableAngle <= 90 && viewableAngle > 0)
             {
-                if (forceType == 0)
-                {
-                    animatorManager.PlayTargetAnimation("Hit_F", true, true);
-                }
-                else if (forceType == 2)
-                {
-                    animatorManager.PlayTargetAnimation("Hit_Large", true, true);
-                }
+                animatorManager.PlayTargetAnimation("Hit_F", true, true);
             }
         }
         
@@ -94,7 +80,6 @@ public class PlayerStats : CharacterStats
         currStamina = currStamina - cost;
         staminaBar.SetCurrentStamina(currStamina);
     }
-
     public void StaminaRegen()
     {
         if (!playerManager.isInteracting && !playerManager.isSprinting && currStamina < maxStamina)

@@ -29,6 +29,7 @@ public class CameraManager : MonoBehaviour
     public float maxPivotAngle = 35;
 
     //锁定系统
+    public LayerMask visionBlockLayer;
     public Transform currentLockOnTarget;
     public Image lockOnPrefab;
     Image lockOnMark;
@@ -157,7 +158,7 @@ public class CameraManager : MonoBehaviour
     {
         float shortestDistance = Mathf.Infinity;
 
-        Collider[] colliders = Physics.OverlapSphere(targetTransform.position, 26);
+        Collider[] colliders = Physics.OverlapSphere(targetTransform.position, 20);
 
         for (int i = 0; i < colliders.Length; i++)
         {
@@ -171,7 +172,15 @@ public class CameraManager : MonoBehaviour
 
                 if (character.transform.root != targetTransform.transform.root && viewableAngle > -50 && viewableAngle < 50 && distanceFromTarget <= maxLockOnDistance)
                 {
-                    availableTarget.Add(character);
+                    PlayerStats playerStats = inputManager.GetComponent<PlayerStats>();
+                    EnemyStats enemyStats = character.GetComponent<EnemyStats>();
+                    Vector3 targetDir = new Vector3(enemyStats.eyePos.position.x - playerStats.eyePos.transform.position.x, enemyStats.eyePos.position.y - playerStats.eyePos.transform.position.y, enemyStats.eyePos.position.z - playerStats.eyePos.transform.position.z);
+                    float distance = Vector3.Distance(playerStats.eyePos.transform.position, enemyStats.eyePos.position);
+                    bool hitInfo = Physics.Raycast(playerStats.eyePos.position, targetDir, distance, visionBlockLayer);
+                    if (!hitInfo) 
+                    {
+                        availableTarget.Add(character);
+                    }
                 }
             }
         }
@@ -213,11 +222,13 @@ public class CameraManager : MonoBehaviour
         if (!currentLockOnTarget)
         {
             lockOnMark.gameObject.SetActive(false);
+            inputManager.GetComponent<PlayerManager>().target = inputManager.GetComponent<PlayerManager>().nullTarget;
         }
         else 
         {
             lockOnMark.gameObject.SetActive(true);
-            lockOnMark.transform.position = Camera.main.WorldToScreenPoint(new Vector3(currentLockOnTarget.position.x, currentLockOnTarget.position.y + 1f, currentLockOnTarget.position.z));
+            lockOnMark.transform.position = Camera.main.WorldToScreenPoint(new Vector3(currentLockOnTarget.position.x, currentLockOnTarget.position.y, currentLockOnTarget.position.z));
+            inputManager.GetComponent<PlayerManager>().target = currentLockOnTarget;
         }
     }
     public void HandleExecutingMark()

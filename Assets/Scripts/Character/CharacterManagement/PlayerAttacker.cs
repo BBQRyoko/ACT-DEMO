@@ -47,13 +47,14 @@ public class PlayerAttacker : MonoBehaviour
         if (!playerManager.cantBeInterrupted && playerManager.isGround && !playerManager.isGettingDamage) 
         {
             playerLocmotion.HandleRotateTowardsTarger();
-            playerManager.cantBeInterrupted = true;
-            animatorManager.animator.SetBool("isAttacking", true);
-            attackTimer = internalDuration;
 
             //可处决
             if (executionTarget) //无消耗
             {
+                playerManager.cantBeInterrupted = true;
+                animatorManager.animator.SetBool("isAttacking", true);
+                attackTimer = internalDuration;
+
                 if (!executionTarget.isWeak) //背刺
                 {
                     animatorManager.PlayTargetAnimation(weapon.executionSkill[0].skillName, true, true); //处决
@@ -68,6 +69,7 @@ public class PlayerAttacker : MonoBehaviour
                     executionTarget.getingExecute = true;
                     executionTarget.HandleExecuted(weapon.executionSkill[3].skillName);
                 }
+                executionTarget = null;
                 //sample_VFX_R.curVFX_List[comboCount - 1].Play();
             }
             //普通攻击
@@ -78,12 +80,23 @@ public class PlayerAttacker : MonoBehaviour
                 {
                     comboCount = 1;
                 }
-                //播放指定的攻击动画
-                animatorManager.PlayTargetAnimation(weapon.regularSkills[comboCount - 1].skillName, true, true);
-                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint;
-                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
-                playerManager.GetComponent<PlayerStats>().currStamina -= weapon.regularSkills[comboCount - 1].staminaCost;
-                //sample_VFX_R.curVFX_List[comboCount - 1].Play();
+                //检测是否有足够的体力释放
+                if (playerManager.GetComponent<PlayerStats>().currStamina >= weapon.regularSkills[comboCount - 1].staminaCost - 15f)
+                {
+                    playerManager.cantBeInterrupted = true;
+                    animatorManager.animator.SetBool("isAttacking", true);
+                    attackTimer = internalDuration;
+                    //播放指定的攻击动画
+                    animatorManager.PlayTargetAnimation(weapon.regularSkills[comboCount - 1].skillName, true, true);
+                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint;
+                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                    playerManager.GetComponent<PlayerStats>().currStamina -= weapon.regularSkills[comboCount - 1].staminaCost;
+                    //sample_VFX_R.curVFX_List[comboCount - 1].Play();
+                }
+                else 
+                {
+                    comboCount--;
+                }
             }
         }
     }

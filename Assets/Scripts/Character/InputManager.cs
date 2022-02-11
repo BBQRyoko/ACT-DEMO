@@ -196,7 +196,6 @@ public class InputManager : MonoBehaviour
             playerManager.isHolding = false;
         }
     }
-
     private void HandleInteractInput() 
     {
         if (interact_Input) 

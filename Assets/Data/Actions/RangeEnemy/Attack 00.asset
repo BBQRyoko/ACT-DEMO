@@ -23,4 +23,4 @@ MonoBehaviour:
   minAttackAngle: -90
   minDistanceNeedToAttack: 9
   maxDistanceNeedToAttack: 18
-  isImmune: 0
+  isImmune: 1

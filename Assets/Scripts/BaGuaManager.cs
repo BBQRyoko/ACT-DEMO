@@ -7,6 +7,7 @@ public class BaGuaManager : MonoBehaviour
 {
     PlayerManager playerManager;
     PlayerStats playerStats;
+    AnimatorManager animatorManager;
     [SerializeField] GameObject BaGuaZhen;
     Sample_VFX sample_VFX_Ability;
     InputManager inputManager;
@@ -20,7 +21,6 @@ public class BaGuaManager : MonoBehaviour
     [SerializeField] Image energyGuage_1;
     [SerializeField] Image energyGuage_2;
     [SerializeField] Image energyGuage_3;
-
 
     public Vector2 curPos;
     public GameObject realPiviot;
@@ -39,14 +39,13 @@ public class BaGuaManager : MonoBehaviour
         playerManager = GetComponent<PlayerManager>();
         playerStats = GetComponent<PlayerStats>();
         inputManager = GetComponent<InputManager>();
+        animatorManager = GetComponentInChildren<AnimatorManager>();
         sample_VFX_Ability = GetComponentInChildren<Sample_VFX>();
         curPos = realPiviot.transform.position;
     }
-
     void Update()
     {
         EnergySourceControl();
-
         if (inputManager.baGua_Input && !isCommandActive)
         {
             BaGuaZhen.SetActive(true);
@@ -156,7 +155,7 @@ public class BaGuaManager : MonoBehaviour
                 if (energyGuage >= 1) 
                 {
                     sample_VFX_Ability.curVFX_List[0].Play();
-                    playerStats.currHealth += 20;
+                    playerStats.currHealth += 60;
                     playerStats.healthBar.SetCurrentHealth(playerStats.currHealth);
                     energyGuage -= 1;
                 }
@@ -165,7 +164,8 @@ public class BaGuaManager : MonoBehaviour
             {
                 if (energyGuage >= 1)
                 {
-                    Debug.Log("FireBall");
+                    animatorManager.PlayTargetAnimation("FireBall", true, true);
+                    energyGuage -= 1;
                 }
             }
             else if (commandString == "732" && immuUnlock)

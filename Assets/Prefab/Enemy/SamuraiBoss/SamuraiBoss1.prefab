@@ -29,7 +29,7 @@ Transform:
   m_LocalScale: {x: 0.6666667, y: 0.6666667, z: 0.6666667}
   m_Children: []
   m_Father: {fileID: 8567083513710098914}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2226617472389120317
 MonoBehaviour:
@@ -113,7 +113,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8567083513710098914}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &2226617473162146842
 AudioSource:
@@ -302,7 +302,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8567083513710098914}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4025204121257846700
 MeshFilter:
@@ -481,6 +481,26 @@ PrefabInstance:
       propertyPath: attackAudio
       value: 
       objectReference: {fileID: 2226617473162146842}
+    - target: {fileID: 526451917340543513, guid: 937a8db5ddee21243afe62e61b4cddc2, type: 3}
+      propertyPath: m_Speed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 526451917340543513, guid: 937a8db5ddee21243afe62e61b4cddc2, type: 3}
+      propertyPath: m_Radius
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 526451917340543513, guid: 937a8db5ddee21243afe62e61b4cddc2, type: 3}
+      propertyPath: m_Acceleration
+      value: 10000
+      objectReference: {fileID: 0}
+    - target: {fileID: 526451917340543513, guid: 937a8db5ddee21243afe62e61b4cddc2, type: 3}
+      propertyPath: m_AngularSpeed
+      value: 360
+      objectReference: {fileID: 0}
+    - target: {fileID: 526451917340543513, guid: 937a8db5ddee21243afe62e61b4cddc2, type: 3}
+      propertyPath: m_WalkableMask
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1208374042252905404, guid: 937a8db5ddee21243afe62e61b4cddc2, type: 3}
       propertyPath: m_CollisionDetection
       value: 3
@@ -689,6 +709,10 @@ PrefabInstance:
       propertyPath: conditionList.Array.data[3]
       value: 
       objectReference: {fileID: 11400000, guid: 7c0ea234c211b1144ab90caf97235c02, type: 2}
+    - target: {fileID: 7870899128272468569, guid: 937a8db5ddee21243afe62e61b4cddc2, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 8703184365328465484, guid: 937a8db5ddee21243afe62e61b4cddc2, type: 3}
       propertyPath: m_Controller
       value: 

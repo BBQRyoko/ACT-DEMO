@@ -30,6 +30,7 @@ public class PursueState : State
         if (enemyManager.isPreformingAction) 
         {
             enemyAnimatorManager.animator.SetFloat("Vertical", 0,0.1f, Time.deltaTime);
+            enemyManager.navMeshAgent.enabled = false;
             return this;
         }
 
@@ -52,15 +53,15 @@ public class PursueState : State
 
         }
 
-        //貌似用不到
-        //enemyManager.navMeshAgent.transform.localPosition = Vector3.zero;
-        //enemyManager.navMeshAgent.transform.localRotation = Quaternion.identity;
+        enemyManager.navMeshAgent.transform.localPosition = Vector3.zero;
+        enemyManager.navMeshAgent.transform.localRotation = Quaternion.identity;
 
         //一会儿根据距离和攻击再改
         if (!enemyManager.isFirstStrike)
         {
             if (distanceFromTarget <= enemyManager.maxCombatRange) //追到目标
             {
+                combatStanceState.walkingTimer = 0.5f;
                 return combatStanceState;
             }
             else if (distanceFromTarget >= enemyManager.pursueMaxDistance) //丢失目标, 回到待机态
@@ -89,16 +90,29 @@ public class PursueState : State
 
     public void HandleRotateTowardsTarger(EnemyManager enemyManager) //转向目标玩家单位(瞬间转向, 无转向动画)
     {
-        Vector3 direction = enemyManager.curTarget.transform.position - transform.position;
-        direction.y = 0;
-        direction.Normalize();
-
-        if (direction == Vector3.zero)
+        if (enemyManager.isPreformingAction)
         {
-            direction = transform.forward;
-        }
+            Vector3 direction = enemyManager.curTarget.transform.position - transform.position;
+            direction.y = 0;
+            direction.Normalize();
 
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
-        enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed);
+            if (direction == Vector3.zero)
+            {
+                direction = transform.forward;
+            }
+
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed);
+        }
+        else 
+        {
+            Vector3 relativeDirection = transform.InverseTransformDirection(enemyManager.navMeshAgent.desiredVelocity);
+            Vector3 targetVelocity = enemyManager.enemyRig.velocity;
+
+            enemyManager.navMeshAgent.enabled = true;
+            enemyManager.navMeshAgent.SetDestination(enemyManager.curTarget.transform.position);
+            enemyManager.enemyRig.velocity = targetVelocity;
+            enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, enemyManager.navMeshAgent.transform.rotation, enemyManager.rotationSpeed);
+        }
     }
 }

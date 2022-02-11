@@ -61,6 +61,7 @@ public class EnemyManager : CharacterManager
     public float detectionRadius = 10;
     public float minCombatRange = 3f;
     public float maxCombatRange = 3f;
+    public float combatPursueStartRange = 6f;
     public float pursueMaxDistance = 25;
 
     public float maxDetectionAngle = 70;
@@ -103,6 +104,7 @@ public class EnemyManager : CharacterManager
     }
     private void Update()
     {
+        //DistanceCheck
         HandleRecoveryTimer();
         AmbushEnemy();
         ExecutedArea();
@@ -112,6 +114,7 @@ public class EnemyManager : CharacterManager
         canRotate = enemyAnimatorManager.animator.GetBool("canRotate");
         if (isDead)
         {
+            curTarget = null;
             enemyRig.isKinematic = true;
             collider_Self.enabled = false;
             collider_Combat.enabled = false;
@@ -161,6 +164,7 @@ public class EnemyManager : CharacterManager
     private void LateUpdate()
     {
         isInteracting = enemyAnimatorManager.animator.GetBool("isInteracting");
+        isPreformingAction = isInteracting;
         isWeak = enemyAnimatorManager.animator.GetBool("isWeak");
     }
     private void HandleStateMachine() //单位状态机管理
@@ -277,7 +281,7 @@ public class EnemyManager : CharacterManager
             }
             else
             {
-                executedArea.GetComponent<Collider>().enabled = true;
+                //executedArea.GetComponent<Collider>().enabled = true;
                 canBeExecuted = true;
             }
         }
@@ -302,7 +306,6 @@ public class EnemyManager : CharacterManager
     }
     private void OnDrawGizmosSelected()
     {
-
             //听力范围
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(transform.position, hearRadius);
@@ -314,8 +317,7 @@ public class EnemyManager : CharacterManager
             Gizmos.DrawWireSphere(transform.position, detectionRadius);
             //攻击范围
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, maxCombatRange);
-        
+            Gizmos.DrawWireSphere(transform.position, maxCombatRange);    
     }
 
 }

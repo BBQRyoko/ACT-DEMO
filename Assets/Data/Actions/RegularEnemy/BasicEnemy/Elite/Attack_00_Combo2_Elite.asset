@@ -15,10 +15,10 @@ MonoBehaviour:
   actionAnimation: Combo_00
   isSpecial: 0
   isFlyingObject: 0
-  damagePoint: 25
-  attakPriority: 6
-  recoveryTime: 4
-  independtCooldown: 5
+  damagePoint: 20
+  attakPriority: 5
+  recoveryTime: 3.5
+  independtCooldown: 6
   maxAttackAngle: 45
   minAttackAngle: -45
   minDistanceNeedToAttack: 0
