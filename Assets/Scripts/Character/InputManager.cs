@@ -153,7 +153,7 @@ public class InputManager : MonoBehaviour
     {
         if (reAttack_Input) 
         {
-            if (!playerManager.isWeaponEquipped)
+            if (!playerManager.isWeaponEquipped && playerManager)
             {
                 playerManager.weaponEquiping();
             }

@@ -226,9 +226,10 @@ public class CameraManager : MonoBehaviour
         }
         else 
         {
+            EnemyManager enemyManager = currentLockOnTarget.gameObject.GetComponentInParent<EnemyManager>();
             lockOnMark.gameObject.SetActive(true);
-            lockOnMark.transform.position = Camera.main.WorldToScreenPoint(new Vector3(currentLockOnTarget.position.x, currentLockOnTarget.position.y, currentLockOnTarget.position.z));
-            inputManager.GetComponent<PlayerManager>().target = currentLockOnTarget;
+            lockOnMark.transform.position = Camera.main.WorldToScreenPoint(new Vector3(enemyManager.targetMarkTransform.position.x, enemyManager.targetMarkTransform.position.y, enemyManager.targetMarkTransform.position.z));
+            inputManager.GetComponent<PlayerManager>().target = enemyManager.targetMarkTransform;
         }
     }
     public void HandleExecutingMark()
@@ -243,8 +244,9 @@ public class CameraManager : MonoBehaviour
             {
                 if (curExuectionTarget.GetComponentInParent<EnemyManager>().canBeExecuted)
                 {
+                    EnemyManager enemyManager = curExuectionTarget.GetComponentInParent<EnemyManager>();
                     executeMark.gameObject.SetActive(true);
-                    executeMark.transform.position = Camera.main.WorldToScreenPoint(new Vector3(curExuectionTarget.position.x, curExuectionTarget.position.y + 1f, curExuectionTarget.position.z));
+                    executeMark.transform.position = Camera.main.WorldToScreenPoint(new Vector3(enemyManager.targetMarkTransform.position.x, enemyManager.targetMarkTransform.position.y, enemyManager.targetMarkTransform.position.z));
                 }
                 else
                 {

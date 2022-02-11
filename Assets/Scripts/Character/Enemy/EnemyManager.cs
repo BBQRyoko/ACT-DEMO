@@ -10,6 +10,7 @@ public class EnemyManager : CharacterManager
     EnemyAnimatorManager enemyAnimatorManager;
     EnemyStats enemyStats;
 
+    public Transform targetMarkTransform;
     public Rigidbody enemyRig;
     public CapsuleCollider collider_Self;
     public CapsuleCollider collider_Combat;
