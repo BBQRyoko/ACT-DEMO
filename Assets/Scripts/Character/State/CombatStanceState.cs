@@ -47,9 +47,12 @@ public class CombatStanceState : State
 
         if (distanceFromTarget > enemyManager.combatPursueStartRange && !enemyManager.isFirstStrike)//距离大于攻击范围后退回追踪状态
         {
-            if (enemyManager.firstStrikeTimer <= 0 && conditionList[0].condition == SpecialCondition.conditionType.先制型)
+            if (conditionList.Count != 0) 
             {
-                enemyManager.isFirstStrike = true;
+                if (enemyManager.firstStrikeTimer <= 0 && conditionList[0].condition == SpecialCondition.conditionType.先制型)
+                {
+                    enemyManager.isFirstStrike = true;
+                }
             }
             return pursueState;
         }

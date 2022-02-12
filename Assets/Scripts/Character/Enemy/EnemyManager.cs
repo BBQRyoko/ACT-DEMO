@@ -18,6 +18,7 @@ public class EnemyManager : CharacterManager
     public State curState;
     public CharacterStats curTarget;
     CombatCooldownManager combatCooldownManager;
+    CombatStanceState combatStanceState;
 
     [SerializeField] GameObject backStabArea;
     [SerializeField] GameObject executedArea;
@@ -90,6 +91,7 @@ public class EnemyManager : CharacterManager
         navMeshAgent = GetComponentInChildren<NavMeshAgent>();
         enemyRig = GetComponent<Rigidbody>();
         combatCooldownManager = GetComponentInChildren<CombatCooldownManager>();
+        combatStanceState = GetComponentInChildren<CombatStanceState>();
         navMeshAgent.enabled = false;
     }
     private void Start()

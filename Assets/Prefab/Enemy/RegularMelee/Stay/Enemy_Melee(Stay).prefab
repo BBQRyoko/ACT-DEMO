@@ -1674,6 +1674,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1079706000, guid: d406cc0f0b0cb5f4bbf0140545b4f1b4, type: 3}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
+      propertyPath: combatPursueStartRange
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: defaultFirstStrikeTime
       value: 10
       objectReference: {fileID: 0}
