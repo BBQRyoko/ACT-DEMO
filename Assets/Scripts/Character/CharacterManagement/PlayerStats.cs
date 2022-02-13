@@ -11,6 +11,9 @@ public class PlayerStats : CharacterStats
     PlayerAttacker playerAttacker;
     AnimatorManager animatorManager;
 
+    [SerializeField] Transform regularPos;
+    [SerializeField] Transform crouchPos;
+
     private void Awake()
     {
         inputManager = GetComponent<InputManager>();
@@ -30,8 +33,19 @@ public class PlayerStats : CharacterStats
     private void Update()
     {
         healthBar.SetCurrentHealth(currHealth);
+        HandleEyePos();
     }
-
+    void HandleEyePos() 
+    {
+        if (!playerManager.isCrouching)
+        {
+            eyePos = regularPos;
+        }
+        else 
+        {
+            eyePos = crouchPos;
+        }
+    }
     public void TakeDamage(int damage, Vector3 collisionDirection, bool isBoss) 
     {
         float viewableAngle = Vector3.SignedAngle(collisionDirection, playerManager.transform.forward, Vector3.up);

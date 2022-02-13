@@ -573,7 +573,6 @@ public class PlayerLocmotion : MonoBehaviour
                 }
                 else 
                 {
-                    playerManager.isCrouching = false;
                     animatorManager.PlayTargetAnimation("RegularRolling", true, true);
                     playerStats.CostStamina(rollStaminaCost);
                 }

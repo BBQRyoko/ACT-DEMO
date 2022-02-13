@@ -13,7 +13,7 @@ public class IdleState : State
 
 
     [Header("待机专属")]
-    [SerializeField] float defaultRotatePeriod = 7f;
+    [SerializeField] float defaultRotatePeriod = 3.5f;
     float rotateTimer;
     public float alertTimer; //之后还要加进度条
 
@@ -213,7 +213,7 @@ public class IdleState : State
                 }
                 else
                 {
-                    enemyManager.GetComponentInChildren<EnemyAnimatorManager>().PlayTargetAnimationWithRootRotation("TurnRight90", true);
+                    enemyManager.GetComponentInChildren<EnemyAnimatorManager>().PlayTargetAnimationWithRootRotation("Turn180", true);
                     rotateTimer = defaultRotatePeriod;
                 }
             }
