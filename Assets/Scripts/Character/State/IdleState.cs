@@ -15,7 +15,6 @@ public class IdleState : State
     [Header("待机专属")]
     [SerializeField] float defaultRotatePeriod = 3.5f;
     float rotateTimer;
-    public float alertTimer; //之后还要加进度条
 
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
     {
@@ -43,8 +42,6 @@ public class IdleState : State
 
             HandleRotateTowardsTarger(enemyManager);
 
-            //定期转向90°
-            //后续添加
             enemyManager.navMeshAgent.transform.localPosition = Vector3.zero;
             enemyManager.navMeshAgent.transform.localRotation = Quaternion.identity;
         }
@@ -80,7 +77,7 @@ public class IdleState : State
             enemyManager.navMeshAgent.transform.localRotation = Quaternion.identity;
         }
 
-        #region 敌人周遭影响设置
+        #region 敌人听力影响设置
         Collider[] hearCollider = Physics.OverlapSphere(enemyManager.transform.position, enemyManager.hearRadius, hearingLayer);
         for (int i = 0; i < hearCollider.Length; i++)
         {
@@ -88,9 +85,9 @@ public class IdleState : State
 
             if (enemyManager1 != null && enemyManager1.curTarget != null && !enemyManager1.curTarget.GetComponent<PlayerManager>().isDead)
             {
-                PlayerStats playerStats = enemyManager1.curTarget.GetComponent<PlayerStats>();
-                Vector3 targetDir = new Vector3(playerStats.eyePos.position.x - enemyStats.eyePos.transform.position.x, playerStats.eyePos.position.y - enemyStats.eyePos.transform.position.y, playerStats.eyePos.position.z - enemyStats.eyePos.transform.position.z);
-                float distance = Vector3.Distance(enemyStats.eyePos.transform.position, playerStats.eyePos.position);
+                EnemyStats enemyStats1 = enemyManager1.GetComponent<EnemyStats>();
+                Vector3 targetDir = new Vector3(enemyStats1.eyePos.position.x - enemyStats.eyePos.transform.position.x, enemyStats1.eyePos.position.y - enemyStats.eyePos.transform.position.y, enemyStats1.eyePos.position.z - enemyStats.eyePos.transform.position.z);
+                float distance = Vector3.Distance(enemyStats.eyePos.transform.position, enemyStats1.eyePos.position);
                 bool hitInfo = Physics.Raycast(enemyStats.eyePos.position, targetDir, distance, blockingLayer);
                 if (!hitInfo) 
                 {
@@ -109,7 +106,7 @@ public class IdleState : State
             float distance = Vector3.Distance(enemyStats.eyePos.transform.position, characterStats.eyePos.position);
             bool hitInfo = Physics.Raycast(enemyStats.eyePos.position, targetDir, distance, blockingLayer);
 
-            if (characterStats != null && !hitInfo)
+            if (characterStats != null && characterStats.currHealth > 0 && !hitInfo && !characterStats.GetComponent<PlayerManager>().isInGrass)
             {
                 //Check Character ID
                 Vector3 targetDirection = characterStats.transform.position - transform.position;
@@ -117,9 +114,9 @@ public class IdleState : State
 
                 if (viewableAngle > enemyManager.minDetectionAngle && viewableAngle < enemyManager.maxDetectionAngle)
                 {
-                    if (alertTimer < 5)
+                    if (enemyManager.alertTimer < 5)
                     {
-                        alertTimer += Time.deltaTime;
+                        enemyManager.alertTimer += Time.deltaTime;
                     }
                     else
                     {
@@ -128,26 +125,38 @@ public class IdleState : State
                 }
                 else
                 {
-                    if (alertTimer > 0)
+                    if (enemyManager.alertTimer > 0)
                     {
-                        alertTimer -= Time.deltaTime;
+                        enemyManager.alertTimer -= Time.deltaTime;
                     }
                     else
                     {
-                        alertTimer = 0;
+                        enemyManager.alertTimer = 0;
                     }
                 }
             }
             else
             {
-                if (alertTimer > 0)
+                if (enemyManager.alertTimer > 0)
                 {
-                    alertTimer -= Time.deltaTime;
+                    enemyManager.alertTimer -= Time.deltaTime;
                 }
                 else
                 {
-                    alertTimer = 0;
+                    enemyManager.alertTimer = 0;
                 }
+            }
+        }
+
+        if (alertCollider.Length <= 0) 
+        {
+            if (enemyManager.alertTimer > 0)
+            {
+                enemyManager.alertTimer -= Time.deltaTime;
+            }
+            else
+            {
+                enemyManager.alertTimer = 0;
             }
         }
         #endregion
@@ -160,7 +169,7 @@ public class IdleState : State
             Vector3 targetDir = new Vector3(characterStats.eyePos.position.x - enemyStats.eyePos.transform.position.x, characterStats.eyePos.position.y- enemyStats.eyePos.transform.position.y, characterStats.eyePos.position.z - enemyStats.eyePos.transform.position.z);
             float distance = Vector3.Distance(enemyStats.eyePos.transform.position, characterStats.eyePos.position);
             bool hitInfo = Physics.Raycast(enemyStats.eyePos.position, targetDir, distance, blockingLayer);
-            if (characterStats != null && characterStats.currHealth>0 && !hitInfo)
+            if (characterStats != null && characterStats.currHealth>0 && !hitInfo && !characterStats.GetComponent<PlayerManager>().isInGrass)
             {
                 //Check Character ID
                 Vector3 targetDirection = characterStats.transform.position - transform.position;
@@ -181,6 +190,7 @@ public class IdleState : State
             {
                 enemyAnimatorManager.PlayTargetAnimation("Equip", true, true);
             }
+            enemyManager.alertTimer = 0;
             enemyAnimatorManager.animator.SetFloat("Horizontal", 0, 0.1f, Time.deltaTime);
             return pursueState; //当发现目标后, 进入追踪模式
         }
@@ -192,11 +202,16 @@ public class IdleState : State
     }
     public void HandleRotateTowardsTarger(EnemyManager enemyManager) //朝着设置的目标点进行移动
     {
-        //定期转向90°
-        //后续添加
         Vector3 direction = enemyManager.patrolPos[enemyManager.curPatrolIndex].position - transform.position;
         direction.y = 0;
         direction.Normalize();
+
+
+        Vector3 targetDirection = enemyManager.patrolPos[enemyManager.curPatrolIndex].position - enemyManager.transform.position;
+        float distanceFromTarget = Vector3.Distance(enemyManager.patrolPos[enemyManager.curPatrolIndex].position, enemyManager.transform.position);
+
+        Vector3 relativeDirection = transform.InverseTransformDirection(enemyManager.navMeshAgent.desiredVelocity);
+        Vector3 targetVelocity = enemyManager.enemyRig.velocity;
 
         if (direction == Vector3.zero)
         {
@@ -205,7 +220,7 @@ public class IdleState : State
 
         if (enemyManager.idleType == EnemyManager.IdleType.Stay) //站岗类专属的原地旋转
         {
-            if (!enemyManager.curTarget && alertTimer <= 0) //在非警戒状态才会转
+            if (!enemyManager.curTarget && enemyManager.alertTimer <= 0) //在非警戒状态才会转
             {
                 if (rotateTimer > 0)
                 {
@@ -219,14 +234,34 @@ public class IdleState : State
             }
             else
             {
-                Quaternion targetRotation = Quaternion.LookRotation(direction);
-                enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed);
+                if (distanceFromTarget > 1f)
+                {
+                    enemyManager.navMeshAgent.enabled = true;
+                    enemyManager.navMeshAgent.SetDestination(enemyManager.patrolPos[enemyManager.curPatrolIndex].position);
+                    enemyManager.enemyRig.velocity = targetVelocity;
+                    enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, enemyManager.navMeshAgent.transform.rotation, enemyManager.rotationSpeed);
+                }
+                else
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(direction);
+                    enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed);
+                }
             }
         }
         else 
         {
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed);
+            if (distanceFromTarget > 1f)
+            {
+                enemyManager.navMeshAgent.enabled = true;
+                enemyManager.navMeshAgent.SetDestination(enemyManager.patrolPos[enemyManager.curPatrolIndex].position);
+                enemyManager.enemyRig.velocity = targetVelocity;
+                enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, enemyManager.navMeshAgent.transform.rotation, enemyManager.rotationSpeed);
+            }
+            else
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed);
+            }
         }
     }
 }

@@ -46,13 +46,13 @@ public class PlayerStats : CharacterStats
             eyePos = crouchPos;
         }
     }
-    public void TakeDamage(int damage, Vector3 collisionDirection, bool isBoss) 
+    public void TakeDamage(int damage, Vector3 collisionDirection, bool isHeavy = false)
     {
         float viewableAngle = Vector3.SignedAngle(collisionDirection, playerManager.transform.forward, Vector3.up);
         currHealth = currHealth - damage;
         healthBar.SetCurrentHealth(currHealth);
 
-        if (inputManager.spAttack_Input) 
+        if (inputManager.spAttack_Input)
         {
             inputManager.spAttack_Input = false;
             playerManager.isCharging = false;
@@ -64,24 +64,30 @@ public class PlayerStats : CharacterStats
             animatorManager.PlayTargetAnimation("Dead", true, true);
             playerManager.isDead = true;
         }
-        else 
+        else
         {
             //Direction
-            if (viewableAngle >= 91 && viewableAngle <= 180)
+            if ((viewableAngle >= 91 && viewableAngle <= 180) || (viewableAngle <= -91 && viewableAngle >= -180))
             {
-                animatorManager.PlayTargetAnimation("Hit_B", true, true);
+                if (!isHeavy)
+                {
+                    animatorManager.PlayTargetAnimation("Hit_B", true, true);
+                }
+                else 
+                {
+                    animatorManager.PlayTargetAnimation("Hit_Large", true, true);
+                }
             }
-            else if (viewableAngle <= -91 && viewableAngle >= -180)
+            else if ((viewableAngle >= -90 && viewableAngle <= 0) || (viewableAngle <= 90 && viewableAngle > 0))
             {
-                animatorManager.PlayTargetAnimation("Hit_B", true, true);
-            }
-            else if (viewableAngle >= -90 && viewableAngle <= 0)
-            {
-                animatorManager.PlayTargetAnimation("Hit_F", true, true);
-            }
-            else if (viewableAngle <= 90 && viewableAngle > 0)
-            {
-                animatorManager.PlayTargetAnimation("Hit_F", true, true);
+                if (!isHeavy)
+                {
+                    animatorManager.PlayTargetAnimation("Hit_F", true, true);
+                }
+                else
+                {
+                    animatorManager.PlayTargetAnimation("Hit_Large", true, true);
+                }
             }
         }
         

@@ -27,5 +27,8 @@ MonoBehaviour:
   specialSkills:
   - {fileID: 11400000, guid: 71c9586be0c632b439579ddffb108ad9, type: 2}
   - {fileID: 11400000, guid: 7a67c7e10d085f34eb0aba4e401cae0d, type: 2}
+  executionSkill:
+  - {fileID: 11400000, guid: f90f86c172882ae4abd2ebfd2ac9ca98, type: 2}
+  - {fileID: 11400000, guid: c36de8873bf21034cba5505061b40da8, type: 2}
   weaponAbilities:
   - {fileID: 11400000, guid: 5c430d40cd64fe14e8b9739de8759dd4, type: 2}

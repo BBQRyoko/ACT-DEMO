@@ -10,6 +10,7 @@ public class Skill : ScriptableObject
     public int damagePoint;
     public int staminaCost = 15;
     public int energyRestore = 20;
+    public int pauseDuration = 10;
     //public Animation animation;
     public ParticleSystem[] VFXs;
     public AudioClip[] SFXs;

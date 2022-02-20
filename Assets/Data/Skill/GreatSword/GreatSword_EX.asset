@@ -17,5 +17,6 @@ MonoBehaviour:
   damagePoint: 100
   staminaCost: 10
   energyRestore: 60
+  pauseDuration: 10
   VFXs: []
   SFXs: []

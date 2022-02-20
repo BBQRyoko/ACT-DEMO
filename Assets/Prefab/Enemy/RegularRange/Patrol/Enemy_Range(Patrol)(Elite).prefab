@@ -253,10 +253,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isFlyingObject: 0
+  isPlayerDamage: 0
   enemyManager: {fileID: 0}
   curDamage: 10
   hitFactor: 5
-  damageForceType: 2
 --- !u!1 &6953036982874413603
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,7 +362,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1319256239392257522
 Transform:
   m_ObjectHideFlags: 0

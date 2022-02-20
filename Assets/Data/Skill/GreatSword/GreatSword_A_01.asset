@@ -14,5 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: WeaponAbility_01(Start)
   skillType: 0
+  damagePoint: 0
+  staminaCost: 15
+  energyRestore: 20
+  pauseDuration: 10
   VFXs: []
   SFXs: []

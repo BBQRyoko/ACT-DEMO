@@ -59,6 +59,7 @@ public class PlayerAttacker : MonoBehaviour
                 {
                     animatorManager.PlayTargetAnimation(weapon.executionSkill[0].skillName, true, true); //处决
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.executionSkill[0].damagePoint;
+                    animatorManager.pauseDuration = weapon.executionSkill[0].pauseDuration;
                     executionTarget.getingExecute = true;
                     executionTarget.HandleExecuted(weapon.executionSkill[1].skillName);
                 }
@@ -66,6 +67,7 @@ public class PlayerAttacker : MonoBehaviour
                 {
                     animatorManager.PlayTargetAnimation(weapon.executionSkill[0].skillName, true, true); //处决
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.executionSkill[2].damagePoint;
+                    animatorManager.pauseDuration = weapon.executionSkill[2].pauseDuration;
                     executionTarget.getingExecute = true;
                     executionTarget.HandleExecuted(weapon.executionSkill[3].skillName);
                 }
@@ -90,6 +92,7 @@ public class PlayerAttacker : MonoBehaviour
                     animatorManager.PlayTargetAnimation(weapon.regularSkills[comboCount - 1].skillName, true, true);
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint;
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                    animatorManager.pauseDuration = weapon.regularSkills[comboCount - 1].pauseDuration;
                     playerManager.GetComponent<PlayerStats>().currStamina -= weapon.regularSkills[comboCount - 1].staminaCost;
                     //sample_VFX_R.curVFX_List[comboCount - 1].Play();
                 }

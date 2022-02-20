@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class EnemyManager : CharacterManager
 {
+    [SerializeField]CameraManager cameraManager;
     EnemyLocomotion enemyLocomotion;
     EnemyAnimatorManager enemyAnimatorManager;
     EnemyStats enemyStats;
@@ -59,6 +60,8 @@ public class EnemyManager : CharacterManager
     public float rotationSpeed = 0.8f;
     public float moveSpeed = 1f;
     public float alertRadius = 15;
+    public float alertTimer;
+    public bool alertIconSpawn;
     public float hearRadius = 20;
     public float detectionRadius = 10;
     public float minCombatRange = 3f;
@@ -85,6 +88,7 @@ public class EnemyManager : CharacterManager
 
     private void Awake()
     {
+        cameraManager = FindObjectOfType<CameraManager>();
         enemyLocomotion = GetComponent<EnemyLocomotion>();
         enemyAnimatorManager = GetComponentInChildren<EnemyAnimatorManager>();
         enemyStats = GetComponent<EnemyStats>();
@@ -112,13 +116,13 @@ public class EnemyManager : CharacterManager
         AmbushEnemy();
         ExecutedArea();
         HandleParryCollider();
+        HandleAlertIcon();
         ItemDrop();
         isRotatingWithRootMotion = enemyAnimatorManager.animator.GetBool("isRotatingWithRootMotion");
         canRotate = enemyAnimatorManager.animator.GetBool("canRotate");
         if (isDead)
         {
             curTarget = null;
-            enemyRig.isKinematic = true;
             collider_Self.enabled = false;
             collider_Combat.enabled = false;
             Destroy(gameObject.transform.parent.gameObject, 10f);
@@ -265,6 +269,21 @@ public class EnemyManager : CharacterManager
         if (ambushEnemy && !isEquipped)
         {
             enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().WeaponEquip();
+        }
+    }
+    void HandleAlertIcon() 
+    {
+        if (alertTimer > 0)
+        {
+            if (!alertIconSpawn) 
+            {
+                cameraManager.GenerateAlertIcon(this);
+                alertIconSpawn = true;
+            }
+        }
+        else 
+        {
+            alertIconSpawn = false;
         }
     }
     public void ExecutedArea()

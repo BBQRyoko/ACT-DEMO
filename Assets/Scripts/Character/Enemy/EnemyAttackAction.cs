@@ -7,8 +7,10 @@ public class EnemyAttackAction : EnemyAction
 {
     public bool isSpecial;
     public bool isFlyingObject;
+    public bool isHeavyKick;
 
     [Header("攻击基础参数")]
+    public bool isHeavyAttack;
     public int damagePoint = 10;
     public int attakPriority = 3;
     public float recoveryTime = 2;

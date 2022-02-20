@@ -26,7 +26,7 @@ public class ItemPickUp : InteractSystem
             playerManager.katanaUnlock = true;
             playerManager.GetComponent<PlayerInventory>().UnlockKatana();
             playerManager.GetComponentInChildren<WeaponSlotManager>().WeaponSwitch();
-            playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Equip", true, true);
+            playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("WeaponSwitch(Equip)", true, true);
             playerManager.isWeaponEquipped = true;
             Destroy(gameObject.transform.parent.gameObject);
         }

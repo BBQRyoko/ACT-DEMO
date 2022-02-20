@@ -12,6 +12,9 @@ public class AnimatorManager : MainAnimatorManager
     int horizontal;
     int vertical;
 
+    //Combat
+    public int pauseDuration;
+
     //VFX
     public Sample_VFX sample_VFX_S;
     public Sample_SFX sample_SFX;
@@ -121,7 +124,7 @@ public class AnimatorManager : MainAnimatorManager
                 if (playerManager.isHitting)
                 {
                     playerLocmotion.rig.velocity = new Vector3(0, playerLocmotion.rig.velocity.y, 0);
-                    StartCoroutine(Pause(10));
+                    StartCoroutine(Pause(pauseDuration));
                 }
                 else
                 {

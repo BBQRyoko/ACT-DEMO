@@ -24,8 +24,8 @@ TagManager:
   - Character
   - CharacterCollisionBlocker
   - Player
-  - 
-  - 
+  - SoundBlocker
+  - Grass
   - 
   - 
   - 

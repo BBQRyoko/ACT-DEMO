@@ -7,16 +7,19 @@ public class EnemyWeaponSlotManager : MonoBehaviour
     public EnemyManager enemyManager;
     public WeaponItem weaponItem;
     [SerializeField] GameObject UnequipWeapon;
+    WeaponSlot weaponSlot;
 
     [SerializeField] float distanceToTarget;
     [SerializeField] bool distanceCheck;
     public WeaponSlot equippedSlot;
     public DamageCollider weaponDamageCollider;
+    public DamageCollider kickDamagerCollider;
     public Damager flyingObjectDamager;
 
     private void Awake()
     {
         enemyManager = GetComponentInParent<EnemyManager>();
+        weaponSlot = GetComponentInChildren<WeaponSlot>();
         WeaponSlot[] weaponSlots = GetComponentsInChildren<WeaponSlot>();
         foreach (WeaponSlot weapon in weaponSlots)
         {
@@ -47,9 +50,17 @@ public class EnemyWeaponSlotManager : MonoBehaviour
     {
         weaponDamageCollider.EnableDamageCollider();
     }
-    private void CloseWeaponDamageCollider() //在animator里管理关闭武器伤害碰撞器
+    public void CloseWeaponDamageCollider() //在animator里管理关闭武器伤害碰撞器
     {
         weaponDamageCollider.DisableDamageCollider();
+    }
+    private void OpenKickDamageCollider() //在animator里管理开启武器伤害碰撞器
+    {
+        kickDamagerCollider.EnableDamageCollider();
+    }
+    private void CloseKickDamageCollider() //在animator里管理关闭武器伤害碰撞器
+    {
+        kickDamagerCollider.DisableDamageCollider();
     }
     private void CanComboDistanceCheck() 
     {
@@ -102,6 +113,8 @@ public class EnemyWeaponSlotManager : MonoBehaviour
         else 
         {
             equippedSlot.UnloadWeapon();
+            weaponDamageCollider = null;
+            Destroy(weaponSlot.currentWeaponModel.gameObject);
             enemyManager.isEquipped = false;
             if (UnequipWeapon != null)
             {

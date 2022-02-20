@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DamageCollider : MonoBehaviour
 {
+    //还是要设置攻击的类型
+    public bool isHeavyAttack;
     [SerializeField] CharacterManager characterManager;
     public EnemyManager enemyManager;
     public PlayerManager playerManager;
@@ -77,6 +79,7 @@ public class DamageCollider : MonoBehaviour
                 //音效处理
                 if (curDamage >= 5) 
                 {
+                    Debug.Log(isHeavyAttack);
                     attackAudio.volume = 0.2f;
                     int i = sample_SFX.blockedSFX_List.Length;
                     int random = Random.Range(0, i - 1);
@@ -121,10 +124,16 @@ public class DamageCollider : MonoBehaviour
             {
                 if (!playerStats.GetComponent<PlayerManager>().damageAvoid && !playerStats.GetComponent<PlayerManager>().isPerfect)
                 {
-                    playerStats.TakeDamage(curDamage, hitDirection, true);
+                    if (playerStats.GetComponent<PlayerManager>().isWeaponSwitching) 
+                    {
+                        playerManager.isWeaponSwitching = false;
+                        playerManager.WeaponSwitchTimerSetUp(25f);
+                    }
+                    playerStats.TakeDamage(curDamage, hitDirection, isHeavyAttack);
                 }
                 else if (playerStats.GetComponent<PlayerManager>().isPerfect) 
                 {
+                    damageCollider.enabled = false;
                     enemyManager.GetComponentInChildren<EnemyAnimatorManager>().PlayTargetAnimation("GetHit_Up", true, true);
                     playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("WeaponAbility_01(Success)", true, true);
                     playerManager.PerfectBlock();
@@ -162,7 +171,6 @@ public class DamageCollider : MonoBehaviour
             }
         }
     }
-
     private void OnTriggerExit(Collider collision)
     {
         if (collision.tag == "Enemy")
@@ -175,12 +183,10 @@ public class DamageCollider : MonoBehaviour
             }
         }
     }
-
     public void HitPause(int dur) 
     {
         StartCoroutine(Hitted(dur));
     }
-
     IEnumerator Hitted(int dur) 
     {
         float pauseTime = dur / 60f;

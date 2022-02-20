@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerManager : CharacterManager
 {
@@ -12,6 +13,7 @@ public class PlayerManager : CharacterManager
     PlayerStats playerStats;
     AnimatorManager animatorManager;
     WeaponSlotManager weaponSlotManager;
+    [SerializeField] Sample_VFX sample_VFX;
     BaGuaManager baGuaManager;
     Rigidbody rig;
 
@@ -22,6 +24,7 @@ public class PlayerManager : CharacterManager
     public bool isFalling; //下落时
     public bool isGround; //在地面时
     public bool isCrouching; //下蹲时
+    public bool isInGrass; //草丛里
     public bool isSprinting; 
     public bool isRolling;
     public bool isJumping; //跳跃上升阶段
@@ -45,6 +48,10 @@ public class PlayerManager : CharacterManager
     //武器切换相关
     public bool katanaUnlock;
     public bool finalWeaponUnlock;
+    public bool isWeaponSwitching;
+    public float weaponSwitchCooldown;
+    public Image cooldownTimer;
+    float cooldownUnit;
     public float perfectTimer;
     public bool isPerfect;
 
@@ -82,6 +89,7 @@ public class PlayerManager : CharacterManager
             inputManager.HandleAllInputs();
         }
         playerStats.StaminaRegen();
+        GeneralTimerController();
         CheckForInteractableObject();
         PerfectTimer();
     }
@@ -116,6 +124,14 @@ public class PlayerManager : CharacterManager
         inputManager.weaponSwitch_Input = false;
         HoldingAction();
         ChargingAction();
+    }
+    private void GeneralTimerController() 
+    {
+        if (weaponSwitchCooldown > 0) 
+        {
+            weaponSwitchCooldown -= Time.deltaTime;
+            cooldownTimer.fillAmount = weaponSwitchCooldown * cooldownUnit;
+        }
     }
     private void CheckForInteractableObject()
     {
@@ -202,6 +218,12 @@ public class PlayerManager : CharacterManager
             }
         }
     }
+    public void WeaponSwitchTimerSetUp(float timer) 
+    {
+        weaponSwitchCooldown = timer;
+        cooldownTimer.fillAmount = 1;
+        cooldownUnit = 1 / timer;
+    }
     public void PerfectTimer() 
     {
         if (perfectTimer>0) 
@@ -219,7 +241,10 @@ public class PlayerManager : CharacterManager
     {
         animatorManager.PlayTargetAnimation("WeaponAbility_01(Success)", true, true);
         GameObject AT_Field_Temp = Instantiate(aT_Field_Prefab, aT_position.position, Quaternion.identity);
+        sample_VFX.baGuaRelated_List[0].Stop();
+        sample_VFX.baGuaRelated_List[1].Play();
         AT_Field_Temp.transform.SetParent(null);
+        WeaponSwitchTimerSetUp(5f);
     }
     public void Respawn() 
     {

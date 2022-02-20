@@ -159,7 +159,7 @@ public class InputManager : MonoBehaviour
             }
             else 
             {
-                playerAttacker.HandleRegularAttack(playerInventory.unequippedWeaponItems[0]);
+                playerAttacker.HandleRegularAttack(playerInventory.unequippedWeaponItems[playerInventory.currentWeaponIndex]);
             }
         }
 

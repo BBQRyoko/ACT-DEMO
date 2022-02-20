@@ -7,6 +7,7 @@ public class CameraManager : MonoBehaviour
 {
     InputManager inputManager;
     Transform targetTransform; //需要跟随的目标(玩家)
+    [SerializeField] Canvas mainCanvas;
     public Transform cameraPivotTransform; //相机pivot
     Transform cameraTransform; //相机object的位置
     public LayerMask ignoreLayers; //除了选定的层外都可以穿透
@@ -27,6 +28,9 @@ public class CameraManager : MonoBehaviour
     float pivotAngle; //视角上下
     public float minPivotAngle = -35;
     public float maxPivotAngle = 35;
+
+    //警觉系统
+    public EnemyFillingUI enemyFillingUI;
 
     //锁定系统
     public LayerMask visionBlockLayer;
@@ -58,13 +62,12 @@ public class CameraManager : MonoBehaviour
         singleton = this;
         inputManager = FindObjectOfType<InputManager>();
         targetTransform = FindObjectOfType<PlayerManager>().transform;
-        lockOnMark = Instantiate(lockOnPrefab, FindObjectOfType<Canvas>().transform).GetComponent<Image>();
-        executeMark = Instantiate(executePrefab, FindObjectOfType<Canvas>().transform).GetComponent<Image>();
+        lockOnMark = Instantiate(lockOnPrefab, mainCanvas.transform).GetComponent<Image>();
+        executeMark = Instantiate(executePrefab, mainCanvas.transform).GetComponent<Image>();
         cameraTransform = Camera.main.transform;
         defaultPosition = cameraTransform.localPosition.z;
         //ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);
     }
-
     public void HandleAllCameraMovement()
     {
         float delta = Time.fixedDeltaTime;
@@ -85,13 +88,11 @@ public class CameraManager : MonoBehaviour
             dangerMark.transform.position = Camera.main.WorldToScreenPoint(new Vector3(curEnemy.transform.position.x, curEnemy.transform.position.y + 1.5f, curEnemy.transform.position.z));
         }
     }
-
     public void FollowTarget(float delta)  //相机跟随
     {
         Vector3 targetPosition = Vector3.SmoothDamp(transform.position, targetTransform.position, ref cameraFollowVelocity, delta / cameraFollowSpeed);
         transform.position = targetPosition;
     }
-
     public void RotateCamera(float delta) //相机转动
     {
         if (!inputManager.lockOn_Flag)
@@ -131,7 +132,6 @@ public class CameraManager : MonoBehaviour
             cameraPivotTransform.localEulerAngles = eulerAngle;
         }
     }
-
     private void HandleCameraCollisions(float delta)
     {
         float targetPosition = defaultPosition;
@@ -152,8 +152,7 @@ public class CameraManager : MonoBehaviour
 
         cameraVectorPosition.z = Mathf.Lerp(cameraTransform.localPosition.z, targetPosition, delta / 0.2f);
         cameraTransform.localPosition = cameraVectorPosition;
-    } //相机与非指定的物件碰撞时的拉近功能
-
+    } //相机与非指定的物件碰撞时的拉近
     public void HandleLockOn() //相机锁定
     {
         float shortestDistance = Mathf.Infinity;
@@ -255,6 +254,11 @@ public class CameraManager : MonoBehaviour
             }
         }
     }
+    public void GenerateAlertIcon(EnemyManager enemyManager)
+    {
+        var aleartIcon = Instantiate(enemyFillingUI, mainCanvas.transform);
+        aleartIcon.SetEnemyManager(enemyManager);
+    }
     public void ClearLockOnTargets() 
     {
         availableTarget.Clear();
@@ -265,6 +269,6 @@ public class CameraManager : MonoBehaviour
     {
         dangerMark = Instantiate(dangerMark_Prefab, FindObjectOfType<Canvas>().transform).GetComponent<Image>();
         curEnemy = enemyManager;
-        Destroy(dangerMark, 1f);
+        Destroy(dangerMark.gameObject, 1f);
     }
 }

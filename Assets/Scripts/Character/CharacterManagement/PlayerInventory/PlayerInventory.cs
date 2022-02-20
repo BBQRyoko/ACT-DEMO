@@ -7,6 +7,7 @@ public class PlayerInventory : MonoBehaviour
     PlayerManager playerManager;
     WeaponSlotManager WeaponSlotManager;
 
+    public int currentWeaponIndex;
     public WeaponItem[] unequippedWeaponItems = new WeaponItem[2];
 
     public List<InventoryItemData> items;

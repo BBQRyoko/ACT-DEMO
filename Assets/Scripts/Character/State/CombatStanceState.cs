@@ -24,19 +24,18 @@ public class CombatStanceState : State
     float horizontalMovementVaule = 0;
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
     {
-        //确认单位与目标间的距离
-        distanceFromTarget = Vector3.Distance(enemyManager.curTarget.transform.position, enemyManager.transform.position);
-        enemyAnimatorManager.animator.SetFloat("Vertical", verticalMovementVaule, 0.2f, Time.deltaTime);
-        enemyAnimatorManager.animator.SetFloat("Horizontal", horizontalMovementVaule, 0.2f, Time.deltaTime);
-        attackState.hasPerformedAttack = false;
-        SpecialActionWatcher(enemyManager);
-
         if (enemyManager.curTarget.GetComponent<PlayerManager>().isDead) //玩家死亡(临时的, 之后要改)
         {
             enemyAnimatorManager.PlayTargetAnimation("Unarm", true, true);
             enemyManager.curTarget = null;
             return idleState;
         }
+        //确认单位与目标间的距离
+        distanceFromTarget = Vector3.Distance(enemyManager.curTarget.transform.position, enemyManager.transform.position);
+        enemyAnimatorManager.animator.SetFloat("Vertical", verticalMovementVaule, 0.2f, Time.deltaTime);
+        enemyAnimatorManager.animator.SetFloat("Horizontal", horizontalMovementVaule, 0.2f, Time.deltaTime);
+        attackState.hasPerformedAttack = false;
+        SpecialActionWatcher(enemyManager);
 
         if (enemyManager.isInteracting) //首先确认是否处在互动状态
         {

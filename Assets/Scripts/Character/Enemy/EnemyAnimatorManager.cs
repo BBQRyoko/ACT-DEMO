@@ -122,6 +122,10 @@ public class EnemyAnimatorManager : MainAnimatorManager
         Quaternion targetRotation = Quaternion.LookRotation(direction);
         enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed);
     }
+    private void DeadFreeze() 
+    {
+        enemyManager.enemyRig.isKinematic = true;
+    }
     void OpenParryCollider() 
     {
         enemyManager.isParrying = true;
@@ -160,6 +164,7 @@ public class EnemyAnimatorManager : MainAnimatorManager
     {
         cameraManager.DangerWarning(enemyManager);
     }
+
     //DarkKnight Only
     void CombatGroundInitial() 
     {
@@ -174,7 +179,6 @@ public class EnemyAnimatorManager : MainAnimatorManager
     {
         TornadoSlash.SetActive(true);
     }
-
     IEnumerator Timer(int dur) //播放器暂停
     {
         float pauseTime = dur;

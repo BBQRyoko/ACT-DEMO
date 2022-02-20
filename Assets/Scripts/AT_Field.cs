@@ -21,16 +21,16 @@ public class AT_Field : MonoBehaviour
             {
                 if (enemy.GetComponent<Animator>() != null) 
                 {
-                    Debug.Log("The World");
                     enemy.GetComponent<Animator>().speed = 0.1f;
+                    enemy.GetComponent<EnemyWeaponSlotManager>().CloseWeaponDamageCollider();
                     enemy.GetComponentInParent<Rigidbody>().isKinematic = true;
                 }
             }
         }
 
-        if (transform.localScale.x < 15)
+        if (transform.localScale.x < 8)
         {
-            transform.localScale += new Vector3(1,0,1) * 7.5f * Time.deltaTime;
+            transform.localScale += new Vector3(1,0,1) * 8f * Time.deltaTime;
         }
         else 
         {

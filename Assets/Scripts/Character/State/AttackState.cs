@@ -42,13 +42,20 @@ public class AttackState : State
     {
         //使用Combat State中所决定的攻击动画, 并计算攻击恢复时间,是否霸体,技能独立CD
         enemyAnimatorManager.PlayTargetAnimation(curAttack.actionAnimation, true);
-        if (!curAttack.isFlyingObject)
+        if (curAttack.isFlyingObject)
         {
-            enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().weaponDamageCollider.curDamage = curAttack.damagePoint;
+            enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().flyingObjectDamager.curDamage = curAttack.damagePoint;
+            enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().flyingObjectDamager.isHeavy = curAttack.isHeavyAttack;
+        }
+        else if(curAttack.isHeavyKick)
+        {
+            enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().kickDamagerCollider.curDamage = curAttack.damagePoint;
+            enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().kickDamagerCollider.isHeavyAttack = curAttack.isHeavyAttack;
         }
         else 
         {
-            enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().flyingObjectDamager.curDamage = curAttack.damagePoint;
+            enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().weaponDamageCollider.curDamage = curAttack.damagePoint;
+            enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().weaponDamageCollider.isHeavyAttack = curAttack.isHeavyAttack;
         }
         enemyManager.curRecoveryTime = curAttack.recoveryTime;
         enemyManager.isImmuneAttacking = curAttack.isImmune;

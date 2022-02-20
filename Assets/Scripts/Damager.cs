@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Damager : MonoBehaviour
 {
+    public bool isHeavy;
     [SerializeField] bool isFlyingObject;
     [SerializeField] bool isPlayerDamage;
     public EnemyManager enemyManager;
@@ -20,7 +21,7 @@ public class Damager : MonoBehaviour
 
             if (playerStats != null)
             {
-                playerStats.TakeDamage(curDamage, hitDirection * hitFactor, true);
+                playerStats.TakeDamage(curDamage, hitDirection * hitFactor, isHeavy);
                 if (isFlyingObject)
                 {
                     Destroy(transform.parent.gameObject);
