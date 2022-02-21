@@ -8,6 +8,7 @@ public class PursueState : State
     public CombatStanceState combatStanceState;
     public RotateTowardsTargetState rotateTowardsTargetState;
 
+    [SerializeField] float maxPursueDistance;
     public float distanceFromTarget;
 
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
@@ -34,7 +35,15 @@ public class PursueState : State
             return this;
         }
 
-        //这里之后改成isSprint, 通过其它地方来改变是否处于sprint状态来切换
+        if (!idleState.announcedByOther)
+        {
+            maxPursueDistance = enemyManager.pursueMaxDistance;
+        }
+        else 
+        {
+            maxPursueDistance = enemyManager.announcedPursueDistance;
+        }
+
         if (enemyManager.isFirstStrike)
         {
             if (distanceFromTarget > enemyManager.maxCombatRange)
@@ -64,7 +73,7 @@ public class PursueState : State
                 combatStanceState.walkingTimer = 0.5f;
                 return combatStanceState;
             }
-            else if (distanceFromTarget >= enemyManager.pursueMaxDistance) //丢失目标, 回到待机态
+            else if (distanceFromTarget >= maxPursueDistance) //丢失目标, 回到待机态
             {
                 enemyAnimatorManager.PlayTargetAnimation("Unarm", true, true);
                 enemyManager.curTarget = null;

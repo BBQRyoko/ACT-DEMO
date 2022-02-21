@@ -10,6 +10,7 @@ public class PlayerLocmotion : MonoBehaviour
     CameraManager cameraManager;
     PlayerStats playerStats;
     PlayerAttacker playerAttacker;
+    WeaponSlotManager weaponSlotManager;
 
     Transform cameraObject;
     public Rigidbody rig;
@@ -31,10 +32,10 @@ public class PlayerLocmotion : MonoBehaviour
 
     [Header("移动参数")]
     [SerializeField] Vector3 playerDireee;
-    [SerializeField] float movementSpeed = 7;
+    [SerializeField] float movementSpeed = 10;
     [SerializeField] float inAirMovementSpeed = 4;
     [SerializeField] float crouchSpeed = 2.5f;
-    [SerializeField] float sprintSpeed = 12;
+    [SerializeField] float sprintSpeed = 10;
     [SerializeField] float rotationSpeed = 15;
     public Vector3 movementVelocity;
     Vector3 moveDirection;
@@ -58,6 +59,7 @@ public class PlayerLocmotion : MonoBehaviour
         cameraManager = FindObjectOfType<CameraManager>();
         animatorManager = GetComponentInChildren<AnimatorManager>();
         inputManager = GetComponent<InputManager>();
+        weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
         rig = GetComponent<Rigidbody>();
         cameraObject = Camera.main.transform;
         SetupJumpVariables();
@@ -134,11 +136,30 @@ public class PlayerLocmotion : MonoBehaviour
         moveDirection.Normalize();
 
         float curSpeed = movementSpeed;
+
+        if (playerManager.isWeaponEquipped)
+        {
+            curSpeed = movementSpeed - 5 * (weaponSlotManager.weaponDamageCollider.weaponWeightRatio);
+        }
+        else 
+        {
+            curSpeed = movementSpeed;
+        }
+
         if (playerManager.isSprinting)
         {
-            curSpeed = sprintSpeed;
-            moveDirection *= curSpeed;
-            playerStats.CostStamina(25f * Time.deltaTime);
+            if (playerManager.isWeaponEquipped)
+            {
+                curSpeed = sprintSpeed;
+                moveDirection *= curSpeed;
+                playerStats.CostStamina(15f * (1f + weaponSlotManager.weaponDamageCollider.weaponWeightRatio) * Time.deltaTime);
+            }
+            else 
+            {
+                curSpeed = sprintSpeed * 1.25f;
+                moveDirection *= curSpeed;
+                playerStats.CostStamina(15f * Time.deltaTime);
+            }
         }
         else if (playerManager.isCrouching) 
         {

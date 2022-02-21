@@ -1,5 +1,64 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &127699792963898998
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5656867514306519364}
+  - component: {fileID: 5130925538616275385}
+  - component: {fileID: 8479650880123875260}
+  m_Layer: 9
+  m_Name: SoundPrefab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &5656867514306519364
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 127699792963898998}
+  m_LocalRotation: {x: -0.00000010746382, y: -0.55937207, z: -0.000000019841382, w: -0.8289167}
+  m_LocalPosition: {x: 485.5771, y: -30.826668, z: -113.16084}
+  m_LocalScale: {x: 0.8, y: 0.79999995, z: 0.8}
+  m_Children: []
+  m_Father: {fileID: 9062430078469491728}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &5130925538616275385
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 127699792963898998}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8479650880123875260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 127699792963898998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3df69191135a654b95c5cd037af5e35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDeadCall: 0
+  announceSoundDistance: 0
 --- !u!1 &1569176815229436005
 GameObject:
   m_ObjectHideFlags: 0
@@ -15,7 +74,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1569176815229436002
 Transform:
   m_ObjectHideFlags: 0
@@ -684,6 +743,14 @@ PrefabInstance:
       propertyPath: conditionList.Array.data[3]
       value: 
       objectReference: {fileID: 11400000, guid: 7c0ea234c211b1144ab90caf97235c02, type: 2}
+    - target: {fileID: 4226274724090533145, guid: 937a8db5ddee21243afe62e61b4cddc2, type: 3}
+      propertyPath: announcePrefab
+      value: 
+      objectReference: {fileID: 8479650880123875260}
+    - target: {fileID: 4226274724090533145, guid: 937a8db5ddee21243afe62e61b4cddc2, type: 3}
+      propertyPath: blockingLayer.m_Bits
+      value: 256
+      objectReference: {fileID: 0}
     - target: {fileID: 7870899128272468569, guid: 937a8db5ddee21243afe62e61b4cddc2, type: 3}
       propertyPath: m_RootOrder
       value: 7

@@ -61,13 +61,16 @@ public class EnemyManager : CharacterManager
     public float moveSpeed = 1f;
     public float alertRadius = 15;
     public float alertTimer;
+    public CharacterStats alertingTarget;
+    public bool isAlerting;
+    float alertingPeriod;
     public bool alertIconSpawn;
-    public float hearRadius = 20;
     public float detectionRadius = 10;
     public float minCombatRange = 3f;
     public float maxCombatRange = 3f;
     public float combatPursueStartRange = 6f;
-    public float pursueMaxDistance = 25;
+    public float pursueMaxDistance = 20;
+    public float announcedPursueDistance = 25;
 
     public float maxDetectionAngle = 70;
     public float minDetectionAngle = -70;
@@ -153,6 +156,21 @@ public class EnemyManager : CharacterManager
             {
                 firstStrikeTimer = 0;
             }
+        }
+
+        if (isAlerting)
+        {
+            alertTimer = 5f;
+            alertingPeriod += Time.deltaTime;
+            if (alertingPeriod >= 5f)
+            {
+                isAlerting = false;
+                alertingPeriod = 0;
+            }
+        }
+        else 
+        {
+            alertingPeriod = 0;
         }
 
         //处决状态Timer
@@ -275,7 +293,7 @@ public class EnemyManager : CharacterManager
     {
         if (alertTimer > 0)
         {
-            if (!alertIconSpawn) 
+            if (!alertIconSpawn && !ambushEnemy) 
             {
                 cameraManager.GenerateAlertIcon(this);
                 alertIconSpawn = true;
@@ -283,6 +301,7 @@ public class EnemyManager : CharacterManager
         }
         else 
         {
+            alertingTarget = null;
             alertIconSpawn = false;
         }
     }
@@ -311,6 +330,8 @@ public class EnemyManager : CharacterManager
     public void HandleExecuted(string skillName) 
     {
         enemyAnimatorManager.PlayTargetAnimation(skillName, true, true);
+        IdleState idleState = GetComponentInChildren<IdleState>();
+        idleState.PlayerNoticeAnnounce(idleState.announceDistance, true);
     }
     void ItemDrop() 
     {
@@ -328,18 +349,14 @@ public class EnemyManager : CharacterManager
     }
     private void OnDrawGizmosSelected()
     {
-            //听力范围
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(transform.position, hearRadius);
             //警戒范围
             Gizmos.color = Color.white;
             Gizmos.DrawWireSphere(transform.position, alertRadius);
-            //视野范围
+            //直接视野范围
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, detectionRadius);
             //攻击范围
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, maxCombatRange);    
     }
-
 }

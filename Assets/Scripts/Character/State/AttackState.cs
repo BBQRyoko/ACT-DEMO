@@ -73,7 +73,6 @@ public class AttackState : State
         curAttack = null;
     }
 
-
     public void RotateTowardsTargetWhiletAttacking(EnemyManager enemyManager) //攻击始终朝着目标方向, 保证出手时一定朝着目标位置(瞬间转向)
     {
         if (enemyManager.canRotate && enemyManager.isInteracting)

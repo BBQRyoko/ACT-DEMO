@@ -21,9 +21,10 @@ MonoBehaviour:
   isEquipped: 1
   weaponAnimatorController: {fileID: 9100000, guid: 232456b12cce1ad4bb3a178b85267da9, type: 2}
   regularSkills:
-  - {fileID: 11400000, guid: 4a6371e08e6ebd84bb49539772932855, type: 2}
-  - {fileID: 11400000, guid: 416909517e026214bac11c1b3b168b41, type: 2}
-  - {fileID: 11400000, guid: bdd0038ee62414b46a040cbe1ca38eef, type: 2}
+  - {fileID: 11400000, guid: b126cc560dd213741a5a658dd68ae218, type: 2}
+  - {fileID: 11400000, guid: 836018923d7504d4ca50c2e6c435dd1b, type: 2}
+  - {fileID: 11400000, guid: cf2d175630770df478cab4c148f4b6a9, type: 2}
+  - {fileID: 11400000, guid: d03f11c267487ee46aa585bfff9564be, type: 2}
   specialSkills:
   - {fileID: 11400000, guid: 71c9586be0c632b439579ddffb108ad9, type: 2}
   - {fileID: 11400000, guid: 7a67c7e10d085f34eb0aba4e401cae0d, type: 2}

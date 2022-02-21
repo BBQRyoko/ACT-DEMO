@@ -20,7 +20,7 @@ MonoBehaviour:
   damagePoint: 5
   attakPriority: 3
   recoveryTime: 2
-  independtCooldown: 7
+  independtCooldown: 20
   maxAttackAngle: 35
   minAttackAngle: -35
   minDistanceNeedToAttack: 0

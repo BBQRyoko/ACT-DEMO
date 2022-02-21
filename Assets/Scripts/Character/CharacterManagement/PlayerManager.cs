@@ -104,6 +104,7 @@ public class PlayerManager : CharacterManager
             rig.isKinematic = true;
             gameObject.GetComponent<Collider>().enabled = false;
             playerLocmotion.characterColliderBlocker.enabled = false;
+            cameraManager.currentLockOnTarget = null;
         }
         cameraManager.HandleAllCameraMovement();
     }
@@ -239,6 +240,7 @@ public class PlayerManager : CharacterManager
     }
     public void PerfectBlock() 
     {
+        isWeaponSwitching = false;
         animatorManager.PlayTargetAnimation("WeaponAbility_01(Success)", true, true);
         GameObject AT_Field_Temp = Instantiate(aT_Field_Prefab, aT_position.position, Quaternion.identity);
         sample_VFX.baGuaRelated_List[0].Stop();

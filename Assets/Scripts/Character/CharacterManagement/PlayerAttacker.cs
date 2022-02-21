@@ -78,7 +78,7 @@ public class PlayerAttacker : MonoBehaviour
             else 
             {
                 comboCount++;
-                if (comboCount > 3)
+                if (comboCount > weapon.regularSkills.Length)
                 {
                     comboCount = 1;
                 }

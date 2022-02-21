@@ -10,7 +10,7 @@ public class WeaponSlotManager : MonoBehaviour
     [SerializeField] WeaponSlot mainWeapon_Unequipped;
     public WeaponSlot[] weaponSlots = new WeaponSlot[2];
 
-    [SerializeField] DamageCollider weaponDamageCollider;
+    public DamageCollider weaponDamageCollider;
     [SerializeField] ParryCollider parryCollider;
     public GameObject mainArmedWeapon;
     [SerializeField] GameObject[] armedWeaponSlot = new GameObject[2];
@@ -51,31 +51,40 @@ public class WeaponSlotManager : MonoBehaviour
     }
     public void WeaponSwitch() 
     {
-        if (playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems.Length == 2 && !playerManager.isInteracting && playerManager.weaponSwitchCooldown <=0) 
+        if (playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems.Length == 2 && playerManager.weaponSwitchCooldown <=0) 
         {
-            if (!playerManager.isWeaponEquipped)
+            if (!playerManager.isAttacking && !playerManager.isInteracting)
             {
-                if (mainWeapon_Unequipped == weaponSlots[0])
+                if (!playerManager.isWeaponEquipped) //无装备态
                 {
-                    playerManager.GetComponent<PlayerInventory>().currentWeaponIndex = 1;
-                    mainWeapon_Unequipped = weaponSlots[1];
-                    transform.GetComponent<Animator>().runtimeAnimatorController = playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[1].weaponAnimatorController;
-                    mainArmedWeapon = armedWeaponSlot[1];
-                    playerManager.WeaponSwitchTimerSetUp(1f);
+                    if (mainWeapon_Unequipped == weaponSlots[0])
+                    {
+                        playerManager.GetComponent<PlayerInventory>().currentWeaponIndex = 1;
+                        mainWeapon_Unequipped = weaponSlots[1];
+                        transform.GetComponent<Animator>().runtimeAnimatorController = playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[1].weaponAnimatorController;
+                        mainArmedWeapon = armedWeaponSlot[1];
+                        playerManager.WeaponSwitchTimerSetUp(1f);
+                    }
+                    else
+                    {
+                        playerManager.GetComponent<PlayerInventory>().currentWeaponIndex = 0;
+                        mainWeapon_Unequipped = weaponSlots[0];
+                        transform.GetComponent<Animator>().runtimeAnimatorController = playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[0].weaponAnimatorController;
+                        mainArmedWeapon = armedWeaponSlot[0];
+                        playerManager.WeaponSwitchTimerSetUp(1f);
+                    }
                 }
-                else
+                else //装备态
                 {
-                    playerManager.GetComponent<PlayerInventory>().currentWeaponIndex = 0;
-                    mainWeapon_Unequipped = weaponSlots[0];
-                    transform.GetComponent<Animator>().runtimeAnimatorController = playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[0].weaponAnimatorController;
-                    mainArmedWeapon = armedWeaponSlot[0];
-                    playerManager.WeaponSwitchTimerSetUp(1f);
+                    playerManager.isWeaponEquipped = false;
+                    transform.GetComponent<AnimatorManager>().PlayTargetAnimation("WeaponSwitch(Unarm)", true, true);
+                    playerManager.isWeaponSwitching = true;
                 }
             }
-            else
+            else if(playerManager.isAttacking) 
             {
                 playerManager.isWeaponEquipped = false;
-                transform.GetComponent<AnimatorManager>().PlayTargetAnimation("WeaponSwitch(Unarm)", true, true);
+                transform.GetComponent<Animator>().SetTrigger("isWeaponSwitching");
                 playerManager.isWeaponSwitching = true;
             }
         }
@@ -87,27 +96,30 @@ public class WeaponSlotManager : MonoBehaviour
     }
     private void WeaponSwitchAnimatorController() 
     {
-        if (mainWeapon_Unequipped == weaponSlots[0])
+        if (!playerManager.isGettingDamage) 
         {
-            playerManager.GetComponent<PlayerInventory>().currentWeaponIndex = 1;
-            playerManager.perfectTimer = 0.75f;
-            mainWeapon_Unequipped = weaponSlots[1];
-            mainArmedWeapon = armedWeaponSlot[1];
-            transform.GetComponent<Animator>().runtimeAnimatorController = playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[1].weaponAnimatorController;
-            transform.GetComponent<AnimatorManager>().PlayTargetAnimation("WeaponSwitch(Equip)", true, true);
-            playerManager.isWeaponEquipped = true;
-            sample_VFX.baGuaRelated_List[0].Play();
-        }
-        else
-        {
-            playerManager.GetComponent<PlayerInventory>().currentWeaponIndex = 0;
-            playerManager.perfectTimer = 0.75f;
-            mainWeapon_Unequipped = weaponSlots[0];
-            mainArmedWeapon = armedWeaponSlot[0];
-            transform.GetComponent<Animator>().runtimeAnimatorController = playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[0].weaponAnimatorController;
-            transform.GetComponent<AnimatorManager>().PlayTargetAnimation("WeaponSwitch(Equip)", true, true);
-            playerManager.isWeaponEquipped = true;
-            sample_VFX.baGuaRelated_List[0].Play();
+            if (mainWeapon_Unequipped == weaponSlots[0])
+            {
+                playerManager.GetComponent<PlayerInventory>().currentWeaponIndex = 1;
+                playerManager.perfectTimer = 0.75f;
+                mainWeapon_Unequipped = weaponSlots[1];
+                mainArmedWeapon = armedWeaponSlot[1];
+                transform.GetComponent<Animator>().runtimeAnimatorController = playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[1].weaponAnimatorController;
+                transform.GetComponent<AnimatorManager>().PlayTargetAnimation("WeaponSwitch(Equip)", true, true);
+                playerManager.isWeaponEquipped = true;
+                sample_VFX.baGuaRelated_List[0].Play();
+            }
+            else
+            {
+                playerManager.GetComponent<PlayerInventory>().currentWeaponIndex = 0;
+                playerManager.perfectTimer = 0.75f;
+                mainWeapon_Unequipped = weaponSlots[0];
+                mainArmedWeapon = armedWeaponSlot[0];
+                transform.GetComponent<Animator>().runtimeAnimatorController = playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[0].weaponAnimatorController;
+                transform.GetComponent<AnimatorManager>().PlayTargetAnimation("WeaponSwitch(Equip)", true, true);
+                playerManager.isWeaponEquipped = true;
+                sample_VFX.baGuaRelated_List[0].Play();
+            }
         }
     }
     #region Handle Weapon's Damage Collider

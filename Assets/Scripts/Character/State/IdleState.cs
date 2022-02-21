@@ -6,11 +6,12 @@ public class IdleState : State
 {
     public PursueState pursueState;
     public LayerMask detectionLayer;
-    public LayerMask hearingLayer;
     public LayerMask blockingLayer;
 
     [SerializeField] Collider[] colliders;
-
+    public bool announcedByOther;
+    public float announceDistance = 15f;
+    [SerializeField] AnnounceSound announcePrefab;
 
     [Header("待机专属")]
     [SerializeField] float defaultRotatePeriod = 3.5f;
@@ -41,7 +42,6 @@ public class IdleState : State
             }
 
             HandleRotateTowardsTarger(enemyManager);
-
             enemyManager.navMeshAgent.transform.localPosition = Vector3.zero;
             enemyManager.navMeshAgent.transform.localRotation = Quaternion.identity;
         }
@@ -60,7 +60,14 @@ public class IdleState : State
 
             if (distanceFromTarget > 0.5f)
             {
-                enemyAnimatorManager.animator.SetFloat("Vertical", 0.5f, 0.1f, Time.deltaTime);   //朝着目标单位进行移动
+                if (!enemyManager.alertingTarget)
+                {
+                    enemyAnimatorManager.animator.SetFloat("Vertical", 0.5f, 0.1f, Time.deltaTime);   //朝着目标单位进行移动
+                }
+                else 
+                {
+                    enemyAnimatorManager.animator.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);   //站着idle状态
+                }
             }
             else if (distanceFromTarget <= 0.5f)
             {
@@ -77,26 +84,6 @@ public class IdleState : State
             enemyManager.navMeshAgent.transform.localRotation = Quaternion.identity;
         }
 
-        #region 敌人听力影响设置
-        Collider[] hearCollider = Physics.OverlapSphere(enemyManager.transform.position, enemyManager.hearRadius, hearingLayer);
-        for (int i = 0; i < hearCollider.Length; i++)
-        {
-            EnemyManager enemyManager1 = hearCollider[i].transform.GetComponent<EnemyManager>();
-
-            if (enemyManager1 != null && enemyManager1.curTarget != null && !enemyManager1.curTarget.GetComponent<PlayerManager>().isDead)
-            {
-                EnemyStats enemyStats1 = enemyManager1.GetComponent<EnemyStats>();
-                Vector3 targetDir = new Vector3(enemyStats1.eyePos.position.x - enemyStats.eyePos.transform.position.x, enemyStats1.eyePos.position.y - enemyStats.eyePos.transform.position.y, enemyStats1.eyePos.position.z - enemyStats.eyePos.transform.position.z);
-                float distance = Vector3.Distance(enemyStats.eyePos.transform.position, enemyStats1.eyePos.position);
-                bool hitInfo = Physics.Raycast(enemyStats.eyePos.position, targetDir, distance, blockingLayer);
-                if (!hitInfo) 
-                {
-                    enemyManager.curTarget = enemyManager1.curTarget;
-                }
-            }
-        }
-        #endregion
-
         #region 敌人的预警范围设置
         Collider[] alertCollider = Physics.OverlapSphere(enemyManager.transform.position, enemyManager.alertRadius, detectionLayer);
         for (int i = 0; i < alertCollider.Length; i++)
@@ -111,23 +98,35 @@ public class IdleState : State
                 //Check Character ID
                 Vector3 targetDirection = characterStats.transform.position - transform.position;
                 float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
+                float crouchFactor = 1;
 
+                if (characterStats.GetComponent<PlayerManager>().isCrouching)
+                {
+                    crouchFactor = 0.5f;
+                }
+                else 
+                {
+                    crouchFactor = 1f;
+                }
+                float alertIncreaseRate = 0.5f * ((enemyManager.alertRadius + 1.5f) - distance) * crouchFactor;
                 if (viewableAngle > enemyManager.minDetectionAngle && viewableAngle < enemyManager.maxDetectionAngle)
                 {
+                    enemyManager.alertingTarget = characterStats;
                     if (enemyManager.alertTimer < 5)
                     {
-                        enemyManager.alertTimer += Time.deltaTime;
+                        enemyManager.alertTimer += alertIncreaseRate*Time.deltaTime;
                     }
                     else
                     {
                         enemyManager.curTarget = characterStats;
+                        enemyManager.alertingTarget = null;
                     }
                 }
                 else
                 {
-                    if (enemyManager.alertTimer > 0)
+                    if (enemyManager.alertTimer > 0 && !enemyManager.isAlerting)
                     {
-                        enemyManager.alertTimer -= Time.deltaTime;
+                        enemyManager.alertTimer -= 0.5f * Time.deltaTime;
                     }
                     else
                     {
@@ -137,9 +136,9 @@ public class IdleState : State
             }
             else
             {
-                if (enemyManager.alertTimer > 0)
+                if (enemyManager.alertTimer > 0 && !enemyManager.isAlerting)
                 {
-                    enemyManager.alertTimer -= Time.deltaTime;
+                    enemyManager.alertTimer -= 0.5f * Time.deltaTime;
                 }
                 else
                 {
@@ -147,12 +146,11 @@ public class IdleState : State
                 }
             }
         }
-
-        if (alertCollider.Length <= 0) 
+        if (alertCollider.Length <= 0)
         {
-            if (enemyManager.alertTimer > 0)
+            if (enemyManager.alertTimer > 0 && !enemyManager.isAlerting)
             {
-                enemyManager.alertTimer -= Time.deltaTime;
+                enemyManager.alertTimer -= 0.5f * Time.deltaTime;
             }
             else
             {
@@ -186,10 +184,16 @@ public class IdleState : State
         #region 切换至追踪模式
         if (enemyManager.curTarget != null)
         {
-            if (!enemyManager.isEquipped) 
+            if (!enemyManager.isEquipped) //没装备武器就把武器装上
             {
                 enemyAnimatorManager.PlayTargetAnimation("Equip", true, true);
             }
+            if (!announcedByOther) //Option.1: 只要不是被叫的就叫人
+            {
+                PlayerNoticeAnnounce(announceDistance);
+            }
+            enemyManager.isAlerting = false;
+            enemyManager.alertingTarget = null;
             enemyManager.alertTimer = 0;
             enemyAnimatorManager.animator.SetFloat("Horizontal", 0, 0.1f, Time.deltaTime);
             return pursueState; //当发现目标后, 进入追踪模式
@@ -200,36 +204,96 @@ public class IdleState : State
         }
         #endregion
     }
+    public void PlayerNoticeAnnounce(float maxDistance, bool executionCall = false) 
+    {
+        announcePrefab.gameObject.SetActive(true);
+        announcePrefab.announceSoundDistance = maxDistance;
+        announcePrefab.isExecutionCall = executionCall;
+    }
+    public void AnnouncedByOtherEnemy(EnemyStats announcingEnemy, bool executionCall = false) 
+    {
+        EnemyManager announcingEnemyManager = announcingEnemy.GetComponent<EnemyManager>();
+        EnemyStats selfEnemyStats = transform.GetComponentInParent<EnemyStats>();
+        EnemyManager selfEnemyManager = transform.GetComponentInParent<EnemyManager>();
+
+        Vector3 targetDir = new Vector3(announcingEnemy.eyePos.position.x - selfEnemyStats.eyePos.transform.position.x, announcingEnemy.eyePos.position.y - selfEnemyStats.eyePos.transform.position.y, announcingEnemy.eyePos.position.z - selfEnemyStats.eyePos.transform.position.z);
+        float distance = Vector3.Distance(selfEnemyStats.eyePos.transform.position, announcingEnemy.eyePos.position);
+        bool hitInfo = Physics.Raycast(selfEnemyStats.eyePos.position, targetDir, distance, blockingLayer);
+
+        if (!executionCall)
+        {
+            if (!hitInfo) //没直接看到呼喊的敌人时
+            {
+                announcedByOther = true;
+                selfEnemyManager.curTarget = announcingEnemyManager.curTarget;
+            }
+            else //但如果看到玩家的话
+            {
+                CharacterStats playerCharacterStates = selfEnemyManager.curTarget;
+                Vector3 targetDirToPlayer = new Vector3(playerCharacterStates.eyePos.position.x - selfEnemyStats.eyePos.transform.position.x, playerCharacterStates.eyePos.position.y - selfEnemyStats.eyePos.transform.position.y, playerCharacterStates.eyePos.position.z - selfEnemyStats.eyePos.transform.position.z);
+                float distanceToPlayer = Vector3.Distance(selfEnemyStats.eyePos.transform.position, playerCharacterStates.eyePos.position);
+                bool hitInfoToPlayer = Physics.Raycast(selfEnemyStats.eyePos.position, targetDir, distance, blockingLayer);
+                if (!hitInfo) 
+                {
+                    announcedByOther = true;
+                    selfEnemyManager.curTarget = announcingEnemyManager.curTarget;
+                }
+            }
+        }
+        else 
+        {
+            //ExecutionDeadCall
+            selfEnemyManager.isAlerting = true;
+            selfEnemyManager.alertingTarget = announcingEnemy.GetComponent<CharacterStats>();
+        }
+    }
     public void HandleRotateTowardsTarger(EnemyManager enemyManager) //朝着设置的目标点进行移动
     {
-        Vector3 direction = enemyManager.patrolPos[enemyManager.curPatrolIndex].position - transform.position;
-        direction.y = 0;
-        direction.Normalize();
-
-
-        Vector3 targetDirection = enemyManager.patrolPos[enemyManager.curPatrolIndex].position - enemyManager.transform.position;
-        float distanceFromTarget = Vector3.Distance(enemyManager.patrolPos[enemyManager.curPatrolIndex].position, enemyManager.transform.position);
-
-        Vector3 relativeDirection = transform.InverseTransformDirection(enemyManager.navMeshAgent.desiredVelocity);
-        Vector3 targetVelocity = enemyManager.enemyRig.velocity;
-
-        if (direction == Vector3.zero)
+        if (!enemyManager.alertingTarget)
         {
-            direction = transform.forward;
-        }
+            Vector3 direction = enemyManager.patrolPos[enemyManager.curPatrolIndex].position - transform.position;
+            direction.y = 0;
+            direction.Normalize();
 
-        if (enemyManager.idleType == EnemyManager.IdleType.Stay) //站岗类专属的原地旋转
-        {
-            if (!enemyManager.curTarget && enemyManager.alertTimer <= 0) //在非警戒状态才会转
+            Vector3 targetDirection = enemyManager.patrolPos[enemyManager.curPatrolIndex].position - enemyManager.transform.position;
+            float distanceFromTarget = Vector3.Distance(enemyManager.patrolPos[enemyManager.curPatrolIndex].position, enemyManager.transform.position);
+
+            Vector3 relativeDirection = transform.InverseTransformDirection(enemyManager.navMeshAgent.desiredVelocity);
+            Vector3 targetVelocity = enemyManager.enemyRig.velocity;
+
+            if (direction == Vector3.zero)
             {
-                if (rotateTimer > 0)
+                direction = transform.forward;
+            }
+
+            if (enemyManager.idleType == EnemyManager.IdleType.Stay) //站岗类专属的原地旋转
+            {
+                if (!enemyManager.curTarget && enemyManager.alertTimer <= 0) //在非警戒状态才会转
                 {
-                    rotateTimer -= Time.deltaTime;
+                    if (rotateTimer > 0)
+                    {
+                        rotateTimer -= Time.deltaTime;
+                    }
+                    else
+                    {
+                        enemyManager.GetComponentInChildren<EnemyAnimatorManager>().PlayTargetAnimationWithRootRotation("Turn180", true);
+                        rotateTimer = defaultRotatePeriod;
+                    }
                 }
                 else
                 {
-                    enemyManager.GetComponentInChildren<EnemyAnimatorManager>().PlayTargetAnimationWithRootRotation("Turn180", true);
-                    rotateTimer = defaultRotatePeriod;
+                    if (distanceFromTarget > 1f)
+                    {
+                        enemyManager.navMeshAgent.enabled = true;
+                        enemyManager.navMeshAgent.SetDestination(enemyManager.patrolPos[enemyManager.curPatrolIndex].position);
+                        enemyManager.enemyRig.velocity = targetVelocity;
+                        enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, enemyManager.navMeshAgent.transform.rotation, enemyManager.rotationSpeed);
+                    }
+                    else
+                    {
+                        Quaternion targetRotation = Quaternion.LookRotation(direction);
+                        enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed);
+                    }
                 }
             }
             else
@@ -250,18 +314,17 @@ public class IdleState : State
         }
         else 
         {
-            if (distanceFromTarget > 1f)
+            Vector3 direction = enemyManager.alertingTarget.transform.position - transform.position;
+            direction.y = 0;
+            direction.Normalize();
+
+            if (direction == Vector3.zero)
             {
-                enemyManager.navMeshAgent.enabled = true;
-                enemyManager.navMeshAgent.SetDestination(enemyManager.patrolPos[enemyManager.curPatrolIndex].position);
-                enemyManager.enemyRig.velocity = targetVelocity;
-                enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, enemyManager.navMeshAgent.transform.rotation, enemyManager.rotationSpeed);
+                direction = transform.forward;
             }
-            else
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(direction);
-                enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed);
-            }
+
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed / Time.deltaTime);
         }
     }
 }

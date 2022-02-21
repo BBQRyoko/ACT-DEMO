@@ -206,7 +206,7 @@ public class InputManager : MonoBehaviour
             }
             else 
             {
-                if (playerManager.inInteractTrigger) 
+                if (playerManager.inInteractTrigger && !playerManager.isInteracting) 
                 {
                     playerManager.interactObject = true;
                 }

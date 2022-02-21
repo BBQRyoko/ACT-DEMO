@@ -52,7 +52,10 @@ public class EnemyWeaponSlotManager : MonoBehaviour
     }
     public void CloseWeaponDamageCollider() //在animator里管理关闭武器伤害碰撞器
     {
-        weaponDamageCollider.DisableDamageCollider();
+        if (weaponDamageCollider) 
+        {
+            weaponDamageCollider.DisableDamageCollider();
+        }
     }
     private void OpenKickDamageCollider() //在animator里管理开启武器伤害碰撞器
     {
