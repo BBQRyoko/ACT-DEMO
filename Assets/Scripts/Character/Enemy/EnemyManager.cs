@@ -61,6 +61,7 @@ public class EnemyManager : CharacterManager
     public float moveSpeed = 1f;
     public float alertRadius = 15;
     public float alertTimer;
+    public bool canAlertOthers = true;
     public CharacterStats alertingTarget;
     public bool isAlerting;
     float alertingPeriod;

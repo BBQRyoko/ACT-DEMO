@@ -6,6 +6,7 @@ using UnityEngine;
 public class Skill : ScriptableObject
 {
     public string skillName;
+    public bool isImmuAttack = false;
     public int skillType; //0 - 单发, 1 - 蓄力 (暂时废弃)
     public int damagePoint;
     public int staminaCost = 15;

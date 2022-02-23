@@ -21,7 +21,14 @@ public class IdleState : State
     {
         if (enemyManager.idleType == EnemyManager.IdleType.Stay || enemyManager.idleType == EnemyManager.IdleType.Boss) //站岗的敌人
         {
-            enemyAnimatorManager.animator.SetFloat("Horizontal", -2, 0.1f, Time.deltaTime);
+            if (!enemyManager.ambushEnemy)
+            {
+                enemyAnimatorManager.animator.SetFloat("Horizontal", -2, 0.1f, Time.deltaTime);
+            }
+            else 
+            {
+                enemyAnimatorManager.animator.SetFloat("Horizontal", 0, 0.1f, Time.deltaTime);
+            }
 
             if (enemyManager.isPreformingAction)
             {
@@ -47,7 +54,14 @@ public class IdleState : State
         }
         else if(enemyManager.idleType == EnemyManager.IdleType.Patrol) //巡逻的敌人
         {
-            enemyAnimatorManager.animator.SetFloat("Horizontal", -2, 0.1f, Time.deltaTime);
+            if (!enemyManager.ambushEnemy)
+            {
+                enemyAnimatorManager.animator.SetFloat("Horizontal", -2, 0.1f, Time.deltaTime);
+            }
+            else
+            {
+                enemyAnimatorManager.animator.SetFloat("Horizontal", 0, 0.1f, Time.deltaTime);
+            }
 
             if (enemyManager.isPreformingAction)
             {
@@ -206,9 +220,22 @@ public class IdleState : State
     }
     public void PlayerNoticeAnnounce(float maxDistance, bool executionCall = false) 
     {
-        announcePrefab.gameObject.SetActive(true);
-        announcePrefab.announceSoundDistance = maxDistance;
-        announcePrefab.isExecutionCall = executionCall;
+        EnemyManager enemyManager = transform.GetComponentInParent<EnemyManager>();
+        if (executionCall)
+        {
+            announcePrefab.gameObject.SetActive(true);
+            announcePrefab.announceSoundDistance = maxDistance;
+            announcePrefab.isExecutionCall = executionCall;
+        }
+        else 
+        {
+            if (enemyManager.canAlertOthers) 
+            {
+                announcePrefab.gameObject.SetActive(true);
+                announcePrefab.announceSoundDistance = maxDistance;
+                announcePrefab.isExecutionCall = executionCall;
+            }
+        }
     }
     public void AnnouncedByOtherEnemy(EnemyStats announcingEnemy, bool executionCall = false) 
     {
@@ -258,7 +285,7 @@ public class IdleState : State
             Vector3 targetDirection = enemyManager.patrolPos[enemyManager.curPatrolIndex].position - enemyManager.transform.position;
             float distanceFromTarget = Vector3.Distance(enemyManager.patrolPos[enemyManager.curPatrolIndex].position, enemyManager.transform.position);
 
-            Vector3 relativeDirection = transform.InverseTransformDirection(enemyManager.navMeshAgent.desiredVelocity);
+            Vector3 relativeDirection = transform.TransformDirection(enemyManager.navMeshAgent.desiredVelocity);
             Vector3 targetVelocity = enemyManager.enemyRig.velocity;
 
             if (direction == Vector3.zero)

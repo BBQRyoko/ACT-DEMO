@@ -23,4 +23,7 @@ public class EnemyAttackAction : EnemyAction
     public float maxDistanceNeedToAttack = 3;
 
     public bool isImmune;
+
+    [Header("飞行道具参数")]
+    public float maxSpeed = 20f;
 }

@@ -95,6 +95,14 @@ public class PlayerAttacker : MonoBehaviour
                     animatorManager.pauseDuration = weapon.regularSkills[comboCount - 1].pauseDuration;
                     playerManager.GetComponent<PlayerStats>().currStamina -= weapon.regularSkills[comboCount - 1].staminaCost;
                     //sample_VFX_R.curVFX_List[comboCount - 1].Play();
+                    if (weapon.regularSkills[comboCount - 1].isImmuAttack)
+                    {
+                        playerManager.isImmuAttack = true;
+                    }
+                    else 
+                    {
+                        playerManager.isImmuAttack = false;
+                    }
                 }
                 else 
                 {

@@ -79,7 +79,6 @@ public class DamageCollider : MonoBehaviour
                 //音效处理
                 if (curDamage >= 5) 
                 {
-                    Debug.Log(isHeavyAttack);
                     attackAudio.volume = 0.2f;
                     int i = sample_SFX.blockedSFX_List.Length;
                     int random = Random.Range(0, i - 1);
@@ -114,7 +113,7 @@ public class DamageCollider : MonoBehaviour
         }
         else if (collision.tag == "Player" && !isPlayer)
         {
-            Vector3 hitDirection = transform.position - playerManager.transform.position;
+            Vector3 hitDirection = enemyManager.transform.position - playerManager.transform.position;
             hitDirection.y = 0;
             hitDirection.Normalize();
 

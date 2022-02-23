@@ -376,7 +376,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3df69191135a654b95c5cd037af5e35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDeadCall: 0
+  isExecutionCall: 0
   announceSoundDistance: 0
 --- !u!114 &3167053830026099499
 MonoBehaviour:
@@ -513,6 +513,10 @@ PrefabInstance:
       propertyPath: idleState
       value: 
       objectReference: {fileID: 7151850143932246511}
+    - target: {fileID: 6687984558012795286, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
+      propertyPath: defaultWalkingTimer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6687984558012795286, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: combatCooldownManager
       value: 
@@ -663,7 +667,7 @@ PrefabInstance:
       objectReference: {fileID: 7310209240864580166}
     - target: {fileID: 7494814258874909005, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: maxHealth
-      value: 60
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: arrow
@@ -695,7 +699,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: alertRadius
-      value: 17
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: backStabArea
@@ -715,7 +719,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: maxCombatRange
-      value: 18
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
+      propertyPath: minCombatRange
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: detectionRadius
@@ -727,7 +735,7 @@ PrefabInstance:
       objectReference: {fileID: 3660199515308281634}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: pursueMaxDistance
-      value: 26
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: rangeRecoveryTime
@@ -751,7 +759,7 @@ PrefabInstance:
       objectReference: {fileID: 1349034716, guid: 85b47e44e8b279b48b9937b68f60edf5, type: 3}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: combatPursueStartRange
-      value: 21
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 8301139039848428693, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: m_RootOrder
@@ -1022,8 +1030,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5284138699330138698, guid: a6a22867caa878b448adcddde8bc2e6d, type: 3}
+      propertyPath: m_MaxSpeed
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5284138699330138698, guid: a6a22867caa878b448adcddde8bc2e6d, type: 3}
+      propertyPath: m_MinSpeed
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5284138699330138698, guid: a6a22867caa878b448adcddde8bc2e6d, type: 3}
       propertyPath: m_TraceTime
-      value: 0.25
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5284138699330138698, guid: a6a22867caa878b448adcddde8bc2e6d, type: 3}
+      propertyPath: m_Accelerated
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 5284138699330138699, guid: a6a22867caa878b448adcddde8bc2e6d, type: 3}
       propertyPath: m_RootOrder
@@ -1874,31 +1894,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 469308, guid: 241659bc2ecdb3c44aae2b1a066043f1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.90179074
+      value: -0.90297174
       objectReference: {fileID: 0}
     - target: {fileID: 469308, guid: 241659bc2ecdb3c44aae2b1a066043f1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 88.37396
+      value: 88.373825
       objectReference: {fileID: 0}
     - target: {fileID: 469308, guid: 241659bc2ecdb3c44aae2b1a066043f1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.8918344
+      value: 0.89262307
       objectReference: {fileID: 0}
     - target: {fileID: 469308, guid: 241659bc2ecdb3c44aae2b1a066043f1, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.2823425
+      value: 0.28234246
       objectReference: {fileID: 0}
     - target: {fileID: 469308, guid: 241659bc2ecdb3c44aae2b1a066043f1, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.58495826
+      value: 0.5849583
       objectReference: {fileID: 0}
     - target: {fileID: 469308, guid: 241659bc2ecdb3c44aae2b1a066043f1, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.72557604
+      value: -0.725576
       objectReference: {fileID: 0}
     - target: {fileID: 469308, guid: 241659bc2ecdb3c44aae2b1a066043f1, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.22725764
+      value: -0.22725761
       objectReference: {fileID: 0}
     - target: {fileID: 472772, guid: 241659bc2ecdb3c44aae2b1a066043f1, type: 3}
       propertyPath: m_RootOrder
@@ -2269,6 +2289,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9100000, guid: a37140aa031164d47b1e60d0ca5aa5f6, type: 2}
     - target: {fileID: 13731094, guid: 241659bc2ecdb3c44aae2b1a066043f1, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 15462656d6ff7074ba33213741cb3a6d, type: 2}
+    - target: {fileID: 13785212, guid: 241659bc2ecdb3c44aae2b1a066043f1, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 15462656d6ff7074ba33213741cb3a6d, type: 2}

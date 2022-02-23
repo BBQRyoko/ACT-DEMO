@@ -39,6 +39,7 @@ public class PlayerManager : CharacterManager
     public bool isHitting;
     public bool attackRotate;
     public bool isAttacking;
+    public bool isImmuAttack;
     public bool cantBeInterrupted;
     public bool isGettingDamage;
     public bool hitRecover;

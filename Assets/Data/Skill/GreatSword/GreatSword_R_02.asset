@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: GreatSword_R_02
   m_EditorClassIdentifier: 
   skillName: Combo_R_02
+  isImmuAttack: 1
   skillType: 0
   damagePoint: 30
   staminaCost: 30

@@ -29,7 +29,7 @@ public class FlyingObj : MonoBehaviour
     /// <summary>
     /// 最大移速
     /// </summary>
-    [SerializeField] private float m_MaxSpeed;
+    public float m_MaxSpeed;
     /// <summary>
     /// 追踪时间
     /// </summary>

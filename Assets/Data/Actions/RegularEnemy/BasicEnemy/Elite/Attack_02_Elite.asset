@@ -15,7 +15,9 @@ MonoBehaviour:
   actionAnimation: Combo_02
   isSpecial: 0
   isFlyingObject: 0
-  damagePoint: 30
+  isHeavyKick: 0
+  isHeavyAttack: 0
+  damagePoint: 55
   attakPriority: 4
   recoveryTime: 4
   independtCooldown: 6
@@ -24,3 +26,4 @@ MonoBehaviour:
   minDistanceNeedToAttack: 0
   maxDistanceNeedToAttack: 3.5
   isImmune: 1
+  maxSpeed: 20

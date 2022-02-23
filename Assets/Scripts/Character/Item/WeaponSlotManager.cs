@@ -158,6 +158,7 @@ public class WeaponSlotManager : MonoBehaviour
     private void AttackOver() //确定何时提前关闭玩家当前的攻击状态
     {
         playerManager.cantBeInterrupted = false;
+        playerManager.isImmuAttack = false;
     }
     #endregion
 }

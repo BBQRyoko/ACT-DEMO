@@ -109,7 +109,6 @@ public class AnimatorManager : MainAnimatorManager
         animator.SetFloat(vertical, v, 0.1f, Time.deltaTime);
         animator.SetFloat(horizontal, h, 0.1f, Time.deltaTime);
     } //Locomotion数值变化(如果有需要在locomotion中加入额外的状态在这里改)
-
     private void OnAnimatorMove()
     {
         if (playerManager.isUsingRootMotion)
@@ -142,7 +141,6 @@ public class AnimatorManager : MainAnimatorManager
             }
         }
     }
-
     //Animator Events Editor  
     private void AnimatorPlaySpeed(float playRate) //控制动画器的播放速度
     {

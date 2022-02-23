@@ -18,83 +18,64 @@ public class PursueState : State
         float viewableAngle = Vector3.SignedAngle(targetDirection, enemyManager.transform.forward, Vector3.up);
         HandleRotateTowardsTarger(enemyManager);
 
-
-        //问题应该在这块, 应该用不到, 动画转身只用在CombatState
-        //if (viewableAngle > 80 || viewableAngle < -80)
-        //{
-        //    return rotateTowardsTargetState;
-        //}
-
         if (enemyManager.isInteracting)
             return this;
 
-        if (enemyManager.isPreformingAction) 
+        if (enemyManager.isPreformingAction)
         {
-            enemyAnimatorManager.animator.SetFloat("Vertical", 0,0.1f, Time.deltaTime);
+            enemyAnimatorManager.animator.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);
             enemyManager.navMeshAgent.enabled = false;
             return this;
         }
 
-        if (!idleState.announcedByOther)
+        if (!idleState.announcedByOther)   //确定是否为第一发现者
         {
             maxPursueDistance = enemyManager.pursueMaxDistance;
         }
-        else 
+        else
         {
             maxPursueDistance = enemyManager.announcedPursueDistance;
         }
 
-        if (enemyManager.isFirstStrike)
-        {
-            if (distanceFromTarget > enemyManager.maxCombatRange)
-            {
-                enemyAnimatorManager.animator.SetFloat("Horizontal", 0f, 0.1f, Time.deltaTime);
-                enemyAnimatorManager.animator.SetFloat("Vertical", 2f, 0.1f, Time.deltaTime);   //朝着目标单位进行移动
-            }
-        }
-        else
-        {
-            if (distanceFromTarget > enemyManager.maxCombatRange)
-            {
-                enemyAnimatorManager.animator.SetFloat("Horizontal", 0f, 0.1f, Time.deltaTime);
-                enemyAnimatorManager.animator.SetFloat("Vertical", 1f, 0.1f, Time.deltaTime);
-            }
 
+        if (distanceFromTarget >= maxPursueDistance) //先判断是否在追击距离内, 不在就收武器会Idle
+        {
+            enemyAnimatorManager.PlayTargetAnimation("Unarm", true, true);
+            enemyManager.curTarget = null;
+            return idleState;
+        }
+        else if (distanceFromTarget < maxPursueDistance)
+        {
+            if (enemyManager.isFirstStrike) //在范围内就判断是否有先制攻击 
+            {
+                if (distanceFromTarget > combatStanceState.conditionList[0].firstStrikeDistance) //有先制且距离大于先制范围时
+                {
+                    enemyAnimatorManager.animator.SetFloat("Horizontal", 0f, 0.1f, Time.deltaTime);
+                    enemyAnimatorManager.animator.SetFloat("Vertical", 2f, 0.1f, Time.deltaTime);   //朝着目标单位进行疾跑
+                }
+                else //进入范围就直接接战并释放先制攻击
+                {
+                    return combatStanceState;
+                }
+            }
+            else //如果没有先制攻击
+            {
+                if (distanceFromTarget > enemyManager.maxCombatRange) //如果范围大于最大接战距离就慢跑过去
+                {
+                    enemyAnimatorManager.animator.SetFloat("Horizontal", 0f, 0.1f, Time.deltaTime);
+                    enemyAnimatorManager.animator.SetFloat("Vertical", 1f, 0.1f, Time.deltaTime);
+                }
+                else //进入范围后就接战并开始踱步
+                {
+                    combatStanceState.walkingTimer = 0.5f;
+                    return combatStanceState;
+                }
+            }
         }
 
         enemyManager.navMeshAgent.transform.localPosition = Vector3.zero;
         enemyManager.navMeshAgent.transform.localRotation = Quaternion.identity;
-
-        //一会儿根据距离和攻击再改
-        if (!enemyManager.isFirstStrike)
-        {
-            if (distanceFromTarget <= enemyManager.maxCombatRange) //追到目标
-            {
-                combatStanceState.walkingTimer = 0.5f;
-                return combatStanceState;
-            }
-            else if (distanceFromTarget >= maxPursueDistance) //丢失目标, 回到待机态
-            {
-                enemyAnimatorManager.PlayTargetAnimation("Unarm", true, true);
-                enemyManager.curTarget = null;
-                return idleState;
-            }
-            else //持续追击
-            {
-                return this;
-            }
-        }
-        else 
-        {
-            if (distanceFromTarget <= combatStanceState.conditionList[0].firstStrikeDistance) //完成首次攻击的要求
-            {
-                return combatStanceState;
-            }
-            else
-            {
-                return this;
-            }
-        }
+        return this;
     }
 
     public void HandleRotateTowardsTarger(EnemyManager enemyManager) //转向目标玩家单位(瞬间转向, 无转向动画)
@@ -115,7 +96,7 @@ public class PursueState : State
         }
         else 
         {
-            Vector3 relativeDirection = transform.InverseTransformDirection(enemyManager.navMeshAgent.desiredVelocity);
+            Vector3 relativeDirection = transform.TransformDirection(enemyManager.navMeshAgent.desiredVelocity);
             Vector3 targetVelocity = enemyManager.enemyRig.velocity;
 
             enemyManager.navMeshAgent.enabled = true;

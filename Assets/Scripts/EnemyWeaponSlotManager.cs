@@ -15,6 +15,7 @@ public class EnemyWeaponSlotManager : MonoBehaviour
     public DamageCollider weaponDamageCollider;
     public DamageCollider kickDamagerCollider;
     public Damager flyingObjectDamager;
+    [SerializeField] FlyingObj flyingObj;
 
     private void Awake()
     {
@@ -82,7 +83,7 @@ public class EnemyWeaponSlotManager : MonoBehaviour
         {
             distanceToTarget = Vector3.Distance(enemyManager.curTarget.transform.position, enemyManager.transform.position);
             Animator animator = GetComponent<Animator>();
-            if (distanceToTarget <= enemyManager.maxCombatRange)
+            if (distanceToTarget <= enemyManager.minCombatRange)
             {
                 animator.SetTrigger("canCombo");
                 distanceCheck = false;
@@ -90,8 +91,11 @@ public class EnemyWeaponSlotManager : MonoBehaviour
             }
         }
     }
-    private void RangeAttack() 
+    private void RangeAttack(EnemyAttackAction attackAction) 
     {
+        flyingObjectDamager.curDamage = attackAction.damagePoint;
+        flyingObjectDamager.isHeavy = attackAction.isHeavyAttack;
+        flyingObj.m_MaxSpeed = attackAction.maxSpeed;
         enemyManager.HandleRangeAttack();
     }
     private void RangeAttack2()

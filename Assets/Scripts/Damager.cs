@@ -15,12 +15,14 @@ public class Damager : MonoBehaviour
     {
         if (!isPlayerDamage)
         {
-            Vector3 hitDirection = new Vector3(0, 0, 0);
             PlayerStats playerStats = other.GetComponent<PlayerStats>();
             ParryCollider parryCollider = other.GetComponent<ParryCollider>();
-
             if (playerStats != null)
             {
+                Vector3 hitDirection = transform.position - playerStats.transform.position;
+                hitDirection.y = 0;
+                hitDirection.Normalize();
+
                 playerStats.TakeDamage(curDamage, hitDirection * hitFactor, isHeavy);
                 if (isFlyingObject)
                 {

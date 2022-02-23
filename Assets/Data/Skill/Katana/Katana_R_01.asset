@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Katana_R_01
   m_EditorClassIdentifier: 
   skillName: Combo_R_01
+  isImmuAttack: 1
   skillType: 0
   damagePoint: 10
   staminaCost: 10

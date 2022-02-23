@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b61a1b5062951144d92cac760fe3e832, type: 3}
   m_Name: Attack_00_Combo2_Elite
   m_EditorClassIdentifier: 
-  actionAnimation: Combo_00
+  actionAnimation: Combo_00 1
   isSpecial: 0
   isFlyingObject: 0
-  damagePoint: 20
+  isHeavyKick: 0
+  isHeavyAttack: 0
+  damagePoint: 25
   attakPriority: 5
   recoveryTime: 3.5
   independtCooldown: 6
@@ -24,3 +26,4 @@ MonoBehaviour:
   minDistanceNeedToAttack: 0
   maxDistanceNeedToAttack: 3
   isImmune: 1
+  maxSpeed: 20

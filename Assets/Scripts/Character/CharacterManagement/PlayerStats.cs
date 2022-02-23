@@ -29,7 +29,6 @@ public class PlayerStats : CharacterStats
         currStamina = maxStamina;
         staminaBar.SetMaxStamina(maxStamina);
     }
-
     private void Update()
     {
         healthBar.SetCurrentHealth(currHealth);
@@ -51,12 +50,7 @@ public class PlayerStats : CharacterStats
         float viewableAngle = Vector3.SignedAngle(collisionDirection, playerManager.transform.forward, Vector3.up);
         currHealth = currHealth - damage;
         healthBar.SetCurrentHealth(currHealth);
-
-        if (inputManager.spAttack_Input)
-        {
-            inputManager.spAttack_Input = false;
-            playerManager.isCharging = false;
-        }
+        playerAttacker.comboCount = 0;
 
         if (currHealth <= 0)
         {
@@ -71,10 +65,28 @@ public class PlayerStats : CharacterStats
             {
                 if (!isHeavy)
                 {
-                    animatorManager.PlayTargetAnimation("Hit_B", true, true);
+                    if (!playerManager.isImmuAttack)
+                    {
+                        animatorManager.PlayTargetAnimation("Hit_B", true, true);
+                        playerAttacker.comboCount = 0;
+                        playerManager.isImmuAttack = false;
+                        playerManager.cantBeInterrupted = false;
+                    }
                 }
                 else 
                 {
+                    Vector3 direction = collisionDirection;
+                    direction.y = 0;
+                    direction.Normalize();
+
+                    if (direction == Vector3.zero)
+                    {
+                        direction = transform.forward;
+                    }
+
+                    Quaternion targetRotation = Quaternion.LookRotation(direction);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 1f / Time.deltaTime);
+
                     animatorManager.PlayTargetAnimation("Hit_Large", true, true);
                 }
             }
@@ -82,10 +94,28 @@ public class PlayerStats : CharacterStats
             {
                 if (!isHeavy)
                 {
-                    animatorManager.PlayTargetAnimation("Hit_F", true, true);
+                    if (!playerManager.isImmuAttack) 
+                    {
+                        animatorManager.PlayTargetAnimation("Hit_F", true, true);
+                        playerAttacker.comboCount = 0;
+                        playerManager.isImmuAttack = false;
+                        playerManager.cantBeInterrupted = false;
+                    }
                 }
                 else
                 {
+                    Vector3 direction = collisionDirection;
+                    direction.y = 0;
+                    direction.Normalize();
+
+                    if (direction == Vector3.zero)
+                    {
+                        direction = transform.forward;
+                    }
+
+                    Quaternion targetRotation = Quaternion.LookRotation(direction);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 1f / Time.deltaTime);
+
                     animatorManager.PlayTargetAnimation("Hit_Large", true, true);
                 }
             }

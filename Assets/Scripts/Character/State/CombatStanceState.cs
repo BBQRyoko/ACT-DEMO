@@ -15,10 +15,12 @@ public class CombatStanceState : State
     public bool specialConditionTriggered;
 
     bool canCounterAttack;
+    [SerializeField] float defaultWalkingTimer = 1.5f;
     public float walkingTimer;
     [SerializeField] bool notFirstWalking;
     [SerializeField] bool isWalkingStop;
-    float distanceFromTarget;
+    [SerializeField] bool attackingAdjustment;
+    [SerializeField] float distanceFromTarget;
     public bool randomDestinationSet = false;
     float verticalMovementVaule = 0;
     float horizontalMovementVaule = 0;
@@ -29,75 +31,86 @@ public class CombatStanceState : State
             enemyAnimatorManager.PlayTargetAnimation("Unarm", true, true);
             enemyManager.curTarget = null;
             return idleState;
-        }
+        } //判断玩家是否死亡
+        if (enemyManager.isInteracting) //首先确认是否处在互动状态
+        {
+            enemyAnimatorManager.animator.SetFloat("Vertical", 0);
+            enemyAnimatorManager.animator.SetFloat("Horizontal", 0);
+            return this;
+        } 
         //确认单位与目标间的距离
         distanceFromTarget = Vector3.Distance(enemyManager.curTarget.transform.position, enemyManager.transform.position);
         enemyAnimatorManager.animator.SetFloat("Vertical", verticalMovementVaule, 0.2f, Time.deltaTime);
         enemyAnimatorManager.animator.SetFloat("Horizontal", horizontalMovementVaule, 0.2f, Time.deltaTime);
         attackState.hasPerformedAttack = false;
         SpecialActionWatcher(enemyManager);
+        DamageTakenWindow(enemyManager, enemyAnimatorManager); //位置可能要改
 
-        if (enemyManager.isInteracting) //首先确认是否处在互动状态
+        if (specialConditionTriggered) //根据条件观测是否触发特殊条件, 触发则直接发动攻击并停止踱步行为
         {
-            enemyAnimatorManager.animator.SetFloat("Vertical", 0);
-            enemyAnimatorManager.animator.SetFloat("Horizontal", 0);
-            return this;
+            randomDestinationSet = false;
+            return attackState;
         }
 
-        if (distanceFromTarget > enemyManager.combatPursueStartRange && !enemyManager.isFirstStrike)//距离大于攻击范围后退回追踪状态
+        if (enemyManager.curRecoveryTime <= 0 && attackState.curAttack != null)
         {
-            if (conditionList.Count != 0) 
+            if (distanceFromTarget > attackState.curAttack.maxDistanceNeedToAttack && !attackingAdjustment)
             {
-                if (enemyManager.firstStrikeTimer <= 0 && conditionList[0].condition == SpecialCondition.conditionType.先制型)
-                {
-                    enemyManager.isFirstStrike = true;
-                }
+                notFirstWalking = true;
+                attackingAdjustment = true;
+                WalkAroundTarget(enemyManager, enemyAnimatorManager);
+            }
+            else
+            {
+                walkingTimer = 0f;
+                randomDestinationSet = false;
+                notFirstWalking = false;
+                isWalkingStop = false;
+                attackingAdjustment = false;
+                return attackState;
+            }
+        }//当GCD转完且有了攻击并且玩家为非攻击状态(以免撞上)
+
+        if (!randomDestinationSet && !enemyManager.isFirstStrike)
+        {
+            randomDestinationSet = true;
+            DecideCirclingAction(enemyManager, enemyAnimatorManager);
+        }//如果不在踱步状态, 那就进入踱步状态
+
+        //先看踱步时间是否大于0
+        if (walkingTimer > 0) //踱步时间大于0时 
+        {
+            walkingTimer -= Time.fixedDeltaTime;
+            GetNewAttack(enemyManager);
+            //暂时不要了, 会让敌人变得太passive
+            //if (enemyManager.curRecoveryTime <= 0.25f)//当敌人GCD转完以后
+            //{
+            //    GetNewAttack(enemyManager);
+            //    //ReadyToAttack(enemyManager);
+            //}
+            //else //不然则继续踱步
+            //{
+            //    walkingTimer -= Time.fixedDeltaTime; 
+            //}
+        }
+        else //如果踱步时间小于0
+        {
+            notFirstWalking = true;
+            attackingAdjustment = false;
+            WalkAroundTarget(enemyManager, enemyAnimatorManager);
+        }
+
+        //这里感觉有问题
+        if (distanceFromTarget > enemyManager.combatPursueStartRange && !enemyManager.isFirstStrike && walkingTimer>0)//距离大于攻击范围后退回追踪状态
+        {
+            if (conditionList.Count != 0 && enemyManager.firstStrikeTimer <= 0 && conditionList[0].condition == SpecialCondition.conditionType.先制型) 
+            {
+                enemyManager.isFirstStrike = true;
             }
             return pursueState;
         }
 
-        if (specialConditionTriggered)
-        {
-            randomDestinationSet = false;
-            return attackState;
-        }
-
-        DamageTakenWindow(enemyManager, enemyAnimatorManager);
-
-        if (!randomDestinationSet && !enemyManager.isFirstStrike) //如果不在踱步状态, 那就进入踱步状态(这块可以再优化)
-        {
-            randomDestinationSet = true;
-            DecideCirclingAction(enemyManager, enemyAnimatorManager);
-        }
-
-        if (walkingTimer > 0) //实时改变行走逻辑
-        {
-            if (enemyManager.curRecoveryTime <= 0.25f && !isWalkingStop)//临攻击前0.25s会停止走路
-            {
-                GetNewAttack(enemyManager);
-                //ReadyToAttack(enemyManager);
-            }
-            else 
-            {
-                walkingTimer -= Time.fixedDeltaTime;
-            }
-        }
-        else
-        {
-            WalkAroundTarget(enemyManager, enemyAnimatorManager);
-        }
-
         HandleRotateTowardsTarger(enemyManager); //保持面对目标的朝向
-
-        if (enemyManager.curRecoveryTime <= 0 && attackState.curAttack != null && !enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted) //当踱步阶段结束, 当前无攻击，且玩家在非正在攻击状态时，进入攻击状态
-        {
-            walkingTimer = 0f;
-            randomDestinationSet = false;
-            notFirstWalking = false;
-            isWalkingStop = false;
-            return attackState;
-        }
-
         return this;
     }
     public void HandleRotateTowardsTarger(EnemyManager enemyManager) //快速转向
@@ -113,39 +126,14 @@ public class CombatStanceState : State
 
         Quaternion targetRotation = Quaternion.LookRotation(direction);
         enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed);
-
-        //if (enemyManager.isPreformingAction)
-        //{
-        //    Vector3 direction = enemyManager.curTarget.transform.position - transform.position;
-        //    direction.y = 0;
-        //    direction.Normalize();
-
-        //    if (direction == Vector3.zero)
-        //    {
-        //        direction = transform.forward;
-        //    }
-
-        //    Quaternion targetRotation = Quaternion.LookRotation(direction);
-        //    enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed);
-        //}
-        //else
-        //{
-        //    Vector3 relativeDirection = transform.InverseTransformDirection(enemyManager.navMeshAgent.desiredVelocity);
-        //    Vector3 targetVelocity = enemyManager.enemyRig.velocity;
-
-        //    enemyManager.navMeshAgent.enabled = true;
-        //    enemyManager.navMeshAgent.SetDestination(enemyManager.curTarget.transform.position);
-        //    enemyManager.enemyRig.velocity = targetVelocity;
-        //    enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, enemyManager.navMeshAgent.transform.rotation, enemyManager.rotationSpeed);
-        //}
     }
     private void DecideCirclingAction(EnemyManager enemyManager, EnemyAnimatorManager enemyAnimator)
     {
         WalkAroundTarget(enemyManager, enemyAnimator);
     }
-    private void WalkAroundTarget(EnemyManager enemyManager, EnemyAnimatorManager enemyAnimator)
+    private void WalkAroundTarget(EnemyManager enemyManager, EnemyAnimatorManager enemyAnimator) //每次进入设置2s的移动时间, 然后根据情况去转变移动时的策略
     {
-        walkingTimer = 2f;
+        walkingTimer = defaultWalkingTimer;
         float defendRandomNum = Random.Range(0.001f, 1);
         EnemyStats enemyStats = enemyManager.GetComponent<EnemyStats>();
         float defendProbility = (1- ((float)enemyStats.currHealth / (float)enemyStats.maxHealth)) * 0.75f * enemyManager.defensiveRatio;
@@ -157,21 +145,9 @@ public class CombatStanceState : State
         //无防御踱步
         if (enemyManager.defPriority<=0 || defendRandomNum >= defendProbility)
         {
-            if (!notFirstWalking)
+            if (attackingAdjustment)
             {
-                //需要精修距离与最大攻击距离间的关系
-                if (distanceFromTarget >= 0 && distanceFromTarget <= enemyManager.minCombatRange)
-                {
-                    verticalMovementVaule = -0.5f;
-                }
-                else if (distanceFromTarget > enemyManager.minCombatRange && distanceFromTarget < enemyManager.maxCombatRange)
-                {
-                    verticalMovementVaule = 0;
-                }
-                else if (distanceFromTarget > enemyManager.maxCombatRange)
-                {
-                    verticalMovementVaule = 0.5f;
-                }
+                verticalMovementVaule = 0.5f;
 
                 horizontalMovementVaule = Random.Range(-1, 1);
                 if (horizontalMovementVaule <= 1 && horizontalMovementVaule >= 0)
@@ -182,44 +158,23 @@ public class CombatStanceState : State
                 {
                     horizontalMovementVaule = -0.5f;
                 }
-                notFirstWalking = true;
             }
             else
             {
-                float randomNum = Random.Range(0.001f, 1f);
-                if (randomNum <= 0.4f && !isWalkingStop)
+                if (!notFirstWalking)
                 {
-                    horizontalMovementVaule = 0f;
-                    verticalMovementVaule = 0f;
-                    isWalkingStop = true;
-                    walkingTimer = 1f;
-                }
-                else 
-                {
-                    if (verticalMovementVaule < 0f)
+                    //需要精修距离与最大攻击距离间的关系
+                    if (distanceFromTarget >= 0 && distanceFromTarget <= enemyManager.minCombatRange)
                     {
-                        if (distanceFromTarget > enemyManager.minCombatRange)
-                        {
-                            verticalMovementVaule = 0f;
-                        }
+                        verticalMovementVaule = -0.5f;
                     }
-                    else if (verticalMovementVaule > 0f)
+                    else if (distanceFromTarget > enemyManager.minCombatRange && distanceFromTarget < enemyManager.maxCombatRange)
                     {
-                        if (distanceFromTarget <= enemyManager.maxCombatRange)
-                        {
-                            verticalMovementVaule = 0f;
-                        }
+                        verticalMovementVaule = 0;
                     }
-                    else if (verticalMovementVaule == 0f)
+                    else if (distanceFromTarget > enemyManager.maxCombatRange)
                     {
-                        if (distanceFromTarget > enemyManager.minCombatRange)
-                        {
-                            verticalMovementVaule = 0.5f;
-                        }
-                        else if (distanceFromTarget <= enemyManager.minCombatRange)
-                        {
-                            verticalMovementVaule = -0.5f;
-                        }
+                        verticalMovementVaule = 0.5f;
                     }
 
                     horizontalMovementVaule = Random.Range(-1, 1);
@@ -231,8 +186,57 @@ public class CombatStanceState : State
                     {
                         horizontalMovementVaule = -0.5f;
                     }
+                }
+                else
+                {
+                    float randomNum = Random.Range(0.001f, 1f);
+                    if (randomNum <= 0.15f && !isWalkingStop)
+                    {
+                        horizontalMovementVaule = 0f;
+                        verticalMovementVaule = 0f;
+                        isWalkingStop = true;
+                        walkingTimer = 1f;
+                    }
+                    else
+                    {
+                        if (verticalMovementVaule < 0f)
+                        {
+                            if (distanceFromTarget > enemyManager.minCombatRange)
+                            {
+                                verticalMovementVaule = 0f;
+                            }
+                        }
+                        else if (verticalMovementVaule > 0f)
+                        {
+                            if (distanceFromTarget <= enemyManager.maxCombatRange)
+                            {
+                                verticalMovementVaule = 0f;
+                            }
+                        }
+                        else if (verticalMovementVaule == 0f)
+                        {
+                            if (distanceFromTarget < enemyManager.minCombatRange)
+                            {
+                                verticalMovementVaule = -0.5f;
+                            }
+                            else if (distanceFromTarget <= enemyManager.maxCombatRange)
+                            {
+                                verticalMovementVaule = 0.5f;
+                            }
+                        }
 
-                    isWalkingStop = false;
+                        horizontalMovementVaule = Random.Range(-1, 1);
+                        if (horizontalMovementVaule <= 1 && horizontalMovementVaule >= 0)
+                        {
+                            horizontalMovementVaule = 0.5f;
+                        }
+                        else if (horizontalMovementVaule >= -1 && horizontalMovementVaule < 0)
+                        {
+                            horizontalMovementVaule = -0.5f;
+                        }
+
+                        isWalkingStop = false;
+                    }
                 }
             }
         }
@@ -264,12 +268,11 @@ public class CombatStanceState : State
                 {
                     horizontalMovementVaule = 1.5f;
                 }
-                notFirstWalking = true;
             }
             else
             {
                 float randomNum = Random.Range(0.001f, 1f);
-                if (randomNum <= 0.4f && !isWalkingStop)
+                if (randomNum <= 0.6f && !isWalkingStop)
                 {
                     horizontalMovementVaule = 2f;
                     verticalMovementVaule = 0f;
@@ -318,7 +321,6 @@ public class CombatStanceState : State
                 }
             }
         }
-
     }
     private void ReadyToAttack(EnemyManager enemyManager) //仿佛用不到
     {
@@ -337,64 +339,47 @@ public class CombatStanceState : State
         Vector3 targetDirection = enemyManager.curTarget.transform.position - transform.position;
         float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
         float distanceFromTarget = Vector3.Distance(enemyManager.curTarget.transform.position, transform.position);
-
         int maxScore = 0;
-
-        if (!enemyManager.isFirstStrike) //非第一次攻击
+        for (int i = 0; i < enemyAttacks.Length; i++) //算总权重
         {
-            for (int i = 0; i < enemyAttacks.Length; i++) //算总权重
+            EnemyAttackAction enemyAttackAction = enemyAttacks[i];
+
+            if (distanceFromTarget <= enemyAttackAction.maxDistanceNeedToAttack && distanceFromTarget >= enemyAttackAction.minDistanceNeedToAttack)
             {
-                EnemyAttackAction enemyAttackAction = enemyAttacks[i];
-
-                if (distanceFromTarget <= enemyAttackAction.maxDistanceNeedToAttack && distanceFromTarget >= enemyAttackAction.minDistanceNeedToAttack)
+                if (viewableAngle <= enemyAttackAction.maxAttackAngle && viewableAngle >= enemyAttackAction.minAttackAngle)
                 {
-                    if (viewableAngle <= enemyAttackAction.maxAttackAngle && viewableAngle >= enemyAttackAction.minAttackAngle)
+                    if (combatCooldownManager.regularAttackCooldownTimer[i] <= 0) //只算cd转好的攻击
                     {
-                        if (combatCooldownManager.regularAttackCooldownTimer[i] <= 0) //只算cd转好的攻击
-                        {
-                            maxScore += enemyAttackAction.attakPriority;
-                        }
-                    }
-                }
-            }
-
-            int randomValue = Random.Range(0, maxScore);
-            int tempScore = 0;
-
-            for (int i = 0; i < enemyAttacks.Length; i++)
-            {
-                EnemyAttackAction enemyAttackAction = enemyAttacks[i];
-
-                if (distanceFromTarget <= enemyAttackAction.maxDistanceNeedToAttack && distanceFromTarget >= enemyAttackAction.minDistanceNeedToAttack)
-                {
-                    if (viewableAngle <= enemyAttackAction.maxAttackAngle && viewableAngle >= enemyAttackAction.minAttackAngle)
-                    {
-                        if (combatCooldownManager.regularAttackCooldownTimer[i] <= 0) //只算cd转好的攻击
-                        {
-                            if (attackState.curAttack != null)
-                                return;
-
-                            tempScore += enemyAttackAction.attakPriority;
-
-                            if (tempScore > randomValue)
-                            {
-                                attackState.curAttack = enemyAttackAction;
-                                attackState.curRegularIndex = i;
-                            }
-                        }
+                        maxScore += enemyAttackAction.attakPriority;
                     }
                 }
             }
         }
-        else //第一次攻击
+        int randomValue = Random.Range(0, maxScore);
+        int tempScore = 0;
+        for (int i = 0; i < enemyAttacks.Length; i++)
         {
-            EnemyAttackAction enemyAttackAction = enemyAttacks[0];
+            EnemyAttackAction enemyAttackAction = enemyAttacks[i];
 
-            attackState.curAttack = enemyAttackAction;
+            if (distanceFromTarget <= enemyAttackAction.maxDistanceNeedToAttack && distanceFromTarget >= enemyAttackAction.minDistanceNeedToAttack)
+            {
+                if (viewableAngle <= enemyAttackAction.maxAttackAngle && viewableAngle >= enemyAttackAction.minAttackAngle)
+                {
+                    if (combatCooldownManager.regularAttackCooldownTimer[i] <= 0) //只算cd转好的攻击
+                    {
+                        if (attackState.curAttack != null)
+                            return;
 
-            enemyManager.isFirstStrike = false;
+                        tempScore += enemyAttackAction.attakPriority;
 
-            enemyManager.firstStrikeTimer = enemyManager.defaultFirstStrikeTime;
+                        if (tempScore > randomValue)
+                        {
+                            attackState.curAttack = enemyAttackAction;
+                            attackState.curRegularIndex = i;
+                        }
+                    }
+                }
+            }
         }
     }
     void DamageTakenWindow(EnemyManager enemyManager, EnemyAnimatorManager enemyAnimatorManager) 
@@ -402,13 +387,11 @@ public class CombatStanceState : State
         float dodgeProbility = 0;
         float defendProbility = 0;
         float rollAttackProbility = 0;
-
         //受击后行动变化
         if (enemyManager.isDamaged)
         {
             EnemyStats enemyStats = enemyManager.GetComponent<EnemyStats>();
             PlayerStats playerStats = enemyManager.curTarget.GetComponent<PlayerStats>();
-
             if (enemyManager.dodgePriority>0 && enemyManager.defPriority>0)
             {
                 dodgeProbility = (1- (float)enemyStats.currHealth / (float)enemyStats.maxHealth) * enemyManager.dodgePriority;
@@ -422,12 +405,11 @@ public class CombatStanceState : State
             {
                 dodgeProbility = (1 - (float)enemyStats.currHealth / (float)enemyStats.maxHealth) * enemyManager.dodgePriority;
             }
-
-            if (enemyManager.rollAtkPriority > 0) //玩家血越低越容易触发 之后再改一下这个情况
+            if (enemyManager.rollAtkPriority > 0) 
             {
-                rollAttackProbility = (1 - (float)playerStats.currHealth / (float)playerStats.maxHealth) * enemyManager.rollAtkPriority;
+                rollAttackProbility = (1 - (float)enemyStats.currHealth / (float)enemyStats.maxHealth) * enemyManager.rollAtkPriority;
+                //rollAttackProbility = (1 - (float)playerStats.currHealth / (float)playerStats.maxHealth) * enemyManager.rollAtkPriority;
             }
-
             float TriggerProbility = Random.Range(0.001f,1f);
             float DamageTakenRandomNum = Random.Range(0.001f, dodgeProbility + defendProbility + rollAttackProbility);
             if (TriggerProbility <= dodgeProbility + defendProbility + rollAttackProbility)
@@ -447,18 +429,17 @@ public class CombatStanceState : State
                 {
                     enemyManager.isDamaged = false;
                     //积累到一定程度后, 切换到格挡
-                    enemyManager.curRecoveryTime += 0.4f;
+                    enemyManager.curRecoveryTime += 0.75f;
                     horizontalMovementVaule = 2f;
                     verticalMovementVaule = 0f;
                     isWalkingStop = true;
-                    walkingTimer = 1f;
+                    walkingTimer = 1.5f;
                 }
                 else if (DamageTakenRandomNum > dodgeProbility + defendProbility && DamageTakenRandomNum <= dodgeProbility + defendProbility + rollAttackProbility) //滚击
                 {
                     if (enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted && distanceFromTarget <= enemyManager.maxCombatRange)
                     {
                         enemyManager.isDamaged = false;
-                        enemyManager.isDodging = true;
                         enemyAnimatorManager.PlayTargetAnimation("Roll", true, true);
                         enemyManager.curRecoveryTime = 0.25f;
                     }

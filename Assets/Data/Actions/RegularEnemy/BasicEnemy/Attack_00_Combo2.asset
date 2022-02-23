@@ -15,12 +15,14 @@ MonoBehaviour:
   actionAnimation: Combo_00
   isSpecial: 0
   isFlyingObject: 0
+  isHeavyKick: 0
+  isHeavyAttack: 0
   damagePoint: 20
-  attakPriority: 6
+  attakPriority: 4
   recoveryTime: 3
   independtCooldown: 5
-  maxAttackAngle: 45
-  minAttackAngle: -45
+  maxAttackAngle: 60
+  minAttackAngle: -60
   minDistanceNeedToAttack: 0
   maxDistanceNeedToAttack: 3
   isImmune: 1
