@@ -15,7 +15,7 @@ MonoBehaviour:
   skillName: Combo_R_04
   isImmuAttack: 1
   skillType: 0
-  damagePoint: 35
+  damagePoint: 45
   staminaCost: 25
   energyRestore: 50
   pauseDuration: 10

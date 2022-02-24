@@ -106,6 +106,7 @@ public class PlayerManager : CharacterManager
             gameObject.GetComponent<Collider>().enabled = false;
             playerLocmotion.characterColliderBlocker.enabled = false;
             cameraManager.currentLockOnTarget = null;
+            cameraManager.isLockOn = false;
         }
         cameraManager.HandleAllCameraMovement();
     }
