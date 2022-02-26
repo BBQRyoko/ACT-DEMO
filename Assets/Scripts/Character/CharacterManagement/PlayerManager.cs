@@ -28,6 +28,7 @@ public class PlayerManager : CharacterManager
     public bool isSprinting; 
     public bool isRolling;
     public bool isJumping; //跳跃上升阶段
+    public bool isDefending;
     public bool inInteractTrigger;
     public bool interactObject;
 

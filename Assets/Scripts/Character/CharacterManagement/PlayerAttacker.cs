@@ -161,9 +161,8 @@ public class PlayerAttacker : MonoBehaviour
         playerLocmotion.HandleRotateTowardsTarger();
         if (!playerManager.cantBeInterrupted && playerManager.isGround)
         {
-            playerManager.cantBeInterrupted = true;
-            animatorManager.animator.SetBool("isAttacking", true);
-            animatorManager.PlayTargetAnimation("Parrying", true, true);
+            playerManager.isDefending = true;
+            //animatorManager.PlayTargetAnimation("Defend", true, true);
         }
     }
     public void AttackComboTimer() 

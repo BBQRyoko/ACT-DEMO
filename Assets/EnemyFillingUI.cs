@@ -27,7 +27,7 @@ public class EnemyFillingUI : MonoBehaviour
             {
                 gameObject.SetActive(false);
             }
-            else if (fillUIType == fillingType.alert && !enemyManager.curTarget)
+            else if (fillUIType == fillingType.alert && enemyManager.curTarget)
             {
                 Destroy(gameObject);
             }

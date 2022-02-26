@@ -188,7 +188,7 @@ public class InputManager : MonoBehaviour
             }
             else
             {
-                playerAttacker.HandleWeaponAbility(playerInventory.unequippedWeaponItems[0]);
+                //playerAttacker.HandleWeaponAbility(playerInventory.unequippedWeaponItems[0]);
             }
         }
         else 
