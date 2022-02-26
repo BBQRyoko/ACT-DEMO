@@ -5,6 +5,7 @@ using UnityEngine;
 public class WeaponSlotManager : MonoBehaviour
 {
     PlayerManager playerManager;
+    Animator animator;
     [SerializeField] Sample_VFX sample_VFX;
 
     [SerializeField] WeaponSlot mainWeapon_Unequipped;
@@ -18,6 +19,7 @@ public class WeaponSlotManager : MonoBehaviour
     private void Awake()
     {
         playerManager = GetComponentInParent<PlayerManager>();
+        animator = GetComponent<Animator>();
         weaponSlots = GetComponentsInChildren<WeaponSlot>();
         foreach(WeaponSlot weapon in weaponSlots) 
         {
@@ -157,7 +159,11 @@ public class WeaponSlotManager : MonoBehaviour
     }
     private void AttackOver() //确定何时提前关闭玩家当前的攻击状态
     {
-        playerManager.cantBeInterrupted = false;
+        animator.SetBool("cantBeInterrupted", false);
+        playerManager.isImmuAttack = false;
+    }
+    private void ImmuOver() 
+    {
         playerManager.isImmuAttack = false;
     }
     #endregion

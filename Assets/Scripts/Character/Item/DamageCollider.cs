@@ -10,7 +10,7 @@ public class DamageCollider : MonoBehaviour
     public EnemyManager enemyManager;
     public PlayerManager playerManager;
     public AudioSource attackAudio;
-    Collider damageCollider;
+    [SerializeField]Collider damageCollider;
     bool isPlayer;
 
     public bool parryWindow_isOpen;
@@ -74,7 +74,6 @@ public class DamageCollider : MonoBehaviour
             if (enemyManager != null) // 敌人的格挡
             {
                 EnemyStats enemyStats = enemyManager.GetComponent<EnemyStats>();
-                float staminaDamage = (weaponWeightRatio) * curDamage;
                 //普通格挡
                 //音效处理
                 if (curDamage >= 5) 
@@ -87,7 +86,7 @@ public class DamageCollider : MonoBehaviour
 
                     damageCollider.enabled = false;
                     playerManager.GetComponent<BaGuaManager>().curEnergyCharge += energyRestoreAmount / 2;
-                    enemyManager.HandleParryingCheck(staminaDamage);
+                    enemyManager.HandleParryingCheck(curDamage);
                     HitPause(duration);
                 }
             }
@@ -147,7 +146,7 @@ public class DamageCollider : MonoBehaviour
 
             EnemyStats enemyStats = collision.GetComponent<EnemyStats>();
 
-            if (enemyStats != null && enemyStats.currHealth != 0 && !enemyStats.GetComponent<EnemyManager>().isDodging && !enemyStats.GetComponent<EnemyManager>().isBlocking && curDamage >= 5)
+            if (!enemyStats.GetComponent<EnemyManager>().isParrying && enemyStats != null && enemyStats.currHealth != 0 && !enemyStats.GetComponent<EnemyManager>().isDodging && !enemyStats.GetComponent<EnemyManager>().isBlocking && curDamage >= 5)
             {
                 attackAudio.volume = 0.15f;
                 int i = sample_SFX.hittedSFX_List.Length;
@@ -189,7 +188,7 @@ public class DamageCollider : MonoBehaviour
     IEnumerator Hitted(int dur) 
     {
         float pauseTime = dur / 60f;
-        Time.timeScale = 0.1f;
+        Time.timeScale = 0.6f;
         yield return new WaitForSecondsRealtime(pauseTime);
         Time.timeScale = 1f;
     }

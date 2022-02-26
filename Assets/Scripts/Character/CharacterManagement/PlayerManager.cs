@@ -119,6 +119,7 @@ public class PlayerManager : CharacterManager
         isHolding = animator.GetBool("isHolding");
         isWeak = animator.GetBool("isWeak");
         isGettingDamage = animator.GetBool("isGettingDamage");
+        cantBeInterrupted = animator.GetBool("cantBeInterrupted");
         animator.SetBool("isStunned", isStunned);
         animator.SetBool("isGround", isGround); 
         animator.SetBool("isFalling", isFalling);

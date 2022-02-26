@@ -25,10 +25,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 416909517e026214bac11c1b3b168b41, type: 2}
   - {fileID: 11400000, guid: bdd0038ee62414b46a040cbe1ca38eef, type: 2}
   specialSkills:
-  - {fileID: 11400000, guid: 71c9586be0c632b439579ddffb108ad9, type: 2}
+  - {fileID: 0}
   - {fileID: 11400000, guid: 7a67c7e10d085f34eb0aba4e401cae0d, type: 2}
   executionSkill:
   - {fileID: 11400000, guid: b22bb369c8d064748a374cb742aaa3d6, type: 2}
   - {fileID: 11400000, guid: 7225307fc30b34b499d9c105f448db4a, type: 2}
-  weaponAbilities:
-  - {fileID: 11400000, guid: 5c430d40cd64fe14e8b9739de8759dd4, type: 2}
+  - {fileID: 11400000, guid: b22bb369c8d064748a374cb742aaa3d6, type: 2}
+  - {fileID: 11400000, guid: 7225307fc30b34b499d9c105f448db4a, type: 2}
+  springAttack:
+  - {fileID: 11400000, guid: 819c54d412f2cf043a484e93c247cf00, type: 2}

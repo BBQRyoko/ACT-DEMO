@@ -21,7 +21,7 @@ public class PlayerAttacker : MonoBehaviour
     //普通攻击
     public int comboCount;
     public float attackTimer;
-    public float internalDuration = 1.5f;
+    public float internalDuration = 3f;
     //蓄力攻击
     public float chargingTimer;
     public int chargingLevel;
@@ -54,10 +54,9 @@ public class PlayerAttacker : MonoBehaviour
                 playerManager.cantBeInterrupted = true;
                 animatorManager.animator.SetBool("isAttacking", true);
                 attackTimer = internalDuration;
-
                 if (!executionTarget.isWeak) //背刺
                 {
-                    animatorManager.PlayTargetAnimation(weapon.executionSkill[0].skillName, true, true); //处决
+                    animatorManager.PlayTargetAnimation(weapon.executionSkill[0].skillName, true, true); //背刺
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.executionSkill[0].damagePoint;
                     animatorManager.pauseDuration = weapon.executionSkill[0].pauseDuration;
                     executionTarget.getingExecute = true;
@@ -65,48 +64,67 @@ public class PlayerAttacker : MonoBehaviour
                 }
                 else //常规处决
                 {
-                    animatorManager.PlayTargetAnimation(weapon.executionSkill[0].skillName, true, true); //处决
+                    animatorManager.PlayTargetAnimation(weapon.executionSkill[2].skillName, true, true); //处决
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.executionSkill[2].damagePoint;
                     animatorManager.pauseDuration = weapon.executionSkill[2].pauseDuration;
                     executionTarget.getingExecute = true;
                     executionTarget.HandleExecuted(weapon.executionSkill[3].skillName);
                 }
                 executionTarget = null;
-                //sample_VFX_R.curVFX_List[comboCount - 1].Play();
             }
             //普通攻击
             else 
             {
-                comboCount++;
-                if (comboCount > weapon.regularSkills.Length)
+                if (playerManager.isSprinting)
                 {
-                    comboCount = 1;
-                }
-                //检测是否有足够的体力释放
-                if (playerManager.GetComponent<PlayerStats>().currStamina >= weapon.regularSkills[comboCount - 1].staminaCost - 15f)
-                {
-                    playerManager.cantBeInterrupted = true;
-                    animatorManager.animator.SetBool("isAttacking", true);
-                    attackTimer = internalDuration;
-                    //播放指定的攻击动画
-                    animatorManager.PlayTargetAnimation(weapon.regularSkills[comboCount - 1].skillName, true, true);
-                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint;
-                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
-                    animatorManager.pauseDuration = weapon.regularSkills[comboCount - 1].pauseDuration;
-                    playerManager.GetComponent<PlayerStats>().currStamina -= weapon.regularSkills[comboCount - 1].staminaCost;
-                    //sample_VFX_R.curVFX_List[comboCount - 1].Play();
-                    if (weapon.regularSkills[comboCount - 1].isImmuAttack)
+                    comboCount = 0;
+                    if (playerManager.GetComponent<PlayerStats>().currStamina >= weapon.springAttack[0].staminaCost - 15f && !playerManager.cantBeInterrupted) 
                     {
-                        playerManager.isImmuAttack = true;
-                    }
-                    else 
-                    {
-                        playerManager.isImmuAttack = false;
+                        playerManager.cantBeInterrupted = true;
+                        animatorManager.animator.SetBool("isAttacking", true);
+                        //播放指定的攻击动画
+                        animatorManager.PlayTargetAnimation(weapon.springAttack[0].skillName, true, true);
+                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.springAttack[0].damagePoint;
+                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.springAttack[0].energyRestore;
+                        animatorManager.pauseDuration = weapon.springAttack[0].pauseDuration;
+                        playerManager.GetComponent<PlayerStats>().currStamina -= weapon.springAttack[0].staminaCost;
+                        playerManager.isImmuAttack = weapon.springAttack[0].isImmuAttack;
                     }
                 }
                 else 
                 {
-                    comboCount--;
+                    comboCount++;
+                    if (comboCount > weapon.regularSkills.Length)
+                    {
+                        comboCount = 1;
+                    }
+                    //检测是否有足够的体力释放
+                    if (playerManager.GetComponent<PlayerStats>().currStamina >= weapon.regularSkills[comboCount - 1].staminaCost - 15f && !playerManager.cantBeInterrupted)
+                    {
+                        playerManager.cantBeInterrupted = true;
+                        animatorManager.animator.SetBool("isAttacking", true);
+                        attackTimer = internalDuration;
+                        //播放指定的攻击动画
+                        animatorManager.PlayTargetAnimation(weapon.regularSkills[comboCount - 1].skillName, true, true);
+                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint;
+                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                        animatorManager.pauseDuration = weapon.regularSkills[comboCount - 1].pauseDuration;
+                        playerManager.GetComponent<PlayerStats>().currStamina -= weapon.regularSkills[comboCount - 1].staminaCost;
+                        playerManager.isImmuAttack = weapon.springAttack[0].isImmuAttack;
+                        //sample_VFX_R.curVFX_List[comboCount - 1].Play();
+                        //if (weapon.regularSkills[comboCount - 1].isImmuAttack)
+                        //{
+                        //    playerManager.isImmuAttack = true;
+                        //}
+                        //else 
+                        //{
+                        //    playerManager.isImmuAttack = false;
+                        //}
+                    }
+                    else
+                    {
+                        comboCount--;
+                    }
                 }
             }
         }
@@ -137,17 +155,15 @@ public class PlayerAttacker : MonoBehaviour
             }
         }
         //rig.velocity = new Vector3(0, rig.velocity.y, 0);
-    }
-    public void HandleWeaponAbility(WeaponItem weapon) //武器技能
+    } //重攻击
+    public void HandleDefend(WeaponItem weapon) //武器技能
     {
         playerLocmotion.HandleRotateTowardsTarger();
-        if (!playerManager.cantBeInterrupted && playerManager.isGround && !playerManager.isAttacking )  
+        if (!playerManager.cantBeInterrupted && playerManager.isGround)
         {
             playerManager.cantBeInterrupted = true;
             animatorManager.animator.SetBool("isAttacking", true);
-            attackTimer = internalDuration;
-
-            animatorManager.PlayTargetAnimation(weapon.weaponAbilities[0].skillName, true, true);
+            animatorManager.PlayTargetAnimation("Parrying", true, true);
         }
     }
     public void AttackComboTimer() 
@@ -219,7 +235,7 @@ public class PlayerAttacker : MonoBehaviour
     }
     void ExecutionHandler() 
     {
-        if (executionTarget && !executionTarget.isDead)
+        if (executionTarget && !executionTarget.isDead && executionTarget.canBeExecuted)
         {
             playerManager.cameraManager.curExuectionTarget = executionTarget.transform;
         }

@@ -67,7 +67,17 @@ public class PlayerStats : CharacterStats
                 {
                     if (!playerManager.isImmuAttack)
                     {
-                        animatorManager.PlayTargetAnimation("Hit_B", true, true);
+                        animatorManager.animator.speed = 1;
+                        if (playerManager.isGettingDamage)
+                        {
+                            animatorManager.animator.SetTrigger("beingAttacked_B");
+                            animatorManager.animator.SetBool("isInteracting", true);
+                            animatorManager.animator.SetBool("isUsingRootMotion", true);
+                        }
+                        else 
+                        {
+                            animatorManager.PlayTargetAnimation("Hit_B", true, true);
+                        }
                         playerAttacker.comboCount = 0;
                         playerManager.isImmuAttack = false;
                         playerManager.cantBeInterrupted = false;
@@ -96,7 +106,17 @@ public class PlayerStats : CharacterStats
                 {
                     if (!playerManager.isImmuAttack) 
                     {
-                        animatorManager.PlayTargetAnimation("Hit_F", true, true);
+                        animatorManager.animator.speed = 1;
+                        if (playerManager.isGettingDamage)
+                        {
+                            animatorManager.animator.SetTrigger("beingAttacked_F");
+                            animatorManager.animator.SetBool("isInteracting", true);
+                            animatorManager.animator.SetBool("isUsingRootMotion", true);
+                        }
+                        else
+                        {
+                            animatorManager.PlayTargetAnimation("Hit_F", true, true);
+                        }
                         playerAttacker.comboCount = 0;
                         playerManager.isImmuAttack = false;
                         playerManager.cantBeInterrupted = false;

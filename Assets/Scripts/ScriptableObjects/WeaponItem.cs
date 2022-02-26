@@ -19,6 +19,6 @@ public class WeaponItem : Item
     [Header("处决")]
     public Skill[] executionSkill;
 
-    [Header("武器技能")]
-    public Skill[] weaponAbilities;
+    [Header("跳劈")]
+    public Skill[] springAttack;
 }

@@ -10,5 +10,6 @@ public class CharacterManager : MonoBehaviour
     public bool canRotate;
 
     public bool isWeak;
+    public float weakTimer;
     public bool isDead;
 }

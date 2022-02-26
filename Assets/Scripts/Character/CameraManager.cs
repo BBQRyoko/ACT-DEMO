@@ -29,6 +29,9 @@ public class CameraManager : MonoBehaviour
     public float minPivotAngle = -35;
     public float maxPivotAngle = 35;
 
+    //敌人血条
+    public EnemyFillingUI enemyHealthUI;
+
     //警觉系统
     public EnemyFillingUI enemyFillingUI;
 
@@ -47,7 +50,6 @@ public class CameraManager : MonoBehaviour
     public Image dangerMark_Prefab;
     Image dangerMark;
     EnemyManager curEnemy;
-
 
     //相机前方的有效单位
     public List<CharacterManager> availableTarget = new List<CharacterManager>();
@@ -222,6 +224,8 @@ public class CameraManager : MonoBehaviour
         {
             lockOnMark.gameObject.SetActive(false);
             inputManager.GetComponent<PlayerManager>().target = inputManager.GetComponent<PlayerManager>().nullTarget;
+            enemyHealthUI.gameObject.SetActive(false);
+            enemyHealthUI.SetEnemyManager(null);
         }
         else 
         {
@@ -229,6 +233,8 @@ public class CameraManager : MonoBehaviour
             lockOnMark.gameObject.SetActive(true);
             lockOnMark.transform.position = Camera.main.WorldToScreenPoint(new Vector3(enemyManager.targetMarkTransform.position.x, enemyManager.targetMarkTransform.position.y, enemyManager.targetMarkTransform.position.z));
             inputManager.GetComponent<PlayerManager>().target = enemyManager.targetMarkTransform;
+            enemyHealthUI.gameObject.SetActive(true);
+            enemyHealthUI.SetEnemyManager(enemyManager);
         }
     }
     public void HandleExecutingMark()

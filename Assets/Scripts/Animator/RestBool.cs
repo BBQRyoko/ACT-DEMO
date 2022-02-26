@@ -21,6 +21,9 @@ public class RestBool : StateMachineBehaviour
     public string canCombo;
     public bool canComboStatus;
 
+    public string cantBeInterruptedBool;
+    public bool cantBeInterrupted;
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -29,6 +32,7 @@ public class RestBool : StateMachineBehaviour
         animator.SetBool(isRotatingWithRootMotion, isRotatingWithRootMotionStatus);
         animator.SetBool(isGettingDamageBool, isGettingDamageStatus);
         animator.SetBool(canCombo, canComboStatus);
+        animator.SetBool(cantBeInterruptedBool, cantBeInterrupted);
         animator.speed = 1;
 
         if (isPlayer) 

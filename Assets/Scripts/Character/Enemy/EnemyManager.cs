@@ -22,7 +22,6 @@ public class EnemyManager : CharacterManager
     CombatStanceState combatStanceState;
 
     [SerializeField] GameObject backStabArea;
-    [SerializeField] GameObject executedArea;
     [SerializeField] ParryCollider parryCollider;
 
     //CombatRelated
@@ -177,7 +176,12 @@ public class EnemyManager : CharacterManager
         //处决状态Timer
         if (isWeak)
         {
-
+            weakTimer += Time.deltaTime;
+            if (weakTimer >= 5) 
+            {
+                enemyAnimatorManager.animator.SetBool("isWeak", false);
+                weakTimer = 0;
+            }
         }
     }
     private void FixedUpdate()
@@ -195,7 +199,7 @@ public class EnemyManager : CharacterManager
     }
     private void HandleStateMachine() //单位状态机管理
     {
-        if (curState != null && !isDead)
+        if (curState != null && !isDead && !isWeak)
         {
             State nextState = curState.Tick(this, enemyStats, enemyAnimatorManager);
 
@@ -267,20 +271,14 @@ public class EnemyManager : CharacterManager
     }
     public void HandleParryingCheck(float staminaDamage)
     {
-        if (staminaDamage < enemyStats.currStamina)
+        if (staminaDamage < 45)
         {
             enemyAnimatorManager.PlayTargetAnimation("Block_1", true, true);
             isBlocking = true;
         }
-        else if (staminaDamage >= enemyStats.currStamina)
+        else if (staminaDamage >= 45)
         {
             enemyAnimatorManager.PlayTargetAnimation("ParryBreak", true, true);
-        }
-
-        enemyStats.currStamina -= staminaDamage;
-        if (enemyStats.currStamina <= 0)
-        {
-            enemyStats.currStamina = 0;
         }
     }
     void AmbushEnemy() 
@@ -315,15 +313,14 @@ public class EnemyManager : CharacterManager
         }
         else 
         {
-            backStabArea.GetComponent<Collider>().enabled = false;
             if (!isWeak)
             {
-                //executedArea.GetComponent<Collider>().enabled = false;
+                backStabArea.GetComponent<Collider>().enabled = false;
                 canBeExecuted = false;
             }
             else
             {
-                //executedArea.GetComponent<Collider>().enabled = true;
+                backStabArea.GetComponent<Collider>().enabled = true;
                 canBeExecuted = true;
             }
         }
@@ -333,6 +330,11 @@ public class EnemyManager : CharacterManager
         enemyAnimatorManager.PlayTargetAnimation(skillName, true, true);
         IdleState idleState = GetComponentInChildren<IdleState>();
         idleState.PlayerNoticeAnnounce(idleState.announceDistance, true);
+        if (isWeak) 
+        {
+            enemyAnimatorManager.animator.SetBool("isWeak", false);
+            weakTimer = 0;
+        }
     }
     void ItemDrop() 
     {

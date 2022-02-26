@@ -110,17 +110,20 @@ public class EnemyAnimatorManager : MainAnimatorManager
     }
     private void RotateHandler() 
     {
-        Vector3 direction = enemyManager.curTarget.transform.position - transform.position;
-        direction.y = 0;
-        direction.Normalize();
-
-        if (direction == Vector3.zero)
+        if (enemyManager.curTarget) 
         {
-            direction = transform.forward;
-        }
+            Vector3 direction = enemyManager.curTarget.transform.position - transform.position;
+            direction.y = 0;
+            direction.Normalize();
 
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
-        enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed);
+            if (direction == Vector3.zero)
+            {
+                direction = transform.forward;
+            }
+
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed);
+        }
     }
     private void DeadFreeze() 
     {

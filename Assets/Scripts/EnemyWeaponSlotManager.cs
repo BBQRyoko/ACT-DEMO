@@ -79,11 +79,11 @@ public class EnemyWeaponSlotManager : MonoBehaviour
     }
     private void ComboCheck() 
     {
-        if (distanceCheck) 
+        if (distanceCheck && enemyManager.curTarget) 
         {
             distanceToTarget = Vector3.Distance(enemyManager.curTarget.transform.position, enemyManager.transform.position);
             Animator animator = GetComponent<Animator>();
-            if (distanceToTarget <= enemyManager.minCombatRange)
+            if (distanceToTarget <= enemyManager.maxCombatRange)
             {
                 animator.SetTrigger("canCombo");
                 distanceCheck = false;

@@ -72,6 +72,11 @@ public class EnemyStats : CharacterStats
                     animatorManager.PlayTargetAnimation("Hit_F", true, true);
                 }
                 enemyManager.isDamaged = true;
+                if (enemyManager.isWeak) 
+                {
+                    enemyManager.GetComponentInChildren<EnemyAnimatorManager>().animator.SetBool("isWeak", false);
+                    enemyManager.weakTimer = 0;
+                }
             }
 
             if (!enemyManager.isEquipped) 

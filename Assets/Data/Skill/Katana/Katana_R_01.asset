@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Katana_R_01
   m_EditorClassIdentifier: 
   skillName: Combo_R_01
-  isImmuAttack: 1
+  isImmuAttack: 0
   skillType: 0
   damagePoint: 30
-  staminaCost: 10
+  staminaCost: 25
   energyRestore: 10
-  pauseDuration: 7
+  pauseDuration: 4
   VFXs: []
   SFXs: []

@@ -132,7 +132,7 @@ public class InputManager : MonoBehaviour
     {
         sprint_Input = playerControls.PlayerActions.Sprint.phase == UnityEngine.InputSystem.InputActionPhase.Started;
 
-        if (sprint_Input && moveAmount != 0 && playerStats.currStamina > 0)
+        if (sprint_Input && moveAmount != 0 && playerStats.currStamina > 0 && !playerManager.isCrouching)
         {
             playerManager.isSprinting = true;
         }

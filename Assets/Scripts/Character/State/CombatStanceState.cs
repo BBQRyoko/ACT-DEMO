@@ -37,7 +37,7 @@ public class CombatStanceState : State
             enemyAnimatorManager.animator.SetFloat("Vertical", 0);
             enemyAnimatorManager.animator.SetFloat("Horizontal", 0);
             return this;
-        } 
+        }
         //确认单位与目标间的距离
         distanceFromTarget = Vector3.Distance(enemyManager.curTarget.transform.position, enemyManager.transform.position);
         enemyAnimatorManager.animator.SetFloat("Vertical", verticalMovementVaule, 0.2f, Time.deltaTime);
@@ -54,14 +54,14 @@ public class CombatStanceState : State
 
         if (enemyManager.curRecoveryTime <= 0 && attackState.curAttack != null)
         {
-            if (distanceFromTarget > attackState.curAttack.maxDistanceNeedToAttack && !attackingAdjustment)
+            if (distanceFromTarget > attackState.curAttack.minDistanceNeedToAttack && !attackingAdjustment)
             {
                 notFirstWalking = true;
                 attackingAdjustment = true;
                 WalkAroundTarget(enemyManager, enemyAnimatorManager);
             }
             else
-            {
+            { 
                 walkingTimer = 0f;
                 randomDestinationSet = false;
                 notFirstWalking = false;
@@ -243,6 +243,7 @@ public class CombatStanceState : State
         //防御踱步
         else if (enemyManager.defPriority>0 && defendRandomNum < defendProbility)
         {
+            walkingTimer += 1f;
             if (!notFirstWalking)
             {
                 //需要精修距离与最大攻击距离间的关系
@@ -272,12 +273,12 @@ public class CombatStanceState : State
             else
             {
                 float randomNum = Random.Range(0.001f, 1f);
-                if (randomNum <= 0.6f && !isWalkingStop)
+                if (randomNum <= 0.8f && !isWalkingStop)
                 {
                     horizontalMovementVaule = 2f;
                     verticalMovementVaule = 0f;
                     isWalkingStop = true;
-                    walkingTimer = 1f;
+                    walkingTimer = 1.5f;
                 }
                 else 
                 {
@@ -316,7 +317,6 @@ public class CombatStanceState : State
                     {
                         horizontalMovementVaule = 1.5f;
                     }
-
                     isWalkingStop = false;
                 }
             }
@@ -388,7 +388,16 @@ public class CombatStanceState : State
         float defendProbility = 0;
         float rollAttackProbility = 0;
         //受击后行动变化
-        if (enemyManager.isDamaged)
+        if (enemyManager.isBlocking)
+        {
+            enemyManager.isBlocking = false;
+            enemyManager.curRecoveryTime += 1.5f;
+            horizontalMovementVaule = 2f;
+            verticalMovementVaule = 0f;
+            isWalkingStop = true;
+            walkingTimer = 1.5f;
+        }
+        else if (enemyManager.isDamaged)
         {
             EnemyStats enemyStats = enemyManager.GetComponent<EnemyStats>();
             PlayerStats playerStats = enemyManager.curTarget.GetComponent<PlayerStats>();
@@ -412,60 +421,53 @@ public class CombatStanceState : State
             }
             float TriggerProbility = Random.Range(0.001f,1f);
             float DamageTakenRandomNum = Random.Range(0.001f, dodgeProbility + defendProbility + rollAttackProbility);
-            if (TriggerProbility <= dodgeProbility + defendProbility + rollAttackProbility)
+            if (!enemyManager.isInteracting) 
             {
-                if (DamageTakenRandomNum > 0 && DamageTakenRandomNum <= dodgeProbility) //躲避
+                if (TriggerProbility <= dodgeProbility + defendProbility + rollAttackProbility)
                 {
-                    if (enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted && distanceFromTarget <= enemyManager.minCombatRange)
+                    if (DamageTakenRandomNum > 0 && DamageTakenRandomNum <= dodgeProbility) //躲避
+                    {
+                        if (enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted && distanceFromTarget <= enemyManager.minCombatRange)
+                        {
+                            enemyManager.isDamaged = false;
+                            enemyManager.curRecoveryTime += 1f;
+                            enemyAnimatorManager.PlayTargetAnimation("AttackDodge", true, true);
+                            isWalkingStop = false;
+                            walkingTimer = 1f;
+                        }
+                    }
+                    else if (DamageTakenRandomNum > dodgeProbility && DamageTakenRandomNum <= dodgeProbility + defendProbility) //格挡
                     {
                         enemyManager.isDamaged = false;
-                        enemyManager.curRecoveryTime += 1f;
-                        enemyAnimatorManager.PlayTargetAnimation("AttackDodge", true, true);
-                        isWalkingStop = false;
-                        walkingTimer = 1f;
+                        //积累到一定程度后, 切换到格挡
+                        enemyManager.curRecoveryTime += 0.75f;
+                        horizontalMovementVaule = 2f;
+                        verticalMovementVaule = 0f;
+                        isWalkingStop = true;
+                        walkingTimer = 1.5f;
                     }
+                    else if (DamageTakenRandomNum > dodgeProbility + defendProbility && DamageTakenRandomNum <= dodgeProbility + defendProbility + rollAttackProbility) //滚击
+                    {
+                        if (enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted && distanceFromTarget <= enemyManager.maxCombatRange)
+                        {
+                            enemyManager.isDamaged = false;
+                            enemyAnimatorManager.PlayTargetAnimation("Roll", true, true);
+                            enemyManager.curRecoveryTime = 0.25f;
+                        }
+                    }
+
+                    enemyManager.isDamaged = false;
                 }
-                else if (DamageTakenRandomNum > dodgeProbility && DamageTakenRandomNum <= dodgeProbility + defendProbility) //格挡
+                else
                 {
                     enemyManager.isDamaged = false;
-                    //积累到一定程度后, 切换到格挡
-                    enemyManager.curRecoveryTime += 0.75f;
-                    horizontalMovementVaule = 2f;
-                    verticalMovementVaule = 0f;
-                    isWalkingStop = true;
-                    walkingTimer = 1.5f;
                 }
-                else if (DamageTakenRandomNum > dodgeProbility + defendProbility && DamageTakenRandomNum <= dodgeProbility + defendProbility + rollAttackProbility) //滚击
-                {
-                    if (enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted && distanceFromTarget <= enemyManager.maxCombatRange)
-                    {
-                        enemyManager.isDamaged = false;
-                        enemyAnimatorManager.PlayTargetAnimation("Roll", true, true);
-                        enemyManager.curRecoveryTime = 0.25f;
-                    }
-                }
-
-                enemyManager.isDamaged = false;
-            }
-            else 
-            {
-                enemyManager.isDamaged = false;
             }
         }
-        else if (enemyManager.isBlocking)
-        {
-            enemyManager.isBlocking = false;
-            enemyManager.curRecoveryTime += 0.4f;
-            horizontalMovementVaule = 2f;
-            verticalMovementVaule = 0f;
-            isWalkingStop = true;
-            walkingTimer = 1f;
-        }
-
     }
     void SpecialActionWatcher(EnemyManager enemyManager) 
     {
-        if (conditionList != null) 
+        if (conditionList != null && enemyManager.curRecoveryTime<=0.5f) 
         {
             foreach (SpecialCondition specialCondition in conditionList) 
             {
@@ -491,7 +493,7 @@ public class CombatStanceState : State
                         //    attackState.curAttack = specialCondition;
                         //    specialConditionTriggered = true;
                         //}
-                        if (randomDestinationSet && enemyManager.curTarget.GetComponent<PlayerManager>().isAttacking && distanceFromTarget <= 2.5f && !enemyManager.isParrying)
+                        if (randomDestinationSet && enemyManager.curTarget.GetComponent<PlayerManager>().isAttacking && distanceFromTarget <= 2.5f && !enemyManager.isParrying && enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted)
                         {
                             enemyManager.isDodging = specialCondition.canDodge;
                             canCounterAttack = false;
