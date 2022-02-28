@@ -151,6 +151,7 @@ MonoBehaviour:
   enemyManager: {fileID: 0}
   playerManager: {fileID: 0}
   attackAudio: {fileID: 0}
+  damageCollider: {fileID: 0}
   parryWindow_isOpen: 0
   sample_SFX: {fileID: 0}
   curDamage: 10
@@ -337,10 +338,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.75
-  m_Height: 1.6952292
+  m_Radius: 1.5
+  m_Height: 2
   m_Direction: 1
-  m_Center: {x: -1.6987132e-14, y: 0.65, z: -0.5}
+  m_Center: {x: 0, y: 0.65, z: 0}
 --- !u!114 &480039983380791220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -404,6 +405,7 @@ MonoBehaviour:
   weaponDamageCollider: {fileID: 0}
   kickDamagerCollider: {fileID: 1185445945}
   flyingObjectDamager: {fileID: 3399600216471191144}
+  flyingObj: {fileID: 3399600217717074037}
 --- !u!114 &4336121999850854043
 MonoBehaviour:
   m_ObjectHideFlags: 0

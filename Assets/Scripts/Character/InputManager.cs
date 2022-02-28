@@ -182,18 +182,12 @@ public class InputManager : MonoBehaviour
 
         if (weaponAbility_Input)
         {
-            if (!playerManager.isWeaponEquipped)
-            {
-                playerManager.weaponEquiping();
-            }
-            else
-            {
-                //playerAttacker.HandleWeaponAbility(playerInventory.unequippedWeaponItems[0]);
-            }
+            if (playerManager.isWeaponEquipped) 
+            playerAttacker.HandleDefend(playerInventory.unequippedWeaponItems[0]);
         }
         else 
         {
-            playerManager.isHolding = false;
+            animatorManager.animator.SetBool("isDefending", false);
         }
     }
     private void HandleInteractInput() 
@@ -217,7 +211,6 @@ public class InputManager : MonoBehaviour
     {
         if (lockOn_Input && !lockOn_Flag)
         {
-            cameraManager.ClearLockOnTargets();
             lockOn_Input = false;
             cameraManager.HandleLockOn();
             if (cameraManager.nearestLockOnTarget != null)
@@ -243,7 +236,8 @@ public class InputManager : MonoBehaviour
                 cameraManager.currentLockOnTarget = cameraManager.leftLockTarget;
             }
         }
-        else if (lockOn_Flag && page_Down_Input) 
+
+        if (lockOn_Flag && page_Down_Input) 
         {
             page_Down_Input = false;
             cameraManager.HandleLockOn();

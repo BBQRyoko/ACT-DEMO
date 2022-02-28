@@ -23,7 +23,14 @@ public class IdleState : State
         {
             if (!enemyManager.ambushEnemy)
             {
-                enemyAnimatorManager.animator.SetFloat("Horizontal", -2, 0.1f, Time.deltaTime);
+                if (!enemyManager.isEquipped)
+                {
+                    enemyAnimatorManager.animator.SetFloat("Horizontal", -2, 0.1f, Time.deltaTime);
+                }
+                else 
+                {
+                    enemyAnimatorManager.animator.SetFloat("Horizontal", 0, 0.1f, Time.deltaTime);
+                }
             }
             else 
             {
@@ -56,7 +63,14 @@ public class IdleState : State
         {
             if (!enemyManager.ambushEnemy)
             {
-                enemyAnimatorManager.animator.SetFloat("Horizontal", -2, 0.1f, Time.deltaTime);
+                if (!enemyManager.isEquipped)
+                {
+                    enemyAnimatorManager.animator.SetFloat("Horizontal", -2, 0.1f, Time.deltaTime);
+                }
+                else
+                {
+                    enemyAnimatorManager.animator.SetFloat("Horizontal", 0, 0.1f, Time.deltaTime);
+                }
             }
             else
             {
@@ -194,6 +208,21 @@ public class IdleState : State
             }
         }
         #endregion
+
+        if (enemyManager.alertingTarget != null)
+        {
+            if (!enemyManager.isEquipped) //没装备武器就把武器装上
+            {
+                enemyAnimatorManager.PlayTargetAnimation("Equip", true, true);
+            }
+        }
+        else 
+        {
+            if (enemyManager.curTarget == null && enemyManager.isEquipped) 
+            {
+                enemyAnimatorManager.PlayTargetAnimation("Unarm", true, true);
+            }
+        }
 
         #region 切换至追踪模式
         if (enemyManager.curTarget != null)

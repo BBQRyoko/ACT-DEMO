@@ -21,16 +21,26 @@ public class EnemyFillingUI : MonoBehaviour
             slider.value = enemyManager.alertTimer;
         }
 
-        if (slider.value <= 0) 
+        if (slider.value <= 0)
         {
             if (fillUIType == fillingType.health)
             {
                 gameObject.SetActive(false);
             }
-            else if (fillUIType == fillingType.alert && enemyManager.curTarget)
+            else if (fillUIType == fillingType.alert && !enemyManager.curTarget)
             {
                 Destroy(gameObject);
             }
+        }
+
+        if (fillUIType == fillingType.health && !enemyManager.beenLocked) 
+        {
+            Destroy(gameObject, 1.5f);
+        }
+
+        if (fillUIType == fillingType.alert && enemyManager.curTarget)
+        {
+            Destroy(gameObject);
         }
     }
     public void SetEnemyManager(EnemyManager enemyManager) 

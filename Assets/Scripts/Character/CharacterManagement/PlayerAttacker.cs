@@ -51,7 +51,7 @@ public class PlayerAttacker : MonoBehaviour
             //可处决
             if (executionTarget) //无消耗
             {
-                playerManager.cantBeInterrupted = true;
+                animatorManager.animator.SetBool("cantBeInterrupted", true);
                 animatorManager.animator.SetBool("isAttacking", true);
                 attackTimer = internalDuration;
                 if (!executionTarget.isWeak) //背刺
@@ -78,10 +78,12 @@ public class PlayerAttacker : MonoBehaviour
                 if (playerManager.isSprinting)
                 {
                     comboCount = 0;
+                    comboCount++;
                     if (playerManager.GetComponent<PlayerStats>().currStamina >= weapon.springAttack[0].staminaCost - 15f && !playerManager.cantBeInterrupted) 
                     {
                         playerManager.cantBeInterrupted = true;
                         animatorManager.animator.SetBool("isAttacking", true);
+                        attackTimer = internalDuration;
                         //播放指定的攻击动画
                         animatorManager.PlayTargetAnimation(weapon.springAttack[0].skillName, true, true);
                         weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.springAttack[0].damagePoint;
@@ -110,7 +112,6 @@ public class PlayerAttacker : MonoBehaviour
                         weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
                         animatorManager.pauseDuration = weapon.regularSkills[comboCount - 1].pauseDuration;
                         playerManager.GetComponent<PlayerStats>().currStamina -= weapon.regularSkills[comboCount - 1].staminaCost;
-                        playerManager.isImmuAttack = weapon.springAttack[0].isImmuAttack;
                         //sample_VFX_R.curVFX_List[comboCount - 1].Play();
                         //if (weapon.regularSkills[comboCount - 1].isImmuAttack)
                         //{
@@ -156,13 +157,11 @@ public class PlayerAttacker : MonoBehaviour
         }
         //rig.velocity = new Vector3(0, rig.velocity.y, 0);
     } //重攻击
-    public void HandleDefend(WeaponItem weapon) //武器技能
+    public void HandleDefend(WeaponItem weapon) //武器防御
     {
-        playerLocmotion.HandleRotateTowardsTarger();
-        if (!playerManager.cantBeInterrupted && playerManager.isGround)
+        if (!playerManager.cantBeInterrupted && playerManager.isGround && !playerManager.isDefending)
         {
-            playerManager.isDefending = true;
-            //animatorManager.PlayTargetAnimation("Defend", true, true);
+            animatorManager.PlayTargetAnimation("Defend", true, true);
         }
     }
     public void AttackComboTimer() 
@@ -225,12 +224,12 @@ public class PlayerAttacker : MonoBehaviour
     }
     public void HoldingStatus() 
     {
-        if (!inputManager.weaponAbility_Input && playerManager.isHolding) 
-        {
-            animatorManager.animator.SetBool("isHolding", false);
-            playerManager.cantBeInterrupted = false;
-            //animatorManager.PlayTargetAnimation("WeaponAbility_01(End)", true, true);
-        }
+        //if (!inputManager.weaponAbility_Input && playerManager.isHolding) 
+        //{
+        //    animatorManager.animator.SetBool("isHolding", false);
+        //    playerManager.cantBeInterrupted = false;
+        //    //animatorManager.PlayTargetAnimation("WeaponAbility_01(End)", true, true);
+        //}
     }
     void ExecutionHandler() 
     {

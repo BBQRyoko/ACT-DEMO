@@ -175,6 +175,17 @@ public class AnimatorManager : MainAnimatorManager
             playerManager.attackRotate = false;
         }
     }
+    private void HandleRotateTowardsTarget() 
+    {
+        if (playerLocmotion.willRotateTowardsTarget)
+        {
+            playerLocmotion.willRotateTowardsTarget = false;
+        }
+        else 
+        {
+            playerLocmotion.willRotateTowardsTarget = true;
+        }
+    }
     private void hitRecoverAnnounce(int recoverLevel) 
     {
         if (recoverLevel >= 2)

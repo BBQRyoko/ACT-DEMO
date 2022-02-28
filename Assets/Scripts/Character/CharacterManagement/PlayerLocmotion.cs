@@ -37,6 +37,7 @@ public class PlayerLocmotion : MonoBehaviour
     [SerializeField] float crouchSpeed = 2.5f;
     [SerializeField] float sprintSpeed = 10;
     [SerializeField] float rotationSpeed = 15;
+    public bool willRotateTowardsTarget;
     public Vector3 movementVelocity;
     Vector3 moveDirection;
 
@@ -196,6 +197,11 @@ public class PlayerLocmotion : MonoBehaviour
     private void HandleRotation() //还可以优化
     {
         float rSpeed = rotationSpeed;
+
+        if (willRotateTowardsTarget) 
+        {
+            HandleRotateTowardsTarger();
+        }
 
         if (!playerManager.attackRotate)
         {

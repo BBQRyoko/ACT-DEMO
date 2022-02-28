@@ -42,10 +42,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.75
-  m_Height: 1.6952292
+  m_Radius: 1.5
+  m_Height: 2
   m_Direction: 1
-  m_Center: {x: -1.6987132e-14, y: 0.65, z: -0.5}
+  m_Center: {x: 0, y: 0.65, z: 0}
 --- !u!114 &1141095501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -413,6 +413,7 @@ MonoBehaviour:
   weaponDamageCollider: {fileID: 0}
   kickDamagerCollider: {fileID: 0}
   flyingObjectDamager: {fileID: 3167053831030030076}
+  flyingObj: {fileID: 3167053830060992737}
 --- !u!114 &4103504058979145231
 MonoBehaviour:
   m_ObjectHideFlags: 0

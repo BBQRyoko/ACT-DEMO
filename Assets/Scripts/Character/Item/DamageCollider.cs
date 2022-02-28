@@ -71,12 +71,9 @@ public class DamageCollider : MonoBehaviour
             EnemyManager enemyManager = parryCollider.GetComponentInParent<EnemyManager>();
             PlayerManager playerManager1 = parryCollider.GetComponentInParent<PlayerManager>(); //玩家格挡的情况
 
-            if (enemyManager != null) // 敌人的格挡
+            if (enemyManager != null && isPlayer) // 敌人的格挡
             {
-                EnemyStats enemyStats = enemyManager.GetComponent<EnemyStats>();
-                //普通格挡
-                //音效处理
-                if (curDamage >= 5) 
+                if (curDamage >= 5)
                 {
                     attackAudio.volume = 0.2f;
                     int i = sample_SFX.blockedSFX_List.Length;
@@ -90,10 +87,20 @@ public class DamageCollider : MonoBehaviour
                     HitPause(duration);
                 }
             }
-            else //玩家的格挡
+            else if (playerManager1 != null && !isPlayer) 
             {
-            
+                AudioSource attackAudioSource = playerManager1.GetComponentInChildren<AudioSource>();
+                Sample_SFX sample_SFX_Source = playerManager1.GetComponentInChildren<Sample_SFX>();
+                attackAudioSource.volume = 0.2f;
+                int i = sample_SFX_Source.blockedSFX_List.Length;
+                int random = Random.Range(0, i - 1);
+                attackAudioSource.clip = sample_SFX_Source.blockedSFX_List[random];
+                attackAudioSource.Play();
+
+                damageCollider.enabled = false;
+                playerManager1.HandleParryingCheck(curDamage);
             }
+           
 
             //if (parryCollider != null) 
             //{

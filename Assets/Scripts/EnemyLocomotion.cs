@@ -25,19 +25,16 @@ public class EnemyLocomotion : MonoBehaviour
         enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
         rigidbody = GetComponent<Rigidbody>();
     }
-
     private void Start()
     {
         Physics.IgnoreCollision(characterCollider, characterColliderBlocker, true);
     }
-
     private void FixedUpdate()
     {
         HandleGravity();
         GroundCheck();
         rigidbody.velocity = new Vector3(rigidbody.velocity.x, movementVelocity.y, rigidbody.velocity.z);
     }
-
     public void HandleGravity()
     {
         float fallMultiplier = 2.0f; //下落加成, 加强下落的重力效果
@@ -56,7 +53,6 @@ public class EnemyLocomotion : MonoBehaviour
             movementVelocity.y += gravity * Time.deltaTime;
         }
     }
-
     public void GroundCheck()
     {
         //raycast和spherecast来检测是否在地上

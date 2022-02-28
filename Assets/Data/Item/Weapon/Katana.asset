@@ -29,6 +29,7 @@ MonoBehaviour:
   executionSkill:
   - {fileID: 11400000, guid: f90f86c172882ae4abd2ebfd2ac9ca98, type: 2}
   - {fileID: 11400000, guid: c36de8873bf21034cba5505061b40da8, type: 2}
-  - {fileID: 11400000, guid: f90f86c172882ae4abd2ebfd2ac9ca98, type: 2}
-  - {fileID: 11400000, guid: c36de8873bf21034cba5505061b40da8, type: 2}
-  springAttack: []
+  - {fileID: 11400000, guid: b06dd356bbe64d344bc3ada6371ee121, type: 2}
+  - {fileID: 11400000, guid: bc374aef43fc2b744ab9b40bfb7e9744, type: 2}
+  springAttack:
+  - {fileID: 11400000, guid: c3f67b10cdc0ace478662843a951ca6c, type: 2}

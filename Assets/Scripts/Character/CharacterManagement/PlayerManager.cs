@@ -28,7 +28,6 @@ public class PlayerManager : CharacterManager
     public bool isSprinting; 
     public bool isRolling;
     public bool isJumping; //跳跃上升阶段
-    public bool isDefending;
     public bool inInteractTrigger;
     public bool interactObject;
 
@@ -43,9 +42,11 @@ public class PlayerManager : CharacterManager
     public bool isImmuAttack;
     public bool cantBeInterrupted;
     public bool isGettingDamage;
+    public bool isDefending;
     public bool hitRecover;
     public bool isStunned;
     public bool damageAvoid;
+    [SerializeField] ParryCollider parryCollider;
 
     //武器切换相关
     public bool katanaUnlock;
@@ -82,6 +83,7 @@ public class PlayerManager : CharacterManager
         baGuaManager = GetComponent<BaGuaManager>();
         animatorManager = GetComponentInChildren<AnimatorManager>();
         weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
+        parryCollider = GetComponentInChildren<ParryCollider>();
         rig = GetComponent<Rigidbody>();
     }
     private void Update()
@@ -119,6 +121,7 @@ public class PlayerManager : CharacterManager
         isCharging = animator.GetBool("isCharging");
         isHolding = animator.GetBool("isHolding");
         isWeak = animator.GetBool("isWeak");
+        isDefending = animator.GetBool("isDefending");
         isGettingDamage = animator.GetBool("isGettingDamage");
         cantBeInterrupted = animator.GetBool("cantBeInterrupted");
         animator.SetBool("isStunned", isStunned);
@@ -127,6 +130,7 @@ public class PlayerManager : CharacterManager
         inputManager.reAttack_Input = false;
         inputManager.interact_Input = false;
         inputManager.weaponSwitch_Input = false;
+        HandleDefending();
         HoldingAction();
         ChargingAction();
     }
@@ -185,16 +189,46 @@ public class PlayerManager : CharacterManager
         obj.gameObject.SetActive(true);
         obj.StartFlyingObj(target);
     }
-    private void HoldingAction() //按键保持
+    public void HandleDefending() 
     {
-        if (!isHolding)
+        if (isDefending)
         {
-            inputManager.weaponAbility_Input = false;
+            parryCollider.EnableParryCollider();
         }
         else 
         {
-            inputManager.weaponAbility_Input = true;
+            parryCollider.DisableParryCollider();
         }
+    }
+    public void HandleParryingCheck(int incomingDamage) 
+    {
+        float staminaDamage = (float)incomingDamage * 2f;
+        if (staminaDamage <= playerStats.currStamina)
+        {
+
+            playerStats.currStamina -= staminaDamage;
+            //animatorManager.PlayTargetAnimation("Defend(Success)", true, true);
+            animator.SetTrigger("isDefendSuccess");
+        }
+        else 
+        {
+            playerStats.currStamina = 0;
+            //animatorManager.PlayTargetAnimation("Defend(Broken)", true, true);
+            animator.SetTrigger("isDefendFailed");
+            animatorManager.animator.SetBool("isDefending", false);
+            inputManager.weaponAbility_Input = false;
+        }
+    }
+    private void HoldingAction() //按键保持
+    {
+        //if (!isHolding)
+        //{
+        //    inputManager.weaponAbility_Input = false;
+        //}
+        //else 
+        //{
+        //    inputManager.weaponAbility_Input = true;
+        //}
     }
     public void weaponEquiping(bool beDamaging = false) 
     {

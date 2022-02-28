@@ -25,6 +25,8 @@ public class EnemyManager : CharacterManager
     [SerializeField] ParryCollider parryCollider;
 
     //CombatRelated
+    public bool beenLocked;
+    public bool healtBarSpawn;
     public bool canBeExecuted;
     public bool getingExecute;
     public bool isUnique;
@@ -119,6 +121,7 @@ public class EnemyManager : CharacterManager
         AmbushEnemy();
         ExecutedArea();
         HandleParryCollider();
+        HandleHealthBar();
         HandleAlertIcon();
         ItemDrop();
         isRotatingWithRootMotion = enemyAnimatorManager.animator.GetBool("isRotatingWithRootMotion");
@@ -212,6 +215,29 @@ public class EnemyManager : CharacterManager
     private void SwitchToNextState(State state)
     {
         curState = state;
+    }
+    private void HandleHealthBar() 
+    {
+        if (beenLocked && !healtBarSpawn)
+        {
+            cameraManager.GenerateUIBar(this);
+            healtBarSpawn = true;
+        }
+
+        if (!cameraManager.currentLockOnTarget)
+        {
+            beenLocked = false;
+            healtBarSpawn = false;
+        }
+        else if (cameraManager.currentLockOnTarget.GetComponentInParent<EnemyManager>() != this)
+        {
+            beenLocked = false;
+            healtBarSpawn = false;
+        }
+        else if (cameraManager.currentLockOnTarget.GetComponentInParent<EnemyManager>() == this) 
+        {
+            beenLocked = true;
+        }
     }
     private void HandleRecoveryTimer() //攻击间隔
     {

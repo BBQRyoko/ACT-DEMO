@@ -142,7 +142,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5661125628330891596}
-  m_LocalRotation: {x: -0, y: -0.1305411, z: -0, w: 0.991443}
+  m_LocalRotation: {x: 0, y: -0.1305439, z: 0, w: 0.99144256}
   m_LocalPosition: {x: 727.21857, y: -49.189995, z: -304.46838}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -340,10 +340,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.75
-  m_Height: 1.6952292
+  m_Radius: 1.5
+  m_Height: 2
   m_Direction: 1
-  m_Center: {x: -1.6987132e-14, y: 0.65, z: -0.5}
+  m_Center: {x: 0, y: 0.65, z: 0}
 --- !u!114 &8626610680753229509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1734,7 +1734,7 @@ PrefabInstance:
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: parryCollider
       value: 
-      objectReference: {fileID: 5184919751724161249}
+      objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: rotationSpeed
       value: 5
@@ -1753,7 +1753,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: minCombatRange
-      value: 2
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: collider_Combat

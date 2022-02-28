@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 925f15faf6a65f94189f6e4e2885f970, type: 3}
   m_Name: Katana_EX
   m_EditorClassIdentifier: 
-  skillName: BackStab
+  skillName: Execution
+  isImmuAttack: 0
   skillType: 0
-  damagePoint: 100
-  staminaCost: 10
+  damagePoint: 35
+  staminaCost: 15
   energyRestore: 60
   pauseDuration: 0
   VFXs: []

@@ -118,20 +118,23 @@ public class CameraManager : MonoBehaviour
         }
         else
         {
-            Vector3 dir = currentLockOnTarget.position - transform.position;
-            dir.Normalize();
-            //dir.y = 0;
+            if (currentLockOnTarget) 
+            {
+                Vector3 dir = currentLockOnTarget.position - transform.position;
+                dir.Normalize();
+                //dir.y = 0;
 
-            Quaternion targetRotation = Quaternion.LookRotation(dir);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, delta / (cameraLookSpeed * 2));
+                Quaternion targetRotation = Quaternion.LookRotation(dir);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, delta / (cameraLookSpeed * 2));
 
-            dir = currentLockOnTarget.position - cameraPivotTransform.position;
-            dir.Normalize();
+                dir = currentLockOnTarget.position - cameraPivotTransform.position;
+                dir.Normalize();
 
-            targetRotation = Quaternion.LookRotation(dir);
-            Vector3 eulerAngle = targetRotation.eulerAngles;
-            eulerAngle.y = 0;
-            cameraPivotTransform.localEulerAngles = eulerAngle;
+                targetRotation = Quaternion.LookRotation(dir);
+                Vector3 eulerAngle = targetRotation.eulerAngles;
+                eulerAngle.y = 0;
+                cameraPivotTransform.localEulerAngles = eulerAngle;
+            }
         }
     }
     private void HandleCameraCollisions(float delta)
@@ -157,63 +160,79 @@ public class CameraManager : MonoBehaviour
     } //相机与非指定的物件碰撞时的拉近
     public void HandleLockOn() //相机锁定
     {
+        availableTarget.Clear();
         float shortestDistance = Mathf.Infinity;
-
-        Collider[] colliders = Physics.OverlapSphere(targetTransform.position, 20);
-
-        for (int i = 0; i < colliders.Length; i++)
+        float shortestDistanceOfLeftTarget = Mathf.Infinity;
+        float shortestDistanceOfRightTarget = Mathf.Infinity;
+        Collider[] colliders = Physics.OverlapSphere(targetTransform.position, 26);
+        if (colliders.Length > 0)
         {
-            CharacterManager character = colliders[i].GetComponent<CharacterManager>();
-
-            if (character != null)
+            for (int i = 0; i < colliders.Length; i++)
             {
-                Vector3 lockTargetDirection = character.transform.position - targetTransform.position;
-                float distanceFromTarget = Vector3.Distance(targetTransform.position, character.transform.position);
-                float viewableAngle = Vector3.Angle(lockTargetDirection, cameraTransform.forward);
+                CharacterManager character = colliders[i].GetComponent<CharacterManager>();
 
-                if (character.transform.root != targetTransform.transform.root && viewableAngle > -50 && viewableAngle < 50 && distanceFromTarget <= maxLockOnDistance)
+                if (character != null)
                 {
-                    PlayerStats playerStats = inputManager.GetComponent<PlayerStats>();
-                    EnemyStats enemyStats = character.GetComponent<EnemyStats>();
-                    Vector3 targetDir = new Vector3(enemyStats.eyePos.position.x - playerStats.eyePos.transform.position.x, enemyStats.eyePos.position.y - playerStats.eyePos.transform.position.y, enemyStats.eyePos.position.z - playerStats.eyePos.transform.position.z);
-                    float distance = Vector3.Distance(playerStats.eyePos.transform.position, enemyStats.eyePos.position);
-                    bool hitInfo = Physics.Raycast(playerStats.eyePos.position, targetDir, distance, visionBlockLayer);
-                    if (!hitInfo) 
+                    Vector3 lockTargetDir = character.transform.position - transform.position;
+                    float lockTargetDis = Vector3.Distance(transform.position, character.transform.position);
+                    float viewableAngle = Vector3.Angle(lockTargetDir, transform.forward);
+
+                    if (character.transform.root != targetTransform.transform.root && viewableAngle > -50 && viewableAngle < 50 && lockTargetDis <= maxLockOnDistance)
                     {
-                        availableTarget.Add(character);
+                        PlayerStats playerStats = inputManager.GetComponent<PlayerStats>();
+                        EnemyStats enemyStats = character.GetComponent<EnemyStats>();
+                        Vector3 targetDir = new Vector3(enemyStats.eyePos.position.x - playerStats.eyePos.transform.position.x, enemyStats.eyePos.position.y - playerStats.eyePos.transform.position.y, enemyStats.eyePos.position.z - playerStats.eyePos.transform.position.z);
+                        float distance = Vector3.Distance(playerStats.eyePos.transform.position, enemyStats.eyePos.position);
+                        bool hitInfo = Physics.Raycast(playerStats.eyePos.position, targetDir, distance, visionBlockLayer);
+                        if (!hitInfo)
+                        {
+                            availableTarget.Add(character);
+                        }
                     }
+
                 }
-            }
+            }      
         }
-
-        for (int k = 0; k < availableTarget.Count; k++)
+        if (availableTarget.Count > 0)
         {
-            float distanceFromTarget = Vector3.Distance(targetTransform.position, availableTarget[k].transform.position);
-            float shortestDistanceOfLeftTarget = Mathf.Infinity;
-            float shortestDistanceOfRightTarget = Mathf.Infinity;
-
-            if (distanceFromTarget < shortestDistance)
+            for (int k = 0; k < availableTarget.Count; k++)
             {
-                shortestDistance = distanceFromTarget;
-                nearestLockOnTarget = availableTarget[k].lockOnTransform;
-            }
+                float distFromTarget = Vector3.Distance(transform.position, availableTarget[k].transform.position);
 
-            if (inputManager.lockOn_Flag)
-            {
-                Vector3 relativeEnemyPosition = currentLockOnTarget.InverseTransformPoint(availableTarget[k].transform.position);
-                var distanceFromLeftTarget = currentLockOnTarget.transform.position.x - availableTarget[k].transform.position.x;
-                var distanceFromRightTarget = currentLockOnTarget.transform.position.x + availableTarget[k].transform.position.x;
-
-                if (relativeEnemyPosition.x > 0.00 && distanceFromLeftTarget < shortestDistanceOfLeftTarget)
+                if (distFromTarget < shortestDistance)
                 {
-                    shortestDistanceOfLeftTarget = distanceFromLeftTarget;
-                    leftLockTarget = availableTarget[k].lockOnTransform;
+                    shortestDistance = distFromTarget;
+                    nearestLockOnTarget = availableTarget[k].lockOnTransform;
                 }
 
-                if (relativeEnemyPosition.x < 0.00 && distanceFromRightTarget < shortestDistanceOfRightTarget)
+                if (inputManager.lockOn_Flag)
                 {
-                    shortestDistanceOfRightTarget = distanceFromRightTarget;
-                    rightLockTarget = availableTarget[k].lockOnTransform;
+                    //This is the big change, from enemy position to player
+                    Vector3 relativePlayerPostion = transform.InverseTransformPoint(availableTarget[k].transform.position);
+
+                    var distanceFromLeftTarget = 1000f; //_currentLockOnTarget.transform.position.x - _availableTargets[k].transform.position.x;
+                    var distanceFromRightTarget = 1000f; //_currentLockOnTarget.transform.position.x + _availableTargets[k].transform.position.x;
+
+                    if (relativePlayerPostion.x < 0.00)
+                    {
+                        distanceFromLeftTarget = Vector3.Distance(currentLockOnTarget.position, availableTarget[k].transform.position);
+                    }
+                    else if (relativePlayerPostion.x > 0.00)
+                    {
+                        distanceFromRightTarget = Vector3.Distance(currentLockOnTarget.position, availableTarget[k].transform.position);
+                    }
+
+                    if (relativePlayerPostion.x < 0.00 && distanceFromLeftTarget < shortestDistanceOfLeftTarget)
+                    {
+                        shortestDistanceOfLeftTarget = distanceFromLeftTarget;
+                        leftLockTarget = availableTarget[k].lockOnTransform;
+                    }
+
+                    if (relativePlayerPostion.x > 0.00 && distanceFromRightTarget < shortestDistanceOfRightTarget)
+                    {
+                        shortestDistanceOfRightTarget = distanceFromRightTarget;
+                        rightLockTarget = availableTarget[k].lockOnTransform;
+                    }
                 }
             }
         }
@@ -224,8 +243,8 @@ public class CameraManager : MonoBehaviour
         {
             lockOnMark.gameObject.SetActive(false);
             inputManager.GetComponent<PlayerManager>().target = inputManager.GetComponent<PlayerManager>().nullTarget;
-            enemyHealthUI.gameObject.SetActive(false);
-            enemyHealthUI.SetEnemyManager(null);
+            //enemyHealthUI.gameObject.SetActive(false);
+            //enemyHealthUI.SetEnemyManager(null);
         }
         else 
         {
@@ -233,8 +252,8 @@ public class CameraManager : MonoBehaviour
             lockOnMark.gameObject.SetActive(true);
             lockOnMark.transform.position = Camera.main.WorldToScreenPoint(new Vector3(enemyManager.targetMarkTransform.position.x, enemyManager.targetMarkTransform.position.y, enemyManager.targetMarkTransform.position.z));
             inputManager.GetComponent<PlayerManager>().target = enemyManager.targetMarkTransform;
-            enemyHealthUI.gameObject.SetActive(true);
-            enemyHealthUI.SetEnemyManager(enemyManager);
+            //enemyHealthUI.gameObject.SetActive(true);
+            //enemyHealthUI.SetEnemyManager(enemyManager);
         }
     }
     public void HandleExecutingMark()
@@ -264,6 +283,11 @@ public class CameraManager : MonoBehaviour
     {
         var aleartIcon = Instantiate(enemyFillingUI, mainCanvas.transform);
         aleartIcon.SetEnemyManager(enemyManager);
+    }
+    public void GenerateUIBar(EnemyManager enemyManager) 
+    {
+        var healthBar = Instantiate(enemyHealthUI, mainCanvas.transform);
+        healthBar.SetEnemyManager(enemyManager);
     }
     public void ClearLockOnTargets() 
     {
