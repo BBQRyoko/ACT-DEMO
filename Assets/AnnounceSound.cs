@@ -6,7 +6,7 @@ public class AnnounceSound : MonoBehaviour
 {
     public bool isExecutionCall;
     SphereCollider sphereCollider;
-    EnemyStats announceEnemy;
+    [SerializeField]EnemyStats announceEnemy;
     public float announceSoundDistance;
 
     private void Start()

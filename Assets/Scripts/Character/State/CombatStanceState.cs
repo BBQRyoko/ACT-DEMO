@@ -52,7 +52,7 @@ public class CombatStanceState : State
             return attackState;
         }
 
-        if (enemyManager.curRecoveryTime <= 0 && attackState.curAttack != null)
+        if (enemyManager.curRecoveryTime <= 0 && attackState.curAttack != null && !enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted)
         {
             if (distanceFromTarget > attackState.curAttack.minDistanceNeedToAttack && !attackingAdjustment)
             {

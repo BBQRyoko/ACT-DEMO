@@ -139,7 +139,10 @@ public class IdleState : State
                 float alertIncreaseRate = 0.5f * ((enemyManager.alertRadius + 1.5f) - distance) * crouchFactor;
                 if (viewableAngle > enemyManager.minDetectionAngle && viewableAngle < enemyManager.maxDetectionAngle)
                 {
-                    enemyManager.alertingTarget = characterStats;
+                    if (characterStats.GetComponent<PlayerManager>()) 
+                    {
+                        enemyManager.alertingTarget = characterStats;
+                    }
                     if (enemyManager.alertTimer < 5)
                     {
                         enemyManager.alertTimer += alertIncreaseRate*Time.deltaTime;
@@ -192,10 +195,10 @@ public class IdleState : State
         for (int i = 0; i < colliders.Length; i++)
         {
             CharacterStats characterStats = colliders[i].transform.GetComponent<CharacterStats>();
-            Vector3 targetDir = new Vector3(characterStats.eyePos.position.x - enemyStats.eyePos.transform.position.x, characterStats.eyePos.position.y- enemyStats.eyePos.transform.position.y, characterStats.eyePos.position.z - enemyStats.eyePos.transform.position.z);
+            Vector3 targetDir = new Vector3(characterStats.eyePos.position.x - enemyStats.eyePos.transform.position.x, characterStats.eyePos.position.y - enemyStats.eyePos.transform.position.y, characterStats.eyePos.position.z - enemyStats.eyePos.transform.position.z);
             float distance = Vector3.Distance(enemyStats.eyePos.transform.position, characterStats.eyePos.position);
             bool hitInfo = Physics.Raycast(enemyStats.eyePos.position, targetDir, distance, blockingLayer);
-            if (characterStats != null && characterStats.currHealth>0 && !hitInfo && !characterStats.GetComponent<PlayerManager>().isInGrass)
+            if (characterStats != null && characterStats.currHealth > 0 && !hitInfo && !characterStats.GetComponent<PlayerManager>().isInGrass)
             {
                 //Check Character ID
                 Vector3 targetDirection = characterStats.transform.position - transform.position;
@@ -205,20 +208,24 @@ public class IdleState : State
                 {
                     enemyManager.curTarget = characterStats;
                 }
+                else if (distance <= 3f && !characterStats.GetComponent<PlayerManager>().isCrouching && (characterStats.GetComponent<PlayerLocmotion>().movementVelocity.x != 0 || characterStats.GetComponent<PlayerLocmotion>().movementVelocity.z != 0)) 
+                {
+                    enemyManager.curTarget = characterStats;
+                }
             }
         }
         #endregion
 
         if (enemyManager.alertingTarget != null)
         {
-            if (!enemyManager.isEquipped) //没装备武器就把武器装上
+            if (!enemyManager.isEquipped && !enemyManager.ambushEnemy) //没装备武器就把武器装上
             {
                 enemyAnimatorManager.PlayTargetAnimation("Equip", true, true);
             }
         }
         else 
         {
-            if (enemyManager.curTarget == null && enemyManager.isEquipped) 
+            if (enemyManager.curTarget == null && enemyManager.isEquipped && !enemyManager.ambushEnemy) 
             {
                 enemyAnimatorManager.PlayTargetAnimation("Unarm", true, true);
             }
@@ -285,7 +292,7 @@ public class IdleState : State
             }
             else //但如果看到玩家的话
             {
-                CharacterStats playerCharacterStates = selfEnemyManager.curTarget;
+                CharacterStats playerCharacterStates = announcingEnemyManager.curTarget;
                 Vector3 targetDirToPlayer = new Vector3(playerCharacterStates.eyePos.position.x - selfEnemyStats.eyePos.transform.position.x, playerCharacterStates.eyePos.position.y - selfEnemyStats.eyePos.transform.position.y, playerCharacterStates.eyePos.position.z - selfEnemyStats.eyePos.transform.position.z);
                 float distanceToPlayer = Vector3.Distance(selfEnemyStats.eyePos.transform.position, playerCharacterStates.eyePos.position);
                 bool hitInfoToPlayer = Physics.Raycast(selfEnemyStats.eyePos.position, targetDir, distance, blockingLayer);
@@ -300,7 +307,8 @@ public class IdleState : State
         {
             //ExecutionDeadCall
             selfEnemyManager.isAlerting = true;
-            selfEnemyManager.alertingTarget = announcingEnemy.GetComponent<CharacterStats>();
+            Debug.Log(announcingEnemy);
+            selfEnemyManager.alertingTarget = announcingEnemy;
         }
     }
     public void HandleRotateTowardsTarger(EnemyManager enemyManager) //朝着设置的目标点进行移动
