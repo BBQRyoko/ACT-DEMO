@@ -51,6 +51,11 @@ public class PlayerAttacker : MonoBehaviour
             //可处决
             if (executionTarget) //无消耗
             {
+                if (playerManager.isCrouching && !playerManager.isWeaponEquipped) 
+                {
+                    playerManager.weaponEquiping(true);
+                }
+                playerManager.isCrouching = false;
                 animatorManager.animator.SetBool("cantBeInterrupted", true);
                 animatorManager.animator.SetBool("isAttacking", true);
                 attackTimer = internalDuration;
@@ -70,11 +75,15 @@ public class PlayerAttacker : MonoBehaviour
                     executionTarget.getingExecute = true;
                     executionTarget.HandleExecuted(weapon.executionSkill[3].skillName);
                 }
+                animatorManager.generalAudio.volume = 0.1f;
+                animatorManager.generalAudio.clip = animatorManager.sample_SFX.ExecutionSFX;
+                animatorManager.generalAudio.Play();
                 executionTarget = null;
             }
             //普通攻击
             else 
             {
+                playerManager.isCrouching = false;
                 if (playerManager.isSprinting)
                 {
                     comboCount = 0;
@@ -151,7 +160,7 @@ public class PlayerAttacker : MonoBehaviour
                 weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint;
                 weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
                 playerManager.GetComponent<PlayerStats>().currStamina -= weapon.regularSkills[comboCount - 1].staminaCost;
-                sample_VFX_S.curVFX_List[comboCount - 1].Play();
+                //sample_VFX_S.curVFX_List[comboCount - 1].Play();
                 comboCount = 0;
             }
         }

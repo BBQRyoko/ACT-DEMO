@@ -7,6 +7,7 @@ public class CheckPoint : InteractSystem
     PlayerManager playerManager;
     GameManager gameManager;
     BaGuaManager baGuaManager;
+    [SerializeField] Transform respawnPos;
 
     [Header("Ability")]
     [SerializeField] bool hasAbility;
@@ -26,7 +27,10 @@ public class CheckPoint : InteractSystem
         {
             Unlock();
         }
-        ProgressSave();
+        else 
+        {
+            ProgressSave();
+        }
     }
     void Unlock()
     {
@@ -42,12 +46,13 @@ public class CheckPoint : InteractSystem
         {
             baGuaManager.immuUnlock = true;
         }
+        baGuaManager.energyGuage = 3;
         hasAbility = false;
     }
 
     void ProgressSave() 
     {
-        gameManager.curCheckPoint = transform;
-        playerManager.Respawn();
+        gameManager.curCheckPoint = respawnPos;
+        playerManager.Rest();
     }
 }

@@ -286,8 +286,11 @@ public class CameraManager : MonoBehaviour
     }
     public void GenerateUIBar(EnemyManager enemyManager) 
     {
-        var healthBar = Instantiate(enemyHealthUI, mainCanvas.transform);
-        healthBar.SetEnemyManager(enemyManager);
+        if (!enemyManager.isBoss) 
+        {
+            var healthBar = Instantiate(enemyHealthUI, mainCanvas.transform);
+            healthBar.SetEnemyManager(enemyManager);
+        }
     }
     public void ClearLockOnTargets() 
     {

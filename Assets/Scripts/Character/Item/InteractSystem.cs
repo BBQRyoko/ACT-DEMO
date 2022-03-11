@@ -6,7 +6,7 @@ public class InteractSystem : MonoBehaviour
 {
     [SerializeField] PlayerManager playerManager;
     public GameObject interactPrompt;
-    bool promptOn;
+    public bool promptOn;
     // Start is called before the first frame update
     void Awake()
     {
@@ -42,11 +42,20 @@ public class InteractSystem : MonoBehaviour
             other.GetComponent<PlayerManager>().inInteractTrigger = true;
             promptOn = true;
         }
-        else
-        {
-            promptOn = false;
-        }
     }
+
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    if (other.CompareTag("Player"))
+    //    {
+    //        other.GetComponent<PlayerManager>().inInteractTrigger = true;
+    //        promptOn = true;
+    //    }
+    //    else
+    //    {
+    //        promptOn = false;
+    //    }
+    //}
 
     private void OnTriggerExit(Collider other)
     {

@@ -15,9 +15,9 @@ MonoBehaviour:
   skillName: SprintAttack
   isImmuAttack: 1
   skillType: 0
-  damagePoint: 45
-  staminaCost: 25
-  energyRestore: 30
+  damagePoint: 50
+  staminaCost: 30
+  energyRestore: 35
   pauseDuration: 10
   VFXs: []
   SFXs: []

@@ -30,6 +30,7 @@ public class CombatStanceState : State
         {
             enemyAnimatorManager.PlayTargetAnimation("Unarm", true, true);
             enemyManager.curTarget = null;
+            enemyStats.currHealth = enemyStats.maxHealth; //回满血
             return idleState;
         } //判断玩家是否死亡
         if (enemyManager.isInteracting) //首先确认是否处在互动状态

@@ -10,6 +10,7 @@ public class PlayerStats : CharacterStats
     public StaminaBar staminaBar;
     PlayerAttacker playerAttacker;
     AnimatorManager animatorManager;
+    WeaponSlotManager weaponSlotManager;
 
     [SerializeField] Transform regularPos;
     [SerializeField] Transform crouchPos;
@@ -19,6 +20,7 @@ public class PlayerStats : CharacterStats
         inputManager = GetComponent<InputManager>();
         playerManager = GetComponent<PlayerManager>();
         animatorManager = GetComponentInChildren<AnimatorManager>();
+        weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
         playerAttacker = GetComponent<PlayerAttacker>();
     }
     private void Start()
@@ -60,6 +62,12 @@ public class PlayerStats : CharacterStats
         }
         else
         {
+            if (!playerManager.isWeaponEquipped)
+            {
+                playerManager.isWeaponEquipped = true;
+                weaponSlotManager.mainWeapon_Unequipped.gameObject.SetActive(false);
+                weaponSlotManager.mainArmedWeapon.SetActive(true);
+            }
             //Direction
             if ((viewableAngle >= 91 && viewableAngle <= 180) || (viewableAngle <= -91 && viewableAngle >= -180))
             {
@@ -143,7 +151,6 @@ public class PlayerStats : CharacterStats
         
         //攻击被打断时保证取消状态
         playerManager.cantBeInterrupted = false;
-        playerManager.weaponEquiping(true);
     }
     public void CostStamina(float cost) 
     {

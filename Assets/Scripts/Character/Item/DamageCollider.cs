@@ -132,8 +132,13 @@ public class DamageCollider : MonoBehaviour
                     if (playerStats.GetComponent<PlayerManager>().isWeaponSwitching) 
                     {
                         playerManager.isWeaponSwitching = false;
-                        playerManager.WeaponSwitchTimerSetUp(25f);
+                        playerManager.WeaponSwitchTimerSetUp(2.5f);
                     }
+                    attackAudio.volume = 0.08f;
+                    int i = sample_SFX.hittedSFX_List.Length;
+                    int random = Random.Range(0, i - 1);
+                    attackAudio.clip = sample_SFX.hittedSFX_List[random];
+                    attackAudio.Play();
                     playerStats.TakeDamage(curDamage, hitDirection, isHeavyAttack);
                 }
                 else if (playerStats.GetComponent<PlayerManager>().isPerfect) 
@@ -141,6 +146,9 @@ public class DamageCollider : MonoBehaviour
                     damageCollider.enabled = false;
                     enemyManager.GetComponentInChildren<EnemyAnimatorManager>().PlayTargetAnimation("GetHit_Up", true, true);
                     playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("WeaponAbility_01(Success)", true, true);
+                    playerManager.GetComponentInChildren<AnimatorManager>().generalAudio.volume = 0.15f;
+                    playerManager.GetComponentInChildren<AnimatorManager>().generalAudio.clip = playerManager.GetComponentInChildren<AnimatorManager>().sample_SFX.Bagua_SFX_List[0];
+                    playerManager.GetComponentInChildren<AnimatorManager>().generalAudio.Play();
                     playerManager.PerfectBlock();
                 }
             }

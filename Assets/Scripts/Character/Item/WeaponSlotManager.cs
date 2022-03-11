@@ -8,13 +8,17 @@ public class WeaponSlotManager : MonoBehaviour
     Animator animator;
     [SerializeField] Sample_VFX sample_VFX;
 
-    [SerializeField] WeaponSlot mainWeapon_Unequipped;
+    public WeaponSlot mainWeapon_Unequipped;
     public WeaponSlot[] weaponSlots = new WeaponSlot[2];
 
     public DamageCollider weaponDamageCollider;
     [SerializeField] ParryCollider parryCollider;
     public GameObject mainArmedWeapon;
     [SerializeField] GameObject[] armedWeaponSlot = new GameObject[2];
+
+    [SerializeField] GameObject greatSwordIcon;
+    [SerializeField] GameObject katanaIcon;
+
 
     private void Awake()
     {
@@ -65,7 +69,9 @@ public class WeaponSlotManager : MonoBehaviour
                         mainWeapon_Unequipped = weaponSlots[1];
                         transform.GetComponent<Animator>().runtimeAnimatorController = playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[1].weaponAnimatorController;
                         mainArmedWeapon = armedWeaponSlot[1];
-                        playerManager.WeaponSwitchTimerSetUp(1f);
+                        playerManager.WeaponSwitchTimerSetUp(1.5f);
+                        greatSwordIcon.SetActive(false);
+                        katanaIcon.SetActive(true);
                     }
                     else
                     {
@@ -73,7 +79,9 @@ public class WeaponSlotManager : MonoBehaviour
                         mainWeapon_Unequipped = weaponSlots[0];
                         transform.GetComponent<Animator>().runtimeAnimatorController = playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[0].weaponAnimatorController;
                         mainArmedWeapon = armedWeaponSlot[0];
-                        playerManager.WeaponSwitchTimerSetUp(1f);
+                        playerManager.WeaponSwitchTimerSetUp(1.5f);
+                        greatSwordIcon.SetActive(true);
+                        katanaIcon.SetActive(false);
                     }
                 }
                 else //装备态
@@ -94,7 +102,7 @@ public class WeaponSlotManager : MonoBehaviour
     private void WeaponSwitchTimerSetup() 
     {
         playerManager.isWeaponSwitching = false;
-        playerManager.WeaponSwitchTimerSetUp(3f);
+        playerManager.WeaponSwitchTimerSetUp(2.5f);
     }
     private void WeaponSwitchAnimatorController() 
     {
@@ -110,6 +118,8 @@ public class WeaponSlotManager : MonoBehaviour
                 transform.GetComponent<AnimatorManager>().PlayTargetAnimation("WeaponSwitch(Equip)", true, true);
                 playerManager.isWeaponEquipped = true;
                 sample_VFX.baGuaRelated_List[0].Play();
+                greatSwordIcon.SetActive(false);
+                katanaIcon.SetActive(true);
             }
             else
             {
@@ -121,6 +131,8 @@ public class WeaponSlotManager : MonoBehaviour
                 transform.GetComponent<AnimatorManager>().PlayTargetAnimation("WeaponSwitch(Equip)", true, true);
                 playerManager.isWeaponEquipped = true;
                 sample_VFX.baGuaRelated_List[0].Play();
+                greatSwordIcon.SetActive(true);
+                katanaIcon.SetActive(false);
             }
         }
     }

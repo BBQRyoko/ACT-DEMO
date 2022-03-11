@@ -10,6 +10,7 @@ public class Damager : MonoBehaviour
     public EnemyManager enemyManager;
     public int curDamage = 10;
     [SerializeField] float hitFactor;
+    PlayerManager playerManager;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -31,26 +32,41 @@ public class Damager : MonoBehaviour
             }
             else if (parryCollider != null)
             {
-                if (parryCollider.isPerfect)
-                {
-                    Debug.Log("完美");
-                }
-                else
-                {
-                    Debug.Log("普通");
-                }
+                PlayerManager playerManager = parryCollider.GetComponentInParent<PlayerManager>();
+                AudioSource attackAudioSource = playerManager.GetComponentInChildren<AudioSource>();
+                Sample_SFX sample_SFX_Source = playerManager.GetComponentInChildren<Sample_SFX>();
+                attackAudioSource.volume = 0.2f;
+                int i = sample_SFX_Source.blockedSFX_List.Length;
+                int random = Random.Range(0, i - 1);
+                attackAudioSource.clip = sample_SFX_Source.blockedSFX_List[random];
+                attackAudioSource.Play();
+                playerManager.HandleParryingCheck(curDamage);
+                Destroy(this.gameObject);
             }
         }
         else 
         {
             Vector3 hitDirection = new Vector3(0, 0, 0);
             EnemyStats enemyStats = other.GetComponent<EnemyStats>();
-            if (enemyStats != null) 
+            PlayerStats playerStats = FindObjectOfType<PlayerStats>();
+            AnimatorManager animatorManager = playerStats.GetComponentInChildren<AnimatorManager>();
+            if (enemyStats != null)
             {
                 enemyStats.TakeDamage(curDamage, hitDirection * hitFactor);
+                enemyStats.GetComponent<EnemyManager>().curTarget = playerStats;
+                animatorManager.generalAudio.volume = 0.1f;
+                animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[3];
+                animatorManager.generalAudio.Play();
                 if (isFlyingObject)
                 {
                     Destroy(transform.parent.gameObject);
+                }
+            }
+            else
+            {
+                if (other.CompareTag("FireBlocker")) 
+                {
+                    Destroy(other.gameObject);
                 }
             }
         }

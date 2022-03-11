@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PlayerManager : CharacterManager
 {
     //PlayerManager统一管理所有当前所处的状态, 与locomotion, input, camera的update
+    GameManager gameManager;
     Animator animator;
     InputManager inputManager;
     public CameraManager cameraManager;
@@ -21,6 +22,7 @@ public class PlayerManager : CharacterManager
     public bool isInteracting;
     public bool isUsingRootMotion;
 
+    public bool gameStart;
     public bool isFalling; //下落时
     public bool isGround; //在地面时
     public bool isCrouching; //下蹲时
@@ -73,8 +75,12 @@ public class PlayerManager : CharacterManager
     [SerializeField] GameObject aT_Field_Prefab;
     [SerializeField] Transform aT_position;
 
+    [Header("TutorialRelated")]
+    [SerializeField] GameObject wakeUp;
+
     private void Awake()
     {
+        gameManager = FindObjectOfType<GameManager>();
         cameraManager = FindObjectOfType<CameraManager>();
         animator = GetComponentInChildren<Animator>();
         inputManager = GetComponent<InputManager>();
@@ -88,6 +94,18 @@ public class PlayerManager : CharacterManager
     }
     private void Update()
     {
+        if (gameStart) 
+        {
+            wakeUp.SetActive(true);
+            playerStats.currHealth = 10;
+            if (inputManager.interact_Input) 
+            {
+                animator.SetTrigger("gameStart");
+                inputManager.interact_Input = false;
+                gameStart = false;
+                wakeUp.SetActive(false);
+            }
+        }
         if (!isDead) 
         {
             inputManager.HandleAllInputs();
@@ -101,7 +119,10 @@ public class PlayerManager : CharacterManager
     {
         if (!isDead)
         {
-            playerLocmotion.HandleAllMovement();
+            if (!gameStart) 
+            {
+                playerLocmotion.HandleAllMovement();
+            }
         }
         else 
         {
@@ -110,6 +131,8 @@ public class PlayerManager : CharacterManager
             playerLocmotion.characterColliderBlocker.enabled = false;
             cameraManager.currentLockOnTarget = null;
             cameraManager.isLockOn = false;
+            inputManager.lockOn_Flag = false;
+            gameManager.PlayerDead();
         }
         cameraManager.HandleAllCameraMovement();
     }
@@ -202,7 +225,7 @@ public class PlayerManager : CharacterManager
     }
     public void HandleParryingCheck(int incomingDamage) 
     {
-        float staminaDamage = (float)incomingDamage * 2f;
+        float staminaDamage = (float)incomingDamage * 1.5f;
         if (staminaDamage <= playerStats.currStamina)
         {
 
@@ -255,6 +278,11 @@ public class PlayerManager : CharacterManager
                 isWeaponEquipped = true;
                 weaponSlotManager.EquipeWeapon();
             }
+            else 
+            {
+                isWeaponEquipped = false;
+                weaponSlotManager.EquipeWeapon();
+            }
         }
     }
     public void WeaponSwitchTimerSetUp(float timer) 
@@ -284,12 +312,16 @@ public class PlayerManager : CharacterManager
         sample_VFX.baGuaRelated_List[0].Stop();
         sample_VFX.baGuaRelated_List[1].Play();
         AT_Field_Temp.transform.SetParent(null);
-        WeaponSwitchTimerSetUp(5f);
+        WeaponSwitchTimerSetUp(2.5f);
     }
-    public void Respawn() 
+    public void Rest() 
     {
         if (isDead)
         {
+            isDead = false;
+            rig.isKinematic = false;
+            gameObject.GetComponent<Collider>().enabled = true;
+            playerLocmotion.characterColliderBlocker.enabled = true;
             playerStats.currHealth = playerStats.maxHealth;
             playerStats.currStamina = 150f;
             baGuaManager.curEnergyCharge = 0f;
@@ -297,8 +329,13 @@ public class PlayerManager : CharacterManager
         }
         else 
         {
+            animatorManager.generalAudio.volume = 0.3f;
+            animatorManager.generalAudio.clip = animatorManager.sample_SFX.checkPoint_Heal[0];
+            animatorManager.generalAudio.Play();
             playerStats.currHealth = playerStats.maxHealth;
             playerStats.currStamina = 150f;
+            if (baGuaManager.energyGuage < 1) 
+            baGuaManager.energyGuage = 1;
         }
     }
     IEnumerator stunTimer(float dur) //播放器暂停

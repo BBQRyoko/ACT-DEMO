@@ -8,7 +8,7 @@ public class AnimatorManager : MainAnimatorManager
     PlayerLocmotion playerLocmotion;
     public PlayerAttacker playerAttacker;
     public AudioSource attackAudio;
-    public AudioSource hittedAudio;
+    public AudioSource generalAudio;
     int horizontal;
     int vertical;
 
@@ -94,16 +94,16 @@ public class AnimatorManager : MainAnimatorManager
 
         if (playerManager.isWeaponEquipped)
         {
-            playerManager.isCrouching = false;
             h = 2;
-        }
-        else if (playerManager.isCrouching) 
-        {
-            h = -1;
         }
         else
         {
             h = 0;
+        }
+
+        if (playerManager.isCrouching) 
+        {
+            h = -1;
         }
 
         animator.SetFloat(vertical, v, 0.1f, Time.deltaTime);
@@ -155,6 +155,12 @@ public class AnimatorManager : MainAnimatorManager
         attackAudio.volume = 0.07f;
         attackAudio.clip = sample_SFX.curSFX_List[clipNum];
         attackAudio.Play();
+    }
+    private void PlayEquipSound() 
+    {
+        generalAudio.volume = 0.1f;
+        generalAudio.clip = sample_SFX.EquipSFX;
+        generalAudio.Play();
     }
     private void AnimatorPlayVFX(int num) //选择播放的特效
     {

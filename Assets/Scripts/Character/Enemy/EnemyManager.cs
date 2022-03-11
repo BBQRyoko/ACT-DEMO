@@ -49,6 +49,7 @@ public class EnemyManager : CharacterManager
     //待机模式
     public enum IdleType { Stay, Patrol, Boss };
     public IdleType idleType;
+    public bool isBoss;
     public List<Transform> patrolPos = new List<Transform>();
     public int curPatrolIndex = 0;
 
@@ -65,7 +66,7 @@ public class EnemyManager : CharacterManager
     public bool canAlertOthers = true;
     public CharacterStats alertingTarget;
     public bool isAlerting;
-    float alertingPeriod;
+    public float alertingPeriod;
     public bool alertIconSpawn;
     public float detectionRadius = 10;
     public float minCombatRange = 3f;
@@ -120,12 +121,17 @@ public class EnemyManager : CharacterManager
         HandleRecoveryTimer();
         AmbushEnemy();
         ExecutedArea();
+        GeneralTimerManager();
+        HandleAlertIcon();
         HandleParryCollider();
         HandleHealthBar();
-        HandleAlertIcon();
         ItemDrop();
         isRotatingWithRootMotion = enemyAnimatorManager.animator.GetBool("isRotatingWithRootMotion");
         canRotate = enemyAnimatorManager.animator.GetBool("canRotate");
+        //if (!alertIconSpawn) 
+        //{
+        //    alertingTarget = null;
+        //}
         if (isDead)
         {
             curTarget = null;
@@ -190,7 +196,6 @@ public class EnemyManager : CharacterManager
     private void FixedUpdate()
     {
         HandleStateMachine();
-        GeneralTimerManager();
         DefendCheck();
         combatCooldownManager.CountDownAllTimer();
     }
@@ -297,12 +302,12 @@ public class EnemyManager : CharacterManager
     }
     public void HandleParryingCheck(float staminaDamage)
     {
-        if (staminaDamage < 45)
+        if (staminaDamage < 50)
         {
             enemyAnimatorManager.PlayTargetAnimation("Block_1", true, true);
             isBlocking = true;
         }
-        else if (staminaDamage >= 45)
+        else if (staminaDamage >= 50)
         {
             enemyAnimatorManager.PlayTargetAnimation("ParryBreak", true, true);
         }

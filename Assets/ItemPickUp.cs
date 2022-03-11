@@ -28,6 +28,8 @@ public class ItemPickUp : InteractSystem
             playerManager.GetComponentInChildren<WeaponSlotManager>().WeaponSwitch();
             playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("WeaponSwitch(Equip)", true, true);
             playerManager.isWeaponEquipped = true;
+            playerManager.inInteractTrigger = false;
+            playerManager.GetComponent<InputManager>().interact_Input = false;
             Destroy(gameObject.transform.parent.gameObject);
         }
         else if (curItemType == ItemType.newGreatSword)

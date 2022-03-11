@@ -21,6 +21,7 @@ public class BaGuaManager : MonoBehaviour
     [SerializeField] Image energyGuage_1;
     [SerializeField] Image energyGuage_2;
     [SerializeField] Image energyGuage_3;
+    [SerializeField] GameObject liCover;
 
     public Vector2 curPos;
     public GameObject realPiviot;
@@ -34,6 +35,9 @@ public class BaGuaManager : MonoBehaviour
     public bool fireBallUnlock;
     public bool immuUnlock;
 
+    [Header("ui")]
+    [SerializeField] GameObject fireballCheatSheet;
+
     void Awake()
     {
         playerManager = GetComponent<PlayerManager>();
@@ -45,8 +49,18 @@ public class BaGuaManager : MonoBehaviour
     }
     void Update()
     {
+        if (fireBallUnlock)
+        {
+            liCover.SetActive(false);
+            fireballCheatSheet.SetActive(true);
+        }
+        else 
+        {
+            liCover.SetActive(true);
+            fireballCheatSheet.SetActive(false);
+        }
         EnergySourceControl();
-        if (inputManager.baGua_Input && !isCommandActive)
+        if (inputManager.baGua_Input && !isCommandActive && !playerManager.gameStart)
         {
             BaGuaZhen.SetActive(true);
             realPiviot.transform.position = new Vector2(curPos.x + (inputManager.cameraInputX * 100), curPos.y + (inputManager.cameraInputY * 100));
@@ -94,7 +108,7 @@ public class BaGuaManager : MonoBehaviour
         else 
         {
             BaGuaZhen.SetActive(false);
-            if (commandHolder.Count >= 2)
+            if (commandHolder.Count >= 1)
             {
                 isCommandActive = true;
             }
@@ -149,32 +163,42 @@ public class BaGuaManager : MonoBehaviour
         }
         else 
         {
-            if (commandString == "42" && healUnlock)
+            if (commandString == "2" && healUnlock)
             {
                 //SFX
                 if (energyGuage >= 1) 
                 {
                     sample_VFX_Ability.curVFX_List[0].Play();
-                    playerStats.currHealth += 60;
+                    playerStats.currHealth += 100;
+                    if (playerStats.currHealth >= playerStats.maxHealth) 
+                    {
+                        playerStats.currHealth = playerStats.maxHealth;
+                    }
                     playerStats.healthBar.SetCurrentHealth(playerStats.currHealth);
                     energyGuage -= 1;
+                    animatorManager.generalAudio.volume = 0.08f;
+                    animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[1];
+                    animatorManager.generalAudio.Play();
                 }
             }
-            else if (commandString == "03" && fireBallUnlock)
+            else if (commandString == "0" && fireBallUnlock)
             {
                 if (energyGuage >= 1)
                 {
                     animatorManager.PlayTargetAnimation("FireBall", true, true);
                     energyGuage -= 1;
+                    animatorManager.generalAudio.volume = 0.08f;
+                    animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[2];
+                    animatorManager.generalAudio.Play();
                 }
             }
-            else if (commandString == "732" && immuUnlock)
-            {
-                if (energyGuage >= 2)
-                {
-                    Debug.Log("Immu");
-                }
-            }
+            //else if (commandString == "732" && immuUnlock)
+            //{
+            //    if (energyGuage >= 2)
+            //    {
+            //        Debug.Log("Immu");
+            //    }
+            //}
             else 
             {
                 Debug.Log(commandString);

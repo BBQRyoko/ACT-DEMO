@@ -15,7 +15,7 @@ public class IdleState : State
 
     [Header("待机专属")]
     [SerializeField] float defaultRotatePeriod = 3.5f;
-    float rotateTimer;
+    [SerializeField] float rotateTimer;
 
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
     {
@@ -46,11 +46,11 @@ public class IdleState : State
             Vector3 targetDirection = enemyManager.patrolPos[enemyManager.curPatrolIndex].position - enemyManager.transform.position;
             float distanceFromTarget = Vector3.Distance(enemyManager.patrolPos[enemyManager.curPatrolIndex].position, enemyManager.transform.position);
 
-            if (distanceFromTarget > 0.5f)
+            if (distanceFromTarget > 5f)
             {
                 enemyAnimatorManager.animator.SetFloat("Vertical", 1f, 0.1f, Time.deltaTime);   //跑回初始点
             }
-            else if (distanceFromTarget <= 0.5f)
+            else if (distanceFromTarget <= 5f)
             {
                 enemyAnimatorManager.animator.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);   //站着idle状态
             }
@@ -143,7 +143,7 @@ public class IdleState : State
                     {
                         enemyManager.alertingTarget = characterStats;
                     }
-                    if (enemyManager.alertTimer < 5)
+                    if (enemyManager.alertTimer <= 5)
                     {
                         enemyManager.alertTimer += alertIncreaseRate*Time.deltaTime;
                     }
@@ -155,7 +155,24 @@ public class IdleState : State
                 }
                 else
                 {
-                    if (enemyManager.alertTimer > 0 && !enemyManager.isAlerting)
+                    if (!enemyManager.isAlerting)
+                    {
+                        if (enemyManager.alertTimer > 0)
+                        {
+                            enemyManager.alertTimer -= 0.5f * Time.deltaTime;
+                        }
+                        else
+                        {
+                            enemyManager.alertTimer = 0;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (!enemyManager.isAlerting)
+                {
+                    if (enemyManager.alertTimer > 0)
                     {
                         enemyManager.alertTimer -= 0.5f * Time.deltaTime;
                     }
@@ -165,9 +182,12 @@ public class IdleState : State
                     }
                 }
             }
-            else
+        }
+        if (alertCollider.Length <= 0)
+        {
+            if (!enemyManager.isAlerting)
             {
-                if (enemyManager.alertTimer > 0 && !enemyManager.isAlerting)
+                if (enemyManager.alertTimer > 0)
                 {
                     enemyManager.alertTimer -= 0.5f * Time.deltaTime;
                 }
@@ -175,17 +195,6 @@ public class IdleState : State
                 {
                     enemyManager.alertTimer = 0;
                 }
-            }
-        }
-        if (alertCollider.Length <= 0)
-        {
-            if (enemyManager.alertTimer > 0 && !enemyManager.isAlerting)
-            {
-                enemyManager.alertTimer -= 0.5f * Time.deltaTime;
-            }
-            else
-            {
-                enemyManager.alertTimer = 0;
             }
         }
         #endregion
@@ -257,6 +266,7 @@ public class IdleState : State
     public void PlayerNoticeAnnounce(float maxDistance, bool executionCall = false) 
     {
         EnemyManager enemyManager = transform.GetComponentInParent<EnemyManager>();
+        EnemyAnimatorManager enemyAnimatorManager = enemyManager.GetComponentInChildren<EnemyAnimatorManager>();
         if (executionCall)
         {
             announcePrefab.gameObject.SetActive(true);
@@ -270,6 +280,9 @@ public class IdleState : State
                 announcePrefab.gameObject.SetActive(true);
                 announcePrefab.announceSoundDistance = maxDistance;
                 announcePrefab.isExecutionCall = executionCall;
+                enemyAnimatorManager.attackAudio.volume = 0.15f;
+                enemyAnimatorManager.attackAudio.clip = enemyAnimatorManager.sample_SFX.EnemyCallingSFX;
+                enemyAnimatorManager.attackAudio.Play();
             }
         }
     }
@@ -307,7 +320,6 @@ public class IdleState : State
         {
             //ExecutionDeadCall
             selfEnemyManager.isAlerting = true;
-            Debug.Log(announcingEnemy);
             selfEnemyManager.alertingTarget = announcingEnemy;
         }
     }
@@ -332,7 +344,7 @@ public class IdleState : State
 
             if (enemyManager.idleType == EnemyManager.IdleType.Stay) //站岗类专属的原地旋转
             {
-                if (!enemyManager.curTarget && enemyManager.alertTimer <= 0) //在非警戒状态才会转
+                if (!enemyManager.curTarget && enemyManager.alertTimer <= 0 && distanceFromTarget<=1f) //在非警戒状态才会转
                 {
                     if (rotateTimer > 0)
                     {
@@ -346,7 +358,7 @@ public class IdleState : State
                 }
                 else
                 {
-                    if (distanceFromTarget > 1f)
+                    if (distanceFromTarget > 5f)
                     {
                         enemyManager.navMeshAgent.enabled = true;
                         enemyManager.navMeshAgent.SetDestination(enemyManager.patrolPos[enemyManager.curPatrolIndex].position);

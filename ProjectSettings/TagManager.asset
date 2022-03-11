@@ -11,6 +11,7 @@ TagManager:
   - Parry
   - DarkKnight
   - Ground
+  - FireBlocker
   layers:
   - Default
   - TransparentFX

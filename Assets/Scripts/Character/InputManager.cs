@@ -24,6 +24,7 @@ public class InputManager : MonoBehaviour
 
     bool sprint_Input; //跑步键
     bool roll_Input; //翻滚/冲刺键
+    public bool crouch_Input;
     public bool jump_Input; //跳跃
     public bool interact_Input; //互动键
 
@@ -73,8 +74,11 @@ public class InputManager : MonoBehaviour
             playerControls.PlayerActions.Jump.canceled += i => jump_Input = false;
 
             playerControls.PlayerActions.Roll.performed += i => roll_Input = true;
+            playerControls.PlayerActions.Crouch.performed += i => crouch_Input = true;
+            playerControls.PlayerActions.Crouch.canceled += i => crouch_Input = false;
 
             playerControls.PlayerActions.Interact.performed += i => interact_Input = true;
+
 
             //攻击输入
             playerControls.PlayerActions.RegularAttack.performed += i => reAttack_Input = true;
@@ -110,12 +114,16 @@ public class InputManager : MonoBehaviour
     public void HandleAllInputs() 
     {
         HandleMovement();
-        HandleSprintInput();
-        HandleRollInput();
-        HandleAttackInput();
-        HandleLockOnInput();
+        if (!playerManager.gameStart) 
+        {
+            HandleSprintInput();
+            HandleRollInput();
+            HandleCrouchInput();
+            HandleAttackInput();
+            HandleLockOnInput();
+            HandleWeaponSwitch();
+        }
         HandleInteractInput();
-        HandleWeaponSwitch();
     }
     private void HandleMovement() 
     {
@@ -132,7 +140,7 @@ public class InputManager : MonoBehaviour
     {
         sprint_Input = playerControls.PlayerActions.Sprint.phase == UnityEngine.InputSystem.InputActionPhase.Started;
 
-        if (sprint_Input && moveAmount != 0 && playerStats.currStamina > 0 && !playerManager.isCrouching)
+        if (sprint_Input && moveAmount != 0 && playerStats.currStamina > 0)
         {
             playerManager.isSprinting = true;
         }
@@ -149,13 +157,28 @@ public class InputManager : MonoBehaviour
             playerLocmotion.HandleRoll();
         }
     }
+    private void HandleCrouchInput()
+    {
+        if (crouch_Input)
+        {
+            crouch_Input = false;
+            playerLocmotion.HandleCrouch();
+        }
+    }
     private void HandleAttackInput() 
     {
         if (reAttack_Input) 
         {
             if (!playerManager.isWeaponEquipped && playerManager)
             {
-                playerManager.weaponEquiping();
+                if (playerManager.isCrouching && playerAttacker.executionTarget)
+                {
+                    playerAttacker.HandleRegularAttack(playerInventory.unequippedWeaponItems[playerInventory.currentWeaponIndex]);
+                }
+                else 
+                {
+                    playerManager.weaponEquiping();
+                }
             }
             else 
             {
@@ -194,7 +217,7 @@ public class InputManager : MonoBehaviour
     {
         if (interact_Input) 
         {
-            if (playerManager.isWeaponEquipped)
+            if (playerManager.isWeaponEquipped && !playerManager.gameStart)
             {
                 playerManager.weaponEquiping();
             }

@@ -23,7 +23,7 @@ public class Orbs : MonoBehaviour
             else if (orb == OrbsType.energy) 
             {
                 BaGuaManager baGuaManager = other.GetComponent<BaGuaManager>();
-                if (baGuaManager.curEnergyCharge < 100 && baGuaManager.energyGuage < 3)
+                if (baGuaManager.curEnergyCharge < 100 && baGuaManager.energyGuage <= 3)
                 {
                     baGuaManager.curEnergyCharge += (float)restoreAmount;
                     Destroy(gameObject.transform.parent.gameObject);

@@ -321,6 +321,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Crouch"",
+                    ""type"": ""Button"",
+                    ""id"": ""74e498ac-4e40-4313-9e66-648679f706a3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -338,7 +346,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""e8f027c1-f5d4-4e34-9d5e-31731b40a839"",
-                    ""path"": ""<Mouse>/backButton"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -349,7 +357,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""a84c78c5-2fde-4be1-b09f-4f885bf37aa5"",
-                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -365,17 +373,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Sprint"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""a0473acf-197c-4d15-8edb-e559d92ad1c8"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -403,28 +400,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""dfb7ff0d-c4f4-4756-92ed-923068222be5"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""SpecialAttack"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""d5714833-366d-4b3d-bc04-5bc27bb342bd"",
-                    ""path"": ""<Gamepad>/buttonEast"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""SpecialAttack"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""d443d7d3-7e45-4355-bdc5-d0aa6c4e63f7"",
                     ""path"": ""<Gamepad>/rightStickPress"",
                     ""interactions"": """",
@@ -437,7 +412,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""24b17f98-3621-4afa-98c9-2097d34b84b1"",
-                    ""path"": ""<Mouse>/middleButton"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -557,17 +532,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""3a193760-72c8-4bb5-b36f-074609fdc9f9"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""WeaponSwitch"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""e8f8178b-6b61-407b-a893-0b2975c543f8"",
                     ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
@@ -591,11 +555,33 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ca78bfcb-cdf3-4e44-97d0-0bfb87706476"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""BaGuaSystem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""076c362e-3086-44ee-ae1e-6654ce67d68a"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7943e34d-fe7e-4aed-bc60-3229dd82c464"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Crouch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -614,19 +600,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 }
             ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""836182a6-346f-4fb2-84d8-deb5a1487c1f"",
-                    ""path"": ""<Keyboard>/i"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Backpack"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
+            ""bindings"": []
         }
     ],
     ""controlSchemes"": []
@@ -650,6 +624,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_PlayerActions_WeaponAbility = m_PlayerActions.FindAction("WeaponAbility", throwIfNotFound: true);
         m_PlayerActions_WeaponSwitch = m_PlayerActions.FindAction("WeaponSwitch", throwIfNotFound: true);
         m_PlayerActions_BaGuaSystem = m_PlayerActions.FindAction("BaGuaSystem", throwIfNotFound: true);
+        m_PlayerActions_Crouch = m_PlayerActions.FindAction("Crouch", throwIfNotFound: true);
         // UIActions
         m_UIActions = asset.FindActionMap("UIActions", throwIfNotFound: true);
         m_UIActions_Backpack = m_UIActions.FindAction("Backpack", throwIfNotFound: true);
@@ -770,6 +745,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerActions_WeaponAbility;
     private readonly InputAction m_PlayerActions_WeaponSwitch;
     private readonly InputAction m_PlayerActions_BaGuaSystem;
+    private readonly InputAction m_PlayerActions_Crouch;
     public struct PlayerActionsActions
     {
         private @PlayerControls m_Wrapper;
@@ -785,6 +761,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @WeaponAbility => m_Wrapper.m_PlayerActions_WeaponAbility;
         public InputAction @WeaponSwitch => m_Wrapper.m_PlayerActions_WeaponSwitch;
         public InputAction @BaGuaSystem => m_Wrapper.m_PlayerActions_BaGuaSystem;
+        public InputAction @Crouch => m_Wrapper.m_PlayerActions_Crouch;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -827,6 +804,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @BaGuaSystem.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnBaGuaSystem;
                 @BaGuaSystem.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnBaGuaSystem;
                 @BaGuaSystem.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnBaGuaSystem;
+                @Crouch.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCrouch;
+                @Crouch.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCrouch;
+                @Crouch.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCrouch;
             }
             m_Wrapper.m_PlayerActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -864,6 +844,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @BaGuaSystem.started += instance.OnBaGuaSystem;
                 @BaGuaSystem.performed += instance.OnBaGuaSystem;
                 @BaGuaSystem.canceled += instance.OnBaGuaSystem;
+                @Crouch.started += instance.OnCrouch;
+                @Crouch.performed += instance.OnCrouch;
+                @Crouch.canceled += instance.OnCrouch;
             }
         }
     }
@@ -921,6 +904,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnWeaponAbility(InputAction.CallbackContext context);
         void OnWeaponSwitch(InputAction.CallbackContext context);
         void OnBaGuaSystem(InputAction.CallbackContext context);
+        void OnCrouch(InputAction.CallbackContext context);
     }
     public interface IUIActionsActions
     {

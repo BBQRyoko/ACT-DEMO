@@ -17,7 +17,7 @@ MonoBehaviour:
   isFlyingObject: 0
   isHeavyKick: 0
   isHeavyAttack: 0
-  damagePoint: 55
+  damagePoint: 50
   attakPriority: 4
   recoveryTime: 4
   independtCooldown: 6

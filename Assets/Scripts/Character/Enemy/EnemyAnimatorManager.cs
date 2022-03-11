@@ -15,6 +15,7 @@ public class EnemyAnimatorManager : MainAnimatorManager
 
     //SFX
     public AudioSource attackAudio;
+    public AudioSource generalAudio;
     public Sample_SFX sample_SFX;
 
     [Header("DarkKnight Only")]
@@ -92,6 +93,12 @@ public class EnemyAnimatorManager : MainAnimatorManager
         attackAudio.volume = 0.07f;
         attackAudio.clip = sample_SFX.curSFX_List[clipNum];
         attackAudio.Play();
+    }
+    private void PlayEquipSound() 
+    {
+        generalAudio.volume = 0.07f;
+        generalAudio.clip = sample_SFX.EquipSFX;
+        generalAudio.Play();
     }
     private void RotateTowardsTarget() 
     {
