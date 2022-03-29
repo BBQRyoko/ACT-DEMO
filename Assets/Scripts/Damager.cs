@@ -9,11 +9,17 @@ public class Damager : MonoBehaviour
     [SerializeField] bool isPlayerDamage;
     public EnemyManager enemyManager;
     public int curDamage = 10;
+    public int staminaDamage;
     [SerializeField] float hitFactor;
     PlayerManager playerManager;
+    [SerializeField] bool cantBlock;
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.layer == 8 && !cantBlock) 
+        {
+            Destroy(gameObject);
+        }
         if (!isPlayerDamage)
         {
             PlayerStats playerStats = other.GetComponent<PlayerStats>();
@@ -52,7 +58,7 @@ public class Damager : MonoBehaviour
             AnimatorManager animatorManager = playerStats.GetComponentInChildren<AnimatorManager>();
             if (enemyStats != null)
             {
-                enemyStats.TakeDamage(curDamage, hitDirection * hitFactor);
+                enemyStats.TakeDamage(curDamage,staminaDamage, hitDirection * hitFactor);
                 enemyStats.GetComponent<EnemyManager>().curTarget = playerStats;
                 animatorManager.generalAudio.volume = 0.1f;
                 animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[3];

@@ -14,11 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionAnimation: HeavySlash
   isSpecial: 0
+  isFlyingObject: 0
+  isHeavyKick: 0
+  isHeavyAttack: 0
+  damagePoint: 10
   attakPriority: 5
-  recoveryTime: 5
+  recoveryTime: 2.5
   independtCooldown: 8
   maxAttackAngle: 90
   minAttackAngle: -90
   minDistanceNeedToAttack: 3
   maxDistanceNeedToAttack: 6
   isImmune: 1
+  maxSpeed: 20

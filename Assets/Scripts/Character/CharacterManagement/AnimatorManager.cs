@@ -40,7 +40,7 @@ public class AnimatorManager : MainAnimatorManager
     {
         //数值判断是走还是跑
         float v = 0;
-        float h = 0;
+        float h = 2;
         #region Vertical
         if (verticalMovement > 0 && verticalMovement < 0.55f)
         {
@@ -64,25 +64,52 @@ public class AnimatorManager : MainAnimatorManager
         }
         #endregion
         #region Horizontal;
-        if (horizontalMovement > 0 && horizontalMovement < 0.55f)
+
+        if (!playerManager.isCrouching)
         {
-            h = 0.5f;
-        }
-        else if (horizontalMovement > 0.55f)
-        {
-            h = 1;
-        }
-        else if (horizontalMovement < 0 && horizontalMovement > -0.55f)
-        {
-            h = -0.5f;
-        }
-        else if (horizontalMovement < -0.55f)
-        {
-            h = -1;
+            if (horizontalMovement > 0 && horizontalMovement < 0.55f)
+            {
+                h = 0.5f;
+            }
+            else if (horizontalMovement > 0.55f)
+            {
+                h = 1;
+            }
+            else if (horizontalMovement < 0 && horizontalMovement > -0.55f)
+            {
+                h = -0.5f;
+            }
+            else if (horizontalMovement < -0.55f)
+            {
+                h = -1;
+            }
+            else
+            {
+                h = 0;
+            }
         }
         else
         {
-            h = 0;
+            if (horizontalMovement > 0 && horizontalMovement < 0.55f)
+            {
+                h = -2.5f;
+            }
+            else if (horizontalMovement > 0.55f)
+            {
+                h = -2;
+            }
+            else if (horizontalMovement < 0 && horizontalMovement > -0.55f)
+            {
+                h = -3.5f;
+            }
+            else if (horizontalMovement < -0.55f)
+            {
+                h = -4;
+            }
+            else
+            {
+                h = -3;
+            }
         }
         #endregion
 
@@ -90,20 +117,6 @@ public class AnimatorManager : MainAnimatorManager
         {
             v = 2;
             h = horizontalMovement;
-        }
-
-        if (playerManager.isWeaponEquipped)
-        {
-            h = 2;
-        }
-        else
-        {
-            h = 0;
-        }
-
-        if (playerManager.isCrouching) 
-        {
-            h = -1;
         }
 
         animator.SetFloat(vertical, v, 0.1f, Time.deltaTime);

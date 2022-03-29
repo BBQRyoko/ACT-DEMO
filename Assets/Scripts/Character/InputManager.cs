@@ -22,8 +22,8 @@ public class InputManager : MonoBehaviour
     public float verticalInput;
     public float horizontalInput;
 
-    bool sprint_Input; //跑步键
-    bool roll_Input; //翻滚/冲刺键
+    public bool sprint_Input; //跑步键
+    public bool roll_Input; //翻滚/冲刺键
     public bool crouch_Input;
     public bool jump_Input; //跳跃
     public bool interact_Input; //互动键
@@ -122,19 +122,29 @@ public class InputManager : MonoBehaviour
             HandleAttackInput();
             HandleLockOnInput();
             HandleWeaponSwitch();
+            HandleBaguaInput();
         }
         HandleInteractInput();
     }
     private void HandleMovement() 
     {
+        movementInput.Normalize();
         verticalInput = movementInput.y;
         horizontalInput = movementInput.x;
 
+        cameraInput.Normalize();
         cameraInputY = cameraInput.y;
         cameraInputX = cameraInput.x;
 
         moveAmount = Mathf.Clamp01(Mathf.Abs(horizontalInput) + Mathf.Abs(verticalInput));
-        animatorManager.UpdateAnimatorVaules(0, moveAmount, playerManager.isSprinting);
+        if (lockOn_Flag && !sprint_Input)
+        {
+            animatorManager.UpdateAnimatorVaules(horizontalInput, verticalInput, playerManager.isSprinting);
+        }
+        else 
+        {
+            animatorManager.UpdateAnimatorVaules(0, moveAmount, playerManager.isSprinting);
+        }
     }
     private void HandleSprintInput()
     {
@@ -169,43 +179,11 @@ public class InputManager : MonoBehaviour
     {
         if (reAttack_Input) 
         {
-            if (!playerManager.isWeaponEquipped && playerManager)
-            {
-                if (playerManager.isCrouching && playerAttacker.executionTarget)
-                {
-                    playerAttacker.HandleRegularAttack(playerInventory.unequippedWeaponItems[playerInventory.currentWeaponIndex]);
-                }
-                else 
-                {
-                    playerManager.weaponEquiping();
-                }
-            }
-            else 
-            {
-                playerAttacker.HandleRegularAttack(playerInventory.unequippedWeaponItems[playerInventory.currentWeaponIndex]);
-            }
+            playerAttacker.HandleRegularAttack(playerInventory.unequippedWeaponItems[playerInventory.currentWeaponIndex]);
         }
-
-        if (spAttack_Input)
-        {
-            if (!playerManager.isWeaponEquipped)
-            {
-                playerManager.weaponEquiping();
-            }
-            else
-            {
-                playerAttacker.HandleSpecialAttack(playerInventory.unequippedWeaponItems[0]);
-            }
-        }
-        else 
-        {
-            playerManager.isCharging = false;
-        }
-
 
         if (weaponAbility_Input)
         {
-            if (playerManager.isWeaponEquipped) 
             playerAttacker.HandleDefend(playerInventory.unequippedWeaponItems[0]);
         }
         else 
@@ -217,16 +195,10 @@ public class InputManager : MonoBehaviour
     {
         if (interact_Input) 
         {
-            if (playerManager.isWeaponEquipped && !playerManager.gameStart)
+            if (playerManager.inInteractTrigger && !playerManager.isInteracting)
             {
-                playerManager.weaponEquiping();
-            }
-            else 
-            {
-                if (playerManager.inInteractTrigger && !playerManager.isInteracting) 
-                {
-                    playerManager.interactObject = true;
-                }
+                animatorManager.PlayTargetAnimation("Interact", true, true);
+                playerManager.interactObject = true;
             }
         }
     }
@@ -272,9 +244,16 @@ public class InputManager : MonoBehaviour
     }
     private void HandleWeaponSwitch() 
     {
-        if (weaponSwitch_Input && playerManager.katanaUnlock) 
+        if (weaponSwitch_Input && playerManager.katanaUnlock && !playerManager.cantBeInterrupted) 
         {
             playerManager.GetComponentInChildren<WeaponSlotManager>().WeaponSwitch();
+        }
+    }
+    private void HandleBaguaInput() 
+    {
+        if (baGua_Input) 
+        {
+            cameraManager.cameraLock = true;
         }
     }
 }

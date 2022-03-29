@@ -34,7 +34,6 @@ public class GameManager : MonoBehaviour
         playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Respawn",true,true);
         playerManager.GetComponentInChildren<WeaponSlotManager>().mainWeapon_Unequipped.gameObject.SetActive(true);
         playerManager.GetComponentInChildren<WeaponSlotManager>().mainArmedWeapon.SetActive(false);
-        playerManager.isWeaponEquipped = false;
         playerManager.Rest();
     }
     void GamePause() 

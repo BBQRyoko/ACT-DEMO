@@ -62,12 +62,6 @@ public class PlayerStats : CharacterStats
         }
         else
         {
-            if (!playerManager.isWeaponEquipped)
-            {
-                playerManager.isWeaponEquipped = true;
-                weaponSlotManager.mainWeapon_Unequipped.gameObject.SetActive(false);
-                weaponSlotManager.mainArmedWeapon.SetActive(true);
-            }
             //Direction
             if ((viewableAngle >= 91 && viewableAngle <= 180) || (viewableAngle <= -91 && viewableAngle >= -180))
             {
@@ -159,10 +153,18 @@ public class PlayerStats : CharacterStats
     }
     public void StaminaRegen()
     {
-        if (!playerManager.isInteracting && !playerManager.isSprinting && currStamina < maxStamina)
+        if (!playerManager.cantBeInterrupted && !playerManager.isSprinting && !playerManager.staminaRegenPause && currStamina < maxStamina)
         {
-            currStamina = currStamina + staminaRegen * Time.deltaTime;
+            if (playerManager.isDefending)
+            {
+                currStamina = currStamina + staminaRegen / 3 * Time.deltaTime;
+            }
+            else 
+            {
+                currStamina = currStamina + staminaRegen * Time.deltaTime;
+            }
         }
+
         staminaBar.SetCurrentStamina(currStamina);
     }
 }

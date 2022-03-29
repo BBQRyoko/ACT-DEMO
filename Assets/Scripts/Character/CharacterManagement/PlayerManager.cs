@@ -37,7 +37,6 @@ public class PlayerManager : CharacterManager
     public int keyNum;
 
     //战斗
-    public bool isWeaponEquipped;
     public bool isHitting;
     public bool attackRotate;
     public bool isAttacking;
@@ -45,6 +44,8 @@ public class PlayerManager : CharacterManager
     public bool cantBeInterrupted;
     public bool isGettingDamage;
     public bool isDefending;
+    float staminaRegenPauseTimer;
+    public bool staminaRegenPause;
     public bool hitRecover;
     public bool isStunned;
     public bool damageAvoid;
@@ -57,6 +58,12 @@ public class PlayerManager : CharacterManager
     public float weaponSwitchCooldown;
     public Image cooldownTimer;
     float cooldownUnit;
+
+    //太极系统
+    int taiji_Guage;
+    [SerializeField] TaijiDurationBar taijiDurationBar;
+    [SerializeField] GameObject taijiBuff_VFX;
+    float taijiBuffDuration;
     public float perfectTimer;
     public bool isPerfect;
 
@@ -94,11 +101,13 @@ public class PlayerManager : CharacterManager
     }
     private void Update()
     {
-        if (gameStart) 
+        if (gameStart)
         {
             wakeUp.SetActive(true);
             playerStats.currHealth = 10;
-            if (inputManager.interact_Input) 
+            weaponSlotManager.mainWeapon_Unequipped.gameObject.SetActive(true);
+            weaponSlotManager.mainArmedWeapon.SetActive(false);
+            if (inputManager.interact_Input)
             {
                 animator.SetTrigger("gameStart");
                 inputManager.interact_Input = false;
@@ -106,13 +115,19 @@ public class PlayerManager : CharacterManager
                 wakeUp.SetActive(false);
             }
         }
+        else 
+        {
+            weaponSlotManager.mainWeapon_Unequipped.gameObject.SetActive(false);
+            weaponSlotManager.mainArmedWeapon.SetActive(true);
+        }
+
         if (!isDead) 
         {
             inputManager.HandleAllInputs();
         }
         playerStats.StaminaRegen();
         GeneralTimerController();
-        CheckForInteractableObject();
+        TaijiEffectController();
         PerfectTimer();
     }
     private void FixedUpdate()
@@ -164,27 +179,28 @@ public class PlayerManager : CharacterManager
             weaponSwitchCooldown -= Time.deltaTime;
             cooldownTimer.fillAmount = weaponSwitchCooldown * cooldownUnit;
         }
-    }
-    private void CheckForInteractableObject()
-    {
-        RaycastHit hit;
 
-        if (Physics.SphereCast(transform.position, 0.4f, transform.forward, out hit, 0.8f, cameraManager.ignoreLayers, QueryTriggerInteraction.Collide))
+        if (staminaRegenPauseTimer > 0)
         {
-            if (hit.collider.tag == "Interactable")
-            {
-                Interactable interactableObject = hit.collider.gameObject.GetComponent<Interactable>();
+            staminaRegenPauseTimer -= Time.deltaTime;
+            staminaRegenPause = true;
+        }
+        else 
+        {
+            staminaRegenPauseTimer = 0;
+            staminaRegenPause = false;
+        }
 
-                if (interactableObject != null)
-                {
-                    string interactableText = interactableObject.interactableText;
-
-                    if (interactObject && !isWeaponEquipped)
-                    {
-                        hit.collider.GetComponent<Interactable>().Interact(this);
-                    }
-                }
-            }
+        if (taijiBuffDuration > 0)
+        {
+            taijiBuffDuration -= Time.deltaTime;
+            taijiDurationBar.SetCurrentTime(taijiBuffDuration);
+        }
+        else 
+        {
+            taijiBuffDuration = 0;
+            taijiDurationBar.SetCurrentTime(taijiBuffDuration);
+            taiji_Guage = 0;
         }
     }
     public void GetDebuff(float duration) //当前只有stun
@@ -225,13 +241,13 @@ public class PlayerManager : CharacterManager
     }
     public void HandleParryingCheck(int incomingDamage) 
     {
-        float staminaDamage = (float)incomingDamage * 1.5f;
+        float staminaDamage = (float)incomingDamage * 2f;
         if (staminaDamage <= playerStats.currStamina)
         {
-
             playerStats.currStamina -= staminaDamage;
             //animatorManager.PlayTargetAnimation("Defend(Success)", true, true);
             animator.SetTrigger("isDefendSuccess");
+            staminaRegenPauseTimer = 1f;
         }
         else 
         {
@@ -255,35 +271,7 @@ public class PlayerManager : CharacterManager
     }
     public void weaponEquiping(bool beDamaging = false) 
     {
-        if (!beDamaging)
-        {
-            if (!isInteracting)
-            {
-                if (!isWeaponEquipped)
-                {
-                    animatorManager.PlayTargetAnimation("Equip", true, true);
-                    isWeaponEquipped = true;
-                }
-                else
-                {
-                    animatorManager.PlayTargetAnimation("Unarm", true, true);
-                    isWeaponEquipped = false;
-                }
-            }
-        }
-        else
-        {
-            if (!isWeaponEquipped)
-            {
-                isWeaponEquipped = true;
-                weaponSlotManager.EquipeWeapon();
-            }
-            else 
-            {
-                isWeaponEquipped = false;
-                weaponSlotManager.EquipeWeapon();
-            }
-        }
+        weaponSlotManager.EquipeWeapon();
     }
     public void WeaponSwitchTimerSetUp(float timer) 
     {
@@ -304,15 +292,40 @@ public class PlayerManager : CharacterManager
             }
         }
     }
-    public void PerfectBlock() 
+    void TaijiEffectController() 
     {
-        isWeaponSwitching = false;
-        animatorManager.PlayTargetAnimation("WeaponAbility_01(Success)", true, true);
-        GameObject AT_Field_Temp = Instantiate(aT_Field_Prefab, aT_position.position, Quaternion.identity);
-        sample_VFX.baGuaRelated_List[0].Stop();
-        sample_VFX.baGuaRelated_List[1].Play();
-        AT_Field_Temp.transform.SetParent(null);
-        WeaponSwitchTimerSetUp(2.5f);
+        if (taiji_Guage == 2)
+        {
+            taijiBuff_VFX.SetActive(true);
+            //攻击模组变化
+            //消耗减少
+            //移动速度上升
+        }
+        else 
+        {
+            taijiBuff_VFX.SetActive(false);
+        }
+    }
+    public void PerfectBlockCheck() 
+    {
+        if (taiji_Guage == 2)
+        {
+            isWeaponSwitching = false;
+            animatorManager.PlayTargetAnimation("WeaponAbility_01(Success)", true, true);
+            GameObject AT_Field_Temp = Instantiate(aT_Field_Prefab, aT_position.position, Quaternion.identity);
+            sample_VFX.baGuaRelated_List[0].Stop();
+            sample_VFX.baGuaRelated_List[1].Play();
+            AT_Field_Temp.transform.SetParent(null);
+            WeaponSwitchTimerSetUp(2.5f);
+            taijiBuffDuration = 0;
+            taiji_Guage = 0;
+        }
+        else 
+        {
+            taiji_Guage += 1;
+            taijiBuffDuration = 10f;
+            taijiDurationBar.SetMaxTime(taijiBuffDuration);
+        }
     }
     public void Rest() 
     {

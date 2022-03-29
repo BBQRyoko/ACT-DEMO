@@ -11,7 +11,7 @@ public class CharacterStats : MonoBehaviour
     public Transform eyePos;
 
     public float currStamina;
-    [SerializeField] protected float maxStamina = 100;
+    public float maxStamina = 100;
     [SerializeField] protected float staminaRegen = 5;
 
     private void Update()

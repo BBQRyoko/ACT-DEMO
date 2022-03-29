@@ -44,16 +44,8 @@ public class WeaponSlotManager : MonoBehaviour
     }
     public void EquipeWeapon() 
     {
-        if (!playerManager.isWeaponEquipped)
-        {
-            mainWeapon_Unequipped.gameObject.SetActive(true);
-            mainArmedWeapon.SetActive(false);
-        }
-        else 
-        {
-            mainWeapon_Unequipped.gameObject.SetActive(false);
-            mainArmedWeapon.SetActive(true);
-        }
+        mainWeapon_Unequipped.gameObject.SetActive(false);
+        mainArmedWeapon.SetActive(true);
     }
     public void WeaponSwitch() 
     {
@@ -61,40 +53,16 @@ public class WeaponSlotManager : MonoBehaviour
         {
             if (!playerManager.isAttacking && !playerManager.isInteracting)
             {
-                if (!playerManager.isWeaponEquipped) //无装备态
-                {
-                    if (mainWeapon_Unequipped == weaponSlots[0])
-                    {
-                        playerManager.GetComponent<PlayerInventory>().currentWeaponIndex = 1;
-                        mainWeapon_Unequipped = weaponSlots[1];
-                        transform.GetComponent<Animator>().runtimeAnimatorController = playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[1].weaponAnimatorController;
-                        mainArmedWeapon = armedWeaponSlot[1];
-                        playerManager.WeaponSwitchTimerSetUp(1.5f);
-                        greatSwordIcon.SetActive(false);
-                        katanaIcon.SetActive(true);
-                    }
-                    else
-                    {
-                        playerManager.GetComponent<PlayerInventory>().currentWeaponIndex = 0;
-                        mainWeapon_Unequipped = weaponSlots[0];
-                        transform.GetComponent<Animator>().runtimeAnimatorController = playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[0].weaponAnimatorController;
-                        mainArmedWeapon = armedWeaponSlot[0];
-                        playerManager.WeaponSwitchTimerSetUp(1.5f);
-                        greatSwordIcon.SetActive(true);
-                        katanaIcon.SetActive(false);
-                    }
-                }
-                else //装备态
-                {
-                    playerManager.isWeaponEquipped = false;
-                    transform.GetComponent<AnimatorManager>().PlayTargetAnimation("WeaponSwitch(Unarm)", true, true);
-                    playerManager.isWeaponSwitching = true;
-                }
+                GetComponentInChildren<WeaponSlotManager>().mainArmedWeapon.SetActive(false);
+                GetComponentInChildren<WeaponSlotManager>().mainWeapon_Unequipped.gameObject.SetActive(true);
+                WeaponSwitchAnimatorController();
+                playerManager.isWeaponSwitching = true;
             }
             else if(playerManager.isAttacking) 
             {
-                playerManager.isWeaponEquipped = false;
-                transform.GetComponent<Animator>().SetTrigger("isWeaponSwitching");
+                GetComponentInChildren<WeaponSlotManager>().mainArmedWeapon.SetActive(false);
+                GetComponentInChildren<WeaponSlotManager>().mainWeapon_Unequipped.gameObject.SetActive(true);
+                WeaponSwitchAnimatorController();
                 playerManager.isWeaponSwitching = true;
             }
         }
@@ -104,19 +72,19 @@ public class WeaponSlotManager : MonoBehaviour
         playerManager.isWeaponSwitching = false;
         playerManager.WeaponSwitchTimerSetUp(2.5f);
     }
-    private void WeaponSwitchAnimatorController() 
+    public void WeaponSwitchAnimatorController() 
     {
         if (!playerManager.isGettingDamage) 
         {
             if (mainWeapon_Unequipped == weaponSlots[0])
             {
                 playerManager.GetComponent<PlayerInventory>().currentWeaponIndex = 1;
-                playerManager.perfectTimer = 0.75f;
+                playerManager.perfectTimer = 1.1f;
                 mainWeapon_Unequipped = weaponSlots[1];
                 mainArmedWeapon = armedWeaponSlot[1];
                 transform.GetComponent<Animator>().runtimeAnimatorController = playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[1].weaponAnimatorController;
                 transform.GetComponent<AnimatorManager>().PlayTargetAnimation("WeaponSwitch(Equip)", true, true);
-                playerManager.isWeaponEquipped = true;
+                //playerManager.isWeaponEquipped = true;
                 sample_VFX.baGuaRelated_List[0].Play();
                 greatSwordIcon.SetActive(false);
                 katanaIcon.SetActive(true);
@@ -124,12 +92,12 @@ public class WeaponSlotManager : MonoBehaviour
             else
             {
                 playerManager.GetComponent<PlayerInventory>().currentWeaponIndex = 0;
-                playerManager.perfectTimer = 0.75f;
+                playerManager.perfectTimer = 1.1f;
                 mainWeapon_Unequipped = weaponSlots[0];
                 mainArmedWeapon = armedWeaponSlot[0];
                 transform.GetComponent<Animator>().runtimeAnimatorController = playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[0].weaponAnimatorController;
                 transform.GetComponent<AnimatorManager>().PlayTargetAnimation("WeaponSwitch(Equip)", true, true);
-                playerManager.isWeaponEquipped = true;
+                //playerManager.isWeaponEquipped = true;
                 sample_VFX.baGuaRelated_List[0].Play();
                 greatSwordIcon.SetActive(true);
                 katanaIcon.SetActive(false);

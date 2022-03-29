@@ -33,10 +33,12 @@ public class EnemyStats : CharacterStats
     {
         StaminaRegen();
     }
-    public void TakeDamage(int damage, Vector3 collisionDir, CharacterStats characterStats = null)
+    public void TakeDamage(int damage, int staminaDamage, Vector3 collisionDir, CharacterStats characterStats = null)
     {
         float viewableAngle = Vector3.SignedAngle(collisionDir, enemyManager.transform.forward, Vector3.up);
         currHealth = currHealth - damage;
+        currStamina = currStamina - staminaDamage;
+
         if (healthBar) 
         {
             healthBar.SetCurrentHealth(currHealth);
@@ -49,34 +51,43 @@ public class EnemyStats : CharacterStats
             {
                 animatorManager.PlayTargetAnimation("Dead", true);
             }
+            enemyWeaponSlotManager.CloseWeaponDamageCollider();
             enemyManager.isDead = true;
         }
         else
         {
-            if (!enemyManager.isImmuneAttacking && !enemyManager.getingExecute)
+            if (currStamina > 0)
             {
-                if (viewableAngle >= 91 && viewableAngle <= 180)
+                if (!enemyManager.isImmuneAttacking && !enemyManager.getingExecute)
                 {
-                    animatorManager.PlayTargetAnimation("Hit_B", true, true);
+                    if (viewableAngle >= 91 && viewableAngle <= 180)
+                    {
+                        animatorManager.PlayTargetAnimation("Hit_B", true, true);
+                    }
+                    else if (viewableAngle <= -91 && viewableAngle >= -180)
+                    {
+                        animatorManager.PlayTargetAnimation("Hit_B", true, true);
+                    }
+                    else if (viewableAngle >= -90 && viewableAngle <= 0)
+                    {
+                        animatorManager.PlayTargetAnimation("Hit_F", true, true);
+                    }
+                    else if (viewableAngle <= 90 && viewableAngle > 0)
+                    {
+                        animatorManager.PlayTargetAnimation("Hit_F", true, true);
+                    }
+                    enemyManager.isDamaged = true;
+                    if (enemyManager.isWeak)
+                    {
+                        enemyManager.GetComponentInChildren<EnemyAnimatorManager>().animator.SetBool("isWeak", false);
+                        enemyManager.weakTimer = 0;
+                    }
                 }
-                else if (viewableAngle <= -91 && viewableAngle >= -180)
-                {
-                    animatorManager.PlayTargetAnimation("Hit_B", true, true);
-                }
-                else if (viewableAngle >= -90 && viewableAngle <= 0)
-                {
-                    animatorManager.PlayTargetAnimation("Hit_F", true, true);
-                }
-                else if (viewableAngle <= 90 && viewableAngle > 0)
-                {
-                    animatorManager.PlayTargetAnimation("Hit_F", true, true);
-                }
-                enemyManager.isDamaged = true;
-                if (enemyManager.isWeak) 
-                {
-                    enemyManager.GetComponentInChildren<EnemyAnimatorManager>().animator.SetBool("isWeak", false);
-                    enemyManager.weakTimer = 0;
-                }
+            }
+            else 
+            {
+                currStamina = 0;
+                animatorManager.PlayTargetAnimation("ParryBreak", true);
             }
 
             if (!enemyManager.isEquipped) 

@@ -51,26 +51,28 @@ public class PlayerAttacker : MonoBehaviour
             //可处决
             if (executionTarget) //无消耗
             {
-                if (playerManager.isCrouching && !playerManager.isWeaponEquipped) 
-                {
-                    playerManager.weaponEquiping(true);
-                }
                 playerManager.isCrouching = false;
                 animatorManager.animator.SetBool("cantBeInterrupted", true);
                 animatorManager.animator.SetBool("isAttacking", true);
                 attackTimer = internalDuration;
                 if (!executionTarget.isWeak) //背刺
                 {
+                    playerManager.transform.position = executionTarget.execute_Back.position;
+                    playerLocmotion.HandleRotateTowardsTarger();
                     animatorManager.PlayTargetAnimation(weapon.executionSkill[0].skillName, true, true); //背刺
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.executionSkill[0].damagePoint;
+                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.executionSkill[0].tenacityDamagePoint;
                     animatorManager.pauseDuration = weapon.executionSkill[0].pauseDuration;
                     executionTarget.getingExecute = true;
                     executionTarget.HandleExecuted(weapon.executionSkill[1].skillName);
                 }
                 else //常规处决
                 {
+                    playerManager.transform.position = executionTarget.execute_Front.position;
+                    playerLocmotion.HandleRotateTowardsTarger();
                     animatorManager.PlayTargetAnimation(weapon.executionSkill[2].skillName, true, true); //处决
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.executionSkill[2].damagePoint;
+                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.executionSkill[2].tenacityDamagePoint;
                     animatorManager.pauseDuration = weapon.executionSkill[2].pauseDuration;
                     executionTarget.getingExecute = true;
                     executionTarget.HandleExecuted(weapon.executionSkill[3].skillName);
@@ -96,6 +98,7 @@ public class PlayerAttacker : MonoBehaviour
                         //播放指定的攻击动画
                         animatorManager.PlayTargetAnimation(weapon.springAttack[0].skillName, true, true);
                         weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.springAttack[0].damagePoint;
+                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.springAttack[0].tenacityDamagePoint;
                         weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.springAttack[0].energyRestore;
                         animatorManager.pauseDuration = weapon.springAttack[0].pauseDuration;
                         playerManager.GetComponent<PlayerStats>().currStamina -= weapon.springAttack[0].staminaCost;
@@ -118,6 +121,7 @@ public class PlayerAttacker : MonoBehaviour
                         //播放指定的攻击动画
                         animatorManager.PlayTargetAnimation(weapon.regularSkills[comboCount - 1].skillName, true, true);
                         weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint;
+                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint;
                         weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
                         animatorManager.pauseDuration = weapon.regularSkills[comboCount - 1].pauseDuration;
                         playerManager.GetComponent<PlayerStats>().currStamina -= weapon.regularSkills[comboCount - 1].staminaCost;

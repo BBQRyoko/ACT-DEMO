@@ -508,6 +508,17 @@
                 },
                 {
                     "name": "",
+                    "id": "e1f0a00c-2ab9-4a95-9fa1-76e69be633ee",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "WeaponAbility",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "84dac613-f1ae-46de-8bef-abf2e116670e",
                     "path": "<Keyboard>/tab",
                     "interactions": "",

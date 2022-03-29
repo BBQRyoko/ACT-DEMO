@@ -9,6 +9,7 @@ public class Skill : ScriptableObject
     public bool isImmuAttack = false;
     public int skillType; //0 - 单发, 1 - 蓄力 (暂时废弃)
     public int damagePoint;
+    public int tenacityDamagePoint;
     public int staminaCost = 15;
     public int energyRestore = 20;
     public int pauseDuration = 10;

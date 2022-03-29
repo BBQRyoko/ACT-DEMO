@@ -14,11 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionAnimation: RegularAttack02
   isSpecial: 0
+  isFlyingObject: 0
+  isHeavyKick: 0
+  isHeavyAttack: 0
+  damagePoint: 10
   attakPriority: 3
-  recoveryTime: 5
+  recoveryTime: 2
   independtCooldown: 7
   maxAttackAngle: 90
   minAttackAngle: -90
   minDistanceNeedToAttack: 0
   maxDistanceNeedToAttack: 2.5
   isImmune: 0
+  maxSpeed: 20

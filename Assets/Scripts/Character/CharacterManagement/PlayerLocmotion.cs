@@ -136,48 +136,20 @@ public class PlayerLocmotion : MonoBehaviour
         moveDirection += cameraObject.right * inputManager.horizontalInput;
         moveDirection.Normalize();
 
-        float curSpeed = movementSpeed;
-
-        if (playerManager.isWeaponEquipped)
-        {
-            curSpeed = movementSpeed - 5 * (weaponSlotManager.weaponDamageCollider.weaponWeightRatio);
-        }
-        else 
-        {
-            curSpeed = movementSpeed;
-        }
-
+        float curSpeed = movementSpeed - 5 * (weaponSlotManager.weaponDamageCollider.weaponWeightRatio);
         if (playerManager.isSprinting)
         {
-            if (playerManager.isWeaponEquipped)
+            if (playerManager.isCrouching)
             {
-                if (playerManager.isCrouching)
-                {
-                    curSpeed = crouchSpeed * 1.25f;
-                    moveDirection *= curSpeed;
-                    playerStats.CostStamina(15f * Time.deltaTime);
-                }
-                else 
-                {
-                    curSpeed = sprintSpeed;
-                    moveDirection *= curSpeed;
-                    playerStats.CostStamina(15f * (1f + weaponSlotManager.weaponDamageCollider.weaponWeightRatio) * Time.deltaTime);
-                }
+                curSpeed = crouchSpeed * 1.25f;
+                moveDirection *= curSpeed;
+                playerStats.CostStamina(15f * Time.deltaTime);
             }
-            else 
+            else
             {
-                if (playerManager.isCrouching)
-                {
-                    curSpeed = crouchSpeed * 1.25f;
-                    moveDirection *= curSpeed;
-                    playerStats.CostStamina(15f * Time.deltaTime);
-                }
-                else 
-                {
-                    curSpeed = sprintSpeed * 1.25f;
-                    moveDirection *= curSpeed;
-                    playerStats.CostStamina(15f * Time.deltaTime);
-                }
+                curSpeed = sprintSpeed;
+                moveDirection *= curSpeed;
+                playerStats.CostStamina(15f * (1f + weaponSlotManager.weaponDamageCollider.weaponWeightRatio) * Time.deltaTime);
             }
         }
         else if (playerManager.isCrouching) 
@@ -197,7 +169,6 @@ public class PlayerLocmotion : MonoBehaviour
                 moveDirection *= curSpeed;
             }
         }
-
         //Assign移动的x,z轴的速度
         if (playerManager.isInteracting)
         {
@@ -209,52 +180,86 @@ public class PlayerLocmotion : MonoBehaviour
             movementVelocity.x = moveDirection.x;
             movementVelocity.z = moveDirection.z;
         }
-
         rig.velocity = movementVelocity;
     }
     private void HandleRotation() //还可以优化
     {
-        float rSpeed = rotationSpeed;
-
-        if (willRotateTowardsTarget) 
+        if (inputManager.lockOn_Flag)
         {
-            HandleRotateTowardsTarger();
-        }
+            if (inputManager.sprint_Input || inputManager.roll_Input)
+            {
+                Vector3 targerDirection = Vector3.zero;
+                targerDirection = cameraManager.cameraTransform.forward * inputManager.verticalInput;
+                targerDirection += cameraManager.cameraTransform.right * inputManager.horizontalInput;
+                targerDirection.Normalize();
+                targerDirection.y = 0;
 
-        if (!playerManager.attackRotate)
-        {
-            rSpeed = rotationSpeed;
-            if (playerManager.isInteracting)
-                return;
+                if (targerDirection == Vector3.zero)
+                {
+                    targerDirection = transform.forward;
+                }
+
+                Quaternion tr = Quaternion.LookRotation(targerDirection);
+                Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
+
+                transform.rotation = targetRotation;
+            }
+            else 
+            {
+                Vector3 rotationDirection = moveDirection;
+                rotationDirection = cameraManager.currentLockOnTarget.position - transform.position;
+                rotationDirection.y = 0;
+                rotationDirection.Normalize();
+                Quaternion tr = Quaternion.LookRotation(rotationDirection);
+                Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
+
+                transform.rotation = targetRotation;
+            }
         }
         else 
         {
-            rSpeed = rotationSpeed / 8;
+            float rSpeed = rotationSpeed;
+
+            if (willRotateTowardsTarget)
+            {
+                HandleRotateTowardsTarger();
+            }
+
+            if (!playerManager.attackRotate)
+            {
+                rSpeed = rotationSpeed;
+                if (playerManager.isInteracting)
+                    return;
+            }
+            else
+            {
+                rSpeed = rotationSpeed / 8;
+            }
+
+            if (playerManager.isFalling)
+            {
+                rSpeed = rotationSpeed / 10;
+            }
+            else
+            {
+                rSpeed = rotationSpeed;
+            }
+
+            Vector3 targetDirection = Vector3.zero;
+
+            targetDirection = cameraObject.forward * inputManager.verticalInput;
+            targetDirection += cameraObject.right * inputManager.horizontalInput;
+            targetDirection.Normalize();
+            targetDirection.y = 0;
+
+            if (targetDirection == Vector3.zero)
+                targetDirection = transform.forward;
+
+            Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+            Quaternion playerRotataion = Quaternion.Slerp(transform.rotation, targetRotation, rSpeed * Time.deltaTime);
+
+            transform.rotation = playerRotataion;
         }
-
-        if (playerManager.isFalling)
-        {
-            rSpeed = rotationSpeed / 10;
-        }
-        else
-        {
-            rSpeed = rotationSpeed;
-        }
-
-        Vector3 targetDirection = Vector3.zero;
-
-        targetDirection = cameraObject.forward * inputManager.verticalInput;
-        targetDirection += cameraObject.right * inputManager.horizontalInput;
-        targetDirection.Normalize();
-        targetDirection.y = 0;
-
-        if (targetDirection == Vector3.zero)
-            targetDirection = transform.forward;
-
-        Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-        Quaternion playerRotataion = Quaternion.Slerp(transform.rotation, targetRotation, rSpeed * Time.deltaTime);
-
-        transform.rotation = playerRotataion;
     }
     public void HandleRotateTowardsTarger() 
     {
@@ -416,7 +421,7 @@ public class PlayerLocmotion : MonoBehaviour
                     }
                     else if (inputManager.verticalInput == 0)
                     {
-                        animatorManager.animator.SetTrigger("isBackRoll");
+                        animatorManager.animator.SetTrigger("isBackStep");
                     }
                 }
                 else //相机朝Z轴方向时
@@ -439,173 +444,46 @@ public class PlayerLocmotion : MonoBehaviour
                     }
                     else if (inputManager.verticalInput == 0)
                     {
-                        animatorManager.animator.SetTrigger("isBackRoll");
+                        animatorManager.animator.SetTrigger("isBackStep");
                     }
 
                     playerManager.cantBeInterrupted = true;
                     playerStats.CostStamina(rollStaminaCost);
                     playerAttacker.comboCount = 0;
                 }
-
-
-                //if (forwardDir.x < 0 && ((Mathf.Abs(forwardDir.x) > Mathf.Abs(forwardDir.z)))) //人物朝左
-                //{
-                //    if (cameraDir.x < 0)
-                //    {
-                //        if (inputManager.verticalInput < 0) //朝左滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isLeftRoll");
-                //        }
-                //        else if (inputManager.horizontalInput > 0) //朝后滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isBackRoll");
-                //        }
-                //        else if (inputManager.horizontalInput < 0) //朝前滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isFrontRoll");
-                //        }
-                //        else if (inputManager.verticalInput > 0) //朝右滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isRightRoll");
-                //        }
-                //        else if (inputManager.verticalInput == 0)
-                //        {
-                //            animatorManager.animator.SetTrigger("isBackRoll");
-                //        }
-                //    }
-                //    else 
-                //    {
-                //        if (inputManager.verticalInput < 0) //朝右滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isRightRoll");
-                //        }
-                //        else if (inputManager.horizontalInput > 0) //朝前滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isFrontRoll");
-                //        }
-                //        else if (inputManager.horizontalInput < 0) //朝后滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isBackRoll");
-                //        }
-                //        else if (inputManager.verticalInput > 0) //朝左滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isLeftRoll");
-                //        }
-                //        else if (inputManager.verticalInput == 0)
-                //        {
-                //            animatorManager.animator.SetTrigger("isBackRoll");
-                //        }
-                //    }
-                //}
-                //else if (forwardDir.x >= 0 && ((Mathf.Abs(forwardDir.x) > Mathf.Abs(forwardDir.z)))) //人物朝右
-                //{
-                //    if (cameraDir.x < 0)
-                //    {
-                //        if (inputManager.verticalInput < 0) //朝右滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isRightRoll");
-                //        }
-                //        else if (inputManager.horizontalInput > 0) //朝前滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isFrontRoll");
-                //        }
-                //        else if (inputManager.horizontalInput < 0) //朝后滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isBackRoll");
-                //        }
-                //        else if (inputManager.verticalInput > 0) //朝左滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isLeftRoll");
-                //        }
-                //        else if (inputManager.verticalInput == 0)
-                //        {
-                //            animatorManager.animator.SetTrigger("isBackRoll");
-                //        }
-                //    }
-                //    else 
-                //    {
-                //        if (inputManager.verticalInput < 0) //朝左滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isLeftRoll");
-                //        }
-                //        else if (inputManager.horizontalInput > 0) //朝后滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isBackRoll");
-                //        }
-                //        else if (inputManager.horizontalInput < 0) //朝前滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isFrontRoll");
-                //        }
-                //        else if (inputManager.verticalInput > 0) //朝右滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isRightRoll");
-                //        }
-                //        else if (inputManager.verticalInput == 0)
-                //        {
-                //            animatorManager.animator.SetTrigger("isBackRoll");
-                //        }
-                //    }
-                //}
-                //else if (forwardDir.z >= 0 && ((Mathf.Abs(forwardDir.z) > Mathf.Abs(forwardDir.x)))) //人物朝前
-                //{
-                //    Debug.Log("000");
-                //}
-                //else if (forwardDir.z < 0 && ((Mathf.Abs(forwardDir.z) > Mathf.Abs(forwardDir.x)))) //人物朝后
-                //{
-                //    if (cameraDir.z >= 0)
-                //    {
-                //        if (inputManager.verticalInput < 0) //朝前滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isFrontRoll");
-                //        }
-                //        else if (inputManager.horizontalInput > 0) //朝左滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isLeftRoll");
-                //        }
-                //        else if (inputManager.horizontalInput < 0) //朝右滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isRightRoll");
-                //        }
-                //        else if (inputManager.verticalInput > 0) //朝后滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isBackRoll");
-                //        }
-                //        else if (inputManager.verticalInput == 0)
-                //        {
-                //            animatorManager.animator.SetTrigger("isBackRoll");
-                //        }
-                //    }
-                //    else 
-                //    {
-                //        if (inputManager.verticalInput < 0) //朝后滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isBackRoll");
-                //        }
-                //        else if (inputManager.horizontalInput > 0) //朝右滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isRightRoll");
-                //        }
-                //        else if (inputManager.horizontalInput < 0) //朝左滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isLeftRoll");
-                //        }
-                //        else if (inputManager.verticalInput > 0) //朝前滚
-                //        {
-                //            animatorManager.animator.SetTrigger("isFrontRoll");
-                //        }
-                //        else if (inputManager.verticalInput == 0)
-                //        {
-                //            animatorManager.animator.SetTrigger("isBackRoll");
-                //        }
-                //    }
-                //}
             }
             else //非攻击状态下翻滚, 只有在非互动且站在地上的状态下才能翻滚
             {
                 if (playerManager.isInteracting || !playerManager.isGround)
                     return;
 
-                animatorManager.PlayTargetAnimation("RegularRolling", true, true);
+                if (!inputManager.lockOn_Flag) 
+                {
+                    animatorManager.PlayTargetAnimation("FrontRoll", true, true);
+                }
+                else
+                {
+                    if (inputManager.verticalInput < 0) //朝后滚
+                    {
+                        animatorManager.PlayTargetAnimation("BackRoll", true, true);
+                    }
+                    else if (inputManager.horizontalInput > 0) //朝右滚
+                    {
+                        animatorManager.PlayTargetAnimation("RightRoll", true, true);
+                    }
+                    else if (inputManager.horizontalInput < 0) //朝左滚
+                    {
+                        animatorManager.PlayTargetAnimation("LeftRoll", true, true);
+                    }
+                    else if (inputManager.verticalInput > 0) //朝前滚
+                    {
+                        animatorManager.PlayTargetAnimation("FrontRoll", true, true);
+                    }
+                    else if (inputManager.verticalInput == 0)
+                    {
+                        animatorManager.PlayTargetAnimation("StepBack", true, true);
+                    }
+                }
                 playerStats.CostStamina(rollStaminaCost);
             }
         }

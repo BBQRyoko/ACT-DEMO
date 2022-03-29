@@ -9,7 +9,7 @@ public class CameraManager : MonoBehaviour
     Transform targetTransform; //需要跟随的目标(玩家)
     [SerializeField] Canvas mainCanvas;
     public Transform cameraPivotTransform; //相机pivot
-    Transform cameraTransform; //相机object的位置
+    public Transform cameraTransform; //相机object的位置
     public LayerMask ignoreLayers; //除了选定的层外都可以穿透
     float defaultPosition; //相机的初始Z点
     Vector3 cameraFollowVelocity = Vector3.zero; //ref
@@ -28,6 +28,9 @@ public class CameraManager : MonoBehaviour
     float pivotAngle; //视角上下
     public float minPivotAngle = -35;
     public float maxPivotAngle = 35;
+
+    //八卦相关
+    public bool cameraLock;
 
     //敌人血条
     public EnemyFillingUI enemyHealthUI;
@@ -75,6 +78,7 @@ public class CameraManager : MonoBehaviour
         float delta = Time.fixedDeltaTime;
         FollowTarget(delta);
         RotateCamera(delta);
+        CameraReset();
         HandleCameraCollisions(delta);
         HandleLockOnMark();
         HandleExecutingMark();
@@ -99,7 +103,7 @@ public class CameraManager : MonoBehaviour
     {
         if (!inputManager.lockOn_Flag)
         {
-            if (!inputManager.baGua_Input)
+            if (!cameraLock)
             {
                 lookAngle += (inputManager.cameraInputX * cameraLookSpeed) / delta;
                 pivotAngle -= (inputManager.cameraInputY * cameraPivotSpeed) / delta;
@@ -134,6 +138,16 @@ public class CameraManager : MonoBehaviour
                 Vector3 eulerAngle = targetRotation.eulerAngles;
                 eulerAngle.y = 0;
                 cameraPivotTransform.localEulerAngles = eulerAngle;
+            }
+        }
+    }
+    private void CameraReset() 
+    {
+        if (cameraLock) 
+        {
+            if (inputManager.cameraInputX <= 0.1 && inputManager.cameraInputY <= 0.1) 
+            {
+                cameraLock = false;
             }
         }
     }

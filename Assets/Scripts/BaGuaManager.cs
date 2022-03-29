@@ -34,6 +34,7 @@ public class BaGuaManager : MonoBehaviour
     public bool healUnlock;
     public bool fireBallUnlock;
     public bool immuUnlock;
+    public bool forthUnlock_Temp;
 
     [Header("ui")]
     [SerializeField] GameObject fireballCheatSheet;
@@ -70,34 +71,34 @@ public class BaGuaManager : MonoBehaviour
                 {
                     BaGuaCommand(2);
                 }
-                else if (inputManager.cameraInputX <= -0.99 && inputManager.cameraInputY >= -0.13 && inputManager.cameraInputY <= 0.13)
+                else if (inputManager.cameraInputX <= -0.99 && inputManager.cameraInputY >= -0.13 && inputManager.cameraInputY <= 0.13 && immuUnlock)
                 {
                     BaGuaCommand(6);
                 }
-                else if (inputManager.cameraInputY >= 0.99 && inputManager.cameraInputX >= -0.13 && inputManager.cameraInputX <= 0.13)
+                else if (inputManager.cameraInputY >= 0.99 && inputManager.cameraInputX >= -0.13 && inputManager.cameraInputX <= 0.13 && fireBallUnlock)
                 {
                     BaGuaCommand(0);
                 }
-                else if (inputManager.cameraInputY <= -0.99 && inputManager.cameraInputX >= -0.13 && inputManager.cameraInputX <= 0.13)
+                else if (inputManager.cameraInputY <= -0.99 && inputManager.cameraInputX >= -0.13 && inputManager.cameraInputX <= 0.13 && forthUnlock_Temp)
                 {
                     BaGuaCommand(4);
                 }
-                else if (inputManager.cameraInputX > 0.61 && inputManager.cameraInputX < 0.79 && inputManager.cameraInputY > 0.61 && inputManager.cameraInputX < 0.79)
-                {
-                    BaGuaCommand(1);
-                }
-                else if (inputManager.cameraInputX < -0.61 && inputManager.cameraInputX > -0.79 && inputManager.cameraInputY > 0.61 && inputManager.cameraInputX < 0.79)
-                {
-                    BaGuaCommand(7);
-                }
-                else if (inputManager.cameraInputX > 0.61 && inputManager.cameraInputX < 0.79 && inputManager.cameraInputY < -0.61 && inputManager.cameraInputX > -0.79)
-                {
-                    BaGuaCommand(3);
-                }
-                else if (inputManager.cameraInputX < -0.61 && inputManager.cameraInputX > -0.79 && inputManager.cameraInputY < -0.61 && inputManager.cameraInputX > -0.79)
-                {
-                    BaGuaCommand(5);
-                }
+                //else if (inputManager.cameraInputX > 0.61 && inputManager.cameraInputX < 0.79 && inputManager.cameraInputY > 0.61 && inputManager.cameraInputX < 0.79)
+                //{
+                //    BaGuaCommand(1);
+                //}
+                //else if (inputManager.cameraInputX < -0.61 && inputManager.cameraInputX > -0.79 && inputManager.cameraInputY > 0.61 && inputManager.cameraInputX < 0.79)
+                //{
+                //    BaGuaCommand(7);
+                //}
+                //else if (inputManager.cameraInputX > 0.61 && inputManager.cameraInputX < 0.79 && inputManager.cameraInputY < -0.61 && inputManager.cameraInputX > -0.79)
+                //{
+                //    BaGuaCommand(3);
+                //}
+                //else if (inputManager.cameraInputX < -0.61 && inputManager.cameraInputX > -0.79 && inputManager.cameraInputY < -0.61 && inputManager.cameraInputX > -0.79)
+                //{
+                //    BaGuaCommand(5);
+                //}
             }
 
             if (inputManager.lockOn_Input)

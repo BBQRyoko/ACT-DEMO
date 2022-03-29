@@ -100812,7 +100812,7 @@ AnimationClip:
   - time: 0.43333334
     functionName: RangeAttack
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 11400000, guid: 5570cafe277d6f14581fdcd26b51326b, type: 2}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
@@ -100833,7 +100833,7 @@ AnimationClip:
   - time: 1.2
     functionName: RangeAttack
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 11400000, guid: 5570cafe277d6f14581fdcd26b51326b, type: 2}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

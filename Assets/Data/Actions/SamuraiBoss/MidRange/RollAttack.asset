@@ -14,11 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionAnimation: RollAttack
   isSpecial: 0
+  isFlyingObject: 0
+  isHeavyKick: 0
+  isHeavyAttack: 0
+  damagePoint: 10
   attakPriority: 3
-  recoveryTime: 5.5
+  recoveryTime: 2
   independtCooldown: 10
   maxAttackAngle: 90
   minAttackAngle: -90
   minDistanceNeedToAttack: 4
   maxDistanceNeedToAttack: 7
   isImmune: 1
+  maxSpeed: 20

@@ -21,6 +21,8 @@ public class EnemyManager : CharacterManager
     CombatCooldownManager combatCooldownManager;
     CombatStanceState combatStanceState;
 
+    public Transform execute_Front;
+    public Transform execute_Back;
     [SerializeField] GameObject backStabArea;
     [SerializeField] ParryCollider parryCollider;
 
@@ -190,6 +192,7 @@ public class EnemyManager : CharacterManager
             {
                 enemyAnimatorManager.animator.SetBool("isWeak", false);
                 weakTimer = 0;
+                enemyStats.currStamina = enemyStats.maxStamina;
             }
         }
     }
@@ -302,13 +305,15 @@ public class EnemyManager : CharacterManager
     }
     public void HandleParryingCheck(float staminaDamage)
     {
-        if (staminaDamage < 50)
+        enemyStats.currStamina -= staminaDamage * 1.5f;
+        if (enemyStats.currStamina > 0)
         {
             enemyAnimatorManager.PlayTargetAnimation("Block_1", true, true);
             isBlocking = true;
         }
-        else if (staminaDamage >= 50)
+        else 
         {
+            enemyStats.currStamina = 0;
             enemyAnimatorManager.PlayTargetAnimation("ParryBreak", true, true);
         }
     }
@@ -365,6 +370,7 @@ public class EnemyManager : CharacterManager
         {
             enemyAnimatorManager.animator.SetBool("isWeak", false);
             weakTimer = 0;
+            enemyStats.currStamina = enemyStats.maxStamina;
         }
     }
     void ItemDrop() 

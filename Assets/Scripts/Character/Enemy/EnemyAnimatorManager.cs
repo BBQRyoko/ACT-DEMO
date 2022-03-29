@@ -24,6 +24,11 @@ public class EnemyAnimatorManager : MainAnimatorManager
     [SerializeField] float tornadoSlashTimer;
     public bool tornadoSlashEnhance;
 
+    [Header("Old Samurai & DarkKnight Only")]
+    [SerializeField] Transform lockOnTransform;
+    [SerializeField] Transform lockOnTransform_JumpTemp;
+
+
     private void Awake()
     {
         cameraManager = FindObjectOfType<CameraManager>();
@@ -173,6 +178,21 @@ public class EnemyAnimatorManager : MainAnimatorManager
     private void EnemyDangerWarning() 
     {
         cameraManager.DangerWarning(enemyManager);
+    }
+    void CameraSpeedSet() 
+    {
+        if (cameraManager.cameraLookSpeed != 1.5f)
+        {
+            cameraManager.currentLockOnTarget = lockOnTransform_JumpTemp;
+            cameraManager.cameraLookSpeed = 1.5f;
+            cameraManager.cameraPivotSpeed = 1.5f;
+        }
+        else 
+        {
+            cameraManager.currentLockOnTarget = lockOnTransform;
+            cameraManager.cameraLookSpeed = 0.08f;
+            cameraManager.cameraPivotSpeed = 0.06f;
+        }
     }
 
     //DarkKnight Only

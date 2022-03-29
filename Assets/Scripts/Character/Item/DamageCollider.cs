@@ -17,6 +17,7 @@ public class DamageCollider : MonoBehaviour
     public Sample_SFX sample_SFX;
 
     public int curDamage = 10;
+    public int staminaDamage;
     public float energyRestoreAmount = 20;
 
     public float weaponWeightRatio;
@@ -87,7 +88,7 @@ public class DamageCollider : MonoBehaviour
                     HitPause(duration);
                 }
             }
-            else if (playerManager1 != null && !isPlayer) 
+            else if (playerManager1 != null && !isPlayer) //玩家的格挡
             {
                 AudioSource attackAudioSource = playerManager1.GetComponentInChildren<AudioSource>();
                 Sample_SFX sample_SFX_Source = playerManager1.GetComponentInChildren<Sample_SFX>();
@@ -145,11 +146,11 @@ public class DamageCollider : MonoBehaviour
                 {
                     damageCollider.enabled = false;
                     enemyManager.GetComponentInChildren<EnemyAnimatorManager>().PlayTargetAnimation("GetHit_Up", true, true);
-                    playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("WeaponAbility_01(Success)", true, true);
+                    playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("PerfectBalance", true, true);
                     playerManager.GetComponentInChildren<AnimatorManager>().generalAudio.volume = 0.15f;
                     playerManager.GetComponentInChildren<AnimatorManager>().generalAudio.clip = playerManager.GetComponentInChildren<AnimatorManager>().sample_SFX.Bagua_SFX_List[0];
                     playerManager.GetComponentInChildren<AnimatorManager>().generalAudio.Play();
-                    playerManager.PerfectBlock();
+                    playerManager.PerfectBlockCheck();
                 }
             }
         }
@@ -168,7 +169,7 @@ public class DamageCollider : MonoBehaviour
                 int random = Random.Range(0, i - 1);
                 attackAudio.clip = sample_SFX.hittedSFX_List[random];
                 attackAudio.Play();
-                enemyStats.TakeDamage(curDamage, hitDirection, playerManager.GetComponent<PlayerStats>());
+                enemyStats.TakeDamage(curDamage, staminaDamage, hitDirection, playerManager.GetComponent<PlayerStats>());
                 HitPause(duration);
                 playerManager.GetComponent<BaGuaManager>().curEnergyCharge += energyRestoreAmount;
                 playerManager.isHitting = true;

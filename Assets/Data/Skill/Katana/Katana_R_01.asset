@@ -16,7 +16,8 @@ MonoBehaviour:
   isImmuAttack: 1
   skillType: 0
   damagePoint: 30
-  staminaCost: 25
+  tenacityDamagePoint: 15
+  staminaCost: 15
   energyRestore: 10
   pauseDuration: 4
   VFXs: []

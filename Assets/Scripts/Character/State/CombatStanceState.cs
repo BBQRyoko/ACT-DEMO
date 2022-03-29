@@ -52,7 +52,6 @@ public class CombatStanceState : State
             randomDestinationSet = false;
             return attackState;
         }
-
         if (enemyManager.curRecoveryTime <= 0 && attackState.curAttack != null && !enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted)
         {
             if (distanceFromTarget > attackState.curAttack.minDistanceNeedToAttack && !attackingAdjustment)
@@ -71,13 +70,11 @@ public class CombatStanceState : State
                 return attackState;
             }
         }//当GCD转完且有了攻击并且玩家为非攻击状态(以免撞上)
-
         if (!randomDestinationSet && !enemyManager.isFirstStrike)
         {
             randomDestinationSet = true;
             DecideCirclingAction(enemyManager, enemyAnimatorManager);
         }//如果不在踱步状态, 那就进入踱步状态
-
         //先看踱步时间是否大于0
         if (walkingTimer > 0) //踱步时间大于0时 
         {
@@ -100,7 +97,6 @@ public class CombatStanceState : State
             attackingAdjustment = false;
             WalkAroundTarget(enemyManager, enemyAnimatorManager);
         }
-
         //这里感觉有问题
         if (distanceFromTarget > enemyManager.combatPursueStartRange && !enemyManager.isFirstStrike && walkingTimer>0)//距离大于攻击范围后退回追踪状态
         {
@@ -110,7 +106,6 @@ public class CombatStanceState : State
             }
             return pursueState;
         }
-
         HandleRotateTowardsTarger(enemyManager); //保持面对目标的朝向
         return this;
     }
