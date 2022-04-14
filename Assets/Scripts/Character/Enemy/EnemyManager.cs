@@ -31,7 +31,7 @@ public class EnemyManager : CharacterManager
     public bool healtBarSpawn;
     public bool canBeExecuted;
     public bool getingExecute;
-    public bool isUnique;
+    public bool isNoWeapon;
     public bool isEquipped;
     public float defPriority;
     public float dodgePriority;
@@ -42,6 +42,7 @@ public class EnemyManager : CharacterManager
     public bool isDamaged;
 
     public bool ambushEnemy;
+    public bool stayedRangeEnemy;
     public bool isFirstStrike;
     public float firstStrikeTimer;
     public float defaultFirstStrikeTime;

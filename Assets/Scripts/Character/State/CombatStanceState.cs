@@ -141,6 +141,7 @@ public class CombatStanceState : State
         //无防御踱步
         if (enemyManager.defPriority<=0 || defendRandomNum >= defendProbility)
         {
+            if (enemyManager.stayedRangeEnemy) return;
             if (attackingAdjustment)
             {
                 verticalMovementVaule = 0.5f;

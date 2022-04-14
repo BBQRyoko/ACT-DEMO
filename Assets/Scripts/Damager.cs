@@ -5,6 +5,7 @@ using UnityEngine;
 public class Damager : MonoBehaviour
 {
     public bool isHeavy;
+    public bool stunEffect;
     [SerializeField] bool isFlyingObject;
     [SerializeField] bool isPlayerDamage;
     public EnemyManager enemyManager;
@@ -31,9 +32,22 @@ public class Damager : MonoBehaviour
                 hitDirection.Normalize();
 
                 playerStats.TakeDamage(curDamage, hitDirection * hitFactor, isHeavy);
+
+                if (stunEffect) 
+                {
+                    playerStats.GetComponentInChildren<Animator>().SetTrigger("isStun");
+                }
+
                 if (isFlyingObject)
                 {
-                    Destroy(transform.parent.gameObject);
+                    if (transform.parent)
+                    {
+                        Destroy(transform.parent.gameObject);
+                    }
+                    else 
+                    {
+                        Destroy(transform.gameObject);
+                    }
                 }
             }
             else if (parryCollider != null)

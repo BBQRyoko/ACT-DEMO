@@ -227,14 +227,14 @@ public class IdleState : State
 
         if (enemyManager.alertingTarget != null)
         {
-            if (!enemyManager.isEquipped && !enemyManager.ambushEnemy) //没装备武器就把武器装上
+            if (!enemyManager.isEquipped && !enemyManager.ambushEnemy && !enemyManager.isNoWeapon) //没装备武器就把武器装上
             {
                 enemyAnimatorManager.PlayTargetAnimation("Equip", true, true);
             }
         }
         else 
         {
-            if (enemyManager.curTarget == null && enemyManager.isEquipped && !enemyManager.ambushEnemy) 
+            if (enemyManager.curTarget == null && enemyManager.isEquipped && !enemyManager.ambushEnemy && !enemyManager.isNoWeapon) 
             {
                 enemyAnimatorManager.PlayTargetAnimation("Unarm", true, true);
             }
@@ -243,7 +243,7 @@ public class IdleState : State
         #region 切换至追踪模式
         if (enemyManager.curTarget != null)
         {
-            if (!enemyManager.isEquipped) //没装备武器就把武器装上
+            if (!enemyManager.isEquipped && !enemyManager.isNoWeapon) //没装备武器就把武器装上
             {
                 enemyAnimatorManager.PlayTargetAnimation("Equip", true, true);
             }

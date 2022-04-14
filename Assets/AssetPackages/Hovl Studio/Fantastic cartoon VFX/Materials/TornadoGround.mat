@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: TornadoGround
-  m_Shader: {fileID: 4800000, guid: f7356c7b8ae37d442bd94188e69e6cb0, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 00191177e5fd5c4468ad546ce87ef329, type: 3}
   m_ShaderKeywords: _FRESNEL_ON _UPCUTOFF_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -19,8 +19,20 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Flow:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: e199ee8112362864f831425463b09fda, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Noise:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _tex3coord:
@@ -39,27 +51,50 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _Cutoff: 0.5
+    - _Depthpower: 1
     - _DirectionSpeedofwawes: -0.5
+    - _Emission: 1
     - _EmmisionStrench: 2
     - _Fresnel: 1
     - _FresnelOutline: 1
     - _FresnelStrench: 0.9
     - _Numberofwaves: 1
     - _Numberofwawes: 1
+    - _Opacity: 1
     - _Sizeofwawes: -0.2
     - _TwistWaves: 1
     - _U_Speed: -0.3
     - _UpCutoff: 1
+    - _Usecenterglow: 0
+    - _Usedepth: 0
     - _V_Speed: -0.7
     - __dirty: 1
     m_Colors:
     - _Color: {r: 0.13197397, g: 0.07075472, b: 0.2830189, a: 1}
+    - _DistortionSpeedXYPowerZ: {r: 0, g: 0, b: 0, a: 0}
+    - _FlowTiling: {r: 1, g: 1, b: 0, a: 0}
     - _FrenselColor: {r: 1, g: 1, b: 1, a: 1}
     - _Fresnelcolor: {r: 1, g: 1, b: 1, a: 1}
+    - _MainTexTiling: {r: 1, g: 1, b: 0, a: 0}
+    - _MaskTiling: {r: 1, g: 1, b: 0, a: 0}
+    - _NoiseTiling: {r: 1, g: 1, b: 0, a: 0}
     - _Reel: {r: 1, g: 0.4, b: 5, a: 0}
+    - _SpeedMainTexUVNoiseZW: {r: 0, g: 0, b: 0, a: 0}
     - _SpeedXYFresnelEmission: {r: -1.5, g: -0.5, b: 1, a: 2}
     - _TintColor: {r: 1, g: 1, b: 1, a: 1}
     - _TwistScale: {r: 1, g: 0.1, b: 5, a: 0}

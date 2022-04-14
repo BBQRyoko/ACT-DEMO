@@ -37107,7 +37107,7 @@ AnimationClip:
   - time: 0.36666667
     functionName: RangeAttack
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 11400000, guid: 130d9e907df4cbe419122f0ec103e3b1, type: 2}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

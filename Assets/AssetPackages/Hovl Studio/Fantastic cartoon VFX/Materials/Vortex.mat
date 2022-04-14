@@ -4,10 +4,11 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: Vortex
-  m_Shader: {fileID: 4800000, guid: f7356c7b8ae37d442bd94188e69e6cb0, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 00191177e5fd5c4468ad546ce87ef329, type: 3}
   m_ShaderKeywords: _FRESNEL_ON _UPCUTOFF_ON _USEFRESNEL_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -18,8 +19,16 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Flow:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 3f1d4fadb37c37e4488860109d7dce4b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Noise:
@@ -38,24 +47,48 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _Cutoff: 0.5
+    - _Depthpower: 1
     - _Emission: 2
     - _Fresnel: 1
     - _NoisePower: 0.3
     - _Numberofwaves: 1
     - _Numberofwawes: 0.7
+    - _Opacity: 1
     - _Speedofwawes: -2
+    - _TwistWaves: 1
     - _UpCutoff: 1
     - _UpDesaturation: 10
+    - _Usecenterglow: 0
+    - _Usedepth: 0
     - _Usefresnel: 1
     - _VertexPower: 0
     - __dirty: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DistortionSpeedXYPowerZ: {r: 0, g: 0, b: 0, a: 0}
+    - _FlowTiling: {r: 1, g: 1, b: 0, a: 0}
     - _Fresnelcolor: {r: 1, g: 1, b: 1, a: 1}
+    - _MainTexTiling: {r: 1, g: 1, b: 0, a: 0}
+    - _MaskTiling: {r: 1, g: 1, b: 0, a: 0}
+    - _NoiseTiling: {r: 1, g: 1, b: 0, a: 0}
     - _OpacityMaskSpeed: {r: 0, g: -0.6, b: 0, a: 0}
     - _SpeedMainTexUVNoiseZW: {r: 0, g: -0.3, b: 0.4, a: -0.2}
     - _SpeedXYFresnelEmission: {r: -0.3, g: -0.7, b: 0.8, a: 1.5}
     - _TintColor: {r: 1, g: 1, b: 1, a: 1}
     - _WavesspeedsizeXYTwistspeedsizeZW: {r: -2, g: 0, b: 2, a: 0}
+  m_BuildTextureStacks: []

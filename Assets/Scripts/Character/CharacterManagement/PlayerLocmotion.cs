@@ -76,7 +76,6 @@ public class PlayerLocmotion : MonoBehaviour
         playerDireee.y = 0;
         HandleMovement();
         HandleRotation();
-        HandleJumping();
         HandleGravity();
         HandleFallingAndLanding();
         HandleChargingDash();
@@ -361,7 +360,7 @@ public class PlayerLocmotion : MonoBehaviour
             jumpInputLocked = false;
         }
         //当玩家在地上, 按下跳跃键, 且不在跳跃状态时
-        if (playerManager.isGround && !playerManager.isJumping && inputManager.jump_Input && !jumpInputLocked && !playerManager.isInteracting)
+        if (playerManager.isGround && !playerManager.isJumping && !jumpInputLocked)
         {
             animatorManager.animator.SetBool("isJumping", true);
 

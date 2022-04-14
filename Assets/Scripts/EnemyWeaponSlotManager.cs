@@ -16,6 +16,8 @@ public class EnemyWeaponSlotManager : MonoBehaviour
     public DamageCollider kickDamagerCollider;
     public Damager flyingObjectDamager;
     [SerializeField] FlyingObj flyingObj;
+    public Damager flyingObjectDamager2;
+    [SerializeField] FlyingObj flyingObj2;
 
     private void Awake()
     {
@@ -98,8 +100,11 @@ public class EnemyWeaponSlotManager : MonoBehaviour
         flyingObj.m_MaxSpeed = attackAction.maxSpeed;
         enemyManager.HandleRangeAttack();
     }
-    private void RangeAttack2()
+    private void RangeAttack2(EnemyAttackAction attackAction)
     {
+        flyingObjectDamager2.curDamage = attackAction.damagePoint;
+        flyingObjectDamager2.isHeavy = attackAction.isHeavyAttack;
+        flyingObj.m_MaxSpeed = attackAction.maxSpeed;
         enemyManager.HandleRangeAttack2();
     }
     private void AttackOver()
