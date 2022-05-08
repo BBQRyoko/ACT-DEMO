@@ -18,7 +18,7 @@ MonoBehaviour:
   damagePoint: 50
   tenacityDamagePoint: 40
   staminaCost: 50
-  energyRestore: 50
+  energyRestore: 15
   pauseDuration: 16
   VFXs: []
   SFXs: []

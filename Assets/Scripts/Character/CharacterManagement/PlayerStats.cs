@@ -8,6 +8,7 @@ public class PlayerStats : CharacterStats
     PlayerManager playerManager;
     public HealthBar healthBar;
     public StaminaBar staminaBar;
+    public 
     PlayerAttacker playerAttacker;
     AnimatorManager animatorManager;
     WeaponSlotManager weaponSlotManager;

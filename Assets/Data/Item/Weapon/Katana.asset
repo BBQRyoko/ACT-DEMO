@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dd4ca184644ff34d888c9d3dc361aa2, type: 3}
   m_Name: Katana
   m_EditorClassIdentifier: 
-  Id: 0
+  Id: 1
   itemIcon: {fileID: 0}
   itemName: GreatSword
   HasHeapUp: 0
@@ -25,8 +25,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 836018923d7504d4ca50c2e6c435dd1b, type: 2}
   - {fileID: 11400000, guid: cf2d175630770df478cab4c148f4b6a9, type: 2}
   - {fileID: 11400000, guid: d03f11c267487ee46aa585bfff9564be, type: 2}
-  - {fileID: 11400000, guid: 6e4907e34ba63c949b06673dc2524a75, type: 2}
   specialSkills: []
+  transSkills:
+  - {fileID: 11400000, guid: b30e2a17f2331c64ba0562672e9f9808, type: 2}
   executionSkill:
   - {fileID: 11400000, guid: f90f86c172882ae4abd2ebfd2ac9ca98, type: 2}
   - {fileID: 11400000, guid: c36de8873bf21034cba5505061b40da8, type: 2}

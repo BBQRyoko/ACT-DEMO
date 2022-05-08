@@ -33,7 +33,7 @@ public class FlyingObj : MonoBehaviour
     /// <summary>
     /// 追踪时间
     /// </summary>
-    [SerializeField] private float m_TraceTime;
+    public float m_TraceTime;
     /// <summary>
     /// 生命周期
     /// </summary>
@@ -190,10 +190,7 @@ public class FlyingObj : MonoBehaviour
         //todo，目前还没有Tag参数
         if (m_TriggerCallback(other, this, string.Empty))
         {
-            if (other.CompareTag("Player")) 
-            {
-                Destroy(this.gameObject);
-            }
+
         }
     }
 

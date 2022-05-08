@@ -14,9 +14,9 @@ public class EnemyWeaponSlotManager : MonoBehaviour
     public WeaponSlot equippedSlot;
     public DamageCollider weaponDamageCollider;
     public DamageCollider kickDamagerCollider;
-    public Damager flyingObjectDamager;
+    public ProjectileDamager flyingObjectDamager;
     [SerializeField] FlyingObj flyingObj;
-    public Damager flyingObjectDamager2;
+    public ProjectileDamager flyingObjectDamager2;
     [SerializeField] FlyingObj flyingObj2;
 
     private void Awake()

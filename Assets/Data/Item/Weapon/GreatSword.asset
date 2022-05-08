@@ -27,6 +27,8 @@ MonoBehaviour:
   specialSkills:
   - {fileID: 0}
   - {fileID: 11400000, guid: 7a67c7e10d085f34eb0aba4e401cae0d, type: 2}
+  transSkills:
+  - {fileID: 11400000, guid: b510fd292c4b4e74badb3c1f79274b2c, type: 2}
   executionSkill:
   - {fileID: 11400000, guid: b22bb369c8d064748a374cb742aaa3d6, type: 2}
   - {fileID: 11400000, guid: 7225307fc30b34b499d9c105f448db4a, type: 2}

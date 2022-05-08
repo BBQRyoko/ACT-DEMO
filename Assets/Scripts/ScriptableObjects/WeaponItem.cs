@@ -16,6 +16,9 @@ public class WeaponItem : Item
     [Header("特殊连招")]
     public Skill[] specialSkills;
 
+    [Header("切换攻击")]
+    public Skill[] transSkills;
+
     [Header("处决")]
     public Skill[] executionSkill;
 

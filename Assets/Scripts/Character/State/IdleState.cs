@@ -46,16 +46,18 @@ public class IdleState : State
             Vector3 targetDirection = enemyManager.patrolPos[enemyManager.curPatrolIndex].position - enemyManager.transform.position;
             float distanceFromTarget = Vector3.Distance(enemyManager.patrolPos[enemyManager.curPatrolIndex].position, enemyManager.transform.position);
 
-            if (distanceFromTarget > 5f)
+            HandleRotateTowardsTarger(enemyManager);
+
+            if (distanceFromTarget > 1f)
             {
                 enemyAnimatorManager.animator.SetFloat("Vertical", 1f, 0.1f, Time.deltaTime);   //跑回初始点
             }
-            else if (distanceFromTarget <= 5f)
+            else
             {
                 enemyAnimatorManager.animator.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);   //站着idle状态
+                enemyManager.EnemyReset();
             }
 
-            HandleRotateTowardsTarger(enemyManager);
             enemyManager.navMeshAgent.transform.localPosition = Vector3.zero;
             enemyManager.navMeshAgent.transform.localRotation = Quaternion.identity;
         }
@@ -107,6 +109,7 @@ public class IdleState : State
                     enemyManager.curPatrolIndex = 0;
                 }
             }
+
             HandleRotateTowardsTarger(enemyManager);
             enemyManager.navMeshAgent.transform.localPosition = Vector3.zero;
             enemyManager.navMeshAgent.transform.localRotation = Quaternion.identity;
@@ -346,14 +349,17 @@ public class IdleState : State
             {
                 if (!enemyManager.curTarget && enemyManager.alertTimer <= 0 && distanceFromTarget<=1f) //在非警戒状态才会转
                 {
-                    if (rotateTimer > 0)
+                    if (defaultRotatePeriod != 0) 
                     {
-                        rotateTimer -= Time.deltaTime;
-                    }
-                    else
-                    {
-                        enemyManager.GetComponentInChildren<EnemyAnimatorManager>().PlayTargetAnimationWithRootRotation("Turn180", true);
-                        rotateTimer = defaultRotatePeriod;
+                        if (rotateTimer > 0.1f)
+                        {
+                            rotateTimer -= Time.deltaTime;
+                        }
+                        else
+                        {
+                            enemyManager.GetComponentInChildren<EnemyAnimatorManager>().PlayTargetAnimationWithRootRotation("Turn180", true);
+                            rotateTimer = defaultRotatePeriod;
+                        }
                     }
                 }
                 else

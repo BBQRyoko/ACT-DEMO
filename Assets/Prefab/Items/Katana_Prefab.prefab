@@ -28,6 +28,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.0000029504295}
   m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 0.1855881, y: 0.1855881, z: 0.1855881}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7704625332015463929}
   m_RootOrder: 1
@@ -198,6 +199,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.675676, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7704625332015463929}
   m_RootOrder: 0
@@ -284,6 +286,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7704625332015463929}
   m_Father: {fileID: 7105417834258670017}
@@ -366,7 +369,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerManager: {fileID: 0}
   interactPrompt: {fileID: 5371581890437356622}
+  promptOn: 0
   curItemType: 1
+  weaponItemInfo: {fileID: 11400000, guid: 1765f0767a832ac41bb3aabfe48b9d91, type: 2}
+  weaponList: {fileID: 0}
 --- !u!1 &5371581890437356622
 GameObject:
   m_ObjectHideFlags: 0
@@ -393,6 +399,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.5, y: 3.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5532497437606605647}
   - {fileID: 3242421103542398202}
@@ -426,7 +433,8 @@ Transform:
   m_GameObject: {fileID: 7105417834258670020}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: -8.508659, y: 5.5, z: -25.853067}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.50000006, y: 0.5, z: 0.50000006}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3771204408442123446}
   - {fileID: 123222687018864186}

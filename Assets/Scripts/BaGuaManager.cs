@@ -7,6 +7,7 @@ public class BaGuaManager : MonoBehaviour
 {
     PlayerManager playerManager;
     PlayerStats playerStats;
+    PlayerInventory playerInventory;
     AnimatorManager animatorManager;
     [SerializeField] GameObject BaGuaZhen;
     Sample_VFX sample_VFX_Ability;
@@ -14,6 +15,11 @@ public class BaGuaManager : MonoBehaviour
     public List<int> commandHolder = new List<int>();
     public string commandString;
     public int curPiviot;
+
+    public float curYin;
+    [SerializeField] Image yinChargeSlot;
+    public float curYang;
+    [SerializeField] Image yangChargeSlot;
 
     public int energyGuage;
     public float curEnergyCharge;
@@ -43,6 +49,7 @@ public class BaGuaManager : MonoBehaviour
     {
         playerManager = GetComponent<PlayerManager>();
         playerStats = GetComponent<PlayerStats>();
+        playerInventory = GetComponent<PlayerInventory>();
         inputManager = GetComponent<InputManager>();
         animatorManager = GetComponentInChildren<AnimatorManager>();
         sample_VFX_Ability = GetComponentInChildren<Sample_VFX>();
@@ -60,6 +67,7 @@ public class BaGuaManager : MonoBehaviour
             liCover.SetActive(true);
             fireballCheatSheet.SetActive(false);
         }
+        YinYangControl();
         EnergySourceControl();
         if (inputManager.baGua_Input && !isCommandActive && !playerManager.gameStart)
         {
@@ -249,6 +257,28 @@ public class BaGuaManager : MonoBehaviour
             energyGuage_1.fillAmount = 0;
             energyGuage_2.fillAmount = 0;
             energyGuage_3.fillAmount = 0;
+        }
+    }
+    void YinYangControl() 
+    {
+        yinChargeSlot.fillAmount = curYin / 100;
+        yangChargeSlot.fillAmount = curYang / 100;
+        if (curYin >= 100 && curYang >= 100) 
+        {
+            playerManager.yinYangAbilityOn = true;
+        }
+    }
+    public void YinYangChargeUp(float chargeValue) 
+    {
+        if (playerInventory.currentWeaponIndex == 0)
+        {
+            curYin += chargeValue;
+            if (curYin >= 100) curYin = 100;
+        }
+        else 
+        {
+            curYang += chargeValue;
+            if (curYang >= 100) curYang = 100;
         }
     }
 }

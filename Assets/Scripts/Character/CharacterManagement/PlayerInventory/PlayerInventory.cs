@@ -5,9 +5,11 @@ using UnityEngine;
 public class PlayerInventory : MonoBehaviour
 {
     PlayerManager playerManager;
+    PlayerInventory playerInventory;
     WeaponSlotManager WeaponSlotManager;
 
     public int currentWeaponIndex;
+    public WeaponItem curEquippedWeaponItem;
     public WeaponItem[] unequippedWeaponItems = new WeaponItem[2];
 
     public List<InventoryItemData> items;
@@ -15,6 +17,7 @@ public class PlayerInventory : MonoBehaviour
     private void Awake()
     {
         playerManager = GetComponent<PlayerManager>();
+        playerInventory = GetComponent<PlayerInventory>();
         WeaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
         items = new List<InventoryItemData>();
     }
@@ -23,13 +26,53 @@ public class PlayerInventory : MonoBehaviour
     {
         WeaponSlotManager.LoadWeaponOnSlot(unequippedWeaponItems[0],0);
     }
-    public void UnlockKatana() 
+    private void Update()
     {
-        if (playerManager.katanaUnlock) //之后写到解锁太刀的地方去
+        curEquippedWeaponItem = unequippedWeaponItems[currentWeaponIndex];
+        //if (currentWeaponIndex == 0)
+        //{
+        //    curEquippedWeaponItem = unequippedWeaponItems[1];
+        //}
+        //else if (currentWeaponIndex == 1)
+        //{
+        //    curEquippedWeaponItem = unequippedWeaponItems[0];
+        //} 
+    }
+    public void PickUpWeapon(WeaponItem weapon) 
+    {
+        if (playerInventory.unequippedWeaponItems[1] == null)
         {
-            WeaponSlotManager.LoadWeaponOnSlot(unequippedWeaponItems[1], 1);
+            playerInventory.unequippedWeaponItems[1] = weapon;
+            playerInventory.curEquippedWeaponItem = unequippedWeaponItems[0];
+            WeaponPickingEquip();
+        }
+        else
+        {
+            if (currentWeaponIndex == 0)
+            {
+                playerInventory.unequippedWeaponItems[0] = weapon;
+                playerInventory.curEquippedWeaponItem = unequippedWeaponItems[1];
+                WeaponPickingEquip(true);
+            }
+            else if (currentWeaponIndex == 1) 
+            {
+                playerInventory.unequippedWeaponItems[1] = weapon;
+                playerInventory.curEquippedWeaponItem = unequippedWeaponItems[0];
+                WeaponPickingEquip(true);
+            }
         }
     }
+
+    public void WeaponPickingEquip(bool replaceCurWeapon = false) 
+    {
+        playerManager.GetComponentInChildren<WeaponSlotManager>().mainArmedWeapon.SetActive(false);
+        if (!replaceCurWeapon)
+        {
+            playerManager.GetComponentInChildren<WeaponSlotManager>().mainWeapon_Unequipped.gameObject.SetActive(true);
+        }
+        playerManager.GetComponentInChildren<WeaponSlotManager>().WeaponSwitchAnimatorController(replaceCurWeapon);
+    }
+
     /// <summary>
     /// 增加道具
     /// </summary>

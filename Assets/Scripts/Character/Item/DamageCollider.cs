@@ -19,6 +19,7 @@ public class DamageCollider : MonoBehaviour
     public int curDamage = 10;
     public int staminaDamage;
     public float energyRestoreAmount = 20;
+    public float chargeAmount;
 
     public float weaponWeightRatio;
     
@@ -81,9 +82,9 @@ public class DamageCollider : MonoBehaviour
                     int random = Random.Range(0, i - 1);
                     attackAudio.clip = sample_SFX.blockedSFX_List[random];
                     attackAudio.Play();
-
                     damageCollider.enabled = false;
-                    playerManager.GetComponent<BaGuaManager>().curEnergyCharge += energyRestoreAmount / 2;
+                    playerManager.GetComponent<PlayerAttacker>().chargeValue += chargeAmount * 0.8f;
+                    playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount / 2);
                     enemyManager.HandleParryingCheck(curDamage);
                     HitPause(duration);
                 }
@@ -171,7 +172,8 @@ public class DamageCollider : MonoBehaviour
                 attackAudio.Play();
                 enemyStats.TakeDamage(curDamage, staminaDamage, hitDirection, playerManager.GetComponent<PlayerStats>());
                 HitPause(duration);
-                playerManager.GetComponent<BaGuaManager>().curEnergyCharge += energyRestoreAmount;
+                playerManager.GetComponent<PlayerAttacker>().chargeValue += chargeAmount;
+                playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount);
                 playerManager.isHitting = true;
             }
         }

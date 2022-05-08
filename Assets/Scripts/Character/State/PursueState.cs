@@ -38,9 +38,13 @@ public class PursueState : State
         }
 
 
-        if (distanceFromTarget >= maxPursueDistance) //先判断是否在追击距离内, 不在就收武器会Idle
+        if (distanceFromTarget >= maxPursueDistance ) //先判断是否在追击距离内, 不在就收武器会Idle
         {
-            enemyAnimatorManager.PlayTargetAnimation("Unarm", true, true);
+            if (!enemyManager.isNoWeapon) 
+            {
+                enemyAnimatorManager.PlayTargetAnimation("Unarm", true, true);
+            }
+
             enemyManager.curTarget = null;
             return idleState;
         }

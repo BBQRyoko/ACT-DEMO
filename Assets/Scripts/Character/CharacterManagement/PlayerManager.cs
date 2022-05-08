@@ -47,19 +47,20 @@ public class PlayerManager : CharacterManager
     float staminaRegenPauseTimer;
     public bool staminaRegenPause;
     public bool hitRecover;
-    public bool isStunned;
     public bool damageAvoid;
     [SerializeField] ParryCollider parryCollider;
+    [SerializeField] AudioSource generalAudio;
+    [SerializeField] Sample_SFX sfxList;
 
     //武器切换相关
-    public bool katanaUnlock;
-    public bool finalWeaponUnlock;
     public bool isWeaponSwitching;
     public float weaponSwitchCooldown;
     public Image cooldownTimer;
     float cooldownUnit;
 
     //太极系统
+    public bool yinYangAbilityOn;
+    [SerializeField] GameObject ultimateHint;
     int taiji_Guage;
     [SerializeField] TaijiDurationBar taijiDurationBar;
     [SerializeField] GameObject taijiBuff_VFX;
@@ -121,6 +122,15 @@ public class PlayerManager : CharacterManager
             weaponSlotManager.mainArmedWeapon.SetActive(true);
         }
 
+        if (yinYangAbilityOn)
+        {
+            ultimateHint.SetActive(true);
+        }
+        else
+        {
+            ultimateHint.SetActive(false);
+        }
+
         if (!isDead) 
         {
             inputManager.HandleAllInputs();
@@ -158,7 +168,6 @@ public class PlayerManager : CharacterManager
         isUsingRootMotion = animator.GetBool("isUsingRootMotion");
         isCharging = animator.GetBool("isCharging");
         isHolding = animator.GetBool("isHolding");
-        isWeak = animator.GetBool("isWeak");
         isDefending = animator.GetBool("isDefending");
         isGettingDamage = animator.GetBool("isGettingDamage");
         cantBeInterrupted = animator.GetBool("cantBeInterrupted");
@@ -191,6 +200,16 @@ public class PlayerManager : CharacterManager
             staminaRegenPause = false;
         }
 
+        if (isStunned && !isToronadoCovered)
+        {
+            stunTimer += Time.deltaTime;
+            if (stunTimer >= 2)
+            {
+                isStunned = false;
+                stunTimer = 0;
+            }
+        }
+
         if (taijiBuffDuration > 0)
         {
             taijiBuffDuration -= Time.deltaTime;
@@ -202,13 +221,6 @@ public class PlayerManager : CharacterManager
             taijiDurationBar.SetCurrentTime(taijiBuffDuration);
             taiji_Guage = 0;
         }
-    }
-    public void GetDebuff(float duration) //当前只有stun
-    {
-        animatorManager.PlayTargetAnimation("StunTest", true);
-        isStunned = true;
-        rig.velocity = Vector3.zero;
-        StartCoroutine(stunTimer(duration));
     }
     private void ChargingAction() //攻击蓄力
     {
@@ -306,6 +318,23 @@ public class PlayerManager : CharacterManager
             taijiBuff_VFX.SetActive(false);
         }
     }
+    public void YinYangAbilityActivate() 
+    {
+        if (yinYangAbilityOn) 
+        {
+            baGuaManager.curYin = 0;
+            baGuaManager.curYang = 0;
+            yinYangAbilityOn = false;
+            GameObject AT_Field_Temp = Instantiate(aT_Field_Prefab, aT_position.position, Quaternion.identity);
+            generalAudio.clip = sfxList.Bagua_SFX_List[0];
+            generalAudio.Play();
+            sample_VFX.baGuaRelated_List[0].Stop();
+            sample_VFX.baGuaRelated_List[1].Play();
+            AT_Field_Temp.transform.SetParent(null);
+            taijiBuffDuration = 0;
+            taiji_Guage = 0;
+        }
+    }
     public void PerfectBlockCheck() 
     {
         if (taiji_Guage == 2)
@@ -350,10 +379,5 @@ public class PlayerManager : CharacterManager
             if (baGuaManager.energyGuage < 1) 
             baGuaManager.energyGuage = 1;
         }
-    }
-    IEnumerator stunTimer(float dur) //播放器暂停
-    {
-        yield return new WaitForSecondsRealtime(dur);
-        isStunned = false;
     }
 }

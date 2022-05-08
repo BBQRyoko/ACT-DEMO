@@ -43,6 +43,8 @@ public class CameraManager : MonoBehaviour
     public Transform currentLockOnTarget;
     public Image lockOnPrefab;
     Image lockOnMark;
+    [SerializeField] float maxLockingResetDistance = 50f;
+    float lockOnResetTimer;
 
     //处决系统
     public Transform curExuectionTarget;
@@ -82,6 +84,7 @@ public class CameraManager : MonoBehaviour
         HandleCameraCollisions(delta);
         HandleLockOnMark();
         HandleExecutingMark();
+        LockOnDistanceChecking();
 
         if (currentLockOnTarget && currentLockOnTarget.GetComponentInParent<EnemyStats>().currHealth<=0) 
         {
@@ -311,6 +314,26 @@ public class CameraManager : MonoBehaviour
         availableTarget.Clear();
         nearestLockOnTarget = null;
         currentLockOnTarget = null;
+    }
+    public void LockOnDistanceChecking() 
+    {
+        if (currentLockOnTarget) 
+        {
+            float distanceFromTarget = Vector3.Distance(currentLockOnTarget.transform.position, targetTransform.transform.position);
+            if (distanceFromTarget > maxLockingResetDistance)
+            {
+                if (lockOnResetTimer < 4f)
+                {
+                    lockOnResetTimer += Time.deltaTime;
+                }
+                else
+                {
+                    lockOnResetTimer = 0;
+                    inputManager.lockOn_Flag = false;
+                    ClearLockOnTargets();
+                }
+            }
+        }
     }
     public void DangerWarning(EnemyManager enemyManager) 
     {

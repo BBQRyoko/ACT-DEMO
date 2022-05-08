@@ -15,12 +15,13 @@ public class CombatStanceState : State
     public bool specialConditionTriggered;
 
     bool canCounterAttack;
+    [SerializeField] bool dummyMode;
     [SerializeField] float defaultWalkingTimer = 1.5f;
     public float walkingTimer;
     [SerializeField] bool notFirstWalking;
     [SerializeField] bool isWalkingStop;
     [SerializeField] bool attackingAdjustment;
-    [SerializeField] float distanceFromTarget;
+    public float distanceFromTarget;
     public bool randomDestinationSet = false;
     float verticalMovementVaule = 0;
     float horizontalMovementVaule = 0;
@@ -47,14 +48,20 @@ public class CombatStanceState : State
         SpecialActionWatcher(enemyManager);
         DamageTakenWindow(enemyManager, enemyAnimatorManager); //位置可能要改
 
+        if (dummyMode) 
+        {
+            attackingAdjustment = true;
+            HandleRotateTowardsTarger(enemyManager);
+            GetNewAttack(enemyManager);
+        } 
         if (specialConditionTriggered) //根据条件观测是否触发特殊条件, 触发则直接发动攻击并停止踱步行为
         {
             randomDestinationSet = false;
             return attackState;
         }
-        if (enemyManager.curRecoveryTime <= 0 && attackState.curAttack != null && !enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted)
+        if (enemyManager.curRecoveryTime <= 0 && !enemyManager.attackLock && attackState.curAttack != null && !enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted)
         {
-            if (distanceFromTarget > attackState.curAttack.minDistanceNeedToAttack && !attackingAdjustment)
+            if (distanceFromTarget > attackState.curAttack.minDistanceNeedToAttack && !attackingAdjustment && !dummyMode)
             {
                 notFirstWalking = true;
                 attackingAdjustment = true;
@@ -70,7 +77,8 @@ public class CombatStanceState : State
                 return attackState;
             }
         }//当GCD转完且有了攻击并且玩家为非攻击状态(以免撞上)
-        if (!randomDestinationSet && !enemyManager.isFirstStrike)
+
+        if (!randomDestinationSet && !enemyManager.isFirstStrike && !dummyMode)
         {
             randomDestinationSet = true;
             DecideCirclingAction(enemyManager, enemyAnimatorManager);
@@ -93,6 +101,8 @@ public class CombatStanceState : State
         }
         else //如果踱步时间小于0
         {
+            if (dummyMode) return this;
+
             notFirstWalking = true;
             attackingAdjustment = false;
             WalkAroundTarget(enemyManager, enemyAnimatorManager);
@@ -530,6 +540,5 @@ public class CombatStanceState : State
             }
         }
     }
-
 }
 

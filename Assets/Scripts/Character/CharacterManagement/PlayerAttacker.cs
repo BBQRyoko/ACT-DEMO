@@ -9,6 +9,7 @@ public class PlayerAttacker : MonoBehaviour
     PlayerLocmotion playerLocmotion;
     AnimatorManager animatorManager;
     WeaponSlotManager weaponSlotManager;
+    [SerializeField] Sample_VFX sample_VFX;
 
     public Sample_VFX sample_VFX_R;
     public Sample_VFX sample_VFX_S;
@@ -22,6 +23,11 @@ public class PlayerAttacker : MonoBehaviour
     public int comboCount;
     public float attackTimer;
     public float internalDuration = 3f;
+
+    //太极切换触发
+    public float chargeValue; //switchValue
+    public bool taijiAttack;
+
     //蓄力攻击
     public float chargingTimer;
     public int chargingLevel;
@@ -37,6 +43,7 @@ public class PlayerAttacker : MonoBehaviour
     private void Update()
     {
         AttackComboTimer();
+        HandleAttackCharge();
         ChargingTimer();
         HoldingStatus();
         ExecutionHandler();
@@ -55,7 +62,7 @@ public class PlayerAttacker : MonoBehaviour
                 animatorManager.animator.SetBool("cantBeInterrupted", true);
                 animatorManager.animator.SetBool("isAttacking", true);
                 attackTimer = internalDuration;
-                if (!executionTarget.isWeak) //背刺
+                if (!executionTarget.isStunned) //背刺
                 {
                     playerManager.transform.position = executionTarget.execute_Back.position;
                     playerLocmotion.HandleRotateTowardsTarger();
@@ -100,6 +107,7 @@ public class PlayerAttacker : MonoBehaviour
                         weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.springAttack[0].damagePoint;
                         weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.springAttack[0].tenacityDamagePoint;
                         weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.springAttack[0].energyRestore;
+                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.springAttack[0].energyRestore;
                         animatorManager.pauseDuration = weapon.springAttack[0].pauseDuration;
                         playerManager.GetComponent<PlayerStats>().currStamina -= weapon.springAttack[0].staminaCost;
                         playerManager.isImmuAttack = weapon.springAttack[0].isImmuAttack;
@@ -123,6 +131,7 @@ public class PlayerAttacker : MonoBehaviour
                         weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint;
                         weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint;
                         weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.regularSkills[comboCount - 1].energyRestore;
                         animatorManager.pauseDuration = weapon.regularSkills[comboCount - 1].pauseDuration;
                         playerManager.GetComponent<PlayerStats>().currStamina -= weapon.regularSkills[comboCount - 1].staminaCost;
                         //sample_VFX_R.curVFX_List[comboCount - 1].Play();
@@ -163,6 +172,7 @@ public class PlayerAttacker : MonoBehaviour
                 animatorManager.PlayTargetAnimation(weapon.specialSkills[comboCount - 1].skillName, true, true);
                 weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint;
                 weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.regularSkills[comboCount - 1].energyRestore;
                 playerManager.GetComponent<PlayerStats>().currStamina -= weapon.regularSkills[comboCount - 1].staminaCost;
                 //sample_VFX_S.curVFX_List[comboCount - 1].Play();
                 comboCount = 0;
@@ -170,6 +180,37 @@ public class PlayerAttacker : MonoBehaviour
         }
         //rig.velocity = new Vector3(0, rig.velocity.y, 0);
     } //重攻击
+    public void HandleTransformAttack(WeaponItem weapon) 
+    {
+        //使用指定武器信息中的普通攻击
+        if (!playerManager.cantBeInterrupted && playerManager.isGround)
+        {
+            playerLocmotion.HandleRotateTowardsTarger();
+            comboCount = 0;
+
+            playerManager.cantBeInterrupted = true;
+            animatorManager.animator.SetBool("isAttacking", true);
+            attackTimer = internalDuration;
+            //播放指定的攻击动画
+            animatorManager.PlayTargetAnimation(weapon.transSkills[0].skillName, true, true);
+            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.transSkills[0].damagePoint;
+            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.transSkills[0].tenacityDamagePoint;
+            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.transSkills[0].energyRestore;
+            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.transSkills[0].energyRestore;
+            animatorManager.pauseDuration = weapon.transSkills[0].pauseDuration;
+            playerManager.GetComponent<PlayerStats>().currStamina -= weapon.transSkills[0].staminaCost;
+            //sample_VFX_R.curVFX_List[comboCount - 1].Play();
+            //if (weapon.regularSkills[comboCount - 1].isImmuAttack)
+            //{
+            //    playerManager.isImmuAttack = true;
+            //}
+            //else 
+            //{
+            //    playerManager.isImmuAttack = false;
+            //}
+
+        }
+    }
     public void HandleDefend(WeaponItem weapon) //武器防御
     {
         if (!playerManager.cantBeInterrupted && playerManager.isGround && !playerManager.isDefending)
@@ -177,7 +218,7 @@ public class PlayerAttacker : MonoBehaviour
             animatorManager.PlayTargetAnimation("Defend", true, true);
         }
     }
-    public void AttackComboTimer() 
+    void AttackComboTimer() 
     {
         attackTimer -= Time.deltaTime;
         if (attackTimer <= 0)
@@ -186,7 +227,7 @@ public class PlayerAttacker : MonoBehaviour
             comboCount = 0;
         }
     }
-    public void ChargingTimer() //蓄力计时器(当前只针对特殊攻击1的情况进行了使用)
+    void ChargingTimer() //蓄力计时器(当前只针对特殊攻击1的情况进行了使用)
     {
         if (inputManager.spAttack_Input)
         {
@@ -233,6 +274,17 @@ public class PlayerAttacker : MonoBehaviour
                 animatorManager.animator.SetBool("isCharging", false);
                 animatorManager.PlayTargetAnimation("Combo_S_01(End)", true, true);
             }
+        }
+    }
+    void HandleAttackCharge() 
+    {
+        if (chargeValue >= 40) 
+        {
+            playerManager.perfectTimer = 1.1f;
+            playerManager.isPerfect = true;
+            chargeValue = 0;
+            sample_VFX.baGuaRelated_List[0].Play();
+            taijiAttack = true;
         }
     }
     public void HoldingStatus() 

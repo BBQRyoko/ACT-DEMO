@@ -5,9 +5,7 @@ using UnityEngine;
 public class WeaponSlot : MonoBehaviour
 {
     public Transform parentOverride;
-
     public GameObject currentWeaponModel;
-
     public void UnloadWeapon() 
     {
         if (currentWeaponModel != null) 
@@ -15,7 +13,6 @@ public class WeaponSlot : MonoBehaviour
             currentWeaponModel.SetActive(false);
         }
     }
-
     public void UnloadWeaponAndDestroy() 
     {
         if (currentWeaponModel != null) 
@@ -23,7 +20,6 @@ public class WeaponSlot : MonoBehaviour
             Destroy(currentWeaponModel);
         }
     }
-
     public void LoadWeaponModel(WeaponItem weaponItem) 
     {
         UnloadWeaponAndDestroy();

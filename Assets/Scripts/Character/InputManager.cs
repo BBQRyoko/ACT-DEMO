@@ -39,6 +39,9 @@ public class InputManager : MonoBehaviour
     //Ability
     public bool weaponAbility_Input;
 
+    //大招
+    public bool ultimateAbility_Input;
+
     //八卦盘
     public bool baGua_Input;
 
@@ -72,7 +75,8 @@ public class InputManager : MonoBehaviour
             //判定是否有跳跃输入
             playerControls.PlayerActions.Jump.started += i => jump_Input = true;
             playerControls.PlayerActions.Jump.canceled += i => jump_Input = false;
-
+            playerControls.PlayerActions.Sprint.performed += i => sprint_Input = true;
+            playerControls.PlayerActions.Sprint.canceled += i => sprint_Input = false;
             playerControls.PlayerActions.Roll.performed += i => roll_Input = true;
             playerControls.PlayerActions.Crouch.performed += i => crouch_Input = true;
             playerControls.PlayerActions.Crouch.canceled += i => crouch_Input = false;
@@ -85,6 +89,7 @@ public class InputManager : MonoBehaviour
             playerControls.PlayerActions.SpecialAttack.performed += i => spAttack_Input = true;
             playerControls.PlayerActions.SpecialAttack.canceled += i => spAttack_Input = false;
             playerControls.PlayerActions.CombieAttack.performed += i => cbAttack_Input = true;
+            playerControls.PlayerActions.CombieAttack.canceled += i => cbAttack_Input = false;
 
             //Ability输入
             playerControls.PlayerActions.WeaponAbility.performed += i => weaponAbility_Input = true;
@@ -119,6 +124,7 @@ public class InputManager : MonoBehaviour
             HandleSprintInput();
             HandleRollInput();
             HandleCrouchInput();
+            HandleUltimateInput();
             HandleAttackInput();
             HandleLockOnInput();
             HandleWeaponSwitch();
@@ -148,8 +154,6 @@ public class InputManager : MonoBehaviour
     }
     private void HandleSprintInput()
     {
-        sprint_Input = playerControls.PlayerActions.Sprint.phase == UnityEngine.InputSystem.InputActionPhase.Started;
-
         if (sprint_Input && moveAmount != 0 && playerStats.currStamina > 0)
         {
             playerManager.isSprinting = true;
@@ -189,6 +193,15 @@ public class InputManager : MonoBehaviour
         else 
         {
             animatorManager.animator.SetBool("isDefending", false);
+        }
+    }
+    private void HandleUltimateInput() 
+    {
+        if (cbAttack_Input) 
+        {
+            playerManager.YinYangAbilityActivate();
+            weaponAbility_Input = false;
+            reAttack_Input = false;
         }
     }
     private void HandleInteractInput() 
@@ -244,7 +257,7 @@ public class InputManager : MonoBehaviour
     }
     private void HandleWeaponSwitch() 
     {
-        if (weaponSwitch_Input && playerManager.katanaUnlock && !playerManager.cantBeInterrupted) 
+        if (weaponSwitch_Input && !playerManager.cantBeInterrupted) 
         {
             playerManager.GetComponentInChildren<WeaponSlotManager>().WeaponSwitch();
         }

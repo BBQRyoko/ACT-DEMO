@@ -76,18 +76,20 @@ public class EnemyStats : CharacterStats
                     {
                         animatorManager.PlayTargetAnimation("Hit_F", true, true);
                     }
+
                     enemyManager.isDamaged = true;
-                    if (enemyManager.isWeak)
+
+                    if (enemyManager.isStunned) //普通攻击会打醒敌人
                     {
-                        enemyManager.GetComponentInChildren<EnemyAnimatorManager>().animator.SetBool("isWeak", false);
-                        enemyManager.weakTimer = 0;
+                        enemyManager.isStunned = false;
+                        enemyManager.stunTimer = 0;
                     }
                 }
             }
             else 
             {
                 currStamina = 0;
-                animatorManager.PlayTargetAnimation("ParryBreak", true);
+                animatorManager.PlayTargetAnimation("ParryBreak", true, true);
             }
 
             if (!enemyManager.isEquipped) 
@@ -98,7 +100,6 @@ public class EnemyStats : CharacterStats
             enemyManager.curTarget = characterStats;
         }
     }
-
     public void StaminaRegen()
     {
         if (!enemyManager.isInteracting && currStamina < maxStamina)

@@ -69,7 +69,7 @@ public class PlayerLocmotion : MonoBehaviour
     {
         Physics.IgnoreCollision(characterCollider, characterColliderBlocker, true);
     }
-    public void HandleAllMovement() 
+    public void HandleAllMovement()
     {
         playerDireee = gameObject.transform.forward - cameraObject.transform.position;
         playerDireee.Normalize();
@@ -86,7 +86,7 @@ public class PlayerLocmotion : MonoBehaviour
         gravity = (-2 * maxJumpHeight) / Mathf.Pow(timeToApex, 2);
         initialJumpVelocity = (2 * maxJumpHeight) / timeToApex;
     }
-    public void HandleGravity() 
+    public void HandleGravity()
     {
         //重力相关的状态变化
         if (!playerManager.isGround) //当玩家不在地面上时
@@ -94,9 +94,12 @@ public class PlayerLocmotion : MonoBehaviour
             playerManager.isInteracting = false;
             playerManager.isFalling = movementVelocity.y <= 0.0f || (!inputManager.jump_Input && jumpTakeEffectTimer >= 0.1f); //当y轴速度小于等于0时或者跳跃键松开时都进入下落
         }
-        else 
+        else
         {
             playerManager.isFalling = false;
+            maxJumpHeight = 10f;
+            maxJumpTime = 1.5f;
+            SetupJumpVariables();
         }
 
         float fallMultiplier = 2.0f; //下落加成, 加强下落的重力效果
@@ -125,9 +128,9 @@ public class PlayerLocmotion : MonoBehaviour
             movementVelocity.y += gravity * Time.deltaTime;
         }
     }
-    private void HandleMovement() 
+    private void HandleMovement()
     {
-        if (playerManager.isInteracting || playerManager.isAttacking)
+        if (playerManager.isInteracting || playerManager.isAttacking || playerManager.isStunned)
             return;
 
         //移动方向取决于相机的正面方向
@@ -169,7 +172,7 @@ public class PlayerLocmotion : MonoBehaviour
             }
         }
         //Assign移动的x,z轴的速度
-        if (playerManager.isInteracting)
+        if (playerManager.isInteracting || playerManager.isToronadoCovered)
         {
             movementVelocity.x = 0f;
             movementVelocity.z = 0f;
@@ -183,6 +186,9 @@ public class PlayerLocmotion : MonoBehaviour
     }
     private void HandleRotation() //还可以优化
     {
+        if (playerManager.isInteracting  || playerManager.isStunned)
+            return;
+
         if (inputManager.lockOn_Flag)
         {
             if (inputManager.sprint_Input || inputManager.roll_Input)
@@ -352,8 +358,12 @@ public class PlayerLocmotion : MonoBehaviour
             }
         }
     }
-    public void HandleJumping() 
+    public void HandleJumping(float maxHeight, float maxTime) 
     {
+        maxJumpHeight = maxHeight;
+        maxJumpTime = maxTime;
+        SetupJumpVariables();
+
         //松开按键重置跳跃功能
         if (!inputManager.jump_Input)
         {

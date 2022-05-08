@@ -6,11 +6,20 @@ using UnityEngine.UI;
 
 public class EnemyManager : CharacterManager
 {
-    [SerializeField]CameraManager cameraManager;
+    CameraManager cameraManager;
+    InputManager inputManager;
     EnemyLocomotion enemyLocomotion;
     EnemyAnimatorManager enemyAnimatorManager;
     EnemyStats enemyStats;
 
+    [Header("Reset")]
+    [SerializeField] GameObject enemyResetPrefab;
+    [SerializeField] Transform enemyOriginalTransform;
+    [SerializeField] Vector3 enemyOriginalPosition;
+    [SerializeField] Quaternion enemyOriginalRotation;
+    public bool enemyActivated;
+
+    [Header("OtherParameter")]
     public Transform targetMarkTransform;
     public Rigidbody enemyRig;
     public CapsuleCollider collider_Self;
@@ -80,7 +89,7 @@ public class EnemyManager : CharacterManager
 
     public float maxDetectionAngle = 70;
     public float minDetectionAngle = -70;
-
+    public bool attackLock;
     public float curRecoveryTime = 0;
 
     [Header("飞行道具参数, 当前一个角色最多可以有两种不同类型/属性的飞行道具")]
@@ -98,6 +107,7 @@ public class EnemyManager : CharacterManager
     private void Awake()
     {
         cameraManager = FindObjectOfType<CameraManager>();
+        inputManager = FindObjectOfType<InputManager>();
         enemyLocomotion = GetComponent<EnemyLocomotion>();
         enemyAnimatorManager = GetComponentInChildren<EnemyAnimatorManager>();
         enemyStats = GetComponent<EnemyStats>();
@@ -106,6 +116,11 @@ public class EnemyManager : CharacterManager
         combatCooldownManager = GetComponentInChildren<CombatCooldownManager>();
         combatStanceState = GetComponentInChildren<CombatStanceState>();
         navMeshAgent.enabled = false;
+        enemyResetPrefab = transform.parent.gameObject;
+        enemyOriginalTransform = transform.transform;
+        enemyOriginalPosition = transform.position;
+        enemyOriginalRotation = transform.rotation;
+        patrolPos.Clear();
     }
     private void Start()
     {
@@ -131,6 +146,8 @@ public class EnemyManager : CharacterManager
         ItemDrop();
         isRotatingWithRootMotion = enemyAnimatorManager.animator.GetBool("isRotatingWithRootMotion");
         canRotate = enemyAnimatorManager.animator.GetBool("canRotate");
+        enemyAnimatorManager.animator.SetBool("isStunned", isStunned);
+
         //if (!alertIconSpawn) 
         //{
         //    alertingTarget = null;
@@ -186,13 +203,13 @@ public class EnemyManager : CharacterManager
         }
 
         //处决状态Timer
-        if (isWeak)
+        if (isStunned)
         {
-            weakTimer += Time.deltaTime;
-            if (weakTimer >= 5) 
+            stunTimer += Time.deltaTime;
+            if (stunTimer >= 5) 
             {
-                enemyAnimatorManager.animator.SetBool("isWeak", false);
-                weakTimer = 0;
+                isStunned = false;
+                stunTimer = 0;
                 enemyStats.currStamina = enemyStats.maxStamina;
             }
         }
@@ -207,11 +224,11 @@ public class EnemyManager : CharacterManager
     {
         isInteracting = enemyAnimatorManager.animator.GetBool("isInteracting");
         isPreformingAction = isInteracting;
-        isWeak = enemyAnimatorManager.animator.GetBool("isWeak");
+        isParryBreak = enemyAnimatorManager.animator.GetBool("isParryBreak");
     }
     private void HandleStateMachine() //单位状态机管理
     {
-        if (curState != null && !isDead && !isWeak)
+        if (curState != null && !isDead && !isStunned)
         {
             State nextState = curState.Tick(this, enemyStats, enemyAnimatorManager);
 
@@ -292,6 +309,12 @@ public class EnemyManager : CharacterManager
     }
     void HandleParryCollider()
     {
+        if (isParryBreak)
+        {
+            isStunned = true;
+            enemyAnimatorManager.animator.SetBool("isParryBreak", false);
+        }
+
         if (parryCollider)
         {
             if (isParrying)
@@ -350,7 +373,7 @@ public class EnemyManager : CharacterManager
         }
         else 
         {
-            if (!isWeak)
+            if (!isStunned)
             {
                 backStabArea.GetComponent<Collider>().enabled = false;
                 canBeExecuted = false;
@@ -367,10 +390,10 @@ public class EnemyManager : CharacterManager
         enemyAnimatorManager.PlayTargetAnimation(skillName, true, true);
         IdleState idleState = GetComponentInChildren<IdleState>();
         idleState.PlayerNoticeAnnounce(idleState.announceDistance, true);
-        if (isWeak) 
+        if (isStunned) 
         {
             enemyAnimatorManager.animator.SetBool("isWeak", false);
-            weakTimer = 0;
+            stunTimer = 0;
             enemyStats.currStamina = enemyStats.maxStamina;
         }
     }
@@ -386,6 +409,23 @@ public class EnemyManager : CharacterManager
                 item.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(angel, Vector3.forward) * Vector3.up * 5f;
             }
             itemDrop = true;
+        }
+    }
+    public void AutoLockOn() 
+    {
+        if (!cameraManager.currentLockOnTarget)
+        {
+            cameraManager.currentLockOnTarget = targetMarkTransform;
+            inputManager.lockOn_Flag = true;
+        }
+    }
+    public void EnemyReset() 
+    {
+        if (enemyActivated) 
+        {
+            enemyActivated = false;
+            transform.position = enemyOriginalPosition;
+            transform.rotation = enemyOriginalRotation;
         }
     }
     private void OnDrawGizmosSelected()

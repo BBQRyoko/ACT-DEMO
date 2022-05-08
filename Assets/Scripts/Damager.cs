@@ -7,21 +7,15 @@ public class Damager : MonoBehaviour
     public bool isHeavy;
     public bool stunEffect;
     [SerializeField] bool isFlyingObject;
+    [SerializeField] bool isToronado;
     [SerializeField] bool isPlayerDamage;
     public EnemyManager enemyManager;
     public int curDamage = 10;
     public int staminaDamage;
-    [SerializeField] float hitFactor;
-    PlayerManager playerManager;
-    [SerializeField] bool cantBlock;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == 8 && !cantBlock) 
-        {
-            Destroy(gameObject);
-        }
-        if (!isPlayerDamage)
+        if (!isPlayerDamage) //敌人伤害
         {
             PlayerStats playerStats = other.GetComponent<PlayerStats>();
             ParryCollider parryCollider = other.GetComponent<ParryCollider>();
@@ -31,7 +25,7 @@ public class Damager : MonoBehaviour
                 hitDirection.y = 0;
                 hitDirection.Normalize();
 
-                playerStats.TakeDamage(curDamage, hitDirection * hitFactor, isHeavy);
+                playerStats.TakeDamage(curDamage, hitDirection, isHeavy);
 
                 if (stunEffect) 
                 {
@@ -40,17 +34,25 @@ public class Damager : MonoBehaviour
 
                 if (isFlyingObject)
                 {
-                    if (transform.parent)
+                    if (!isToronado)
                     {
-                        Destroy(transform.parent.gameObject);
+                        if (transform.parent)
+                        {
+                            Destroy(transform.parent.gameObject);
+                        }
+                        else
+                        {
+                            Destroy(transform.gameObject);
+                        }
                     }
                     else 
                     {
-                        Destroy(transform.gameObject);
+                        playerStats.transform.position = transform.position;
+                        playerStats.transform.parent = transform;
                     }
                 }
             }
-            else if (parryCollider != null)
+            else if (parryCollider != null) 
             {
                 PlayerManager playerManager = parryCollider.GetComponentInParent<PlayerManager>();
                 AudioSource attackAudioSource = playerManager.GetComponentInChildren<AudioSource>();
@@ -64,7 +66,7 @@ public class Damager : MonoBehaviour
                 Destroy(this.gameObject);
             }
         }
-        else 
+        else //玩家伤害
         {
             Vector3 hitDirection = new Vector3(0, 0, 0);
             EnemyStats enemyStats = other.GetComponent<EnemyStats>();
@@ -72,7 +74,7 @@ public class Damager : MonoBehaviour
             AnimatorManager animatorManager = playerStats.GetComponentInChildren<AnimatorManager>();
             if (enemyStats != null)
             {
-                enemyStats.TakeDamage(curDamage,staminaDamage, hitDirection * hitFactor);
+                enemyStats.TakeDamage(curDamage,staminaDamage, hitDirection);
                 enemyStats.GetComponent<EnemyManager>().curTarget = playerStats;
                 animatorManager.generalAudio.volume = 0.1f;
                 animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[3];

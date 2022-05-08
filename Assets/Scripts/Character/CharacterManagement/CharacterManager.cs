@@ -9,7 +9,13 @@ public class CharacterManager : MonoBehaviour
     public bool isRotatingWithRootMotion;
     public bool canRotate;
 
-    public bool isWeak;
-    public float weakTimer;
     public bool isDead;
+
+    //Debuff
+    [Header("Debuff")]
+    public int debuff_Index; // (0=nothing, 1 = stuned, 2 = burning)
+    public bool isStunned;
+    public float stunTimer;
+    public bool isToronadoCovered;
+    public bool isParryBreak;
 }
