@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dd4ca184644ff34d888c9d3dc361aa2, type: 3}
   m_Name: Bow
   m_EditorClassIdentifier: 
-  Id: 1
+  Id: 2
   itemIcon: {fileID: 0}
   itemName: GreatSword
   HasHeapUp: 0
