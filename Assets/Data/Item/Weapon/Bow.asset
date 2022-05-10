@@ -17,20 +17,16 @@ MonoBehaviour:
   itemName: GreatSword
   HasHeapUp: 0
   ExecutableOperation: 0
-  modelPrefab: {fileID: 6640638428303676973, guid: 0de574395fb15c9458bb9396c6c68acd, type: 3}
+  modelPrefab: {fileID: 6640638428303676973, guid: 1042e7b13fa895c4d81b1a61027c8ae6, type: 3}
   isEquipped: 1
-  weaponAnimatorController: {fileID: 9100000, guid: 232456b12cce1ad4bb3a178b85267da9, type: 2}
+  weaponAnimatorController: {fileID: 9100000, guid: 07f58fb259bb2d74abc47b4466df95fe, type: 2}
   regularSkills:
   - {fileID: 11400000, guid: b126cc560dd213741a5a658dd68ae218, type: 2}
   - {fileID: 11400000, guid: 836018923d7504d4ca50c2e6c435dd1b, type: 2}
-  - {fileID: 11400000, guid: cf2d175630770df478cab4c148f4b6a9, type: 2}
-  - {fileID: 11400000, guid: d03f11c267487ee46aa585bfff9564be, type: 2}
   specialSkills: []
   transSkills:
   - {fileID: 11400000, guid: b30e2a17f2331c64ba0562672e9f9808, type: 2}
   executionSkill:
-  - {fileID: 11400000, guid: f90f86c172882ae4abd2ebfd2ac9ca98, type: 2}
-  - {fileID: 11400000, guid: c36de8873bf21034cba5505061b40da8, type: 2}
   - {fileID: 11400000, guid: b06dd356bbe64d344bc3ada6371ee121, type: 2}
   - {fileID: 11400000, guid: bc374aef43fc2b744ab9b40bfb7e9744, type: 2}
   springAttack:

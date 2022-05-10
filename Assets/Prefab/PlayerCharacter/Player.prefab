@@ -19763,6 +19763,7 @@ MonoBehaviour:
   curDamage: 1
   staminaDamage: 0
   energyRestoreAmount: 0
+  chargeAmount: 0
   weaponWeightRatio: 0
   duration: 0
 --- !u!135 &1349776881
@@ -25586,6 +25587,7 @@ MonoBehaviour:
   staminaRegen: 85
   healthBar: {fileID: 0}
   staminaBar: {fileID: 0}
+  playerAttacker: {fileID: 0}
   regularPos: {fileID: 459891482}
   crouchPos: {fileID: 14407919}
 --- !u!114 &5049088435920769146
@@ -25601,8 +25603,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rig: {fileID: 0}
-  maxJumpHeight: 14
-  maxJumpTime: 1.75
+  maxJumpHeight: 10
+  maxJumpTime: 2
   groundLayer:
     serializedVersion: 2
     m_Bits: 1
@@ -25612,7 +25614,7 @@ MonoBehaviour:
   inAirMovementSpeed: 4
   crouchSpeed: 2.5
   sprintSpeed: 9
-  rotationSpeed: 10
+  rotationSpeed: 5
   willRotateTowardsTarget: 0
   movementVelocity: {x: 0, y: 0, z: 0}
   cameraForward: {x: 0, y: 0, z: 0}
@@ -25669,11 +25671,13 @@ MonoBehaviour:
   hitRecover: 0
   damageAvoid: 0
   parryCollider: {fileID: 793264062}
-  katanaUnlock: 0
-  finalWeaponUnlock: 0
+  generalAudio: {fileID: 5612485073730960237}
+  sfxList: {fileID: 5049088435748660730}
   isWeaponSwitching: 0
   weaponSwitchCooldown: 0
   cooldownTimer: {fileID: 0}
+  yinYangAbilityOn: 0
+  ultimateHint: {fileID: 0}
   taijiDurationBar: {fileID: 0}
   taijiBuff_VFX: {fileID: 388349973}
   perfectTimer: 0
@@ -25715,6 +25719,7 @@ MonoBehaviour:
   spAttack_Input: 0
   cbAttack_Input: 0
   weaponAbility_Input: 0
+  ultimateAbility_Input: 0
   baGua_Input: 0
   lockOn_Input: 0
   lockOn_Flag: 0
@@ -25733,9 +25738,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentWeaponIndex: 0
+  curEquippedWeaponItem: {fileID: 0}
   unequippedWeaponItems:
   - {fileID: 11400000, guid: eed90a0ffde857d4295b675b74041f49, type: 2}
-  - {fileID: 11400000, guid: 1765f0767a832ac41bb3aabfe48b9d91, type: 2}
+  - {fileID: 0}
 --- !u!114 &5049088434596566261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25748,6 +25754,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2fe91d01ab6841458f84d930639220d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sample_VFX: {fileID: 4389653662541749361}
   sample_VFX_R: {fileID: 5049088435564925533}
   sample_VFX_S: {fileID: 4389653662541749361}
   colliders: []
@@ -25756,6 +25763,8 @@ MonoBehaviour:
   comboCount: 0
   attackTimer: 0
   internalDuration: 2
+  chargeValue: 0
+  taijiAttack: 0
   chargingTimer: 0
   chargingLevel: 0
 --- !u!114 &1500210604881686266
@@ -25774,6 +25783,10 @@ MonoBehaviour:
   commandHolder: 
   commandString: 
   curPiviot: 0
+  curYin: 0
+  yinChargeSlot: {fileID: 0}
+  curYang: 0
+  yangChargeSlot: {fileID: 0}
   energyGuage: 3
   curEnergyCharge: 0
   energyChargeSlot: {fileID: 0}
@@ -26355,6 +26368,84 @@ Transform:
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 198039007017535102, guid: 5c4a7b97a64ea954d9090774571b44c8, type: 3}
   m_PrefabInstance: {fileID: 741338266}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &994520561
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 904312791422569389}
+    m_Modifications:
+    - target: {fileID: 6640638428303676973, guid: 4d2382f36a0fbfd428af5e564f56b73f, type: 3}
+      propertyPath: m_Name
+      value: Bow(Equip)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640638428303676973, guid: 4d2382f36a0fbfd428af5e564f56b73f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640638428303676974, guid: 4d2382f36a0fbfd428af5e564f56b73f, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640638428303676974, guid: 4d2382f36a0fbfd428af5e564f56b73f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.010141669
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640638428303676974, guid: 4d2382f36a0fbfd428af5e564f56b73f, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.010141669
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640638428303676974, guid: 4d2382f36a0fbfd428af5e564f56b73f, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.010141669
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640638428303676974, guid: 4d2382f36a0fbfd428af5e564f56b73f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.043
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640638428303676974, guid: 4d2382f36a0fbfd428af5e564f56b73f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640638428303676974, guid: 4d2382f36a0fbfd428af5e564f56b73f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640638428303676974, guid: 4d2382f36a0fbfd428af5e564f56b73f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640638428303676974, guid: 4d2382f36a0fbfd428af5e564f56b73f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640638428303676974, guid: 4d2382f36a0fbfd428af5e564f56b73f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640638428303676974, guid: 4d2382f36a0fbfd428af5e564f56b73f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640638428303676974, guid: 4d2382f36a0fbfd428af5e564f56b73f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640638428303676974, guid: 4d2382f36a0fbfd428af5e564f56b73f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640638428303676974, guid: 4d2382f36a0fbfd428af5e564f56b73f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4d2382f36a0fbfd428af5e564f56b73f, type: 3}
+--- !u!1 &6640638429021240284 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6640638428303676973, guid: 4d2382f36a0fbfd428af5e564f56b73f, type: 3}
+  m_PrefabInstance: {fileID: 994520561}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1795686497
 PrefabInstance:
@@ -27200,6 +27291,7 @@ MonoBehaviour:
   curDamage: 10
   staminaDamage: 0
   energyRestoreAmount: 20
+  chargeAmount: 0
   weaponWeightRatio: 0
   duration: 4
 --- !u!1 &5812919887222596499 stripped
@@ -27330,7 +27422,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sample_VFX: {fileID: 4389653662541749361}
   mainWeapon_Unequipped: {fileID: 0}
-  weaponSlots:
+  unequippedWeaponSlots:
   - {fileID: 0}
   - {fileID: 0}
   weaponDamageCollider: {fileID: 3287524700922566930}
@@ -27339,8 +27431,15 @@ MonoBehaviour:
   armedWeaponSlot:
   - {fileID: 2834651857005371552}
   - {fileID: 5812919886020024582}
+  - {fileID: 6640638429021240284}
+  - {fileID: 5812919886020024582}
   greatSwordIcon: {fileID: 0}
   katanaIcon: {fileID: 0}
+--- !u!4 &904312791422569389 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4267273955395124, guid: d47d5ac7dfc19da419169847c76d638b, type: 3}
+  m_PrefabInstance: {fileID: 901822329474043289}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &904501182733254647 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4087614351913582, guid: d47d5ac7dfc19da419169847c76d638b, type: 3}
@@ -27448,7 +27547,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sample_VFX: {fileID: 0}
   mainWeapon_Unequipped: {fileID: 0}
-  weaponSlots:
+  unequippedWeaponSlots:
   - {fileID: 0}
   - {fileID: 0}
   weaponDamageCollider: {fileID: 1500210605682807768}
