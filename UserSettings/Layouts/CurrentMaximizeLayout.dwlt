@@ -26,7 +26,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 200}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 22387
+  controlID: 180
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 22307
+  controlID: 147
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -580,9 +580,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 895.4648, y: -85.61492, z: -166.03912}
+    m_Target: {x: 192.75, y: -34.831753, z: -164.70006}
     speed: 2
-    m_Value: {x: 895.4648, y: -85.61492, z: -166.03912}
+    m_Value: {x: 192.75, y: -34.831753, z: -164.70006}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -605,7 +605,7 @@ MonoBehaviour:
       m_Fade:
         m_Target: 0
         speed: 2
-        m_Value: 1
+        m_Value: 0
       m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.4}
       m_Pivot: {x: 0, y: 0, z: 0}
       m_Size: {x: 1, y: 1}
@@ -621,7 +621,7 @@ MonoBehaviour:
       m_Fade:
         m_Target: 0
         speed: 2
-        m_Value: 1
+        m_Value: 0
       m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.4}
       m_Pivot: {x: 0, y: 0, z: 0}
       m_Size: {x: 1, y: 1}
@@ -629,13 +629,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.29144505, y: -0.41353893, z: 0.14164817, w: 0.8508749}
+    m_Target: {x: 0.19840671, y: 0.21700755, z: -0.04509735, w: 0.95472986}
     speed: 2
-    m_Value: {x: 0.289519, y: -0.41012353, z: 0.139105, w: 0.8535966}
+    m_Value: {x: 0.19586945, y: 0.20997089, z: -0.042978324, w: 0.9569223}
   m_Size:
-    m_Target: 154.11636
+    m_Target: 29.991909
     speed: 2
-    m_Value: 161.37839
+    m_Value: 28.700392
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -745,7 +745,7 @@ MonoBehaviour:
     m_SaveData: []
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: -23180
+  m_LastSelectedObjectID: -190212
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -802,10 +802,10 @@ MonoBehaviour:
     m_SaveData: []
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 8719}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
-      m_ExpandedIDs: 0883feffb08bfeffb88bfeffdc8bfeffe68bfefffa8bfeffdc8cfeff5a92feffdc93feff6e94feff1a97feff3e97feff2498feff5aa0feff6ca2feffc0a2feffc4a2feff74a3feff78a3feff7ca3feff80a3feff84a3feffcea3feff98a5feffc6a5feff2ea6feff3ca6feffb2a7feffa0aafeff2eb6feff24bbfeff5abcfeffb2c3feff0cc4feff00cdfeff46d8feffc0dafeffd0dbfeff7eeafeff3cebfefff4ebfeffd2effeffd6f6feff30fefeff3005ffffa405ffff6413ffff4c16ffff4a1fffff6a24ffffce2bffffe630ffffa433ffffaa3cffff4441ffffd441ffffac47ffff2e4effff7252ffff0853ffff6056ffffc257ffffd057ffff2a58ffff0c5cffff1e62ffffa862ffffaa64ffff1c68ffff4a6affffec6cffff0e6dffff846fffff1675ffff4084ffff9684fffff084ffff3288ffffd68affff5c8dffff188fffff589bffff749bffffcca1ffff94a6ffff72abffff6cb1ffff1eb3ffff8ebcffffa4bcffffe2beffff38c2fffff0c7ffff60c8ffff72d1ffffccd7ffff06deffff80deffff2ae1ffff90e7ffff92ebffff98ecffff2aedffff3ef2ffff2ef3ffff56f5ffff34f6ffffa6f6ffffecfafffffa6d00003e7000004c70000074700000fc7000005e710000647400003a7500005c750000d4780000d6790000847d0000627e00006a7e0000f27f0000348300002e8400006c8400008e84000078860000ca890000ba8b0000868e0000568f0000b4930000da9a0000a69b0000e29c0000f29f000024a00000aca100006ca2000090a2000052a3000072a5000052a90000dea90000f4ab00005eac00009cad0000b0ae0000ceaf0000aeb00000a4b100008eb5000084b700001eb80000ecb900001ebb0000c0bd000086c1000092c1000078c6000080c600007acc00001cce00009ece000078d00000ead200007ed500002ed600008ad600002ad9000082da0000f2dd000072de00005ce0000022e10000b0e3000026e4000052e90000
+      scrollPos: {x: 0, y: 0}
+      m_SelectedIDs: fc18fdff
+      m_LastClickedID: -190212
+      m_ExpandedIDs: 0001fdff121cfdff5c49fdffe654fdff7c7afdff5498fdff12b0fdff9ccdfdffead7fdff0a1efeffc06efeffecfaffff34760100
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -896,22 +896,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/AssetPackages/PolygonSamurai/Prefabs/Characters
+    - Assets/Scenes/Demo
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/AssetPackages/PolygonSamurai/Prefabs/Characters
+  - Assets/Scenes/Demo
   m_LastFoldersGridSize: -1
   m_LastProjectPath: D:\GameDevelopment\ACT-DEMO
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: caee0e00
-    m_LastClickedID: 978634
-    m_ExpandedIDs: 00000000ba470100bc470100be470100c0470100c2470100c4470100c6470100c8470100ca470100cc470100d0470100d2470100d4470100d6470100d847010004480100104801001248010000ca9a3b
+    m_SelectedIDs: 66490100
+    m_LastClickedID: 84326
+    m_ExpandedIDs: 00000000e2480100e4480100e6480100e8480100ea480100ec480100ee480100f0480100f2480100f4480100f6480100f8480100fa480100fc480100fe48010000490100024901005249010000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -939,7 +939,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000ba470100bc470100c0470100c2470100c4470100c6470100c8470100ca470100cc470100d0470100d2470100d4470100d6470100d847010004480100104801001248010000ca9a3b
+    m_ExpandedIDs: 00000000e2480100e4480100e6480100e8480100ea480100ec480100ee480100f0480100f2480100f4480100f6480100f8480100fa480100fc480100fe4801000049010002490100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -964,9 +964,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 
-    m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_SelectedInstanceIDs: fc18fdff
+    m_LastClickedInstanceID: -190212
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
