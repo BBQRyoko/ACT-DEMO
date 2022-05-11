@@ -65,30 +65,7 @@ public class AnimatorManager : MainAnimatorManager
         #endregion
         #region Horizontal;
 
-        if (!playerManager.isCrouching)
-        {
-            if (horizontalMovement > 0 && horizontalMovement < 0.55f)
-            {
-                h = 0.5f;
-            }
-            else if (horizontalMovement > 0.55f)
-            {
-                h = 1;
-            }
-            else if (horizontalMovement < 0 && horizontalMovement > -0.55f)
-            {
-                h = -0.5f;
-            }
-            else if (horizontalMovement < -0.55f)
-            {
-                h = -1;
-            }
-            else
-            {
-                h = 0;
-            }
-        }
-        else
+        if (playerManager.isCrouching)
         {
             if (horizontalMovement > 0 && horizontalMovement < 0.55f)
             {
@@ -111,12 +88,58 @@ public class AnimatorManager : MainAnimatorManager
                 h = -3;
             }
         }
+        else if (playerManager.isHolding) 
+        {
+            if (horizontalMovement > 0 && horizontalMovement < 0.55f)
+            {
+                h = 3.5f;
+            }
+            else if (horizontalMovement > 0.55f)
+            {
+                h = 4;
+            }
+            else if (horizontalMovement < 0 && horizontalMovement > -0.55f)
+            {
+                h = 2.5f;
+            }
+            else if (horizontalMovement < -0.55f)
+            {
+                h = 2;
+            }
+            else
+            {
+                h = 3;
+            }
+        }
+        else
+        {
+            if (horizontalMovement > 0 && horizontalMovement < 0.55f)
+            {
+                h = 0.5f;
+            }
+            else if (horizontalMovement > 0.55f)
+            {
+                h = 1;
+            }
+            else if (horizontalMovement < 0 && horizontalMovement > -0.55f)
+            {
+                h = -0.5f;
+            }
+            else if (horizontalMovement < -0.55f)
+            {
+                h = -1;
+            }
+            else
+            {
+                h = 0;
+            }
+        }
         #endregion
 
         if (isSprinting)
         {
             v = 2;
-            h = horizontalMovement;
+            //h = horizontalMovement;
         }
 
         animator.SetFloat(vertical, v, 0.1f, Time.deltaTime);

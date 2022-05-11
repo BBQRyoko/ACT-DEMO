@@ -17,6 +17,7 @@ public class WeaponSlotManager : MonoBehaviour
     [SerializeField] ParryCollider parryCollider;
     public GameObject mainArmedWeapon;
     [SerializeField] GameObject[] armedWeaponSlot = new GameObject[4];
+    [SerializeField] GameObject arrow;
 
     [SerializeField] GameObject greatSwordIcon;
     [SerializeField] GameObject katanaIcon;
@@ -45,6 +46,15 @@ public class WeaponSlotManager : MonoBehaviour
             unequippedWeaponSlots[1].LoadWeaponModel(weaponItem);
         }
     }
+    public void LoadArrowOnSlot() 
+    {
+        arrow.SetActive(true);
+    }
+    public void UnloadArrowOnSlot() 
+    {
+        arrow.SetActive(false);
+    }
+
     public void EquipeWeapon() 
     {
         mainWeapon_Unequipped.gameObject.SetActive(false);

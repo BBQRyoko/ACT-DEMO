@@ -78,7 +78,6 @@ public class PlayerLocmotion : MonoBehaviour
         HandleRotation();
         HandleGravity();
         HandleFallingAndLanding();
-        HandleChargingDash();
     }
     void SetupJumpVariables() //设置跳跃的参数, 重力通过1/2gt^2的方式用设置的跳跃高度与时间来控制
     {
@@ -154,7 +153,7 @@ public class PlayerLocmotion : MonoBehaviour
                 playerStats.CostStamina(15f * (1f + weaponSlotManager.weaponDamageCollider.weaponWeightRatio) * Time.deltaTime);
             }
         }
-        else if (playerManager.isCrouching) 
+        else if (playerManager.isCrouching || playerManager.isHolding) 
         {
             curSpeed = crouchSpeed;
             moveDirection *= curSpeed;
@@ -189,81 +188,90 @@ public class PlayerLocmotion : MonoBehaviour
         if (playerManager.isInteracting  || playerManager.isStunned)
             return;
 
-        if (inputManager.lockOn_Flag)
+        if (playerManager.isAiming)
         {
-            if (inputManager.sprint_Input || inputManager.roll_Input)
-            {
-                Vector3 targerDirection = Vector3.zero;
-                targerDirection = cameraManager.cameraTransform.forward * inputManager.verticalInput;
-                targerDirection += cameraManager.cameraTransform.right * inputManager.horizontalInput;
-                targerDirection.Normalize();
-                targerDirection.y = 0;
-
-                if (targerDirection == Vector3.zero)
-                {
-                    targerDirection = transform.forward;
-                }
-
-                Quaternion tr = Quaternion.LookRotation(targerDirection);
-                Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
-
-                transform.rotation = targetRotation;
-            }
-            else 
-            {
-                Vector3 rotationDirection = moveDirection;
-                rotationDirection = cameraManager.currentLockOnTarget.position - transform.position;
-                rotationDirection.y = 0;
-                rotationDirection.Normalize();
-                Quaternion tr = Quaternion.LookRotation(rotationDirection);
-                Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
-
-                transform.rotation = targetRotation;
-            }
+            Quaternion targetRotation = Quaternion.Euler(0, cameraManager.cameraTransform.eulerAngles.y, 0);
+            Quaternion playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            transform.rotation = playerRotation;
         }
         else 
         {
-            float rSpeed = rotationSpeed;
-
-            if (willRotateTowardsTarget)
+            if (inputManager.lockOn_Flag)
             {
-                HandleRotateTowardsTarger();
-            }
+                if (inputManager.sprint_Input || inputManager.roll_Input)
+                {
+                    Vector3 targerDirection = Vector3.zero;
+                    targerDirection = cameraManager.cameraTransform.forward * inputManager.verticalInput;
+                    targerDirection += cameraManager.cameraTransform.right * inputManager.horizontalInput;
+                    targerDirection.Normalize();
+                    targerDirection.y = 0;
 
-            if (!playerManager.attackRotate)
-            {
-                rSpeed = rotationSpeed;
-                if (playerManager.isInteracting)
-                    return;
+                    if (targerDirection == Vector3.zero)
+                    {
+                        targerDirection = transform.forward;
+                    }
+
+                    Quaternion tr = Quaternion.LookRotation(targerDirection);
+                    Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
+
+                    transform.rotation = targetRotation;
+                }
+                else
+                {
+                    Vector3 rotationDirection = moveDirection;
+                    rotationDirection = cameraManager.currentLockOnTarget.position - transform.position;
+                    rotationDirection.y = 0;
+                    rotationDirection.Normalize();
+                    Quaternion tr = Quaternion.LookRotation(rotationDirection);
+                    Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
+
+                    transform.rotation = targetRotation;
+                }
             }
             else
             {
-                rSpeed = rotationSpeed / 8;
+                float rSpeed = rotationSpeed;
+
+                if (willRotateTowardsTarget)
+                {
+                    HandleRotateTowardsTarger();
+                }
+
+                if (!playerManager.attackRotate)
+                {
+                    rSpeed = rotationSpeed;
+                    if (playerManager.isInteracting)
+                        return;
+                }
+                else
+                {
+                    rSpeed = rotationSpeed / 8;
+                }
+
+                if (playerManager.isFalling)
+                {
+                    rSpeed = rotationSpeed / 10;
+                }
+                else
+                {
+                    rSpeed = rotationSpeed;
+                }
+
+                Vector3 targetDirection = Vector3.zero;
+
+                targetDirection = cameraObject.forward * inputManager.verticalInput;
+                targetDirection += cameraObject.right * inputManager.horizontalInput;
+                targetDirection.Normalize();
+                targetDirection.y = 0;
+
+                if (targetDirection == Vector3.zero)
+                    targetDirection = transform.forward;
+
+                Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+                Quaternion playerRotataion = Quaternion.Slerp(transform.rotation, targetRotation, rSpeed * Time.deltaTime);
+
+                transform.rotation = playerRotataion;
             }
-
-            if (playerManager.isFalling)
-            {
-                rSpeed = rotationSpeed / 10;
-            }
-            else
-            {
-                rSpeed = rotationSpeed;
-            }
-
-            Vector3 targetDirection = Vector3.zero;
-
-            targetDirection = cameraObject.forward * inputManager.verticalInput;
-            targetDirection += cameraObject.right * inputManager.horizontalInput;
-            targetDirection.Normalize();
-            targetDirection.y = 0;
-
-            if (targetDirection == Vector3.zero)
-                targetDirection = transform.forward;
-
-            Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-            Quaternion playerRotataion = Quaternion.Slerp(transform.rotation, targetRotation, rSpeed * Time.deltaTime);
-
-            transform.rotation = playerRotataion;
         }
     }
     public void HandleRotateTowardsTarger() 
@@ -508,21 +516,5 @@ public class PlayerLocmotion : MonoBehaviour
             playerManager.isCrouching = true;
         }
     }
-    public void HandleChargingDash()  //蓄力攻击
-    {
-        if (playerManager.isAttackDashing) 
-        {
-            Vector3 dir = transform.forward;
-            dir.Normalize();
-            StartCoroutine(DashAttack(dir));
-        }
-    }
-    IEnumerator DashAttack(Vector3 dir) //蓄力后的冲刺攻击
-    {
-        //cameraManager.cameraFollowSpeed = 0.1f;
-        rig.AddForce(dir * 15f, ForceMode.Impulse);
-        yield return new WaitForSecondsRealtime(0.1f);
-        rig.velocity = Vector3.zero;
-        playerManager.isAttackDashing = false;
-    }
+
 }

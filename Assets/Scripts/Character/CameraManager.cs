@@ -5,8 +5,10 @@ using UnityEngine.UI;
 
 public class CameraManager : MonoBehaviour
 {
+    PlayerManager playerManager;
     InputManager inputManager;
-    Transform targetTransform; //需要跟随的目标(玩家)
+    public Transform targetTransform; //需要跟随的目标(玩家)
+    public Transform targetTransformWhileAiming; //弓箭瞄准时
     [SerializeField] Canvas mainCanvas;
     public Transform cameraPivotTransform; //相机pivot
     public Transform cameraTransform; //相机object的位置
@@ -21,7 +23,9 @@ public class CameraManager : MonoBehaviour
     public float cameraCollisionOffset = 0.2f;
     public float minCollisionOffset = 0.2f;
     public float cameraFollowSpeed = 0.1f;
+    public float cameraAimingLookSpeed = 5f;
     public float cameraLookSpeed = 0.1f;
+    public float cameraAimingPivotSpeed = 5f;
     public float cameraPivotSpeed = 0.08f;
 
     float lookAngle; //视角左右
@@ -67,6 +71,7 @@ public class CameraManager : MonoBehaviour
     private void Awake()
     {
         singleton = this;
+        playerManager = FindObjectOfType<PlayerManager>();
         inputManager = FindObjectOfType<InputManager>();
         targetTransform = FindObjectOfType<PlayerManager>().transform;
         lockOnMark = Instantiate(lockOnPrefab, mainCanvas.transform).GetComponent<Image>();
@@ -79,8 +84,8 @@ public class CameraManager : MonoBehaviour
     {
         float delta = Time.fixedDeltaTime;
         FollowTarget(delta);
-        RotateCamera(delta);
         CameraReset();
+        HandleCameraRotation(delta);
         HandleCameraCollisions(delta);
         HandleLockOnMark();
         HandleExecutingMark();
@@ -99,8 +104,27 @@ public class CameraManager : MonoBehaviour
     }
     public void FollowTarget(float delta)  //相机跟随
     {
-        Vector3 targetPosition = Vector3.SmoothDamp(transform.position, targetTransform.position, ref cameraFollowVelocity, delta / cameraFollowSpeed);
-        transform.position = targetPosition;
+        if (playerManager.isAiming)
+        {
+            Vector3 targetPosition = Vector3.SmoothDamp(transform.position, targetTransformWhileAiming.position, ref cameraFollowVelocity, delta / (cameraFollowSpeed/15));
+            transform.position = targetPosition;
+        }
+        else 
+        {
+            Vector3 targetPosition = Vector3.SmoothDamp(transform.position, targetTransform.position, ref cameraFollowVelocity, delta / cameraFollowSpeed);
+            transform.position = targetPosition;
+        }
+    }
+    public void HandleCameraRotation(float delta) 
+    {
+        if (!playerManager.isAiming)
+        {
+            RotateCamera(delta);
+        }
+        else 
+        {
+            RotateAimingCamera();
+        }
     }
     public void RotateCamera(float delta) //相机转动
     {
@@ -119,6 +143,7 @@ public class CameraManager : MonoBehaviour
 
                 rotation = Vector3.zero;
                 rotation.x = pivotAngle;
+
                 targetRotation = Quaternion.Euler(rotation);
                 cameraPivotTransform.localRotation = Quaternion.Slerp(cameraPivotTransform.localRotation, targetRotation, delta / cameraPivotSpeed);
             }
@@ -143,6 +168,41 @@ public class CameraManager : MonoBehaviour
                 cameraPivotTransform.localEulerAngles = eulerAngle;
             }
         }
+    }
+    public void RotateAimingCamera() 
+    {
+        transform.rotation = Quaternion.Euler(0, 0, 0);
+        cameraPivotTransform.rotation = Quaternion.Euler(0, 0, 0);
+
+        Quaternion targetRotationX;
+        Quaternion targetRotationY;
+
+        Vector3 cameraRotationX = Vector3.zero;
+        Vector3 cameraRotationY = Vector3.zero;
+
+        lookAngle += ((inputManager.cameraInputX * cameraAimingLookSpeed)) * Time.deltaTime;
+        pivotAngle -= ((inputManager.cameraInputY * cameraAimingPivotSpeed)) * Time.deltaTime;
+
+        cameraRotationY.y = lookAngle;
+        targetRotationY = Quaternion.Euler(cameraRotationY);
+        targetRotationY = Quaternion.Slerp(transform.rotation, targetRotationY, 1);
+        transform.localRotation = targetRotationY;
+
+        cameraRotationX.x = pivotAngle;
+        targetRotationX = Quaternion.Euler(cameraRotationX);
+        targetRotationX = Quaternion.Slerp(cameraTransform.localRotation, targetRotationX, 1);
+        cameraTransform.localRotation = targetRotationX;
+
+    }
+    public void ResetAimingCameraRotation() 
+    {
+        Quaternion targetResetRotation;
+        Vector3 resetRotation = Vector3.zero;
+
+        resetRotation.x = 0;
+        targetResetRotation = Quaternion.Euler(resetRotation);
+        targetResetRotation = Quaternion.Slerp(transform.rotation, targetResetRotation, 1);
+        cameraTransform.localRotation = targetResetRotation;
     }
     private void CameraReset() 
     {

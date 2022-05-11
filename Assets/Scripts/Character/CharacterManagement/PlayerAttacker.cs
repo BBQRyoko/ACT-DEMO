@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class PlayerAttacker : MonoBehaviour
 {
+    CameraManager cameraManager;
     InputManager inputManager;
     PlayerManager playerManager;
     PlayerLocmotion playerLocmotion;
+    PlayerInventory playerInventory;
     AnimatorManager animatorManager;
     WeaponSlotManager weaponSlotManager;
+    PlayerUIManager playerUIManager;
     [SerializeField] Sample_VFX sample_VFX;
 
     public Sample_VFX sample_VFX_R;
@@ -34,9 +37,12 @@ public class PlayerAttacker : MonoBehaviour
 
     private void Awake()
     {
+        cameraManager = FindObjectOfType<CameraManager>();
         inputManager = GetComponent<InputManager>();
         playerManager = GetComponent<PlayerManager>();
         playerLocmotion = GetComponent<PlayerLocmotion>();
+        playerInventory = GetComponent<PlayerInventory>();
+        playerUIManager = GetComponent<PlayerUIManager>();
         animatorManager = GetComponentInChildren<AnimatorManager>();
         weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
     }
@@ -44,8 +50,7 @@ public class PlayerAttacker : MonoBehaviour
     {
         AttackComboTimer();
         HandleAttackCharge();
-        ChargingTimer();
-        HoldingStatus();
+        HoldingController();
         ExecutionHandler();
     }
     public void HandleRegularAttack(WeaponItem weapon) //左键普攻
@@ -180,6 +185,38 @@ public class PlayerAttacker : MonoBehaviour
         }
         //rig.velocity = new Vector3(0, rig.velocity.y, 0);
     } //重攻击
+    public void HandleWeaponAbility(WeaponItem weapon) 
+    {
+        if (playerInventory.curEquippedWeaponItem.Id == 0) //大剑
+        {
+            HandleHoldingAbility();
+        }
+        else if (playerInventory.curEquippedWeaponItem.Id == 1) //太刀
+        {
+            HandleHoldingAbility();
+        }
+        else if (playerInventory.curEquippedWeaponItem.Id == 2) //弓
+        {
+            if (playerManager.isAiming)
+            {
+                playerManager.isAiming = false;
+                playerUIManager.aimingCorsshair.SetActive(false);
+                cameraManager.ResetAimingCameraRotation();
+            }
+            else 
+            {
+                playerManager.isAiming = true;
+                playerUIManager.aimingCorsshair.SetActive(true);
+            }
+        }
+    }
+    public void HandleHoldingAbility() 
+    {
+        if (!playerManager.cantBeInterrupted && playerManager.isGround && !playerManager.isHolding)
+        {
+            animatorManager.PlayTargetAnimation("HoldingAbility", true, true);
+        }
+    }
     public void HandleTransformAttack(WeaponItem weapon) 
     {
         //使用指定武器信息中的普通攻击
@@ -227,55 +264,26 @@ public class PlayerAttacker : MonoBehaviour
             comboCount = 0;
         }
     }
-    void ChargingTimer() //蓄力计时器(当前只针对特殊攻击1的情况进行了使用)
+    void HoldingController() 
     {
-        if (inputManager.spAttack_Input)
+        if (playerInventory.curEquippedWeaponItem.Id == 2) //弓
         {
-            if (chargingLevel != 3)
+            if (playerManager.isHolding)
             {
-                if (playerManager.isCharging)
-                {
-                    chargingTimer += Time.deltaTime;
-                    if (chargingTimer >= 1)
-                    {
-                        chargingTimer = 0;
-                        animatorManager.PlayTargetAnimation("Combo_S_01(Enhance)", true, true);
-                    }
-                }
             }
-            else 
+            else
             {
-                //释放L3攻击
-                animatorManager.PlayTargetAnimation("Combo_S_01(Level3Temp)", true, true);
-                animatorManager.animator.SetBool("isCharging", false);
-                chargingLevel = 0;
+                playerManager.isAiming = false;
+                playerUIManager.aimingCorsshair.SetActive(false);
             }
         }
-        else if(!inputManager.spAttack_Input && playerManager.isCharging)
+        else 
         {
-            chargingTimer = 0;
-            if (chargingLevel > 0)
-            {
-                if (chargingLevel == 1)
-                {
-                    animatorManager.animator.SetBool("isCharging", false);
-                    animatorManager.PlayTargetAnimation("Combo_S_01(Level1)", true, true);
-                    chargingLevel = 0;
-                }
-                else if (chargingLevel == 2)
-                {
-                    animatorManager.animator.SetBool("isCharging", false);
-                    animatorManager.PlayTargetAnimation("Combo_S_01(Level2)", true, true);
-                    chargingLevel = 0;
-                }
-            }
-            else 
-            {
-                animatorManager.animator.SetBool("isCharging", false);
-                animatorManager.PlayTargetAnimation("Combo_S_01(End)", true, true);
-            }
+            playerManager.isAiming = false;
+            playerUIManager.aimingCorsshair.SetActive(false);
         }
     }
+
     void HandleAttackCharge() 
     {
         if (chargeValue >= 40) 

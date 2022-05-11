@@ -188,11 +188,15 @@ public class InputManager : MonoBehaviour
 
         if (weaponAbility_Input)
         {
-            playerAttacker.HandleDefend(playerInventory.unequippedWeaponItems[0]);
+            playerAttacker.HandleWeaponAbility(playerInventory.unequippedWeaponItems[0]);
+            //playerAttacker.HandleDefend(playerInventory.unequippedWeaponItems[0]);
         }
         else 
         {
-            animatorManager.animator.SetBool("isDefending", false);
+            if (playerManager.isHolding) 
+            {
+                animatorManager.animator.SetTrigger("isHoldingCancel");
+            }
         }
     }
     private void HandleUltimateInput() 

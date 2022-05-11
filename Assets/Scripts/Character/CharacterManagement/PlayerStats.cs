@@ -54,6 +54,7 @@ public class PlayerStats : CharacterStats
         currHealth = currHealth - damage;
         healthBar.SetCurrentHealth(currHealth);
         playerAttacker.comboCount = 0;
+        weaponSlotManager.UnloadArrowOnSlot();
 
         if (currHealth <= 0)
         {

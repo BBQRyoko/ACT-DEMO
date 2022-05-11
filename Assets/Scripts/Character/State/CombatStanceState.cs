@@ -511,12 +511,12 @@ public class CombatStanceState : State
                     }
                     else if (specialCondition.condition == SpecialCondition.conditionType.玩家蓄力硬直型)
                     {
-                        if (randomDestinationSet && enemyManager.curTarget.GetComponent<PlayerManager>().isCharging && distanceFromTarget<=specialCondition.maxDistanceNeedToAttack) 
-                        {
-                            attackState.curSpecialIndex = index;
-                            attackState.curAttack = specialCondition;
-                            specialConditionTriggered = true;
-                        }
+                        //if (randomDestinationSet && enemyManager.curTarget.GetComponent<PlayerManager>().isCharging && distanceFromTarget<=specialCondition.maxDistanceNeedToAttack) 
+                        //{
+                        //    attackState.curSpecialIndex = index;
+                        //    attackState.curAttack = specialCondition;
+                        //    specialConditionTriggered = true;
+                        //}
                     }
                     else if (specialCondition.condition == SpecialCondition.conditionType.玩家防御型)
                     {

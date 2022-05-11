@@ -69,9 +69,9 @@ public class PlayerManager : CharacterManager
     public bool isPerfect;
 
     //蓄力攻击相关
-    public bool isCharging;
     public bool isHolding;
-    public bool isAttackDashing;
+    public bool isAiming;
+    public bool isArrowLoaded;
 
     //火球
     public FlyingObj fireBall;
@@ -166,7 +166,6 @@ public class PlayerManager : CharacterManager
         isInteracting = animator.GetBool("isInteracting");
         isAttacking = animator.GetBool("isAttacking");
         isUsingRootMotion = animator.GetBool("isUsingRootMotion");
-        isCharging = animator.GetBool("isCharging");
         isHolding = animator.GetBool("isHolding");
         isDefending = animator.GetBool("isDefending");
         isGettingDamage = animator.GetBool("isGettingDamage");
@@ -179,7 +178,6 @@ public class PlayerManager : CharacterManager
         inputManager.weaponSwitch_Input = false;
         HandleDefending();
         HoldingAction();
-        ChargingAction();
     }
     private void GeneralTimerController() 
     {
@@ -222,17 +220,17 @@ public class PlayerManager : CharacterManager
             taiji_Guage = 0;
         }
     }
-    private void ChargingAction() //攻击蓄力
-    {
-        if (!isCharging)
-        {
-            inputManager.spAttack_Input = false;
-        }
-        else
-        {
-            inputManager.spAttack_Input = true;
-        }
-    }
+    //private void ChargingAction() //攻击蓄力
+    //{
+    //    if (!isCharging)
+    //    {
+    //        inputManager.spAttack_Input = false;
+    //    }
+    //    else
+    //    {
+    //        inputManager.spAttack_Input = true;
+    //    }
+    //}
     public void HandleRangeAttack()
     {
         var obj = Instantiate(fireBall, transform, false);
