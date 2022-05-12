@@ -175,7 +175,7 @@ public class PlayerManager : CharacterManager
         animator.SetBool("isStunned", isStunned);
         animator.SetBool("isGround", isGround); 
         animator.SetBool("isFalling", isFalling);
-        if (!isHolding) inputManager.reAttack_Input = false;
+        //if (!isHolding) inputManager.reAttack_Input = false;
         inputManager.interact_Input = false;
         inputManager.weaponSwitch_Input = false;
         HandleDefending();

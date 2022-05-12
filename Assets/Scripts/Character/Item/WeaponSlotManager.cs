@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WeaponSlotManager : MonoBehaviour
 {
+    InputManager inputManager;
     PlayerManager playerManager;
     PlayerAttacker playerAttacker;
     PlayerInventory playerInventory;
@@ -24,6 +25,7 @@ public class WeaponSlotManager : MonoBehaviour
 
     private void Awake()
     {
+        inputManager = GetComponentInParent<InputManager>();
         playerManager = GetComponentInParent<PlayerManager>();
         playerAttacker = GetComponentInParent<PlayerAttacker>();
         playerInventory = GetComponentInParent<PlayerInventory>();
@@ -198,6 +200,7 @@ public class WeaponSlotManager : MonoBehaviour
     {
         animator.SetBool("cantBeInterrupted", false);
         playerManager.isImmuAttack = false;
+        inputManager.reAttack_Input = false;
     }
     private void ImmuOver() 
     {

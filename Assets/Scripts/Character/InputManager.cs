@@ -190,7 +190,7 @@ public class InputManager : MonoBehaviour
         {
             if (playerManager.isHolding)
             {
-                animatorManager.animator.SetTrigger("isHoldingCancel");
+                //animatorManager.animator.SetTrigger("isHoldingCancel");
             }
         }
 
@@ -203,7 +203,7 @@ public class InputManager : MonoBehaviour
         {
             if (playerManager.isHolding) 
             {
-                animatorManager.animator.SetTrigger("isHoldingCancel");
+                //animatorManager.animator.SetTrigger("isHoldingCancel");
             }
         }
     }
