@@ -239,9 +239,9 @@ public class AnimatorManager : MainAnimatorManager
             playerManager.hitRecover = false;
         }
     }
-    private void RangeAttack() 
+    private void RangeAttack(int index) 
     {
-        playerManager.HandleRangeAttack();
+        playerManager.HandleRangeAttack(index);
     }
     private void ChargingLevelUpEvent() 
     {

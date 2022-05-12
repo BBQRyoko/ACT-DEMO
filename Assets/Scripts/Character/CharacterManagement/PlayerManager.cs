@@ -73,11 +73,13 @@ public class PlayerManager : CharacterManager
     public bool isAiming;
     public bool isArrowLoaded;
 
-    //火球
+    //远程攻击
+    public FlyingObj arrow;
+    public Transform arrow_ShootPos;
     public FlyingObj fireBall;
-    public Transform shootPos;
-    public Transform target;
-    public Transform nullTarget;
+    public Transform fireball_ShootPos;
+    public Transform shooting_Target;
+    public Transform straightLineNullTarget;
 
     //完美格挡ATField
     [SerializeField] GameObject aT_Field_Prefab;
@@ -173,7 +175,7 @@ public class PlayerManager : CharacterManager
         animator.SetBool("isStunned", isStunned);
         animator.SetBool("isGround", isGround); 
         animator.SetBool("isFalling", isFalling);
-        inputManager.reAttack_Input = false;
+        if (!isHolding) inputManager.reAttack_Input = false;
         inputManager.interact_Input = false;
         inputManager.weaponSwitch_Input = false;
         HandleDefending();
@@ -231,12 +233,22 @@ public class PlayerManager : CharacterManager
     //        inputManager.spAttack_Input = true;
     //    }
     //}
-    public void HandleRangeAttack()
+    public void HandleRangeAttack(int index)
     {
-        var obj = Instantiate(fireBall, transform, false);
-        obj.transform.SetParent(null);
-        obj.gameObject.SetActive(true);
-        obj.StartFlyingObj(target);
+        if (index == 0)
+        {
+            var obj = Instantiate(arrow, transform, false);
+            obj.transform.SetParent(null);
+            obj.gameObject.SetActive(true);
+            obj.StartFlyingObj(shooting_Target);
+        }
+        else if (index == 1) 
+        {
+            var obj = Instantiate(fireBall, transform, false);
+            obj.transform.SetParent(null);
+            obj.gameObject.SetActive(true);
+            obj.StartFlyingObj(shooting_Target);
+        }
     }
     public void HandleDefending() 
     {

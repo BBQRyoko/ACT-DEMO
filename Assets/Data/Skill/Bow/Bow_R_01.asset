@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 925f15faf6a65f94189f6e4e2885f970, type: 3}
   m_Name: Bow_R_01
   m_EditorClassIdentifier: 
-  skillName: Combo_R_01
+  skillName: HoldingAbility
   isImmuAttack: 1
   skillType: 0
   damagePoint: 30

@@ -50,6 +50,9 @@ public class CameraManager : MonoBehaviour
     [SerializeField] float maxLockingResetDistance = 50f;
     float lockOnResetTimer;
 
+    //瞄准相关
+    [SerializeField] Transform cameraAimingForward;
+
     //处决系统
     public Transform curExuectionTarget;
     public Image executePrefab;
@@ -106,7 +109,7 @@ public class CameraManager : MonoBehaviour
     {
         if (playerManager.isAiming)
         {
-            Vector3 targetPosition = Vector3.SmoothDamp(transform.position, targetTransformWhileAiming.position, ref cameraFollowVelocity, delta / (cameraFollowSpeed/15));
+            Vector3 targetPosition = Vector3.SmoothDamp(transform.position, targetTransformWhileAiming.position, ref cameraFollowVelocity, delta / (cameraFollowSpeed/10));
             transform.position = targetPosition;
         }
         else 
@@ -318,19 +321,29 @@ public class CameraManager : MonoBehaviour
     {
         if (!currentLockOnTarget)
         {
-            lockOnMark.gameObject.SetActive(false);
-            inputManager.GetComponent<PlayerManager>().target = inputManager.GetComponent<PlayerManager>().nullTarget;
-            //enemyHealthUI.gameObject.SetActive(false);
-            //enemyHealthUI.SetEnemyManager(null);
+            if (playerManager.isAiming)
+            {
+                inputManager.GetComponent<PlayerManager>().shooting_Target = cameraAimingForward;
+            }
+            else 
+            {
+                lockOnMark.gameObject.SetActive(false);
+                inputManager.GetComponent<PlayerManager>().shooting_Target = inputManager.GetComponent<PlayerManager>().straightLineNullTarget;
+            }
         }
         else 
         {
             EnemyManager enemyManager = currentLockOnTarget.gameObject.GetComponentInParent<EnemyManager>();
             lockOnMark.gameObject.SetActive(true);
             lockOnMark.transform.position = Camera.main.WorldToScreenPoint(new Vector3(enemyManager.targetMarkTransform.position.x, enemyManager.targetMarkTransform.position.y, enemyManager.targetMarkTransform.position.z));
-            inputManager.GetComponent<PlayerManager>().target = enemyManager.targetMarkTransform;
-            //enemyHealthUI.gameObject.SetActive(true);
-            //enemyHealthUI.SetEnemyManager(enemyManager);
+            if (playerManager.isAiming)
+            {
+                inputManager.GetComponent<PlayerManager>().shooting_Target = cameraAimingForward;
+            }
+            else 
+            {
+                inputManager.GetComponent<PlayerManager>().shooting_Target = enemyManager.targetMarkTransform;
+            }
         }
     }
     public void HandleExecutingMark()

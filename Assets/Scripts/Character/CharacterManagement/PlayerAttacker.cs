@@ -133,10 +133,10 @@ public class PlayerAttacker : MonoBehaviour
                         attackTimer = internalDuration;
                         //播放指定的攻击动画
                         animatorManager.PlayTargetAnimation(weapon.regularSkills[comboCount - 1].skillName, true, true);
-                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint;
-                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint;
-                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
-                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                        //weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint;
+                        //weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint;
+                        //weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                        //weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.regularSkills[comboCount - 1].energyRestore;
                         animatorManager.pauseDuration = weapon.regularSkills[comboCount - 1].pauseDuration;
                         playerManager.GetComponent<PlayerStats>().currStamina -= weapon.regularSkills[comboCount - 1].staminaCost;
                         //sample_VFX_R.curVFX_List[comboCount - 1].Play();
@@ -197,6 +197,7 @@ public class PlayerAttacker : MonoBehaviour
         }
         else if (playerInventory.curEquippedWeaponItem.Id == 2) //弓
         {
+            //开镜功能
             if (playerManager.isAiming)
             {
                 playerManager.isAiming = false;
@@ -270,6 +271,7 @@ public class PlayerAttacker : MonoBehaviour
         {
             if (playerManager.isHolding)
             {
+
             }
             else
             {
@@ -283,7 +285,6 @@ public class PlayerAttacker : MonoBehaviour
             playerUIManager.aimingCorsshair.SetActive(false);
         }
     }
-
     void HandleAttackCharge() 
     {
         if (chargeValue >= 40) 

@@ -21,8 +21,7 @@ MonoBehaviour:
   isEquipped: 1
   weaponAnimatorController: {fileID: 9100000, guid: 07f58fb259bb2d74abc47b4466df95fe, type: 2}
   regularSkills:
-  - {fileID: 11400000, guid: b126cc560dd213741a5a658dd68ae218, type: 2}
-  - {fileID: 11400000, guid: 836018923d7504d4ca50c2e6c435dd1b, type: 2}
+  - {fileID: 11400000, guid: 13988f34717548c4fafeddb296410cbd, type: 2}
   specialSkills: []
   transSkills:
   - {fileID: 11400000, guid: b30e2a17f2331c64ba0562672e9f9808, type: 2}

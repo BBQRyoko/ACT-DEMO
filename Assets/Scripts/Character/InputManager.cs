@@ -86,6 +86,7 @@ public class InputManager : MonoBehaviour
 
             //攻击输入
             playerControls.PlayerActions.RegularAttack.performed += i => reAttack_Input = true;
+            playerControls.PlayerActions.RegularAttack.canceled += i => reAttack_Input = false;
             playerControls.PlayerActions.SpecialAttack.performed += i => spAttack_Input = true;
             playerControls.PlayerActions.SpecialAttack.canceled += i => spAttack_Input = false;
             playerControls.PlayerActions.CombieAttack.performed += i => cbAttack_Input = true;
@@ -185,6 +186,13 @@ public class InputManager : MonoBehaviour
         {
             playerAttacker.HandleRegularAttack(playerInventory.unequippedWeaponItems[playerInventory.currentWeaponIndex]);
         }
+        else
+        {
+            if (playerManager.isHolding)
+            {
+                animatorManager.animator.SetTrigger("isHoldingCancel");
+            }
+        }
 
         if (weaponAbility_Input)
         {
@@ -201,11 +209,11 @@ public class InputManager : MonoBehaviour
     }
     private void HandleUltimateInput() 
     {
-        if (cbAttack_Input) 
+        if (cbAttack_Input) //要改按键位置
         {
             playerManager.YinYangAbilityActivate();
-            weaponAbility_Input = false;
-            reAttack_Input = false;
+            //weaponAbility_Input = false;
+            //reAttack_Input = false;
         }
     }
     private void HandleInteractInput() 
