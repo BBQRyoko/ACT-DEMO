@@ -197,7 +197,7 @@ public class EnemyManager : CharacterManager
                 alertingPeriod = 0;
             }
         }
-        else 
+        else
         {
             alertingPeriod = 0;
         }
@@ -206,7 +206,7 @@ public class EnemyManager : CharacterManager
         if (isStunned)
         {
             stunTimer += Time.deltaTime;
-            if (stunTimer >= 5) 
+            if (stunTimer >= 5)
             {
                 isStunned = false;
                 stunTimer = 0;
@@ -242,7 +242,7 @@ public class EnemyManager : CharacterManager
     {
         curState = state;
     }
-    private void HandleHealthBar() 
+    private void HandleHealthBar()
     {
         if (beenLocked && !healtBarSpawn)
         {

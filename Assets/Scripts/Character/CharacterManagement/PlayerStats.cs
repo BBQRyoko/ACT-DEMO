@@ -6,6 +6,7 @@ public class PlayerStats : CharacterStats
 {
     InputManager inputManager;
     PlayerManager playerManager;
+    PlayerInventory playerInventory;
     public HealthBar healthBar;
     public StaminaBar staminaBar;
     public 
@@ -20,6 +21,7 @@ public class PlayerStats : CharacterStats
     {
         inputManager = GetComponent<InputManager>();
         playerManager = GetComponent<PlayerManager>();
+        playerInventory = GetComponent<PlayerInventory>();
         animatorManager = GetComponentInChildren<AnimatorManager>();
         weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
         playerAttacker = GetComponent<PlayerAttacker>();
@@ -153,18 +155,22 @@ public class PlayerStats : CharacterStats
         currStamina = currStamina - cost;
         staminaBar.SetCurrentStamina(currStamina);
     }
-    public void StaminaRegen()
+    public void StaminaController()
     {
-        if (!playerManager.cantBeInterrupted && !playerManager.isSprinting && !playerManager.staminaRegenPause && currStamina < maxStamina)
+        if (!playerManager.cantBeInterrupted && !playerManager.isSprinting && !playerManager.staminaRegenPause && currStamina < maxStamina && !playerManager.isHolding)
         {
             if (playerManager.isDefending)
             {
                 currStamina = currStamina + staminaRegen / 3 * Time.deltaTime;
             }
-            else 
+            else
             {
                 currStamina = currStamina + staminaRegen * Time.deltaTime;
             }
+        }
+        else if (playerManager.isHolding) 
+        {
+            currStamina -= playerInventory.curEquippedWeaponItem.holdingStaminaCost * Time.deltaTime;
         }
 
         staminaBar.SetCurrentStamina(currStamina);

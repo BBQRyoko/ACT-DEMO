@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyStats : CharacterStats
 {
+    CameraManager cameraManager;
     EnemyManager enemyManager;
     Animator animator;
     IdleState idleState;
@@ -15,6 +16,7 @@ public class EnemyStats : CharacterStats
 
     private void Awake()
     {
+        cameraManager = FindObjectOfType<CameraManager>();
         enemyManager = GetComponent<EnemyManager>();
         animator = GetComponentInChildren<Animator>();
         animatorManager = GetComponentInChildren<EnemyAnimatorManager>();
@@ -38,6 +40,12 @@ public class EnemyStats : CharacterStats
         float viewableAngle = Vector3.SignedAngle(collisionDir, enemyManager.transform.forward, Vector3.up);
         currHealth = currHealth - damage;
         currStamina = currStamina - staminaDamage;
+
+        if (!enemyManager.healtBarSpawn)
+        {
+            cameraManager.GenerateUIBar(enemyManager);
+            enemyManager.healtBarSpawn = true;
+        }
 
         if (healthBar) 
         {

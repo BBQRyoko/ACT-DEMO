@@ -20,13 +20,11 @@ MonoBehaviour:
   modelPrefab: {fileID: 6640638428303676973, guid: 1042e7b13fa895c4d81b1a61027c8ae6, type: 3}
   isEquipped: 1
   weaponAnimatorController: {fileID: 9100000, guid: 07f58fb259bb2d74abc47b4466df95fe, type: 2}
+  holdingStaminaCost: 5
   regularSkills:
   - {fileID: 11400000, guid: 13988f34717548c4fafeddb296410cbd, type: 2}
   specialSkills: []
   transSkills:
-  - {fileID: 11400000, guid: b30e2a17f2331c64ba0562672e9f9808, type: 2}
-  executionSkill:
-  - {fileID: 11400000, guid: b06dd356bbe64d344bc3ada6371ee121, type: 2}
-  - {fileID: 11400000, guid: bc374aef43fc2b744ab9b40bfb7e9744, type: 2}
-  springAttack:
-  - {fileID: 11400000, guid: c3f67b10cdc0ace478662843a951ca6c, type: 2}
+  - {fileID: 11400000, guid: 0902eb58f9622b9438e5d4f3f9e72f28, type: 2}
+  executionSkill: []
+  springAttack: []

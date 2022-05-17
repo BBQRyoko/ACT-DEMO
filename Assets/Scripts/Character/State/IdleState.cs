@@ -270,6 +270,9 @@ public class IdleState : State
     {
         EnemyManager enemyManager = transform.GetComponentInParent<EnemyManager>();
         EnemyAnimatorManager enemyAnimatorManager = enemyManager.GetComponentInChildren<EnemyAnimatorManager>();
+
+        float distanceFromTarget = Vector3.Distance(enemyManager.curTarget.transform.position, enemyManager.transform.position);
+
         if (executionCall)
         {
             announcePrefab.gameObject.SetActive(true);
@@ -278,7 +281,7 @@ public class IdleState : State
         }
         else 
         {
-            if (enemyManager.canAlertOthers) 
+            if (enemyManager.canAlertOthers && distanceFromTarget<= enemyManager.detectionRadius) 
             {
                 announcePrefab.gameObject.SetActive(true);
                 announcePrefab.announceSoundDistance = maxDistance;

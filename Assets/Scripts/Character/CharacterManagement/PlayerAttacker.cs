@@ -56,7 +56,7 @@ public class PlayerAttacker : MonoBehaviour
     public void HandleRegularAttack(WeaponItem weapon) //左键普攻
     {
         //使用指定武器信息中的普通攻击
-        if (!playerManager.cantBeInterrupted && playerManager.isGround && !playerManager.isGettingDamage) 
+        if (!playerManager.cantBeInterrupted && playerManager.isGround && !playerManager.isGettingDamage && !playerManager.isHanging) 
         {
             playerLocmotion.HandleRotateTowardsTarger();
 
@@ -126,17 +126,31 @@ public class PlayerAttacker : MonoBehaviour
                         comboCount = 1;
                     }
                     //检测是否有足够的体力释放
-                    if (playerManager.GetComponent<PlayerStats>().currStamina >= weapon.regularSkills[comboCount - 1].staminaCost - 15f && !playerManager.cantBeInterrupted)
+                    if (playerManager.GetComponent<PlayerStats>().currStamina >= weapon.regularSkills[comboCount - 1].staminaCost - 15f && !playerManager.cantBeInterrupted && !playerManager.isHolding)
                     {
                         playerManager.cantBeInterrupted = true;
                         animatorManager.animator.SetBool("isAttacking", true);
                         attackTimer = internalDuration;
                         //播放指定的攻击动画
                         animatorManager.PlayTargetAnimation(weapon.regularSkills[comboCount - 1].skillName, true, true);
-                        //weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint;
-                        //weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint;
-                        //weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
-                        //weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                        if (playerInventory.curEquippedWeaponItem.Id == 2)
+                        {
+                            ProjectileDamager projectileDamager = weaponSlotManager.playerArrowFlyObj.GetComponentInChildren<ProjectileDamager>();
+
+                            projectileDamager.curDamage = weapon.regularSkills[comboCount - 1].damagePoint;
+                            projectileDamager.staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint;
+                            projectileDamager.energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                            projectileDamager.chargeAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                            weaponSlotManager.playerArrowFlyObj.m_MaxSpeed = weapon.regularSkills[comboCount - 1].maxSpeed;
+
+                        }
+                        else 
+                        {
+                            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint;
+                            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint;
+                            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                        }
                         animatorManager.pauseDuration = weapon.regularSkills[comboCount - 1].pauseDuration;
                         playerManager.GetComponent<PlayerStats>().currStamina -= weapon.regularSkills[comboCount - 1].staminaCost;
                         //sample_VFX_R.curVFX_List[comboCount - 1].Play();
@@ -198,22 +212,50 @@ public class PlayerAttacker : MonoBehaviour
         else if (playerInventory.curEquippedWeaponItem.Id == 2) //弓
         {
             //开镜功能
-            if (playerManager.isAiming)
+            if (inputManager.weaponAbility_Input)
+            {
+                playerManager.isAiming = true;
+                playerUIManager.aimingCorsshair.SetActive(true);
+            }
+            else 
             {
                 playerManager.isAiming = false;
                 playerUIManager.aimingCorsshair.SetActive(false);
                 cameraManager.ResetAimingCameraRotation();
             }
-            else 
+
+        }
+    }
+    public void HandleWeaponAbilityCancel(WeaponItem weapon)
+    {
+        if (playerInventory.curEquippedWeaponItem.Id == 0) //大剑
+        {
+            //HandleHoldingAbility();
+        }
+        else if (playerInventory.curEquippedWeaponItem.Id == 1) //太刀
+        {
+            //HandleHoldingAbility();
+        }
+        else if (playerInventory.curEquippedWeaponItem.Id == 2) //弓
+        {
+            //开镜功能
+            if (inputManager.weaponAbility_Input)
             {
                 playerManager.isAiming = true;
                 playerUIManager.aimingCorsshair.SetActive(true);
             }
+            else
+            {
+                playerManager.isAiming = false;
+                playerUIManager.aimingCorsshair.SetActive(false);
+                cameraManager.ResetAimingCameraRotation();
+            }
+
         }
     }
     public void HandleHoldingAbility() 
     {
-        if (!playerManager.cantBeInterrupted && playerManager.isGround && !playerManager.isHolding)
+        if (!playerManager.cantBeInterrupted && playerManager.isGround && !playerManager.isHolding && !playerManager.isHanging)
         {
             animatorManager.PlayTargetAnimation("HoldingAbility", true, true);
         }
@@ -275,14 +317,12 @@ public class PlayerAttacker : MonoBehaviour
             }
             else
             {
-                playerManager.isAiming = false;
-                playerUIManager.aimingCorsshair.SetActive(false);
+
             }
         }
         else 
         {
-            playerManager.isAiming = false;
-            playerUIManager.aimingCorsshair.SetActive(false);
+
         }
     }
     void HandleAttackCharge() 

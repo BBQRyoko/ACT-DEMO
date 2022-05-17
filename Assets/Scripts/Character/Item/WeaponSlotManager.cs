@@ -17,6 +17,7 @@ public class WeaponSlotManager : MonoBehaviour
     public DamageCollider weaponDamageCollider;
     [SerializeField] ParryCollider parryCollider;
     public GameObject mainArmedWeapon;
+    public FlyingObj playerArrowFlyObj;
     [SerializeField] GameObject[] armedWeaponSlot = new GameObject[4];
     [SerializeField] GameObject arrow;
 
@@ -56,7 +57,6 @@ public class WeaponSlotManager : MonoBehaviour
     {
         arrow.SetActive(false);
     }
-
     public void EquipeWeapon() 
     {
         mainWeapon_Unequipped.gameObject.SetActive(false);
@@ -141,7 +141,7 @@ public class WeaponSlotManager : MonoBehaviour
         {
             playerManager.GetComponent<PlayerInventory>().currentWeaponIndex = 1;
             mainWeapon_Unequipped = unequippedWeaponSlots[1];
-            mainArmedWeapon = armedWeaponSlot[1];
+            mainArmedWeapon = armedWeaponSlot[playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[1].Id];
             transform.GetComponent<Animator>().runtimeAnimatorController = playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[1].weaponAnimatorController;
             weaponDamageCollider = mainArmedWeapon.GetComponentInChildren<DamageCollider>();
             playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(40f);
@@ -153,7 +153,7 @@ public class WeaponSlotManager : MonoBehaviour
         {
             playerManager.GetComponent<PlayerInventory>().currentWeaponIndex = 0;
             mainWeapon_Unequipped = unequippedWeaponSlots[0];
-            mainArmedWeapon = armedWeaponSlot[0];
+            mainArmedWeapon = armedWeaponSlot[playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[0].Id];
             transform.GetComponent<Animator>().runtimeAnimatorController = playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[0].weaponAnimatorController;
             weaponDamageCollider = mainArmedWeapon.GetComponentInChildren<DamageCollider>();
             playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(40f);
@@ -195,6 +195,10 @@ public class WeaponSlotManager : MonoBehaviour
     private void CloseVFXCollider(DamageCollider collider) //在动画器中关闭对应VFX的碰撞器
     {
         collider.DisableDamageCollider();
+    }
+    private void RangeShootingStaminaCost(int staminaCost = 20) 
+    {
+        playerManager.GetComponent<PlayerStats>().CostStamina(staminaCost);
     }
     private void AttackOver() //确定何时提前关闭玩家当前的攻击状态
     {

@@ -88,7 +88,7 @@ public class AnimatorManager : MainAnimatorManager
                 h = -3;
             }
         }
-        else if (playerManager.isHolding) 
+        else if (playerManager.isHolding)
         {
             if (horizontalMovement > 0 && horizontalMovement < 0.55f)
             {
@@ -109,6 +109,21 @@ public class AnimatorManager : MainAnimatorManager
             else
             {
                 h = 3;
+            }
+        }
+        else if (playerManager.isHanging) 
+        {
+            if (horizontalMovement > 0)
+            {
+                h = -5f;
+            }
+            else if (horizontalMovement < 0)
+            {
+                h = -7f;
+            }
+            else
+            {
+                h = -6;
             }
         }
         else
@@ -260,6 +275,17 @@ public class AnimatorManager : MainAnimatorManager
             playerManager.damageAvoid = false;
             rollDamager.DisableDamageCollider();
         }
+    }
+    private void HangingCheck() 
+    {
+        //if (playerManager.isHanging)
+        //{
+        //    playerManager.isHanging = false;
+        //}
+        //else 
+        //{
+        //    playerManager.isHanging = true;
+        //}
     }
     IEnumerator Pause(int dur) //播放器暂停
     {

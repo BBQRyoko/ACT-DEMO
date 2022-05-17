@@ -31,7 +31,7 @@ public class PlayerLocmotion : MonoBehaviour
     public float inAirTimer;
 
     [Header("移动参数")]
-    [SerializeField] Vector3 playerDireee;
+    Vector3 playerDireee;
     [SerializeField] float movementSpeed = 10;
     [SerializeField] float inAirMovementSpeed = 4;
     [SerializeField] float crouchSpeed = 7f;
@@ -41,11 +41,7 @@ public class PlayerLocmotion : MonoBehaviour
     public Vector3 movementVelocity;
     Vector3 moveDirection;
 
-    [SerializeField] Vector3 cameraForward;
-    [SerializeField] Vector3 playerForward;
     //翻滚(冲刺)参数
-    public Vector3 dashDir;
-    public float distance;
     [SerializeField] int rollStaminaCost = 30;
 
     //人物碰撞器, 用于防止玩家角色与敌人角色攻击时的穿模碰撞
@@ -73,7 +69,7 @@ public class PlayerLocmotion : MonoBehaviour
     {
         playerDireee = gameObject.transform.forward - cameraObject.transform.position;
         playerDireee.Normalize();
-        playerDireee.y = 0;
+        if (!playerManager.isHanging) playerDireee.y = 0;
         HandleMovement();
         HandleRotation();
         HandleGravity();
@@ -87,6 +83,11 @@ public class PlayerLocmotion : MonoBehaviour
     }
     public void HandleGravity()
     {
+        if (playerManager.isHanging) 
+        {
+            return;
+        } 
+
         //重力相关的状态变化
         if (!playerManager.isGround) //当玩家不在地面上时
         {
@@ -106,6 +107,7 @@ public class PlayerLocmotion : MonoBehaviour
         //基础重力参数变化
         if (playerManager.isGround)
         {
+            groundedGravity = -0.05f;
             movementVelocity.y = groundedGravity; //当玩家isGround的时候玩家受到的重力统一为 groundedGravity = -0.05f
         }
         else if (playerManager.isFalling) //处于下落的状态会对基础重力进行加成
@@ -133,9 +135,30 @@ public class PlayerLocmotion : MonoBehaviour
             return;
 
         //移动方向取决于相机的正面方向
-        moveDirection = cameraObject.forward * inputManager.verticalInput;
-        moveDirection += cameraObject.right * inputManager.horizontalInput;
-        moveDirection.Normalize();
+        if (!playerManager.isHanging)
+        {
+            moveDirection = cameraObject.forward * inputManager.verticalInput;
+            moveDirection += cameraObject.right * inputManager.horizontalInput;
+            moveDirection.Normalize();
+        }
+        else 
+        {
+            Vector3 forwardDir = gameObject.transform.forward;
+            Vector3 cameraDir = gameObject.transform.position - cameraObject.transform.position;
+            forwardDir.Normalize();
+            cameraDir.Normalize();
+
+            if (cameraDir.z * forwardDir.z > 0)
+            {
+                moveDirection = playerManager.hangDirection * inputManager.horizontalInput;
+                moveDirection.Normalize();
+            }
+            else 
+            {
+                moveDirection = (-1) * playerManager.hangDirection * inputManager.horizontalInput;
+                moveDirection.Normalize();
+            }
+        }
 
         float curSpeed = movementSpeed - 5 * (weaponSlotManager.weaponDamageCollider.weaponWeightRatio);
         if (playerManager.isSprinting)
@@ -153,7 +176,7 @@ public class PlayerLocmotion : MonoBehaviour
                 playerStats.CostStamina(15f * (1f + weaponSlotManager.weaponDamageCollider.weaponWeightRatio) * Time.deltaTime);
             }
         }
-        else if (playerManager.isCrouching || playerManager.isHolding) 
+        else if (playerManager.isCrouching || playerManager.isHolding || playerManager.isHanging)
         {
             curSpeed = crouchSpeed;
             moveDirection *= curSpeed;
@@ -171,21 +194,22 @@ public class PlayerLocmotion : MonoBehaviour
             }
         }
         //Assign移动的x,z轴的速度
-        if (playerManager.isInteracting || playerManager.isToronadoCovered)
+        if (playerManager.isInteracting || playerManager.isToronadoCovered || playerManager.isAiming)
         {
             movementVelocity.x = 0f;
             movementVelocity.z = 0f;
         }
-        else 
+        else
         {
             movementVelocity.x = moveDirection.x;
+            if(playerManager.isHanging) movementVelocity.y = moveDirection.y;
             movementVelocity.z = moveDirection.z;
         }
         rig.velocity = movementVelocity;
     }
     private void HandleRotation() //还可以优化
     {
-        if (playerManager.isInteracting  || playerManager.isStunned)
+        if (playerManager.isInteracting || playerManager.isStunned || playerManager.isHanging)
             return;
 
         if (playerManager.isAiming)
@@ -307,6 +331,7 @@ public class PlayerLocmotion : MonoBehaviour
     }
     private void HandleFallingAndLanding() //下落与落地相关
     {
+        if (playerManager.isHanging) return;
         //raycast和spherecast来检测是否在地上
         RaycastHit hit;
         Vector3 rayCastOrigin;
@@ -330,7 +355,7 @@ public class PlayerLocmotion : MonoBehaviour
         {
             if (Physics.SphereCast(rayCastOrigin, radius, -Vector3.up, out hit, groundLayer))
             {
-                if (inAirTimer >= 0.7f) //根据下落时间来判断在空中的时间, 当下落时间超过0.7f时触发大落地, 会有个起身动作
+                if (inAirTimer >= 1.5f) //根据下落时间来判断在空中的时间, 当下落时间超过0.7f时触发大落地, 会有个起身动作
                 {
                     animatorManager.animator.SetTrigger("isBigFall"); 
                     animatorManager.animator.SetBool("isInteracting", true);
@@ -414,7 +439,7 @@ public class PlayerLocmotion : MonoBehaviour
         {
             if (playerManager.isAttacking) //攻击状态下
             {
-                if (playerManager.cantBeInterrupted || !playerManager.isGround)
+                if (playerManager.cantBeInterrupted || !playerManager.isGround || playerManager.isHanging)
                     return;
 
                 //还可以优化：现在只有在玩家背对相机的情况下时才正常，其它方向翻滚方向会不精准
@@ -471,7 +496,7 @@ public class PlayerLocmotion : MonoBehaviour
             }
             else //非攻击状态下翻滚, 只有在非互动且站在地上的状态下才能翻滚
             {
-                if (playerManager.isInteracting || !playerManager.isGround)
+                if (playerManager.isInteracting || !playerManager.isGround || playerManager.isHanging)
                     return;
 
                 if (!inputManager.lockOn_Flag) 

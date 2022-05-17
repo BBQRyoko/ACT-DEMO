@@ -136,7 +136,7 @@ public class InputManager : MonoBehaviour
     private void HandleMovement() 
     {
         movementInput.Normalize();
-        verticalInput = movementInput.y;
+        if (!playerManager.isHanging) verticalInput = movementInput.y;
         horizontalInput = movementInput.x;
 
         cameraInput.Normalize();
@@ -190,21 +190,17 @@ public class InputManager : MonoBehaviour
         {
             if (playerManager.isHolding)
             {
-                //animatorManager.animator.SetTrigger("isHoldingCancel");
+                animatorManager.animator.SetTrigger("isHoldingCancel");
             }
         }
 
         if (weaponAbility_Input)
         {
             playerAttacker.HandleWeaponAbility(playerInventory.unequippedWeaponItems[0]);
-            //playerAttacker.HandleDefend(playerInventory.unequippedWeaponItems[0]);
         }
         else 
         {
-            if (playerManager.isHolding) 
-            {
-                //animatorManager.animator.SetTrigger("isHoldingCancel");
-            }
+            playerAttacker.HandleWeaponAbilityCancel(playerInventory.unequippedWeaponItems[0]);
         }
     }
     private void HandleUltimateInput() 
@@ -222,14 +218,14 @@ public class InputManager : MonoBehaviour
         {
             if (playerManager.inInteractTrigger && !playerManager.isInteracting)
             {
-                animatorManager.PlayTargetAnimation("Interact", true, true);
+                animatorManager.PlayTargetAnimation("Interact", true, false);
                 playerManager.interactObject = true;
             }
         }
     }
     private void HandleLockOnInput() //手动锁定敌人
     {
-        if (lockOn_Input && !lockOn_Flag)
+        if (lockOn_Input && !lockOn_Flag && !playerManager.isAiming)
         {
             lockOn_Input = false;
             cameraManager.HandleLockOn();

@@ -9,6 +9,7 @@ public class WeaponItem : Item
     public bool isEquipped;
 
     public RuntimeAnimatorController weaponAnimatorController;
+    public int holdingStaminaCost;
 
     [Header("普通连招")]
     public Skill[] regularSkills;

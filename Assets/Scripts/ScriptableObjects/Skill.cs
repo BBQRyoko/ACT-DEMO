@@ -7,7 +7,6 @@ public class Skill : ScriptableObject
 {
     public string skillName;
     public bool isImmuAttack = false;
-    public int skillType; //0 - 单发, 1 - 蓄力 (暂时废弃)
     public int damagePoint;
     public int tenacityDamagePoint;
     public int staminaCost = 15;
@@ -16,4 +15,8 @@ public class Skill : ScriptableObject
     //public Animation animation;
     public ParticleSystem[] VFXs;
     public AudioClip[] SFXs;
+
+    [Header("飞行道具参数")]
+    public bool isFlyingObject;
+    public float maxSpeed = 20f;
 }

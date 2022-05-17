@@ -11,6 +11,8 @@ public class ProjectileDamager : MonoBehaviour
     [SerializeField] bool isPlayerDamage;
     public int curDamage = 10;
     public int staminaDamage;
+    public float energyRestoreAmount = 20;
+    public float chargeAmount;
     [SerializeField] float hitFactor;
 
     private void Awake()
@@ -122,15 +124,18 @@ public class ProjectileDamager : MonoBehaviour
             Vector3 hitDirection = new Vector3(0, 0, 0);
             EnemyStats enemyStats = other.GetComponent<EnemyStats>();
             PlayerStats playerStats = FindObjectOfType<PlayerStats>();
+            PlayerManager playerManager = playerStats.GetComponent<PlayerManager>();
             AnimatorManager animatorManager = playerStats.GetComponentInChildren<AnimatorManager>();
             if (enemyStats != null) 
             {
                 enemyStats.TakeDamage(curDamage, staminaDamage, hitDirection * hitFactor);
                 enemyStats.GetComponent<EnemyManager>().curTarget = playerStats;
+                playerManager.GetComponent<PlayerAttacker>().chargeValue += chargeAmount;
+                playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount);
                 //火球击中音效
-                animatorManager.generalAudio.volume = 0.1f;
-                animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[3];
-                animatorManager.generalAudio.Play();
+                //animatorManager.generalAudio.volume = 0.1f;
+                //animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[3];
+                //animatorManager.generalAudio.Play();
 
                 Destroy(transform.parent.gameObject);
             }

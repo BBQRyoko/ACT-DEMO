@@ -109,8 +109,11 @@ public class CameraManager : MonoBehaviour
     {
         if (playerManager.isAiming)
         {
-            Vector3 targetPosition = Vector3.SmoothDamp(transform.position, targetTransformWhileAiming.position, ref cameraFollowVelocity, delta / (cameraFollowSpeed/10));
+            Vector3 targetPosition = Vector3.SmoothDamp(transform.position, targetTransformWhileAiming.position, ref cameraFollowVelocity, delta / (cameraFollowSpeed/5));
             transform.position = targetPosition;
+            inputManager.lockOn_Input = false;
+            inputManager.lockOn_Flag = false;
+            ClearLockOnTargets();
         }
         else 
         {
@@ -385,6 +388,7 @@ public class CameraManager : MonoBehaviour
     public void ClearLockOnTargets() 
     {
         availableTarget.Clear();
+        lockOnMark.gameObject.SetActive(false);
         nearestLockOnTarget = null;
         currentLockOnTarget = null;
     }

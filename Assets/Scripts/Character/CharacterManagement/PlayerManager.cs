@@ -30,6 +30,8 @@ public class PlayerManager : CharacterManager
     public bool isSprinting; 
     public bool isRolling;
     public bool isJumping; //跳跃上升阶段
+    public bool isHanging;
+    public Vector3 hangDirection;
     public bool inInteractTrigger;
     public bool interactObject;
 
@@ -121,7 +123,14 @@ public class PlayerManager : CharacterManager
         else 
         {
             weaponSlotManager.mainWeapon_Unequipped.gameObject.SetActive(false);
-            weaponSlotManager.mainArmedWeapon.SetActive(true);
+            if (isHanging)
+            {
+                weaponSlotManager.mainArmedWeapon.SetActive(false);
+            }
+            else 
+            {
+                weaponSlotManager.mainArmedWeapon.SetActive(true);
+            }
         }
 
         if (yinYangAbilityOn)
@@ -137,7 +146,7 @@ public class PlayerManager : CharacterManager
         {
             inputManager.HandleAllInputs();
         }
-        playerStats.StaminaRegen();
+        playerStats.StaminaController();
         GeneralTimerController();
         TaijiEffectController();
         PerfectTimer();
@@ -222,17 +231,6 @@ public class PlayerManager : CharacterManager
             taiji_Guage = 0;
         }
     }
-    //private void ChargingAction() //攻击蓄力
-    //{
-    //    if (!isCharging)
-    //    {
-    //        inputManager.spAttack_Input = false;
-    //    }
-    //    else
-    //    {
-    //        inputManager.spAttack_Input = true;
-    //    }
-    //}
     public void HandleRangeAttack(int index)
     {
         if (index == 0)
@@ -300,6 +298,19 @@ public class PlayerManager : CharacterManager
         weaponSwitchCooldown = timer;
         cooldownTimer.fillAmount = 1;
         cooldownUnit = 1 / timer;
+    }
+    public void HangingController() 
+    {
+        if (!isHanging)
+        {
+            isHanging = true;
+            animatorManager.PlayTargetAnimation("JumpToHang", true, true);
+        }
+        else 
+        {
+            isHanging = false;
+            animatorManager.PlayTargetAnimation("HangToIdle", true, true);
+        }
     }
     public void PerfectTimer() 
     {
