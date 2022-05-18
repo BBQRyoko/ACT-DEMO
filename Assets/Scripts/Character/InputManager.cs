@@ -14,6 +14,7 @@ public class InputManager : MonoBehaviour
 
     Vector2 movementInput;
     Vector2 cameraInput;
+    Vector2 baguaInput;
 
     public float cameraInputX;
     public float cameraInputY;
@@ -44,6 +45,8 @@ public class InputManager : MonoBehaviour
 
     //八卦盘
     public bool baGua_Input;
+    public float baguaInputX;
+    public float baguaInputY;
 
     //锁定
     CameraManager cameraManager;
@@ -71,6 +74,7 @@ public class InputManager : MonoBehaviour
             //设置input的输入
             playerControls.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
             playerControls.PlayerMovement.Camera.performed += i => cameraInput = i.ReadValue<Vector2>();
+            playerControls.PlayerActions.BaGuaSelection.performed += i => baguaInput = i.ReadValue<Vector2>();
 
             //判定是否有跳跃输入
             playerControls.PlayerActions.Jump.started += i => jump_Input = true;
@@ -275,6 +279,9 @@ public class InputManager : MonoBehaviour
         if (baGua_Input) 
         {
             cameraManager.cameraLock = true;
+            baguaInput.Normalize();
+            baguaInputY = baguaInput.y;
+            baguaInputX = baguaInput.x;
         }
     }
 }

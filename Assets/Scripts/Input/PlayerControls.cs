@@ -354,6 +354,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BaGuaSelection"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""d482f79b-b064-4950-9fa0-ece185a73dcb"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -620,6 +629,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""Crouch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e405e87d-83c6-4e84-b1a4-07f5e016c7a8"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BaGuaSelection"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -662,6 +682,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_PlayerActions_WeaponSwitch = m_PlayerActions.FindAction("WeaponSwitch", throwIfNotFound: true);
         m_PlayerActions_BaGuaSystem = m_PlayerActions.FindAction("BaGuaSystem", throwIfNotFound: true);
         m_PlayerActions_Crouch = m_PlayerActions.FindAction("Crouch", throwIfNotFound: true);
+        m_PlayerActions_BaGuaSelection = m_PlayerActions.FindAction("BaGuaSelection", throwIfNotFound: true);
         // UIActions
         m_UIActions = asset.FindActionMap("UIActions", throwIfNotFound: true);
         m_UIActions_Backpack = m_UIActions.FindAction("Backpack", throwIfNotFound: true);
@@ -793,6 +814,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_WeaponSwitch;
     private readonly InputAction m_PlayerActions_BaGuaSystem;
     private readonly InputAction m_PlayerActions_Crouch;
+    private readonly InputAction m_PlayerActions_BaGuaSelection;
     public struct PlayerActionsActions
     {
         private @PlayerControls m_Wrapper;
@@ -809,6 +831,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @WeaponSwitch => m_Wrapper.m_PlayerActions_WeaponSwitch;
         public InputAction @BaGuaSystem => m_Wrapper.m_PlayerActions_BaGuaSystem;
         public InputAction @Crouch => m_Wrapper.m_PlayerActions_Crouch;
+        public InputAction @BaGuaSelection => m_Wrapper.m_PlayerActions_BaGuaSelection;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -854,6 +877,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Crouch.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCrouch;
                 @Crouch.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCrouch;
                 @Crouch.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCrouch;
+                @BaGuaSelection.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnBaGuaSelection;
+                @BaGuaSelection.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnBaGuaSelection;
+                @BaGuaSelection.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnBaGuaSelection;
             }
             m_Wrapper.m_PlayerActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -894,6 +920,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Crouch.started += instance.OnCrouch;
                 @Crouch.performed += instance.OnCrouch;
                 @Crouch.canceled += instance.OnCrouch;
+                @BaGuaSelection.started += instance.OnBaGuaSelection;
+                @BaGuaSelection.performed += instance.OnBaGuaSelection;
+                @BaGuaSelection.canceled += instance.OnBaGuaSelection;
             }
         }
     }
@@ -952,6 +981,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnWeaponSwitch(InputAction.CallbackContext context);
         void OnBaGuaSystem(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
+        void OnBaGuaSelection(InputAction.CallbackContext context);
     }
     public interface IUIActionsActions
     {

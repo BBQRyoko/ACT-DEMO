@@ -210,9 +210,9 @@ public class CameraManager : MonoBehaviour
         targetResetRotation = Quaternion.Slerp(transform.rotation, targetResetRotation, 1);
         cameraTransform.localRotation = targetResetRotation;
     }
-    private void CameraReset() 
+    private void CameraReset()
     {
-        if (cameraLock) 
+        if (cameraLock && !inputManager.baGua_Input) 
         {
             if (inputManager.cameraInputX <= 0.1 && inputManager.cameraInputY <= 0.1) 
             {

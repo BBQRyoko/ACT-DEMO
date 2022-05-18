@@ -72,38 +72,38 @@ public class BaGuaManager : MonoBehaviour
         if (inputManager.baGua_Input && !isCommandActive && !playerManager.gameStart)
         {
             BaGuaZhen.SetActive(true);
-            realPiviot.transform.position = new Vector2(curPos.x + (inputManager.cameraInputX * 100), curPos.y + (inputManager.cameraInputY * 100));
+            realPiviot.transform.position = new Vector2(curPos.x + (inputManager.baguaInputX * 200), curPos.y + (inputManager.baguaInputY * 200));
             if (commandHolder.Count <= 3) 
             {
-                if (inputManager.cameraInputX >= 0.99 && inputManager.cameraInputY >= -0.13 && inputManager.cameraInputY <= 0.13)
+                if (inputManager.baguaInputX >= 0.99 && inputManager.baguaInputY >= -0.13 && inputManager.baguaInputY <= 0.13)
                 {
                     BaGuaCommand(2);
                 }
-                else if (inputManager.cameraInputX <= -0.99 && inputManager.cameraInputY >= -0.13 && inputManager.cameraInputY <= 0.13 && immuUnlock)
+                else if (inputManager.baguaInputX <= -0.99 && inputManager.baguaInputY >= -0.13 && inputManager.baguaInputY <= 0.13 && immuUnlock)
                 {
                     BaGuaCommand(6);
                 }
-                else if (inputManager.cameraInputY >= 0.99 && inputManager.cameraInputX >= -0.13 && inputManager.cameraInputX <= 0.13 && fireBallUnlock)
+                else if (inputManager.baguaInputY >= 0.99 && inputManager.baguaInputX >= -0.13 && inputManager.baguaInputX <= 0.13 && fireBallUnlock)
                 {
                     BaGuaCommand(0);
                 }
-                else if (inputManager.cameraInputY <= -0.99 && inputManager.cameraInputX >= -0.13 && inputManager.cameraInputX <= 0.13 && forthUnlock_Temp)
+                else if (inputManager.baguaInputY <= -0.99 && inputManager.baguaInputX >= -0.13 && inputManager.baguaInputX <= 0.13 && forthUnlock_Temp)
                 {
                     BaGuaCommand(4);
                 }
-                //else if (inputManager.cameraInputX > 0.61 && inputManager.cameraInputX < 0.79 && inputManager.cameraInputY > 0.61 && inputManager.cameraInputX < 0.79)
+                //else if (inputManager.baguaInputX > 0.61 && inputManager.baguaInputX < 0.79 && inputManager.baguaInputY > 0.61 && inputManager.baguaInputX < 0.79)
                 //{
                 //    BaGuaCommand(1);
                 //}
-                //else if (inputManager.cameraInputX < -0.61 && inputManager.cameraInputX > -0.79 && inputManager.cameraInputY > 0.61 && inputManager.cameraInputX < 0.79)
+                //else if (inputManager.baguaInputX < -0.61 && inputManager.baguaInputX > -0.79 && inputManager.baguaInputY > 0.61 && inputManager.baguaInputX < 0.79)
                 //{
                 //    BaGuaCommand(7);
                 //}
-                //else if (inputManager.cameraInputX > 0.61 && inputManager.cameraInputX < 0.79 && inputManager.cameraInputY < -0.61 && inputManager.cameraInputX > -0.79)
+                //else if (inputManager.baguaInputX > 0.61 && inputManager.baguaInputX < 0.79 && inputManager.baguaInputY < -0.61 && inputManager.baguaInputX > -0.79)
                 //{
                 //    BaGuaCommand(3);
                 //}
-                //else if (inputManager.cameraInputX < -0.61 && inputManager.cameraInputX > -0.79 && inputManager.cameraInputY < -0.61 && inputManager.cameraInputX > -0.79)
+                //else if (inputManager.baguaInputX < -0.61 && inputManager.baguaInputX > -0.79 && inputManager.baguaInputY < -0.61 && inputManager.baguaInputX > -0.79)
                 //{
                 //    BaGuaCommand(5);
                 //}

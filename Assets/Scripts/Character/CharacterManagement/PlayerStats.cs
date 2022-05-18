@@ -52,12 +52,13 @@ public class PlayerStats : CharacterStats
     }
     public void TakeDamage(int damage, Vector3 collisionDirection, bool isHeavy = false)
     {
-        float viewableAngle = Vector3.SignedAngle(collisionDirection, playerManager.transform.forward, Vector3.up);
+        float damageAngle = Vector3.SignedAngle(collisionDirection, playerManager.transform.forward, Vector3.up);
         currHealth = currHealth - damage;
         healthBar.SetCurrentHealth(currHealth);
         playerAttacker.comboCount = 0;
         weaponSlotManager.UnloadArrowOnSlot();
-
+        playerManager.isHanging = false;
+        Debug.Log(damageAngle);
         if (currHealth <= 0)
         {
             currHealth = 0;
@@ -67,7 +68,7 @@ public class PlayerStats : CharacterStats
         else
         {
             //Direction
-            if ((viewableAngle >= 91 && viewableAngle <= 180) || (viewableAngle <= -91 && viewableAngle >= -180))
+            if ((damageAngle > 120 && damageAngle <= 180) || (damageAngle < -120 && damageAngle >= -180) )
             {
                 if (!isHeavy)
                 {
@@ -106,7 +107,7 @@ public class PlayerStats : CharacterStats
                     animatorManager.PlayTargetAnimation("Hit_Large", true, true);
                 }
             }
-            else if ((viewableAngle >= -90 && viewableAngle <= 0) || (viewableAngle <= 90 && viewableAngle > 0))
+            else if ((damageAngle > -60 && damageAngle <= 0) || (damageAngle < 60 && damageAngle > 0))
             {
                 if (!isHeavy)
                 {
@@ -145,6 +146,84 @@ public class PlayerStats : CharacterStats
                     animatorManager.PlayTargetAnimation("Hit_Large", true, true);
                 }
             }
+            else if ((damageAngle >= 60 && damageAngle <= 120))
+            {
+                if (!isHeavy)
+                {
+                    if (!playerManager.isImmuAttack)
+                    {
+                        animatorManager.animator.speed = 1;
+                        if (playerManager.isGettingDamage)
+                        {
+                            animatorManager.animator.SetTrigger("beingAttacked_R");
+                            animatorManager.animator.SetBool("isInteracting", true);
+                            animatorManager.animator.SetBool("isUsingRootMotion", true);
+                        }
+                        else
+                        {
+                            animatorManager.PlayTargetAnimation("Hit_R", true, true);
+                        }
+                        playerAttacker.comboCount = 0;
+                        playerManager.isImmuAttack = false;
+                        playerManager.cantBeInterrupted = false;
+                    }
+                }
+                else
+                {
+                    Vector3 direction = collisionDirection;
+                    direction.y = 0;
+                    direction.Normalize();
+
+                    if (direction == Vector3.zero)
+                    {
+                        direction = transform.forward;
+                    }
+
+                    Quaternion targetRotation = Quaternion.LookRotation(direction);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 1f / Time.deltaTime);
+
+                    animatorManager.PlayTargetAnimation("Hit_Large", true, true);
+                }
+            } //右
+            else if ((damageAngle >= -120 && damageAngle <= -60))
+            {
+                if (!isHeavy)
+                {
+                    if (!playerManager.isImmuAttack)
+                    {
+                        animatorManager.animator.speed = 1;
+                        if (playerManager.isGettingDamage)
+                        {
+                            animatorManager.animator.SetTrigger("beingAttacked_L");
+                            animatorManager.animator.SetBool("isInteracting", true);
+                            animatorManager.animator.SetBool("isUsingRootMotion", true);
+                        }
+                        else
+                        {
+                            animatorManager.PlayTargetAnimation("Hit_L", true, true);
+                        }
+                        playerAttacker.comboCount = 0;
+                        playerManager.isImmuAttack = false;
+                        playerManager.cantBeInterrupted = false;
+                    }
+                }
+                else
+                {
+                    Vector3 direction = collisionDirection;
+                    direction.y = 0;
+                    direction.Normalize();
+
+                    if (direction == Vector3.zero)
+                    {
+                        direction = transform.forward;
+                    }
+
+                    Quaternion targetRotation = Quaternion.LookRotation(direction);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 1f / Time.deltaTime);
+
+                    animatorManager.PlayTargetAnimation("Hit_Large", true, true);
+                }
+            } //左
         }
         
         //攻击被打断时保证取消状态
