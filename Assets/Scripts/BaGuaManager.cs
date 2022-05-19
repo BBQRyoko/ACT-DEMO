@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class BaGuaManager : MonoBehaviour
 {
+    GameManager gameManager;
     PlayerManager playerManager;
     PlayerStats playerStats;
     PlayerInventory playerInventory;
@@ -47,6 +48,7 @@ public class BaGuaManager : MonoBehaviour
 
     void Awake()
     {
+        gameManager = FindObjectOfType<GameManager>();
         playerManager = GetComponent<PlayerManager>();
         playerStats = GetComponent<PlayerStats>();
         playerInventory = GetComponent<PlayerInventory>();
@@ -69,11 +71,28 @@ public class BaGuaManager : MonoBehaviour
         }
         YinYangControl();
         EnergySourceControl();
+        BaguaPanelActive();
+        if (isCommandActive) 
+        {
+            CommandActive();
+        }
+    }
+    private void FixedUpdate()
+    {
+        spawnTimer -= Time.fixedDeltaTime;
+        if (spawnTimer <= 0) 
+        {
+            spawnTimer = 0;
+        }
+    }
+    void BaguaPanelActive() 
+    {
         if (inputManager.baGua_Input && !isCommandActive && !playerManager.gameStart)
         {
             BaGuaZhen.SetActive(true);
+            gameManager.GameSlowDown();
             realPiviot.transform.position = new Vector2(curPos.x + (inputManager.baguaInputX * 200), curPos.y + (inputManager.baguaInputY * 200));
-            if (commandHolder.Count <= 3) 
+            if (commandHolder.Count <= 3)
             {
                 if (inputManager.baguaInputX >= 0.99 && inputManager.baguaInputY >= -0.13 && inputManager.baguaInputY <= 0.13)
                 {
@@ -114,33 +133,21 @@ public class BaGuaManager : MonoBehaviour
                 commandHolder.Clear();
             }
         }
-        else 
+        else
         {
             BaGuaZhen.SetActive(false);
+            gameManager.Resume();
             if (commandHolder.Count >= 1)
             {
                 isCommandActive = true;
             }
-            else 
+            else
             {
-                if (!isCommandActive) 
+                if (!isCommandActive)
                 {
                     commandHolder.Clear();
                 }
             }
-        }
-
-        if (isCommandActive) 
-        {
-            CommandActive();
-        }
-    }
-    private void FixedUpdate()
-    {
-        spawnTimer -= Time.fixedDeltaTime;
-        if (spawnTimer <= 0) 
-        {
-            spawnTimer = 0;
         }
     }
     void BaGuaCommand(int index)

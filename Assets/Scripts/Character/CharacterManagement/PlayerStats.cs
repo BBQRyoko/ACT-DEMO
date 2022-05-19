@@ -58,7 +58,6 @@ public class PlayerStats : CharacterStats
         playerAttacker.comboCount = 0;
         weaponSlotManager.UnloadArrowOnSlot();
         playerManager.isHanging = false;
-        Debug.Log(damageAngle);
         if (currHealth <= 0)
         {
             currHealth = 0;

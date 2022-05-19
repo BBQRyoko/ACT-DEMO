@@ -36,6 +36,12 @@ public class GameManager : MonoBehaviour
         playerManager.GetComponentInChildren<WeaponSlotManager>().mainArmedWeapon.SetActive(false);
         playerManager.Rest();
     }
+
+    public void GameSlowDown(float slowRate = 0.4f)  
+    {
+        Time.timeScale = slowRate;
+    }
+
     void GamePause() 
     {
         Time.timeScale = 0;
