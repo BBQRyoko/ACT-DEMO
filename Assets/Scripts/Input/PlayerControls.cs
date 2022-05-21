@@ -648,16 +648,39 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
             ""id"": ""eb5d7998-541f-45c3-9563-19b8c8731391"",
             ""actions"": [
                 {
-                    ""name"": ""Backpack"",
+                    ""name"": ""Cancel"",
                     ""type"": ""Button"",
-                    ""id"": ""68bc58b3-ad9c-4a4c-b1f3-54bcc8fd48fc"",
+                    ""id"": ""68cd543b-bea5-4408-ae6a-683c513afe19"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 }
             ],
-            ""bindings"": []
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""fe744440-257a-4db5-93ce-46578091ad3a"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9420e85d-4d0e-4617-a3eb-97ef932ee4a6"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -685,7 +708,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_PlayerActions_BaGuaSelection = m_PlayerActions.FindAction("BaGuaSelection", throwIfNotFound: true);
         // UIActions
         m_UIActions = asset.FindActionMap("UIActions", throwIfNotFound: true);
-        m_UIActions_Backpack = m_UIActions.FindAction("Backpack", throwIfNotFound: true);
+        m_UIActions_Cancel = m_UIActions.FindAction("Cancel", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -931,12 +954,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     // UIActions
     private readonly InputActionMap m_UIActions;
     private IUIActionsActions m_UIActionsActionsCallbackInterface;
-    private readonly InputAction m_UIActions_Backpack;
+    private readonly InputAction m_UIActions_Cancel;
     public struct UIActionsActions
     {
         private @PlayerControls m_Wrapper;
         public UIActionsActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Backpack => m_Wrapper.m_UIActions_Backpack;
+        public InputAction @Cancel => m_Wrapper.m_UIActions_Cancel;
         public InputActionMap Get() { return m_Wrapper.m_UIActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -946,16 +969,16 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_UIActionsActionsCallbackInterface != null)
             {
-                @Backpack.started -= m_Wrapper.m_UIActionsActionsCallbackInterface.OnBackpack;
-                @Backpack.performed -= m_Wrapper.m_UIActionsActionsCallbackInterface.OnBackpack;
-                @Backpack.canceled -= m_Wrapper.m_UIActionsActionsCallbackInterface.OnBackpack;
+                @Cancel.started -= m_Wrapper.m_UIActionsActionsCallbackInterface.OnCancel;
+                @Cancel.performed -= m_Wrapper.m_UIActionsActionsCallbackInterface.OnCancel;
+                @Cancel.canceled -= m_Wrapper.m_UIActionsActionsCallbackInterface.OnCancel;
             }
             m_Wrapper.m_UIActionsActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Backpack.started += instance.OnBackpack;
-                @Backpack.performed += instance.OnBackpack;
-                @Backpack.canceled += instance.OnBackpack;
+                @Cancel.started += instance.OnCancel;
+                @Cancel.performed += instance.OnCancel;
+                @Cancel.canceled += instance.OnCancel;
             }
         }
     }
@@ -985,6 +1008,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     }
     public interface IUIActionsActions
     {
-        void OnBackpack(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
     }
 }

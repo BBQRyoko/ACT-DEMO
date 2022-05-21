@@ -626,16 +626,39 @@
             "id": "eb5d7998-541f-45c3-9563-19b8c8731391",
             "actions": [
                 {
-                    "name": "Backpack",
+                    "name": "Cancel",
                     "type": "Button",
-                    "id": "68bc58b3-ad9c-4a4c-b1f3-54bcc8fd48fc",
+                    "id": "68cd543b-bea5-4408-ae6a-683c513afe19",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 }
             ],
-            "bindings": []
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "fe744440-257a-4db5-93ce-46578091ad3a",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9420e85d-4d0e-4617-a3eb-97ef932ee4a6",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

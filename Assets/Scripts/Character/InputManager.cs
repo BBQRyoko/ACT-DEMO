@@ -55,6 +55,9 @@ public class InputManager : MonoBehaviour
     public bool page_Up_Input;
     public bool page_Down_Input;
 
+    //UI
+    public bool cancel_Input;
+
     private void Awake()
     {
         playerManager = GetComponent<PlayerManager>();
@@ -113,7 +116,7 @@ public class InputManager : MonoBehaviour
             playerControls.PlayerActions.BaGuaSystem.canceled += i => baGua_Input = false;
 
             //UI操作
-            playerControls.UIActions.Backpack.performed += i => UIManager.OpenOrCloseUIForm("BackpackForm", playerInventory.items);
+            playerControls.UIActions.Cancel.performed += i => cancel_Input = true;
         }
         playerControls.Enable();
     }
