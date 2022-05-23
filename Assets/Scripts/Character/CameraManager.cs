@@ -42,6 +42,9 @@ public class CameraManager : MonoBehaviour
     //警觉系统
     public EnemyFillingUI enemyFillingUI;
 
+    //互动提示
+    public InteractPromptUI interactPrompt;
+
     //锁定系统
     public LayerMask visionBlockLayer;
     public Transform currentLockOnTarget;
@@ -384,6 +387,11 @@ public class CameraManager : MonoBehaviour
             var healthBar = Instantiate(enemyHealthUI, mainCanvas.transform);
             healthBar.SetEnemyManager(enemyManager);
         }
+    }
+    public void GenerateInteractPrompt(InteractSystem interact)
+    {
+        var promptUp = Instantiate(interactPrompt, mainCanvas.transform);
+        promptUp.SetInteractObject(interact);
     }
     public void ClearLockOnTargets() 
     {

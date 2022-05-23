@@ -367,9 +367,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e1d8eb7a3fa43f4e8b68f1759bdbd52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerManager: {fileID: 0}
   interactPrompt: {fileID: 5458935810133245485}
   promptOn: 0
+  curInteractTime: 0
+  defaultInteractTime: 0.75
   weaponInfoIndex: 2
   weaponItemInfo: {fileID: 11400000, guid: eed90a0ffde857d4295b675b74041f49, type: 2}
   weaponList:

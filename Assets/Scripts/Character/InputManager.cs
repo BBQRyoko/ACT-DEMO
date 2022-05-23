@@ -89,7 +89,7 @@ public class InputManager : MonoBehaviour
             playerControls.PlayerActions.Crouch.canceled += i => crouch_Input = false;
 
             playerControls.PlayerActions.Interact.performed += i => interact_Input = true;
-
+            playerControls.PlayerActions.Interact.canceled += i => interact_Input = false;
 
             //攻击输入
             playerControls.PlayerActions.RegularAttack.performed += i => reAttack_Input = true;
@@ -225,7 +225,6 @@ public class InputManager : MonoBehaviour
         {
             if (playerManager.inInteractTrigger && !playerManager.isInteracting)
             {
-                animatorManager.PlayTargetAnimation("Interact", true, false);
                 playerManager.interactObject = true;
             }
         }

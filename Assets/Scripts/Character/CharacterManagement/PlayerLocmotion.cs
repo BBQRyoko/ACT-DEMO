@@ -140,24 +140,25 @@ public class PlayerLocmotion : MonoBehaviour
             moveDirection += cameraObject.right * inputManager.horizontalInput;
             moveDirection.Normalize();
         }
-        //else 
-        //{
-        //    Vector3 forwardDir = gameObject.transform.forward;
-        //    Vector3 cameraDir = gameObject.transform.position - cameraObject.transform.position;
-        //    forwardDir.Normalize();
-        //    cameraDir.Normalize();
+        else
+        {
+            Vector3 forwardDir = gameObject.transform.forward;
+            Vector3 cameraDir = gameObject.transform.position - cameraObject.transform.position;
+            forwardDir.Normalize();
+            cameraDir.Normalize();
 
-        //    if (cameraDir.z * forwardDir.z > 0)
-        //    {
-        //        moveDirection = playerManager.hangDirection * inputManager.horizontalInput;
-        //        moveDirection.Normalize();
-        //    }
-        //    else 
-        //    {
-        //        moveDirection = (-1) * playerManager.hangDirection * inputManager.horizontalInput;
-        //        moveDirection.Normalize();
-        //    }
-        //}
+            if (cameraDir.z * forwardDir.z > 0)
+            {
+                moveDirection = playerManager.hangDirection * inputManager.horizontalInput;
+                moveDirection.Normalize();
+            }
+            else
+            {
+                moveDirection = (-1) * playerManager.hangDirection * inputManager.horizontalInput;
+                moveDirection.Normalize();
+            }
+        }
+
         if (playerManager.isClimbing)
         {
             moveDirection = playerManager.climbDirection * inputManager.verticalInput;

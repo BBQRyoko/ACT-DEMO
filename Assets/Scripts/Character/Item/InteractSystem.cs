@@ -5,40 +5,54 @@ using UnityEngine;
 public class InteractSystem : MonoBehaviour
 {
     CameraManager cameraManager;
-    [SerializeField] PlayerManager playerManager;
-    public GameObject interactPrompt;
+    PlayerManager playerManager;
+
     public bool promptOn;
+
+    public float curInteractTime;
+    public float defaultInteractTime;
+
     // Start is called before the first frame update
     void Awake()
     {
+        cameraManager = FindObjectOfType<CameraManager>();
         playerManager = FindObjectOfType<PlayerManager>();
     }
     // Update is called once per frame
     void Update()
     {
+        InputManager inputManager = playerManager.GetComponent<InputManager>();
+
         if (promptOn)
         {
-            interactPrompt.SetActive(true);
-            if (playerManager.interactObject)
+            if (inputManager.interact_Input)
             {
-                Interact();
-                playerManager.interactObject = false;
+                curInteractTime += Time.deltaTime;
+                if (curInteractTime >= defaultInteractTime)
+                {
+                    Interact();
+                }
             }
-        }
-        else
-        {
-            interactPrompt.SetActive(false);
+            else 
+            {
+                if(curInteractTime>0) curInteractTime -= Time.deltaTime;
+            }
         }
     }
 
-    private void HandleInteractUI() 
+    public void HandleInteractUI(InteractSystem interact) 
     {
-    
+        if (!promptOn)
+        {
+            cameraManager.GenerateInteractPrompt(interact);
+            promptOn = true;
+        }
     }
     public virtual void Interact() 
     {
         promptOn = false;
         playerManager.interactObject = false;
+        curInteractTime = 0;
     }
 
     public virtual void OnTriggerEnter(Collider other)
@@ -46,7 +60,7 @@ public class InteractSystem : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             other.GetComponent<PlayerManager>().inInteractTrigger = true;
-            promptOn = true;
+            HandleInteractUI(this);
         }
     }
 

@@ -367,12 +367,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e1d8eb7a3fa43f4e8b68f1759bdbd52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerManager: {fileID: 0}
   interactPrompt: {fileID: 5371581890437356622}
   promptOn: 0
-  curItemType: 1
+  curInteractTime: 0
+  defaultInteractTime: 0.75
+  weaponInfoIndex: 0
   weaponItemInfo: {fileID: 11400000, guid: 1765f0767a832ac41bb3aabfe48b9d91, type: 2}
-  weaponList: {fileID: 0}
+  weaponList:
+  - {fileID: 0}
+  weaponPrefabs: []
 --- !u!1 &5371581890437356622
 GameObject:
   m_ObjectHideFlags: 0

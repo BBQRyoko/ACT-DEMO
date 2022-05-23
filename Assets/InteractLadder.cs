@@ -62,7 +62,7 @@ public class InteractLadder : InteractSystem
                 if (!playerManager.isClimbing)
                 {
                     other.GetComponent<PlayerManager>().inInteractTrigger = true;
-                    promptOn = true;
+                    HandleInteractUI(this);
                 }
                 else
                 {
