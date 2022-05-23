@@ -56,7 +56,7 @@ public class PlayerAttacker : MonoBehaviour
     public void HandleRegularAttack(WeaponItem weapon) //左键普攻
     {
         //使用指定武器信息中的普通攻击
-        if (!playerManager.cantBeInterrupted && playerManager.isGround && !playerManager.isGettingDamage && !playerManager.isHanging) 
+        if (!playerManager.cantBeInterrupted && playerManager.isGround && !playerManager.isGettingDamage && !playerManager.isHanging && !playerManager.isClimbing) 
         {
             playerLocmotion.HandleRotateTowardsTarger();
 
@@ -255,7 +255,7 @@ public class PlayerAttacker : MonoBehaviour
     }
     public void HandleHoldingAbility() 
     {
-        if (!playerManager.cantBeInterrupted && playerManager.isGround && !playerManager.isHolding && !playerManager.isHanging)
+        if (!playerManager.cantBeInterrupted && playerManager.isGround && !playerManager.isHolding && !playerManager.isHanging && !playerManager.isClimbing)
         {
             animatorManager.PlayTargetAnimation("HoldingAbility", true, true);
         }
@@ -309,21 +309,21 @@ public class PlayerAttacker : MonoBehaviour
     }
     void HoldingController() 
     {
-        if (playerInventory.curEquippedWeaponItem.Id == 2) //弓
-        {
-            if (playerManager.isHolding)
-            {
+        //if (playerInventory.curEquippedWeaponItem.Id == 2) //弓
+        //{
+        //    if (playerManager.isHolding)
+        //    {
 
-            }
-            else
-            {
+        //    }
+        //    else
+        //    {
 
-            }
-        }
-        else 
-        {
+        //    }
+        //}
+        //else 
+        //{
 
-        }
+        //}
     }
     void HandleAttackCharge() 
     {

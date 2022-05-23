@@ -13,6 +13,7 @@ public class InteractHangingRope : InteractSystem
     {
         playerManager = FindObjectOfType<PlayerManager>();
         hangingMoveDirection = new Vector3(destinationHangingPos.position.x - startPos.position.x, destinationHangingPos.position.y - startPos.position.y, destinationHangingPos.position.z - transform.position.z);
+        hangingMoveDirection.Normalize();
     }
 
     public override void Interact()

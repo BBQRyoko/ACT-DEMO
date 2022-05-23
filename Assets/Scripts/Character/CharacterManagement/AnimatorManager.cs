@@ -126,6 +126,18 @@ public class AnimatorManager : MainAnimatorManager
                 h = -6;
             }
         }
+        else if (playerManager.isClimbing)
+        {
+            h = 3;
+            if (horizontalMovement > 0)
+            {
+                v = 1f;
+            }
+            else if (horizontalMovement < 0)
+            {
+                v = -1f;
+            }
+        }
         else
         {
             if (horizontalMovement > 0 && horizontalMovement < 0.55f)
@@ -276,16 +288,16 @@ public class AnimatorManager : MainAnimatorManager
             rollDamager.DisableDamageCollider();
         }
     }
-    private void HangingCheck() 
+    private void ClimbCheck() 
     {
-        //if (playerManager.isHanging)
-        //{
-        //    playerManager.isHanging = false;
-        //}
-        //else 
-        //{
-        //    playerManager.isHanging = true;
-        //}
+        if (playerManager.isClimbing)
+        {
+            playerManager.isClimbing = false;
+        }
+        else
+        {
+            playerManager.isClimbing = true;
+        }
     }
     IEnumerator Pause(int dur) //播放器暂停
     {

@@ -81,7 +81,7 @@ public class EnemyAnimatorManager : MainAnimatorManager
     }
     private void MovingDuringAnimation(float movingForce)
     {
-        Vector3 dir = new Vector3(enemyManager.curTarget.transform.position.x - enemyManager.transform.position.x, enemyManager.curTarget.transform.position.y - enemyManager.transform.position.y, enemyManager.curTarget.transform.position.z - enemyManager.transform.position.z);
+        Vector3 dir = new Vector3(enemyManager.curTarget.transform.position.x - enemyManager.transform.position.x, 0f, enemyManager.curTarget.transform.position.z - enemyManager.transform.position.z);
         dir.Normalize();
         enemyManager.GetComponent<Rigidbody>().AddForce(dir * movingForce, ForceMode.Impulse);
     }

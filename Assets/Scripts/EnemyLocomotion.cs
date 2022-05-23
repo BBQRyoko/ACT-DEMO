@@ -22,7 +22,7 @@ public class EnemyLocomotion : MonoBehaviour
     private void Awake()
     {
         enemyManager = GetComponent<EnemyManager>();
-        enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
+        enemyAnimatorManager = GetComponentInChildren<EnemyAnimatorManager>();
         rigidbody = GetComponent<Rigidbody>();
     }
     private void Start()

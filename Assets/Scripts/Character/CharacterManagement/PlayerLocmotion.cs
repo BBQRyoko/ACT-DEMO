@@ -67,9 +67,6 @@ public class PlayerLocmotion : MonoBehaviour
     }
     public void HandleAllMovement()
     {
-        playerDireee = gameObject.transform.forward - cameraObject.transform.position;
-        playerDireee.Normalize();
-        if (!playerManager.isHanging) playerDireee.y = 0;
         HandleMovement();
         HandleRotation();
         HandleGravity();
@@ -83,10 +80,10 @@ public class PlayerLocmotion : MonoBehaviour
     }
     public void HandleGravity()
     {
-        if (playerManager.isHanging) 
+        if (playerManager.isHanging || playerManager.isClimbing)
         {
             return;
-        } 
+        }
 
         //重力相关的状态变化
         if (!playerManager.isGround) //当玩家不在地面上时
@@ -134,33 +131,39 @@ public class PlayerLocmotion : MonoBehaviour
         if (playerManager.isInteracting || playerManager.isAttacking || playerManager.isStunned)
             return;
 
+        float curSpeed = movementSpeed - 5 * (weaponSlotManager.weaponDamageCollider.weaponWeightRatio);
+
         //移动方向取决于相机的正面方向
-        if (!playerManager.isHanging)
+        if (!playerManager.isHanging && !playerManager.isClimbing)
         {
             moveDirection = cameraObject.forward * inputManager.verticalInput;
             moveDirection += cameraObject.right * inputManager.horizontalInput;
             moveDirection.Normalize();
         }
-        else 
+        //else 
+        //{
+        //    Vector3 forwardDir = gameObject.transform.forward;
+        //    Vector3 cameraDir = gameObject.transform.position - cameraObject.transform.position;
+        //    forwardDir.Normalize();
+        //    cameraDir.Normalize();
+
+        //    if (cameraDir.z * forwardDir.z > 0)
+        //    {
+        //        moveDirection = playerManager.hangDirection * inputManager.horizontalInput;
+        //        moveDirection.Normalize();
+        //    }
+        //    else 
+        //    {
+        //        moveDirection = (-1) * playerManager.hangDirection * inputManager.horizontalInput;
+        //        moveDirection.Normalize();
+        //    }
+        //}
+        if (playerManager.isClimbing)
         {
-            Vector3 forwardDir = gameObject.transform.forward;
-            Vector3 cameraDir = gameObject.transform.position - cameraObject.transform.position;
-            forwardDir.Normalize();
-            cameraDir.Normalize();
-
-            if (cameraDir.z * forwardDir.z > 0)
-            {
-                moveDirection = playerManager.hangDirection * inputManager.horizontalInput;
-                moveDirection.Normalize();
-            }
-            else 
-            {
-                moveDirection = (-1) * playerManager.hangDirection * inputManager.horizontalInput;
-                moveDirection.Normalize();
-            }
+            moveDirection = playerManager.climbDirection * inputManager.verticalInput;
+            moveDirection.Normalize();
         }
-
-        float curSpeed = movementSpeed - 5 * (weaponSlotManager.weaponDamageCollider.weaponWeightRatio);
+        
         if (playerManager.isSprinting)
         {
             if (playerManager.isCrouching)
@@ -176,7 +179,7 @@ public class PlayerLocmotion : MonoBehaviour
                 playerStats.CostStamina(15f * (1f + weaponSlotManager.weaponDamageCollider.weaponWeightRatio) * Time.deltaTime);
             }
         }
-        else if (playerManager.isCrouching || playerManager.isHolding || playerManager.isHanging)
+        else if (playerManager.isCrouching || playerManager.isHolding || playerManager.isHanging || playerManager.isClimbing)
         {
             curSpeed = crouchSpeed;
             moveDirection *= curSpeed;
@@ -202,14 +205,18 @@ public class PlayerLocmotion : MonoBehaviour
         else
         {
             movementVelocity.x = moveDirection.x;
-            if(playerManager.isHanging) movementVelocity.y = moveDirection.y;
+            if (playerManager.isHanging || playerManager.isClimbing) 
+            {
+                movementVelocity.y = moveDirection.y;
+            }
             movementVelocity.z = moveDirection.z;
         }
+
         rig.velocity = movementVelocity;
     }
     private void HandleRotation() //还可以优化
     {
-        if (playerManager.isInteracting || playerManager.isStunned || playerManager.isHanging)
+        if (playerManager.isInteracting || playerManager.isStunned || playerManager.isHanging || playerManager.isClimbing)
             return;
 
         if (playerManager.isAiming)
@@ -331,7 +338,7 @@ public class PlayerLocmotion : MonoBehaviour
     }
     private void HandleFallingAndLanding() //下落与落地相关
     {
-        if (playerManager.isHanging) return;
+        if (playerManager.isHanging || playerManager.isClimbing) return;
         //raycast和spherecast来检测是否在地上
         RaycastHit hit;
         Vector3 rayCastOrigin;
@@ -439,7 +446,7 @@ public class PlayerLocmotion : MonoBehaviour
         {
             if (playerManager.isAttacking) //攻击状态下
             {
-                if (playerManager.cantBeInterrupted || !playerManager.isGround || playerManager.isHanging)
+                if (playerManager.cantBeInterrupted || !playerManager.isGround || playerManager.isHanging || playerManager.isClimbing)
                     return;
 
                 //还可以优化：现在只有在玩家背对相机的情况下时才正常，其它方向翻滚方向会不精准
@@ -496,7 +503,7 @@ public class PlayerLocmotion : MonoBehaviour
             }
             else //非攻击状态下翻滚, 只有在非互动且站在地上的状态下才能翻滚
             {
-                if (playerManager.isInteracting || !playerManager.isGround || playerManager.isHanging)
+                if (playerManager.isInteracting || !playerManager.isGround || playerManager.isHanging || playerManager.isClimbing)
                     return;
 
                 if (!inputManager.lockOn_Flag) 

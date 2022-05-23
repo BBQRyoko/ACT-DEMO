@@ -144,7 +144,7 @@ public class InputManager : MonoBehaviour
     {
         movementInput.Normalize();
         if (!playerManager.isHanging) verticalInput = movementInput.y;
-        horizontalInput = movementInput.x;
+        if (!playerManager.isClimbing) horizontalInput = movementInput.x;
 
         cameraInput.Normalize();
         cameraInputY = cameraInput.y;

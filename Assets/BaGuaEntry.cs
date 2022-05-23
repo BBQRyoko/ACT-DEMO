@@ -8,18 +8,20 @@ using DG.Tweening;
 
 public class BaGuaEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    BaGuaManager baGuaManager;
+    [SerializeField] BaGuaManager baGuaManager;
     BaGuaPanel_UI BaGuaPanel_UI;
-    public bool isSelected;
-    public int bagua_Index;
+    public bool canBeSelected;
+    bool isSelected;
+    [SerializeField] int bagua_Index;
 
-    [SerializeField] RectTransform rect;
+    RectTransform rect;
     [SerializeField] GameObject unselectedBagua;
     [SerializeField] GameObject selectedBagua;
 
     private void Start()
     {
-        //rect = GetComponent<RectTransform>();
+        baGuaManager = FindObjectOfType<BaGuaManager>();
+        rect = GetComponent<RectTransform>();
     }
     private void Update()
     {
@@ -29,7 +31,6 @@ public class BaGuaEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             selectedBagua.SetActive(false);
         }
     }
-    //被选定时
     void BaGuaEntrySelected() 
     {
         unselectedBagua.SetActive(false);
@@ -37,21 +38,30 @@ public class BaGuaEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (!isSelected) 
+        if (!isSelected && canBeSelected) 
         {
             rect.DOComplete();
-            rect.DOScale(Vector3.one * 0.2f, 0.1f).SetEase(Ease.OutQuad);
-            isSelected = true;
+            rect.DOScale(Vector3.one * 1.2f, 0.1f).SetEase(Ease.OutQuad);
+            if (baGuaManager.baguasHolder.Count < baGuaManager.commandSlotNum) 
+            {
+                baGuaManager.AddBaguaCommand(bagua_Index);
+                isSelected = true;
+            }
+
         }
     }
-
     public void OnPointerExit(PointerEventData eventData)
     {
         if (isSelected)
         {
             rect.DOComplete();
-            rect.DOScale(Vector3.one * 0.15f, 0.1f).SetEase(Ease.OutQuad);
+            rect.DOScale(Vector3.one * 0.85f, 0.1f).SetEase(Ease.OutQuad);
             BaGuaEntrySelected();
+        }
+        else 
+        {
+            rect.DOComplete();
+            rect.DOScale(Vector3.one, 0.1f).SetEase(Ease.OutQuad);
         }
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class InteractSystem : MonoBehaviour
 {
+    CameraManager cameraManager;
     [SerializeField] PlayerManager playerManager;
     public GameObject interactPrompt;
     public bool promptOn;
@@ -29,13 +30,18 @@ public class InteractSystem : MonoBehaviour
             interactPrompt.SetActive(false);
         }
     }
+
+    private void HandleInteractUI() 
+    {
+    
+    }
     public virtual void Interact() 
     {
         promptOn = false;
         playerManager.interactObject = false;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public virtual void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
@@ -44,20 +50,7 @@ public class InteractSystem : MonoBehaviour
         }
     }
 
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    if (other.CompareTag("Player"))
-    //    {
-    //        other.GetComponent<PlayerManager>().inInteractTrigger = true;
-    //        promptOn = true;
-    //    }
-    //    else
-    //    {
-    //        promptOn = false;
-    //    }
-    //}
-
-    private void OnTriggerExit(Collider other)
+    public virtual void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {

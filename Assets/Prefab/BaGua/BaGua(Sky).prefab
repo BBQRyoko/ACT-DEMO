@@ -184,7 +184,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000003059797, y: -35}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1001541514640112731
@@ -200,8 +200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSelected: 0
-  bagua_Index: 0
-  rect: {fileID: 8520981796997405968}
+  bagua_Index: 3
   unselectedBagua: {fileID: 8520981796497288173}
   selectedBagua: {fileID: 8918302296149815211}
 --- !u!1 &8520981796997405969

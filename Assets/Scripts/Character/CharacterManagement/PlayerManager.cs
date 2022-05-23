@@ -32,6 +32,8 @@ public class PlayerManager : CharacterManager
     public bool isJumping; //跳跃上升阶段
     public bool isHanging;
     public Vector3 hangDirection;
+    public bool isClimbing;
+    public Vector3 climbDirection;
     public bool inInteractTrigger;
     public bool interactObject;
 
@@ -123,7 +125,7 @@ public class PlayerManager : CharacterManager
         else 
         {
             weaponSlotManager.mainWeapon_Unequipped.gameObject.SetActive(false);
-            if (isHanging)
+            if (isHanging || isClimbing)
             {
                 weaponSlotManager.mainArmedWeapon.SetActive(false);
             }
@@ -310,6 +312,19 @@ public class PlayerManager : CharacterManager
         {
             isHanging = false;
             animatorManager.PlayTargetAnimation("HangToIdle", true, true);
+        }
+    }
+    public void ClimbingController()
+    {
+        if (!isClimbing)
+        {
+            isClimbing = true;
+            animatorManager.PlayTargetAnimation("ClimbStart", true, true);
+        }
+        else
+        {
+            //isClimbing = false;
+            animatorManager.PlayTargetAnimation("ClimbToTop", true, true);
         }
     }
     public void PerfectTimer() 
