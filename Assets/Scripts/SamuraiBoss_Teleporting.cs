@@ -13,6 +13,7 @@ public class SamuraiBoss_Teleporting : MonoBehaviour
     public float dissolveValue;
     public bool dissolving;
     bool teleported;
+
     [SerializeField] GameObject leafWindVFX;
     [SerializeField] CombatStanceState CombatStanceState;
     // Start is called before the first frame update
@@ -21,14 +22,19 @@ public class SamuraiBoss_Teleporting : MonoBehaviour
         inputManager = FindObjectOfType<InputManager>();
         cameraManager = FindObjectOfType<CameraManager>();
         enemyManager = GetComponent<EnemyManager>();
-        dissolveMatrial.SetFloat("Dissolve", 0); //Default Vaule
+        dissolveMatrial.SetFloat("Dissolve", 1); //Default Vaule
     }
 
     void Update()
     {
         dissolveMatrial.SetFloat("Dissolve", dissolveValue);
 
-        if (CombatStanceState.distanceFromTarget <= 15 && CombatStanceState.distanceFromTarget >0) 
+        //if (CombatStanceState.distanceFromTarget <= 15 && CombatStanceState.distanceFromTarget >0) 
+        //{
+        //    TeleportStartEvent();
+        //}
+
+        if (enemyManager.GetComponent<EnemyStats>().currHealth <= 250)
         {
             TeleportStartEvent();
         }
@@ -44,7 +50,7 @@ public class SamuraiBoss_Teleporting : MonoBehaviour
 
         if (dissolving)
         {
-            if (dissolveValue < 1)
+            if (dissolveValue < 0.85f)
             {
                 dissolveValue += 0.35f * Time.deltaTime;
             }
@@ -63,16 +69,22 @@ public class SamuraiBoss_Teleporting : MonoBehaviour
         }
     }
 
-    void TeleportStartEvent() 
+    void TeleportStartEvent()
     {
         leafWindVFX.SetActive(true);
         dissolving = true;
+        if (dissolveValue <= 0) 
+        {
+            enemyManager.GetComponentInChildren<EnemyAnimatorManager>().PlayTargetAnimation("DodgeB(Medium)", true,true);
+            enemyManager.GetComponentInChildren<Animator>().SetTrigger("isTeleporting");
+        }
     }
 
     void TeleportingEvent() 
     {
         enemyManager.AutoLockOn();
         transform.position = teleportingPos.position;
+        enemyManager.GetComponent<EnemyStats>().currHealth = 500;
         leafWindVFX.SetActive(true);
         dissolving = false;
     }

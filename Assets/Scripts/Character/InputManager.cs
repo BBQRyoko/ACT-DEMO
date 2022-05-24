@@ -195,7 +195,7 @@ public class InputManager : MonoBehaviour
         }
         else
         {
-            if (playerManager.isHolding)
+            if (playerManager.isHolding && playerInventory.curEquippedWeaponItem.Id == 2)
             {
                 animatorManager.animator.SetTrigger("isHoldingCancel");
             }

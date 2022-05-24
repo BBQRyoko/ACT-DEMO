@@ -27,7 +27,7 @@ public class BaGuaManager : MonoBehaviour
 
     [Header("八卦技能相关")]
     [SerializeField] GameObject BaGuaZhen;
-    [SerializeField] Texture[] baguaRawImage;
+    public Texture[] baguaRawImage;
     public GameObject[] baguaGameobjectPrefabs;
 
     public int commandSlotNum = 2;

@@ -540,6 +540,9 @@ public class PlayerLocmotion : MonoBehaviour
     }
     public void HandleCrouch() 
     {
+        if (playerManager.isInteracting || !playerManager.isGround || playerManager.isHanging || playerManager.isClimbing)
+            return;
+
         if (playerManager.isCrouching)
         {
             playerManager.isCrouching = false;

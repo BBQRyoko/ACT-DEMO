@@ -9,7 +9,8 @@ using DG.Tweening;
 public class BaGuaEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] BaGuaManager baGuaManager;
-    BaGuaPanel_UI BaGuaPanel_UI;
+    BaGuaPanel_UI baGuaPanel_UI;
+
     public bool canBeSelected;
     bool isSelected;
     [SerializeField] int bagua_Index;
@@ -20,12 +21,13 @@ public class BaGuaEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     private void Start()
     {
+        baGuaPanel_UI = FindObjectOfType<BaGuaPanel_UI>();
         baGuaManager = FindObjectOfType<BaGuaManager>();
         rect = GetComponent<RectTransform>();
     }
     private void Update()
     {
-        if(!isSelected)
+        if (!isSelected)
         {
             unselectedBagua.SetActive(true);
             selectedBagua.SetActive(false);
@@ -46,8 +48,17 @@ public class BaGuaEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             {
                 baGuaManager.AddBaguaCommand(bagua_Index);
                 isSelected = true;
+                baGuaPanel_UI.CommandFilling(bagua_Index);
+                for (int i = 0; i < baGuaPanel_UI.commandSlotList.Count; i++)
+                {
+                    if (!baGuaPanel_UI.commandSlotList[i].commandSelected)
+                    {
+                        Color32 color = unselectedBagua.GetComponent<RawImage>().color;
+                        baGuaPanel_UI.commandSlotList[i].CommandFilling(color);
+                        return;
+                    }
+                }
             }
-
         }
     }
     public void OnPointerExit(PointerEventData eventData)

@@ -254,6 +254,11 @@ public class PlayerManager : CharacterManager
     {
         if (isDefending)
         {
+            PlayerInventory playerInventory = GetComponent<PlayerInventory>();
+            if (playerInventory.curEquippedWeaponItem.Id == 0) 
+            {
+                animator.SetBool("isInteracting", true);
+            }
             parryCollider.EnableParryCollider();
         }
         else 
@@ -277,7 +282,6 @@ public class PlayerManager : CharacterManager
             //animatorManager.PlayTargetAnimation("Defend(Broken)", true, true);
             animator.SetTrigger("isDefendFailed");
             animatorManager.animator.SetBool("isDefending", false);
-            inputManager.weaponAbility_Input = false;
         }
     }
     private void HoldingAction() //按键保持

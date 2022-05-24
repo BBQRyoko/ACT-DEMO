@@ -6,6 +6,7 @@ public class AnimatorManager : MainAnimatorManager
 {
     PlayerManager playerManager;
     PlayerLocmotion playerLocmotion;
+    PlayerInventory playerInventory;
     public PlayerAttacker playerAttacker;
     public AudioSource attackAudio;
     public AudioSource generalAudio;
@@ -31,6 +32,7 @@ public class AnimatorManager : MainAnimatorManager
         animator = GetComponent<Animator>();
         playerManager = GetComponentInParent<PlayerManager>();
         playerLocmotion = GetComponentInParent<PlayerLocmotion>();
+        playerInventory = GetComponentInParent<PlayerInventory>();
         playerAttacker = GetComponentInParent<PlayerAttacker>();
         horizontal = Animator.StringToHash("Horizontal");
         vertical = Animator.StringToHash("Vertical");
@@ -90,6 +92,8 @@ public class AnimatorManager : MainAnimatorManager
         }
         else if (playerManager.isHolding)
         {
+            if (playerInventory.curEquippedWeaponItem.Id == 0) return;
+
             if (horizontalMovement > 0 && horizontalMovement < 0.55f)
             {
                 h = 3.5f;
@@ -128,7 +132,7 @@ public class AnimatorManager : MainAnimatorManager
         }
         else if (playerManager.isClimbing)
         {
-            h = 3;
+            h = 5;
             if (horizontalMovement > 0)
             {
                 v = 1f;

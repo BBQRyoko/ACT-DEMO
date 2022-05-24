@@ -56,7 +56,7 @@ public class PlayerAttacker : MonoBehaviour
     public void HandleRegularAttack(WeaponItem weapon) //左键普攻
     {
         //使用指定武器信息中的普通攻击
-        if (!playerManager.cantBeInterrupted && playerManager.isGround && !playerManager.isGettingDamage && !playerManager.isHanging && !playerManager.isClimbing) 
+        if (!playerManager.cantBeInterrupted && playerManager.isGround && !playerManager.isGettingDamage && !playerManager.isHanging && !playerManager.isClimbing)
         {
             playerLocmotion.HandleRotateTowardsTarger();
 
@@ -95,14 +95,14 @@ public class PlayerAttacker : MonoBehaviour
                 executionTarget = null;
             }
             //普通攻击
-            else 
+            else
             {
                 playerManager.isCrouching = false;
                 if (playerManager.isSprinting)
                 {
                     comboCount = 0;
                     comboCount++;
-                    if (playerManager.GetComponent<PlayerStats>().currStamina >= weapon.springAttack[0].staminaCost - 15f && !playerManager.cantBeInterrupted) 
+                    if (playerManager.GetComponent<PlayerStats>().currStamina >= weapon.springAttack[0].staminaCost - 15f && !playerManager.cantBeInterrupted)
                     {
                         playerManager.cantBeInterrupted = true;
                         animatorManager.animator.SetBool("isAttacking", true);
@@ -118,7 +118,7 @@ public class PlayerAttacker : MonoBehaviour
                         playerManager.isImmuAttack = weapon.springAttack[0].isImmuAttack;
                     }
                 }
-                else 
+                else
                 {
                     comboCount++;
                     if (comboCount > weapon.regularSkills.Length)
@@ -144,7 +144,7 @@ public class PlayerAttacker : MonoBehaviour
                             weaponSlotManager.playerArrowFlyObj.m_MaxSpeed = weapon.regularSkills[comboCount - 1].maxSpeed;
 
                         }
-                        else 
+                        else
                         {
                             weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint;
                             weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint;
@@ -199,15 +199,18 @@ public class PlayerAttacker : MonoBehaviour
         }
         //rig.velocity = new Vector3(0, rig.velocity.y, 0);
     } //重攻击
-    public void HandleWeaponAbility(WeaponItem weapon) 
+    public void HandleWeaponAbility(WeaponItem weapon)
     {
+        if (playerManager.isInteracting || !playerManager.isGround || playerManager.isHanging || playerManager.isClimbing) return;
         if (playerInventory.curEquippedWeaponItem.Id == 0) //大剑
         {
             HandleHoldingAbility();
+            animatorManager.animator.SetBool("isDefending", playerManager.isHolding);
         }
         else if (playerInventory.curEquippedWeaponItem.Id == 1) //太刀
         {
             HandleHoldingAbility();
+            animatorManager.animator.SetBool("isDefending", playerManager.isHolding);
         }
         else if (playerInventory.curEquippedWeaponItem.Id == 2) //弓
         {
@@ -230,11 +233,17 @@ public class PlayerAttacker : MonoBehaviour
     {
         if (playerInventory.curEquippedWeaponItem.Id == 0) //大剑
         {
-            //HandleHoldingAbility();
+            if (playerManager.isHolding)
+            {
+                animatorManager.animator.SetTrigger("isHoldingCancel");
+            }
         }
         else if (playerInventory.curEquippedWeaponItem.Id == 1) //太刀
         {
-            //HandleHoldingAbility();
+            if (playerManager.isHolding)
+            {
+                animatorManager.animator.SetTrigger("isHoldingCancel");
+            }
         }
         else if (playerInventory.curEquippedWeaponItem.Id == 2) //弓
         {
