@@ -63,7 +63,7 @@ public class BaGuaManager : MonoBehaviour
     void Update()
     {
         YinYangControl();
-        EnergySourceControl();
+        //EnergySourceControl();
         BaguaPanelActive();
         BaguaAbilityController();
     }

@@ -221,17 +221,17 @@ public class PlayerManager : CharacterManager
             }
         }
 
-        if (taijiBuffDuration > 0)
-        {
-            taijiBuffDuration -= Time.deltaTime;
-            taijiDurationBar.SetCurrentTime(taijiBuffDuration);
-        }
-        else 
-        {
-            taijiBuffDuration = 0;
-            taijiDurationBar.SetCurrentTime(taijiBuffDuration);
-            taiji_Guage = 0;
-        }
+        //if (taijiBuffDuration > 0)
+        //{
+        //    taijiBuffDuration -= Time.deltaTime;
+        //    taijiDurationBar.SetCurrentTime(taijiBuffDuration);
+        //}
+        //else 
+        //{
+        //    taijiBuffDuration = 0;
+        //    taijiDurationBar.SetCurrentTime(taijiBuffDuration);
+        //    taiji_Guage = 0;
+        //}
     }
     public void HandleRangeAttack(int index)
     {

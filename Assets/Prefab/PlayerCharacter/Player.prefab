@@ -25628,7 +25628,7 @@ Transform:
   m_GameObject: {fileID: 6109019523432476899}
   m_LocalRotation: {x: -0, y: -0.009642657, z: 0, w: -0.99995357}
   m_LocalPosition: {x: -15.2, y: 5.6, z: 3.8}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.93812025, y: 0.93812, z: 0.9381203}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4759023120744746455}
@@ -25719,7 +25719,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   inAirTimer: 0
-  playerDireee: {x: 0, y: 0, z: 0}
   movementSpeed: 8
   inAirMovementSpeed: 4
   crouchSpeed: 2.5
@@ -25727,10 +25726,6 @@ MonoBehaviour:
   rotationSpeed: 5
   willRotateTowardsTarget: 0
   movementVelocity: {x: 0, y: 0, z: 0}
-  cameraForward: {x: 0, y: 0, z: 0}
-  playerForward: {x: 0, y: 0, z: 0}
-  dashDir: {x: 0, y: 0, z: 0}
-  distance: 0
   rollStaminaCost: 45
   characterCollider: {fileID: 7360149390415946156}
   characterColliderBlocker: {fileID: 5049088434509090380}
@@ -25767,6 +25762,10 @@ MonoBehaviour:
   isSprinting: 0
   isRolling: 0
   isJumping: 0
+  isHanging: 0
+  hangDirection: {x: 0, y: 0, z: 0}
+  isClimbing: 0
+  climbDirection: {x: 0, y: 0, z: 0}
   inInteractTrigger: 0
   interactObject: 0
   keyNum: 0
@@ -25833,10 +25832,13 @@ MonoBehaviour:
   weaponAbility_Input: 0
   ultimateAbility_Input: 0
   baGua_Input: 0
+  baguaInputX: 0
+  baguaInputY: 0
   lockOn_Input: 0
   lockOn_Flag: 0
   page_Up_Input: 0
   page_Down_Input: 0
+  cancel_Input: 0
 --- !u!114 &5196684512948567013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25891,14 +25893,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a17fca660ccba3498d6bc53a583ee20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BaGuaZhen: {fileID: 0}
   commandHolder: 
-  commandString: 
   curPiviot: 0
+  curPos: {x: 0, y: 0}
+  realPiviot: {fileID: 0}
   curYin: 0
   yinChargeSlot: {fileID: 0}
   curYang: 0
   yangChargeSlot: {fileID: 0}
+  BaGuaZhen: {fileID: 0}
+  baguaRawImage:
+  - {fileID: 2800000, guid: 0f1ed8b0362e42e4785054e13e370adf, type: 3}
+  - {fileID: 2800000, guid: 64db1d76a20b2f449a7148ed38d799e8, type: 3}
+  - {fileID: 2800000, guid: 6d0f8cb8d7789b14e95afd4edca1102e, type: 3}
+  - {fileID: 2800000, guid: 04056fda9962fc142b76824e274814bd, type: 3}
+  - {fileID: 2800000, guid: 0e929670dabc4c546924cbce9960a8e0, type: 3}
+  - {fileID: 2800000, guid: 8fa2c6e56945e9b46b3f6ff5a612cf36, type: 3}
+  - {fileID: 2800000, guid: f43576b2e947e6044a64f8e5551906f7, type: 3}
+  - {fileID: 2800000, guid: e7af76a5923437848827dcf6926ac40d, type: 3}
+  baguaGameobjectPrefabs:
+  - {fileID: 8520981796518027668, guid: 725dfdef622120e4fb734701407b855b, type: 3}
+  - {fileID: 3494617080309871849, guid: 6b65c882cccf86a479218a3e50959f0f, type: 3}
+  - {fileID: 8175933870081185674, guid: 907db6231a94d8b41b79fe3cd292303a, type: 3}
+  commandSlotNum: 3
+  baguasHolder: 
+  baguaCharacterPrefab: {fileID: 8754457275134851669, guid: 04235589d77e04a4db16da36b8023ba2, type: 3}
+  baguaCharacterPosHolder: {fileID: 0}
   energyGuage: 3
   curEnergyCharge: 0
   energyChargeSlot: {fileID: 0}
@@ -25906,24 +25926,6 @@ MonoBehaviour:
   energyGuage_2: {fileID: 0}
   energyGuage_3: {fileID: 0}
   liCover: {fileID: 0}
-  curPos: {x: 0, y: 0}
-  realPiviot: {fileID: 0}
-  BaGuaText:
-  - {fileID: 3313241132496346009, guid: c53eaf275145138439aaf08097dc2c50, type: 3}
-  - {fileID: 3313241132496346009, guid: b04e8737b91a72845a49edab2ea276bb, type: 3}
-  - {fileID: 3313241132496346009, guid: 1a80e0a163c77f94ca7251d992101ea9, type: 3}
-  - {fileID: 3313241132496346009, guid: a2b28c8aa35f9364f9c6917a56b0e101, type: 3}
-  - {fileID: 3313241132496346009, guid: 79dbee28e16e4dd468c21841fd889156, type: 3}
-  - {fileID: 3313241132496346009, guid: bd08730649ecbe64c9cc3e5b90602567, type: 3}
-  - {fileID: 3313241132496346009, guid: dd1ca60e2eb94674793770a1dcdf87f3, type: 3}
-  - {fileID: 3313241132496346009, guid: 82443950678bf4949ae7f7cde374bb11, type: 3}
-  spawnPos: {fileID: 8736580745012671665}
-  spawnTimer: 0
-  isCommandActive: 0
-  healUnlock: 1
-  fireBallUnlock: 1
-  immuUnlock: 0
-  forthUnlock_Temp: 0
   fireballCheatSheet: {fileID: 0}
 --- !u!114 &1707406399
 MonoBehaviour:
@@ -26457,7 +26459,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 198039007017535102, guid: 5c4a7b97a64ea954d9090774571b44c8, type: 3}
       propertyPath: startDelay.scalar
-      value: 0.75
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198312521323402972, guid: 5c4a7b97a64ea954d9090774571b44c8, type: 3}
       propertyPath: looping
@@ -26473,7 +26475,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 198312521323402972, guid: 5c4a7b97a64ea954d9090774571b44c8, type: 3}
       propertyPath: startDelay.scalar
-      value: 0.75
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198708696920323314, guid: 5c4a7b97a64ea954d9090774571b44c8, type: 3}
       propertyPath: looping
@@ -26489,7 +26491,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 198708696920323314, guid: 5c4a7b97a64ea954d9090774571b44c8, type: 3}
       propertyPath: startDelay.scalar
-      value: 0.75
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198966081219683314, guid: 5c4a7b97a64ea954d9090774571b44c8, type: 3}
       propertyPath: looping
@@ -26505,7 +26507,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 198966081219683314, guid: 5c4a7b97a64ea954d9090774571b44c8, type: 3}
       propertyPath: startDelay.scalar
-      value: 0.75
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 199019269036829872, guid: 5c4a7b97a64ea954d9090774571b44c8, type: 3}
       propertyPath: m_Materials.Array.size
@@ -27597,7 +27599,7 @@ PrefabInstance:
     - target: {fileID: 95357365693442044, guid: d47d5ac7dfc19da419169847c76d638b, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 07f58fb259bb2d74abc47b4466df95fe, type: 2}
+      objectReference: {fileID: 9100000, guid: 3b62c84dd2f00da4488051c514b620ad, type: 2}
     - target: {fileID: 95357365693442044, guid: d47d5ac7dfc19da419169847c76d638b, type: 3}
       propertyPath: m_CullingMode
       value: 0
