@@ -37,6 +37,9 @@ public class BaGuaManager : MonoBehaviour
     string commandString;
     bool isCommandActive;
 
+    [Header("技能buff相关")]
+    [SerializeField] List<GameObject> buffList = new List<GameObject>();
+
     [Header("能量相关")]
     public int energyGuage;
     public float curEnergyCharge;
@@ -220,26 +223,14 @@ public class BaGuaManager : MonoBehaviour
             }
             else if (commandString == "27" || commandString == "72") //风buff
             {
-                sample_VFX_Ability.curVFX_List[1].Play();
-                if (playerStats.currHealth >= playerStats.maxHealth)
-                {
-                    playerStats.currHealth = playerStats.maxHealth;
-                }
-                playerStats.healthBar.SetCurrentHealth(playerStats.currHealth);
-                energyGuage -= 1;
+                Instantiate(buffList[1], transform, false);
                 animatorManager.generalAudio.volume = 0.08f;
                 animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[1];
                 animatorManager.generalAudio.Play();
             }
             else if (commandString == "02" || commandString == "20") //火buff
             {
-                sample_VFX_Ability.curVFX_List[2].Play();
-                if (playerStats.currHealth >= playerStats.maxHealth)
-                {
-                    playerStats.currHealth = playerStats.maxHealth;
-                }
-                playerStats.healthBar.SetCurrentHealth(playerStats.currHealth);
-                energyGuage -= 1;
+                Instantiate(buffList[0], transform, false);
                 animatorManager.generalAudio.volume = 0.08f;
                 animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[1];
                 animatorManager.generalAudio.Play();

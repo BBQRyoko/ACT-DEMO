@@ -131,7 +131,7 @@ public class PlayerLocmotion : MonoBehaviour
         if (playerManager.isInteracting || playerManager.isAttacking || playerManager.isStunned)
             return;
 
-        float curSpeed = movementSpeed - 5 * (weaponSlotManager.weaponDamageCollider.weaponWeightRatio);
+        float curSpeed = (movementSpeed - 5 * (weaponSlotManager.weaponDamageCollider.weaponWeightRatio))* (1 + playerStats.movementBuffRatio);
 
         //移动方向取决于相机的正面方向
         if (!playerManager.isHanging && !playerManager.isClimbing)

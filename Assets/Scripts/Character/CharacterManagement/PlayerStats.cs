@@ -13,6 +13,11 @@ public class PlayerStats : CharacterStats
     AnimatorManager animatorManager;
     WeaponSlotManager weaponSlotManager;
 
+    [Header("数值buff类参数")]
+    public float attackBuffRatio = 0;
+    public float defendBuffRatio = 0;
+    public float movementBuffRatio = 0;
+
     [SerializeField] Transform regularPos;
     [SerializeField] Transform crouchPos;
 
