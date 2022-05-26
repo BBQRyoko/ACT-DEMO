@@ -21,7 +21,6 @@ public class EnemyManager : CharacterManager
 
     [Header("OtherParameter")]
     public Transform targetMarkTransform;
-    [SerializeField] Transform beTargetedPos;
     public Rigidbody enemyRig;
     public CapsuleCollider collider_Self;
     public CapsuleCollider collider_Combat;
@@ -286,7 +285,7 @@ public class EnemyManager : CharacterManager
         var obj = Instantiate(arrow, transform, false);
         obj.transform.SetParent(null);
         obj.gameObject.SetActive(true);
-        obj.StartFlyingObj(target, false, beTargetedPos);
+        obj.StartFlyingObj(target, false, targetMarkTransform);
     }
     public void HandleRangeAttack2() //龙卷
     {

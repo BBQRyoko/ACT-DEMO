@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class ProjectileDamager : MonoBehaviour
 {
-    [SerializeField] bool isToronado;
+    [SerializeField] TornadoHazard tornadoHazard;
     FlyingObj curFlyingObj;
-    [SerializeField] Transform coveredPlayer;
-    public bool isHeavy;
+    public Transform coveredPlayer;
     public bool isPlayerDamage;
+    public bool isHeavy;
     public int curDamage = 10;
     public int staminaDamage;
     public float energyRestoreAmount = 20;
@@ -17,6 +17,7 @@ public class ProjectileDamager : MonoBehaviour
 
     private void Awake()
     {
+        tornadoHazard = GetComponent<TornadoHazard>();
         if (!transform.parent)
         {
             curFlyingObj = GetComponent<FlyingObj>();
@@ -41,6 +42,7 @@ public class ProjectileDamager : MonoBehaviour
             PlayerLocmotion playerLocmotion = coveredCharacter.GetComponent<PlayerLocmotion>();
             playerManager.isStunned = true;
             playerManager.isToronadoCovered = true;
+            tornadoHazard.TornadoLifeCheck();
             coveredPlayer = coveredCharacter;
             coveredCharacter.transform.position = transform.position;
             coveredCharacter.transform.rotation = transform.rotation;
@@ -52,7 +54,7 @@ public class ProjectileDamager : MonoBehaviour
             ProjectileDestroy();
         }
     }
-    void ProjectileDestroy() 
+    public void ProjectileDestroy() 
     {
         if (coveredPlayer) //如果玩家在其中就将玩家弹出
         {
@@ -74,7 +76,6 @@ public class ProjectileDamager : MonoBehaviour
             }
         }
     }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == 8) //碰到场景障碍后消失
@@ -87,7 +88,7 @@ public class ProjectileDamager : MonoBehaviour
             PlayerStats playerStats = other.GetComponent<PlayerStats>();
             ParryCollider parryCollider = other.GetComponent<ParryCollider>();
 
-            if (isToronado && playerStats) //龙卷check, 如果是龙卷碰到玩家就会无视防御
+            if (tornadoHazard && playerStats) //龙卷check, 如果是龙卷碰到玩家就会无视防御
             {
                 ToronadoCheck(playerStats.transform);
             }

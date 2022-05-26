@@ -215,8 +215,16 @@ public class PlayerManager : CharacterManager
 
         if (isStunned && !isToronadoCovered)
         {
-            stunTimer += Time.deltaTime;
-            if (stunTimer >= 2)
+            if (!isFalling)
+            {
+                stunTimer += Time.deltaTime;
+                if (stunTimer >= 1)
+                {
+                    isStunned = false;
+                    stunTimer = 0;
+                }
+            }
+            else 
             {
                 isStunned = false;
                 stunTimer = 0;

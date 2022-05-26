@@ -347,15 +347,6 @@ public class PlayerAttacker : MonoBehaviour
             taijiAttack = true;
         }
     }
-    public void HoldingStatus() 
-    {
-        //if (!inputManager.weaponAbility_Input && playerManager.isHolding) 
-        //{
-        //    animatorManager.animator.SetBool("isHolding", false);
-        //    playerManager.cantBeInterrupted = false;
-        //    //animatorManager.PlayTargetAnimation("WeaponAbility_01(End)", true, true);
-        //}
-    }
     void ExecutionHandler() 
     {
         if (executionTarget && !executionTarget.isDead && executionTarget.canBeExecuted)

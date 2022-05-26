@@ -88,8 +88,11 @@ public class PlayerLocmotion : MonoBehaviour
         //重力相关的状态变化
         if (!playerManager.isGround) //当玩家不在地面上时
         {
-            playerManager.isInteracting = false;
-            playerManager.isFalling = movementVelocity.y <= 0.0f || (!inputManager.jump_Input && jumpTakeEffectTimer >= 0.1f); //当y轴速度小于等于0时或者跳跃键松开时都进入下落
+            if (!playerManager.isToronadoCovered) 
+            {
+                playerManager.isInteracting = false;
+                playerManager.isFalling = movementVelocity.y <= 0.0f || (!inputManager.jump_Input && jumpTakeEffectTimer >= 0.1f); //当y轴速度小于等于0时或者跳跃键松开时都进入下落
+            }
         }
         else
         {
@@ -117,7 +120,7 @@ public class PlayerLocmotion : MonoBehaviour
 
             movementVelocity.y += gravity * Time.deltaTime;
         }
-        else if (!playerManager.isGround) //正常的跳跃状态时对玩家的重力作用, 对上升状态进行减速
+        else if (!playerManager.isGround && !playerManager.isToronadoCovered) //正常的跳跃状态时对玩家的重力作用, 对上升状态进行减速
         {
             float previousYVelocity = movementVelocity.y;
             float newYVelocity = movementVelocity.y + (gravity * Time.deltaTime);

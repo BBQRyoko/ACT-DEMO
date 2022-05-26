@@ -6,7 +6,28 @@ public class TornadoHazard : MonoBehaviour
 {
     FlyingObj deflectFlyingObj;
     [SerializeField] Transform shootPos;
+    ProjectileDamager curDamager;
+    [SerializeField] float defaultCoverDuration = 1.5f;
+    float coveredDuration;
 
+    private void Awake()
+    {
+        curDamager = GetComponent<ProjectileDamager>();
+    }
+    private void Update()
+    {
+        if (curDamager.coveredPlayer) 
+        {
+            if (coveredDuration > 0)
+            {
+                coveredDuration -= Time.deltaTime;
+            }
+            else
+            {
+                curDamager.ProjectileDestroy();
+            }
+        }
+    }
     //可以反弹攻击
     void DefelectFlyingObj(FlyingObj obj) 
     {
@@ -34,13 +55,15 @@ public class TornadoHazard : MonoBehaviour
         //然后获取其的TargetPos位置
         //反射过的无法再触发反射
     }
-
+    public void TornadoLifeCheck() 
+    {
+        coveredDuration += defaultCoverDuration;
+    }
     //可以吸收火焰
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("DarkKnight"))
         {
-            Debug.Log("123");
             other.GetComponentInChildren<EnemyAnimatorManager>().tornadoSlashEnhance = true;
             Destroy(transform.gameObject);
         }
