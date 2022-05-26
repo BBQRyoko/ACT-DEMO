@@ -25542,8 +25542,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curVFX_List:
   - {fileID: 198039006412040932}
-  - {fileID: 0}
-  - {fileID: 0}
   baGuaRelated_List:
   - {fileID: 3404033526067094782}
   - {fileID: 3404033525115246462}
@@ -25764,6 +25762,7 @@ MonoBehaviour:
   staminaRegenPause: 0
   hitRecover: 0
   damageAvoid: 0
+  beTargetedPos: {fileID: 5049088436313671705}
   parryCollider: {fileID: 793264062}
   generalAudio: {fileID: 5612485073730960237}
   sfxList: {fileID: 5049088435748660730}
@@ -25906,7 +25905,9 @@ MonoBehaviour:
   baguasHolder: 
   baguaCharacterPrefab: {fileID: 8754457275134851669, guid: 04235589d77e04a4db16da36b8023ba2, type: 3}
   baguaCharacterPosHolder: {fileID: 0}
-  buffList: []
+  buffList:
+  - {fileID: 2043619543306439085, guid: e8ec73dd0e07cac4f899b1a9529265e8, type: 3}
+  - {fileID: 6918438363871369049, guid: c8076069c2becb847b43a6a90904d225, type: 3}
   energyGuage: 3
   curEnergyCharge: 0
   energyChargeSlot: {fileID: 0}
@@ -26956,7 +26957,8 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 3
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1874493555207537699, guid: 7ed05f92fcc81f446a3652ca650ba3af, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7ed05f92fcc81f446a3652ca650ba3af, type: 3}
 --- !u!1 &3817907536678928882 stripped
 GameObject:
@@ -26979,6 +26981,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 3
+--- !u!114 &6016795428918380584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3817907536678928882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a86f74eb64817f94d97e2609a3d07970, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isToronado: 0
+  coveredPlayer: {fileID: 0}
+  isHeavy: 0
+  isPlayerDamage: 1
+  curDamage: 125
+  staminaDamage: 0
+  energyRestoreAmount: 20
+  chargeAmount: 20
+  hitFactor: 0.5
 --- !u!4 &5284138701228007152 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5284138699330138699, guid: 7ed05f92fcc81f446a3652ca650ba3af, type: 3}

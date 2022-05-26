@@ -21,6 +21,7 @@ public class EnemyManager : CharacterManager
 
     [Header("OtherParameter")]
     public Transform targetMarkTransform;
+    [SerializeField] Transform beTargetedPos;
     public Rigidbody enemyRig;
     public CapsuleCollider collider_Self;
     public CapsuleCollider collider_Combat;
@@ -280,19 +281,19 @@ public class EnemyManager : CharacterManager
             }
         }
     }
-    public void HandleRangeAttack()
+    public void HandleRangeAttack() //飞行道具
     {
         var obj = Instantiate(arrow, transform, false);
         obj.transform.SetParent(null);
         obj.gameObject.SetActive(true);
-        obj.StartFlyingObj(target);
+        obj.StartFlyingObj(target, false, beTargetedPos);
     }
-    public void HandleRangeAttack2()
+    public void HandleRangeAttack2() //龙卷
     {
         var obj = Instantiate(arrow2, transform, false);
         obj.transform.SetParent(null);
         obj.gameObject.SetActive(true);
-        obj.StartFlyingObj(target2);
+        obj.StartFlyingObj(target2, true);
     }
     void DefendCheck()
     {

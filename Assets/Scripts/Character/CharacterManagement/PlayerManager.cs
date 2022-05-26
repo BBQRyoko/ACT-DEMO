@@ -52,6 +52,7 @@ public class PlayerManager : CharacterManager
     public bool staminaRegenPause;
     public bool hitRecover;
     public bool damageAvoid;
+    [SerializeField] Transform beTargetedPos;
     [SerializeField] ParryCollider parryCollider;
     [SerializeField] AudioSource generalAudio;
     [SerializeField] Sample_SFX sfxList;
@@ -236,21 +237,21 @@ public class PlayerManager : CharacterManager
     }
     public void HandleRangeAttack(int index)
     {
-        if (index == 0)
+        if (index == 0) //弓箭
         {
             var obj = Instantiate(arrow, shoot_Pos, false);
             obj.transform.SetParent(null);
             obj.gameObject.SetActive(true);
-            obj.StartFlyingObj(shooting_Target);
+            obj.StartFlyingObj(shooting_Target, false, beTargetedPos);
         }
-        else if (index == 1) 
+        else if (index == 1) //火球
         {
             var obj = Instantiate(fireBall, shoot_Pos, false);
             obj.transform.SetParent(null);
             obj.gameObject.SetActive(true);
-            obj.StartFlyingObj(shooting_Target);
+            obj.StartFlyingObj(shooting_Target, false, beTargetedPos);
         }
-        else if (index == 2)
+        else if (index == 2) //龙卷
         {
             var obj = Instantiate(tornado, transform, false);
             obj.transform.SetParent(null);

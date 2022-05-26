@@ -33860,6 +33860,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45810cfd5e69ae845aba9239c7a756a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shooterPos: {fileID: 0}
+  defelected: 0
   darkKnightOnly: 0
   m_RotateSpeed: 120
   m_SlowDownSpeed: 2
@@ -33884,6 +33886,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64945e6f25e2e43458f34c97dc28ae8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shootPos: {fileID: 0}
 --- !u!114 &1147923186524531037
 MonoBehaviour:
   m_ObjectHideFlags: 0

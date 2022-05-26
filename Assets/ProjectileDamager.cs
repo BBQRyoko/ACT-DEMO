@@ -8,7 +8,7 @@ public class ProjectileDamager : MonoBehaviour
     FlyingObj curFlyingObj;
     [SerializeField] Transform coveredPlayer;
     public bool isHeavy;
-    [SerializeField] bool isPlayerDamage;
+    public bool isPlayerDamage;
     public int curDamage = 10;
     public int staminaDamage;
     public float energyRestoreAmount = 20;
@@ -26,7 +26,6 @@ public class ProjectileDamager : MonoBehaviour
             curFlyingObj = GetComponentInParent<FlyingObj>();
         }
     }
-
     private void Update()
     {
         if (coveredPlayer) //存在包裹的单位
@@ -34,7 +33,6 @@ public class ProjectileDamager : MonoBehaviour
             curFlyingObj.m_TraceTime = 0;
         }
     }
-
     void ToronadoCheck(Transform coveredCharacter) 
     {
         if (!coveredPlayer)
