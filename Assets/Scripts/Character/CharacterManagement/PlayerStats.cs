@@ -9,7 +9,6 @@ public class PlayerStats : CharacterStats
     PlayerInventory playerInventory;
     public HealthBar healthBar;
     public StaminaBar staminaBar;
-    public 
     PlayerAttacker playerAttacker;
     AnimatorManager animatorManager;
     WeaponSlotManager weaponSlotManager;

@@ -102,6 +102,8 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _QueueControl: 0
+    - _QueueOffset: 0
     - _SeparateEmission: 2
     - _SeparateFresnel: 0
     - _Sideopacity: 0

@@ -62,6 +62,8 @@ Material:
     - _Emission: 12
     - _Emissive: 1
     - _Opacity: 1
+    - _QueueControl: 0
+    - _QueueOffset: 0
     - _Usecenterglow: 0
     - _Usecustomrandom: 0
     - _Usedepth: 0

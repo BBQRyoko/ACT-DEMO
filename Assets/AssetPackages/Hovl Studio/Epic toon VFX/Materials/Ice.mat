@@ -47,6 +47,8 @@ Material:
     - _FresnelPower: 6
     - _FresnelScale: 1
     - _Metallic: 0
+    - _QueueControl: 0
+    - _QueueOffset: 0
     - _Smoothness: 0.89
     - __dirty: 1
     m_Colors:

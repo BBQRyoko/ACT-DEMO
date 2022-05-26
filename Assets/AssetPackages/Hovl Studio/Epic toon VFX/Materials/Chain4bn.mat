@@ -78,6 +78,8 @@ Material:
     - _FresnelEmission: 1
     - _NormalScale: 1
     - _Opacity: 1
+    - _QueueControl: 0
+    - _QueueOffset: 0
     - _UseCustomData: 0
     - _UseFresnel: 0
     - _Usecenterglow: 0

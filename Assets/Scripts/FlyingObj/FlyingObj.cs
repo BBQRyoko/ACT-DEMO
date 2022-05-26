@@ -140,8 +140,12 @@ public class FlyingObj : MonoBehaviour
     /// 启用飞行物，尽量使用带参数的重载，这个方法用于在Inspector上写好了参数的情况
     /// </summary>
     /// <param name="target">追踪目标</param>
-    public void StartFlyingObj(Transform target)
+    public void StartFlyingObj(Transform target, bool liner = false)
     {
+        if (liner) 
+        {
+            target.position = new Vector3(target.position.x, transform.position.y, target.position.z);
+        }
         m_Working = true;
         m_Mode = FlyingMode.Trace;
         m_TraceTarget = target;

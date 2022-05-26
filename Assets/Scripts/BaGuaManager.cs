@@ -218,9 +218,43 @@ public class BaGuaManager : MonoBehaviour
                 animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[1];
                 animatorManager.generalAudio.Play();
             }
-            else if (commandString == "03" || commandString == "30")
+            else if (commandString == "27" || commandString == "72") //风buff
+            {
+                sample_VFX_Ability.curVFX_List[1].Play();
+                if (playerStats.currHealth >= playerStats.maxHealth)
+                {
+                    playerStats.currHealth = playerStats.maxHealth;
+                }
+                playerStats.healthBar.SetCurrentHealth(playerStats.currHealth);
+                energyGuage -= 1;
+                animatorManager.generalAudio.volume = 0.08f;
+                animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[1];
+                animatorManager.generalAudio.Play();
+            }
+            else if (commandString == "02" || commandString == "20") //火buff
+            {
+                sample_VFX_Ability.curVFX_List[2].Play();
+                if (playerStats.currHealth >= playerStats.maxHealth)
+                {
+                    playerStats.currHealth = playerStats.maxHealth;
+                }
+                playerStats.healthBar.SetCurrentHealth(playerStats.currHealth);
+                energyGuage -= 1;
+                animatorManager.generalAudio.volume = 0.08f;
+                animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[1];
+                animatorManager.generalAudio.Play();
+            }
+            else if (commandString == "03" || commandString == "30") //火球
             {
                 animatorManager.PlayTargetAnimation("FireBall", true, true);
+                energyGuage -= 1;
+                animatorManager.generalAudio.volume = 0.08f;
+                animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[2];
+                animatorManager.generalAudio.Play();
+            }
+            else if (commandString == "73" || commandString == "37") //龙卷
+            {
+                animatorManager.PlayTargetAnimation("Tornado", true, true);
                 energyGuage -= 1;
                 animatorManager.generalAudio.volume = 0.08f;
                 animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[2];

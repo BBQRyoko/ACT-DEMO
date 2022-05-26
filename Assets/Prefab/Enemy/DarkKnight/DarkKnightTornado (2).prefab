@@ -38811,9 +38811,9 @@ GameObject:
   - component: {fileID: 420517496151714968}
   - component: {fileID: 512142589960458134}
   - component: {fileID: 511660094183468404}
-  - component: {fileID: 421929195253311684}
   - component: {fileID: 60856427}
   - component: {fileID: 60856425}
+  - component: {fileID: 421929195253311684}
   - component: {fileID: 60856426}
   - component: {fileID: 997239213796885941}
   m_Layer: 0
@@ -43711,30 +43711,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &421929195253311684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 423277927437170492}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45810cfd5e69ae845aba9239c7a756a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  darkKnightOnly: 0
-  m_RotateSpeed: 120
-  m_SlowDownSpeed: 2
-  m_MinSpeed: 4
-  m_Accelerated: 2
-  m_MaxSpeed: 6
-  m_TraceTime: 10
-  m_LifeTime: 10000
-  m_TraceTarget: {fileID: 0}
-  m_Mode: 1
-  m_Working: 0
-  m_Speed: 0
 --- !u!54 &60856427
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -43765,6 +43741,30 @@ CapsuleCollider:
   m_Height: 5.023361
   m_Direction: 1
   m_Center: {x: 0, y: 2.96, z: 0}
+--- !u!114 &421929195253311684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 423277927437170492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45810cfd5e69ae845aba9239c7a756a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  darkKnightOnly: 0
+  m_RotateSpeed: 120
+  m_SlowDownSpeed: 2
+  m_MinSpeed: 4
+  m_Accelerated: 2
+  m_MaxSpeed: 6
+  m_TraceTime: 10
+  m_LifeTime: 10000
+  m_TraceTarget: {fileID: 0}
+  m_Mode: 1
+  m_Working: 0
+  m_Speed: 0
 --- !u!114 &60856426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43795,4 +43795,6 @@ MonoBehaviour:
   isPlayerDamage: 0
   curDamage: 10
   staminaDamage: 0
+  energyRestoreAmount: 20
+  chargeAmount: 0
   hitFactor: 1

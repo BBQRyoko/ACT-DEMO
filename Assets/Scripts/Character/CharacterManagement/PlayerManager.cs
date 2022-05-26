@@ -78,10 +78,11 @@ public class PlayerManager : CharacterManager
     public bool isArrowLoaded;
 
     //远程攻击
-    public FlyingObj arrow;
-    public Transform arrow_ShootPos;
-    public FlyingObj fireBall;
-    public Transform fireball_ShootPos;
+    [SerializeField] FlyingObj arrow;
+    [SerializeField] FlyingObj fireBall;
+    [SerializeField] FlyingObj tornado;
+    [SerializeField] Transform shoot_Pos;
+    [SerializeField] FlyingObj tornado_ShootPos;
     public Transform shooting_Target;
     public Transform straightLineNullTarget;
 
@@ -237,17 +238,24 @@ public class PlayerManager : CharacterManager
     {
         if (index == 0)
         {
-            var obj = Instantiate(arrow, transform, false);
+            var obj = Instantiate(arrow, shoot_Pos, false);
             obj.transform.SetParent(null);
             obj.gameObject.SetActive(true);
             obj.StartFlyingObj(shooting_Target);
         }
         else if (index == 1) 
         {
-            var obj = Instantiate(fireBall, transform, false);
+            var obj = Instantiate(fireBall, shoot_Pos, false);
             obj.transform.SetParent(null);
             obj.gameObject.SetActive(true);
             obj.StartFlyingObj(shooting_Target);
+        }
+        else if (index == 2)
+        {
+            var obj = Instantiate(tornado, transform, false);
+            obj.transform.SetParent(null);
+            obj.gameObject.SetActive(true);
+            obj.StartFlyingObj(shooting_Target,true);
         }
     }
     public void HandleDefending() 

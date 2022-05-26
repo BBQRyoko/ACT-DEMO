@@ -86,6 +86,8 @@ Material:
     - _Numberofwaves: 1
     - _Numberofwawes: 0.7
     - _Opacity: 1
+    - _QueueControl: 0
+    - _QueueOffset: 0
     - _Speedofwawes: -2
     - _TwistWaves: 1
     - _UpCutoff: 1

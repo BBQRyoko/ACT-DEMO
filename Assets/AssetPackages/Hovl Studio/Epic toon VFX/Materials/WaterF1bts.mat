@@ -78,6 +78,8 @@ Material:
     - _Fresnel: 1
     - _FresnelEmission: 1
     - _OnlyNoise: 0
+    - _QueueControl: 0
+    - _QueueOffset: 0
     - _SeparateEmission: 2
     - _SeparateFresnel: 0
     - _Sideopacity: 0
