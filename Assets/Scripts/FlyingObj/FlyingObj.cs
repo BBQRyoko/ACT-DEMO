@@ -8,6 +8,8 @@ using UnityEngine;
 public class FlyingObj : MonoBehaviour
 {
     FlyingObj flyingObj;
+    public Transform shooterPos;
+    public bool defelected;
 
     [SerializeField] bool darkKnightOnly;
     /// <summary>
@@ -140,12 +142,11 @@ public class FlyingObj : MonoBehaviour
     /// 启用飞行物，尽量使用带参数的重载，这个方法用于在Inspector上写好了参数的情况
     /// </summary>
     /// <param name="target">追踪目标</param>
-    public void StartFlyingObj(Transform target, bool liner = false)
+    public void StartFlyingObj(Transform target, bool liner = false, Transform shooter = null, bool defelect = false)
     {
-        if (liner) 
-        {
-            target.position = new Vector3(target.position.x, transform.position.y, target.position.z);
-        }
+        if (liner) target.position = new Vector3(target.position.x, transform.position.y, target.position.z);
+        if(shooter) shooterPos = shooter;
+        defelected = defelect;
         m_Working = true;
         m_Mode = FlyingMode.Trace;
         m_TraceTarget = target;

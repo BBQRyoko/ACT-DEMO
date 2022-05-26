@@ -10,7 +10,11 @@ public class TornadoHazard : MonoBehaviour
     //可以反弹攻击
     void DefelectFlyingObj(FlyingObj obj) 
     {
-    
+        //获得释放者的位置信息，然后以那个为目标发射
+        //飞行道具本身生成时检测是否有playerManager或者enemyManager
+        //然后获取其的TargetPos位置
+        //反射过的无法再触发反射
+
     }
 
     //可以吸收火焰
