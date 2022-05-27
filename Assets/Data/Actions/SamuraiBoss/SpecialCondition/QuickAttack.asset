@@ -14,6 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionAnimation: QuickAttack
   isSpecial: 1
+  isFlyingObject: 0
+  isHeavyKick: 0
+  isHeavyAttack: 0
+  damagePoint: 35
   attakPriority: 3
   recoveryTime: 3
   independtCooldown: 10
@@ -22,8 +26,10 @@ MonoBehaviour:
   minDistanceNeedToAttack: 0
   maxDistanceNeedToAttack: 3
   isImmune: 0
+  maxSpeed: 20
   condition: 2
   minRange: 0
   maxRange: 0
+  requiredRecoveryTime: 0
   canDodge: 0
   firstStrikeDistance: 0
