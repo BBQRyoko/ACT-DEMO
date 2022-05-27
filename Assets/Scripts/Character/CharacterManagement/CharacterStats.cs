@@ -6,8 +6,8 @@ public class CharacterStats : MonoBehaviour
 {
     CharacterManager characterManager;
 
-    public int maxHealth;
-    public int currHealth;
+    public float maxHealth;
+    public float currHealth;
     public Transform eyePos;
 
     public float currStamina;

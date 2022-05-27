@@ -12,5 +12,6 @@ public class isAttacking : StateMachineBehaviour
     {
         cantBeInterrupted = true;
         animator.SetBool(cantBeInterruptedBool, cantBeInterrupted);
+        animator.SetBool("isAttacking", true);
     }
 }

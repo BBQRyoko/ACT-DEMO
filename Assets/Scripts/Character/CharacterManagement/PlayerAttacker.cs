@@ -74,7 +74,7 @@ public class PlayerAttacker : MonoBehaviour
                     playerManager.transform.position = executionTarget.execute_Back.position;
                     playerLocmotion.HandleRotateTowardsTarger();
                     animatorManager.PlayTargetAnimation(weapon.executionSkill[0].skillName, true, true); //背刺
-                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.executionSkill[0].damagePoint * (int)(1 + playerStats.attackBuffRatio);
+                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.executionSkill[0].damagePoint * (1 + playerStats.attackBuffRatio);
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.executionSkill[0].tenacityDamagePoint;
                     animatorManager.pauseDuration = weapon.executionSkill[0].pauseDuration;
                     executionTarget.getingExecute = true;
@@ -85,7 +85,7 @@ public class PlayerAttacker : MonoBehaviour
                     playerManager.transform.position = executionTarget.execute_Front.position;
                     playerLocmotion.HandleRotateTowardsTarger();
                     animatorManager.PlayTargetAnimation(weapon.executionSkill[2].skillName, true, true); //处决
-                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.executionSkill[2].damagePoint * (int)(1 + playerStats.attackBuffRatio); 
+                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.executionSkill[2].damagePoint * (1 + playerStats.attackBuffRatio); 
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.executionSkill[2].tenacityDamagePoint;
                     animatorManager.pauseDuration = weapon.executionSkill[2].pauseDuration;
                     executionTarget.getingExecute = true;
@@ -111,7 +111,7 @@ public class PlayerAttacker : MonoBehaviour
                         attackTimer = internalDuration;
                         //播放指定的攻击动画
                         animatorManager.PlayTargetAnimation(weapon.springAttack[0].skillName, true, true);
-                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.springAttack[0].damagePoint * (int)(1 + playerStats.attackBuffRatio);;
+                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.springAttack[0].damagePoint * (1 + playerStats.attackBuffRatio);
                         weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.springAttack[0].tenacityDamagePoint;
                         weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.springAttack[0].energyRestore;
                         weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.springAttack[0].energyRestore;
@@ -139,22 +139,22 @@ public class PlayerAttacker : MonoBehaviour
                         {
                             ProjectileDamager projectileDamager = weaponSlotManager.playerArrowFlyObj.GetComponentInChildren<ProjectileDamager>();
 
-                            projectileDamager.curDamage = weapon.regularSkills[comboCount - 1].damagePoint * (int)(1 + playerStats.attackBuffRatio);;
+                            projectileDamager.curDamage = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio);
                             projectileDamager.staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint;
                             projectileDamager.energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
                             projectileDamager.chargeAmount = weapon.regularSkills[comboCount - 1].energyRestore;
                             weaponSlotManager.playerArrowFlyObj.m_MaxSpeed = weapon.regularSkills[comboCount - 1].maxSpeed;
-
                         }
                         else
                         {
-                            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint;
+                            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio);
                             weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint;
                             weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
                             weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.regularSkills[comboCount - 1].energyRestore;
                         }
                         animatorManager.pauseDuration = weapon.regularSkills[comboCount - 1].pauseDuration;
                         playerManager.GetComponent<PlayerStats>().currStamina -= weapon.regularSkills[comboCount - 1].staminaCost;
+                        Debug.Log(weapon.regularSkills[comboCount - 1].staminaCost);
                         //sample_VFX_R.curVFX_List[comboCount - 1].Play();
                         //if (weapon.regularSkills[comboCount - 1].isImmuAttack)
                         //{
@@ -191,7 +191,7 @@ public class PlayerAttacker : MonoBehaviour
             {
                 ////其余都播放特殊攻击的动作
                 animatorManager.PlayTargetAnimation(weapon.specialSkills[comboCount - 1].skillName, true, true);
-                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint * (int)(1 + playerStats.attackBuffRatio);
+                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio);
                 weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
                 weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.regularSkills[comboCount - 1].energyRestore;
                 playerManager.GetComponent<PlayerStats>().currStamina -= weapon.regularSkills[comboCount - 1].staminaCost;
@@ -284,22 +284,12 @@ public class PlayerAttacker : MonoBehaviour
             attackTimer = internalDuration;
             //播放指定的攻击动画
             animatorManager.PlayTargetAnimation(weapon.transSkills[0].skillName, true, true);
-            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.transSkills[0].damagePoint * (int)(1 + playerStats.attackBuffRatio);
+            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.transSkills[0].damagePoint * (1 + playerStats.attackBuffRatio);
             weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.transSkills[0].tenacityDamagePoint;
             weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.transSkills[0].energyRestore;
             weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.transSkills[0].energyRestore;
             animatorManager.pauseDuration = weapon.transSkills[0].pauseDuration;
             playerManager.GetComponent<PlayerStats>().currStamina -= weapon.transSkills[0].staminaCost;
-            //sample_VFX_R.curVFX_List[comboCount - 1].Play();
-            //if (weapon.regularSkills[comboCount - 1].isImmuAttack)
-            //{
-            //    playerManager.isImmuAttack = true;
-            //}
-            //else 
-            //{
-            //    playerManager.isImmuAttack = false;
-            //}
-
         }
     }
     public void HandleDefend(WeaponItem weapon) //武器防御
@@ -340,7 +330,7 @@ public class PlayerAttacker : MonoBehaviour
     {
         if (chargeValue >= 40) 
         {
-            playerManager.perfectTimer = 1.1f;
+            playerManager.perfectTimer = 2f;
             playerManager.isPerfect = true;
             chargeValue = 0;
             sample_VFX.baGuaRelated_List[0].Play();

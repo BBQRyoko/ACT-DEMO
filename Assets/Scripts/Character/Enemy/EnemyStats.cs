@@ -35,7 +35,7 @@ public class EnemyStats : CharacterStats
     {
         StaminaRegen();
     }
-    public void TakeDamage(int damage, int staminaDamage, Vector3 collisionDir, CharacterStats characterStats = null)
+    public void TakeDamage(float damage, float staminaDamage, Vector3 collisionDir, CharacterStats characterStats = null)
     {
         float viewableAngle = Vector3.SignedAngle(collisionDir, enemyManager.transform.forward, Vector3.up);
         currHealth = currHealth - damage;

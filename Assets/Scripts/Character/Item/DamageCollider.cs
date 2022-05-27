@@ -16,8 +16,8 @@ public class DamageCollider : MonoBehaviour
     public bool parryWindow_isOpen;
     public Sample_SFX sample_SFX;
 
-    public int curDamage = 10;
-    public int staminaDamage;
+    public float curDamage = 10;
+    public float staminaDamage;
     public float energyRestoreAmount = 20;
     public float chargeAmount;
 

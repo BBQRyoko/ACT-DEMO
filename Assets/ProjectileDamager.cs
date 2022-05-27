@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class ProjectileDamager : MonoBehaviour
 {
+    //dot伤害
     [SerializeField] TornadoHazard tornadoHazard;
     FlyingObj curFlyingObj;
     public Transform coveredPlayer;
     public bool isPlayerDamage;
     public bool isHeavy;
-    public int curDamage = 10;
-    public int staminaDamage;
+    public float curDamage = 10;
+    public float staminaDamage;
     public float energyRestoreAmount = 20;
     public float chargeAmount;
     [SerializeField] float hitFactor;

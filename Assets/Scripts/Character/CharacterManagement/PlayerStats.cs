@@ -54,7 +54,7 @@ public class PlayerStats : CharacterStats
             eyePos = crouchPos;
         }
     }
-    public void TakeDamage(int damage, Vector3 collisionDirection, bool isHeavy = false)
+    public void TakeDamage(float damage, Vector3 collisionDirection, bool isHeavy = false)
     {
         float damageAngle = Vector3.SignedAngle(collisionDirection, playerManager.transform.forward, Vector3.up);
         currHealth = currHealth - damage;
@@ -228,7 +228,6 @@ public class PlayerStats : CharacterStats
                 }
             } //左
         }
-        
         //攻击被打断时保证取消状态
         playerManager.cantBeInterrupted = false;
     }

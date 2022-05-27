@@ -283,9 +283,9 @@ public class PlayerManager : CharacterManager
             parryCollider.DisableParryCollider();
         }
     }
-    public void HandleParryingCheck(int incomingDamage) 
+    public void HandleParryingCheck(float incomingDamage) 
     {
-        float staminaDamage = (float)incomingDamage * 2f;
+        float staminaDamage = incomingDamage * 2f;
         if (staminaDamage <= playerStats.currStamina)
         {
             playerStats.currStamina -= staminaDamage;

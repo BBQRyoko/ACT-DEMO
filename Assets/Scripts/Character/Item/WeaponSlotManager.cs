@@ -66,14 +66,14 @@ public class WeaponSlotManager : MonoBehaviour
     {
         if (playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[1]!=null && playerManager.weaponSwitchCooldown <=0) 
         {
-            if (!playerManager.isAttacking && !playerManager.isInteracting && !playerManager.cantBeInterrupted)
+            if (!playerManager.isAttacking && !playerManager.isInteracting && !playerManager.cantBeInterrupted && !playerManager.isPerfect)
             {
                 GetComponentInChildren<WeaponSlotManager>().mainArmedWeapon.SetActive(false);
                 GetComponentInChildren<WeaponSlotManager>().mainWeapon_Unequipped.gameObject.SetActive(true);
                 WeaponSwitchAnimatorController();
                 playerManager.isWeaponSwitching = true;
             }
-            else if(playerManager.isPerfect && !playerManager.cantBeInterrupted) //可触发条件
+            else if(playerManager.isPerfect) //可触发条件
             {
                 GetComponentInChildren<WeaponSlotManager>().mainArmedWeapon.SetActive(false);
                 GetComponentInChildren<WeaponSlotManager>().mainWeapon_Unequipped.gameObject.SetActive(true);
@@ -103,8 +103,6 @@ public class WeaponSlotManager : MonoBehaviour
                     mainArmedWeapon = armedWeaponSlot[playerInventory.curEquippedWeaponItem.Id];
                     LoadWeaponOnSlot(playerInventory.unequippedWeaponItems[0], 0);
                     transform.GetComponent<AnimatorManager>().PlayTargetAnimation("WeaponSwitch(Equip)", true, true);
-                    greatSwordIcon.SetActive(false);
-                    katanaIcon.SetActive(true);
                 }
                 else //切换至主武器
                 {
@@ -115,8 +113,6 @@ public class WeaponSlotManager : MonoBehaviour
                     playerInventory.curEquippedWeaponItem = playerInventory.unequippedWeaponItems[0];
                     mainArmedWeapon = armedWeaponSlot[playerInventory.curEquippedWeaponItem.Id];
                     LoadWeaponOnSlot(playerInventory.unequippedWeaponItems[1], 1);
-                    greatSwordIcon.SetActive(true);
-                    katanaIcon.SetActive(false);
                 }
             }
         }
@@ -129,8 +125,6 @@ public class WeaponSlotManager : MonoBehaviour
             mainArmedWeapon = armedWeaponSlot[playerInventory.curEquippedWeaponItem.Id];
             LoadWeaponOnSlot(playerInventory.unequippedWeaponItems[curIndex], curIndex);
             transform.GetComponent<AnimatorManager>().PlayTargetAnimation("WeaponSwitch(Equip)", true, true);
-            greatSwordIcon.SetActive(false);
-            katanaIcon.SetActive(true);
         }
     }
     public void AttackSwitchAnimatorController() //切换攻击
@@ -146,8 +140,6 @@ public class WeaponSlotManager : MonoBehaviour
             weaponDamageCollider = mainArmedWeapon.GetComponentInChildren<DamageCollider>();
             playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(40f);
             playerAttacker.HandleTransformAttack(playerInventory.unequippedWeaponItems[playerInventory.currentWeaponIndex]);
-            greatSwordIcon.SetActive(false);
-            katanaIcon.SetActive(true);
         }
         else
         {
@@ -158,8 +150,6 @@ public class WeaponSlotManager : MonoBehaviour
             weaponDamageCollider = mainArmedWeapon.GetComponentInChildren<DamageCollider>();
             playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(40f);
             playerAttacker.HandleTransformAttack(playerInventory.unequippedWeaponItems[playerInventory.currentWeaponIndex]);
-            greatSwordIcon.SetActive(true);
-            katanaIcon.SetActive(false);
         }
     }
 
