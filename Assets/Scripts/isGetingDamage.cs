@@ -10,6 +10,7 @@ public class isGetingDamage : StateMachineBehaviour
     public string cantBeInterruptedBool;
     public bool cantBeInterrupted;
 
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -17,6 +18,8 @@ public class isGetingDamage : StateMachineBehaviour
         animator.SetBool(isGettingDamageBool, isGettingDamage);
         cantBeInterrupted = true;
         animator.SetBool(cantBeInterruptedBool, cantBeInterrupted);
+        animator.SetBool("isDefending", false);
+        animator.SetBool("isHolding", false);
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state

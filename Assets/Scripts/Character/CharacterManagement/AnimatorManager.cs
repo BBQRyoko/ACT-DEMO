@@ -259,6 +259,17 @@ public class AnimatorManager : MainAnimatorManager
             playerLocmotion.willRotateTowardsTarget = true;
         }
     }
+    private void HandleCounter() 
+    {
+        if (!playerManager.isPerfect)
+        {
+            playerManager.isPerfect = true;
+        }
+        else 
+        {
+            playerManager.isPerfect = false;
+        }
+    }
     private void hitRecoverAnnounce(int recoverLevel) 
     {
         if (recoverLevel >= 2)
@@ -273,11 +284,6 @@ public class AnimatorManager : MainAnimatorManager
     private void RangeAttack(int index) 
     {
         playerManager.HandleRangeAttack(index);
-    }
-    private void ChargingLevelUpEvent() 
-    {
-        playerAttacker.chargingTimer = 0;
-        playerAttacker.chargingLevel += 1;
     }
     private void RollDamageAvoid() 
     {

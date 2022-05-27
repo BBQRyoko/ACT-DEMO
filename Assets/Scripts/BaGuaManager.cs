@@ -210,7 +210,7 @@ public class BaGuaManager : MonoBehaviour
             if (commandString == "23" || commandString == "32") //治疗
             {
                 sample_VFX_Ability.curVFX_List[0].Play();
-                playerStats.currHealth += 100;
+                if(!playerManager.isDead) playerStats.currHealth += 80;
                 if (playerStats.currHealth >= playerStats.maxHealth)
                 {
                     playerStats.currHealth = playerStats.maxHealth;

@@ -69,8 +69,8 @@ public class PlayerManager : CharacterManager
     int taiji_Guage;
     [SerializeField] TaijiDurationBar taijiDurationBar;
     [SerializeField] GameObject taijiBuff_VFX;
-    float taijiBuffDuration;
-    public float perfectTimer;
+    public float transAttackTimer;
+    public bool canTransAttack;
     public bool isPerfect;
 
     //蓄力攻击相关
@@ -136,7 +136,6 @@ public class PlayerManager : CharacterManager
                 weaponSlotManager.mainArmedWeapon.SetActive(true);
             }
         }
-
         if (yinYangAbilityOn)
         {
             ultimateHint.SetActive(true);
@@ -145,7 +144,6 @@ public class PlayerManager : CharacterManager
         {
             ultimateHint.SetActive(false);
         }
-
         if (!isDead) 
         {
             inputManager.HandleAllInputs();
@@ -153,7 +151,6 @@ public class PlayerManager : CharacterManager
         playerStats.StaminaController();
         GeneralTimerController();
         TaijiEffectController();
-        PerfectTimer();
     }
     private void FixedUpdate()
     {
@@ -188,7 +185,6 @@ public class PlayerManager : CharacterManager
         animator.SetBool("isStunned", isStunned);
         animator.SetBool("isGround", isGround); 
         animator.SetBool("isFalling", isFalling);
-        //if (!isHolding) inputManager.reAttack_Input = false;
         //inputManager.interact_Input = false;
         inputManager.weaponSwitch_Input = false;
         HandleDefending();
@@ -231,17 +227,16 @@ public class PlayerManager : CharacterManager
             }
         }
 
-        //if (taijiBuffDuration > 0)
-        //{
-        //    taijiBuffDuration -= Time.deltaTime;
-        //    taijiDurationBar.SetCurrentTime(taijiBuffDuration);
-        //}
-        //else 
-        //{
-        //    taijiBuffDuration = 0;
-        //    taijiDurationBar.SetCurrentTime(taijiBuffDuration);
-        //    taiji_Guage = 0;
-        //}
+        if (transAttackTimer > 0)
+        {
+            canTransAttack = true;
+            transAttackTimer -= Time.deltaTime;
+            if (transAttackTimer <= 0)
+            {
+                transAttackTimer = 0;
+                canTransAttack = false;
+            }
+        }
     }
     public void HandleRangeAttack(int index)
     {
@@ -271,6 +266,7 @@ public class PlayerManager : CharacterManager
     {
         if (isDefending)
         {
+            Debug.Log("123");
             PlayerInventory playerInventory = GetComponent<PlayerInventory>();
             if (playerInventory.curEquippedWeaponItem.Id == 0) 
             {
@@ -350,16 +346,7 @@ public class PlayerManager : CharacterManager
     }
     public void PerfectTimer() 
     {
-        if (perfectTimer>0) 
-        {
-            isPerfect = true;
-            perfectTimer -= Time.deltaTime;
-            if (perfectTimer <= 0) 
-            {
-                perfectTimer = 0;
-                isPerfect = false;
-            }
-        }
+
     }
     void TaijiEffectController() 
     {
@@ -388,8 +375,6 @@ public class PlayerManager : CharacterManager
             sample_VFX.baGuaRelated_List[0].Stop();
             sample_VFX.baGuaRelated_List[1].Play();
             AT_Field_Temp.transform.SetParent(null);
-            taijiBuffDuration = 0;
-            taiji_Guage = 0;
         }
     }
     public void PerfectBlockCheck() 
@@ -403,14 +388,11 @@ public class PlayerManager : CharacterManager
             sample_VFX.baGuaRelated_List[1].Play();
             AT_Field_Temp.transform.SetParent(null);
             WeaponSwitchTimerSetUp(2.5f);
-            taijiBuffDuration = 0;
             taiji_Guage = 0;
         }
         else 
         {
             taiji_Guage += 1;
-            taijiBuffDuration = 10f;
-            taijiDurationBar.SetMaxTime(taijiBuffDuration);
         }
     }
     public void Rest() 

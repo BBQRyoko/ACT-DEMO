@@ -66,14 +66,14 @@ public class WeaponSlotManager : MonoBehaviour
     {
         if (playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[1]!=null && playerManager.weaponSwitchCooldown <=0) 
         {
-            if (!playerManager.isAttacking && !playerManager.isInteracting && !playerManager.cantBeInterrupted && !playerManager.isPerfect)
+            if (!playerManager.isAttacking && !playerManager.isInteracting && !playerManager.cantBeInterrupted && !playerManager.canTransAttack)
             {
                 GetComponentInChildren<WeaponSlotManager>().mainArmedWeapon.SetActive(false);
                 GetComponentInChildren<WeaponSlotManager>().mainWeapon_Unequipped.gameObject.SetActive(true);
                 WeaponSwitchAnimatorController();
                 playerManager.isWeaponSwitching = true;
             }
-            else if(playerManager.isPerfect) //可触发条件
+            else if(playerManager.canTransAttack) //可触发条件
             {
                 GetComponentInChildren<WeaponSlotManager>().mainArmedWeapon.SetActive(false);
                 GetComponentInChildren<WeaponSlotManager>().mainWeapon_Unequipped.gameObject.SetActive(true);
@@ -129,8 +129,9 @@ public class WeaponSlotManager : MonoBehaviour
     }
     public void AttackSwitchAnimatorController() //切换攻击
     {
-        playerManager.perfectTimer = 0;
-        playerManager.isPerfect = false;
+        playerManager.transAttackTimer = 0;
+        playerManager.canTransAttack = false;
+
         if (mainWeapon_Unequipped == unequippedWeaponSlots[0])
         {
             playerManager.GetComponent<PlayerInventory>().currentWeaponIndex = 1;

@@ -26,15 +26,10 @@ public class PlayerAttacker : MonoBehaviour
     //普通攻击
     public int comboCount;
     public float attackTimer;
-    public float internalDuration = 3f;
+    public float internalDuration = 3.75f;
 
     //太极切换触发
     public float chargeValue; //switchValue
-    public bool taijiAttack;
-
-    //蓄力攻击
-    public float chargingTimer;
-    public int chargingLevel;
 
     private void Awake()
     {
@@ -328,13 +323,12 @@ public class PlayerAttacker : MonoBehaviour
     }
     void HandleAttackCharge() 
     {
-        if (chargeValue >= 40) 
+        if (chargeValue >= 5) 
         {
-            playerManager.perfectTimer = 2f;
-            playerManager.isPerfect = true;
+            playerManager.transAttackTimer = 1.75f;
+            playerManager.canTransAttack = true;
             chargeValue = 0;
             sample_VFX.baGuaRelated_List[0].Play();
-            taijiAttack = true;
         }
     }
     void ExecutionHandler() 
