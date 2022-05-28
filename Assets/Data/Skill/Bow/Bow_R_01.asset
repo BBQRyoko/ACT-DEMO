@@ -15,7 +15,7 @@ MonoBehaviour:
   skillName: HoldingAbility
   isImmuAttack: 0
   damagePoint: 45
-  tenacityDamagePoint: 10
+  tenacityDamagePoint: 35
   staminaCost: 5
   energyRestore: 3
   pauseDuration: 4

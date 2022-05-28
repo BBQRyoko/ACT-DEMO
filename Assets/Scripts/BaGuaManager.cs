@@ -109,27 +109,10 @@ public class BaGuaManager : MonoBehaviour
                 //    BaGuaCommand(5);
                 //}
             }
-
-            if (inputManager.lockOn_Input)
-            {
-                commandHolder.Clear();
-            }
         }
         else
         {
-            //BaGuaZhen.SetActive(false);
             gameManager.Resume();
-            if (commandHolder.Count >= 1)
-            {
-                isCommandActive = true;
-            }
-            else
-            {
-                if (!isCommandActive)
-                {
-                    commandHolder.Clear();
-                }
-            }
         }
     }
     void EnergySourceControl()
@@ -259,9 +242,9 @@ public class BaGuaManager : MonoBehaviour
     }
     void YinYangControl() 
     {
-        yinChargeSlot.fillAmount = curYin / 100;
-        yangChargeSlot.fillAmount = curYang / 100;
-        if (curYin >= 100 && curYang >= 100) 
+        yinChargeSlot.fillAmount = curYin / 80;
+        yangChargeSlot.fillAmount = curYang / 80;
+        if (curYin >= 80 && curYang >= 80) 
         {
             playerManager.yinYangAbilityOn = true;
         }
@@ -271,12 +254,12 @@ public class BaGuaManager : MonoBehaviour
         if (playerInventory.currentWeaponIndex == 0)
         {
             curYin += chargeValue;
-            if (curYin >= 100) curYin = 100;
+            if (curYin >= 80) curYin = 80;
         }
         else 
         {
             curYang += chargeValue;
-            if (curYang >= 100) curYang = 100;
+            if (curYang >= 80) curYang = 80;
         }
     }
 }

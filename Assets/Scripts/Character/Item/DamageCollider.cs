@@ -129,9 +129,20 @@ public class DamageCollider : MonoBehaviour
 
             if (playerStats != null)
             {
-                if (!playerStats.GetComponent<PlayerManager>().damageAvoid && !playerStats.GetComponent<PlayerManager>().isPerfect)
+                if (playerStats.GetComponent<PlayerManager>().isPerfect) 
                 {
-                    if (playerStats.GetComponent<PlayerManager>().isWeaponSwitching) 
+                    EnemyStats enemyStats = enemyManager.GetComponent<EnemyStats>();
+                    damageCollider.enabled = false;
+                    enemyManager.GetComponentInChildren<EnemyAnimatorManager>().PlayTargetAnimation("GetHit_Up", true, true);
+                    playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Defend(Counter)", true, true);
+                    playerManager.GetComponentInChildren<AnimatorManager>().generalAudio.volume = 0.15f;
+                    playerManager.GetComponentInChildren<AnimatorManager>().generalAudio.clip = playerManager.GetComponentInChildren<AnimatorManager>().sample_SFX.Bagua_SFX_List[0];
+                    playerManager.GetComponentInChildren<AnimatorManager>().generalAudio.Play();
+                    enemyStats.TakeStaminaDamage(120f);
+                }
+                else if (!playerStats.GetComponent<PlayerManager>().damageAvoid && !playerStats.GetComponent<PlayerManager>().isPerfect)
+                {
+                    if (playerStats.GetComponent<PlayerManager>().isWeaponSwitching)
                     {
                         playerManager.isWeaponSwitching = false;
                         playerManager.WeaponSwitchTimerSetUp(2.5f);
@@ -142,16 +153,6 @@ public class DamageCollider : MonoBehaviour
                     attackAudio.clip = sample_SFX.hittedSFX_List[random];
                     attackAudio.Play();
                     playerStats.TakeDamage(curDamage, hitDirection, isHeavyAttack);
-                }
-                else if (playerStats.GetComponent<PlayerManager>().isPerfect) 
-                {
-                    damageCollider.enabled = false;
-                    enemyManager.GetComponentInChildren<EnemyAnimatorManager>().PlayTargetAnimation("GetHit_Up", true, true);
-                    playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("PerfectBalance", true, true);
-                    playerManager.GetComponentInChildren<AnimatorManager>().generalAudio.volume = 0.15f;
-                    playerManager.GetComponentInChildren<AnimatorManager>().generalAudio.clip = playerManager.GetComponentInChildren<AnimatorManager>().sample_SFX.Bagua_SFX_List[0];
-                    playerManager.GetComponentInChildren<AnimatorManager>().generalAudio.Play();
-                    playerManager.PerfectBlockCheck();
                 }
             }
         }

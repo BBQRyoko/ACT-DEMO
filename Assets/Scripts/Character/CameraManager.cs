@@ -37,6 +37,7 @@ public class CameraManager : MonoBehaviour
     public bool cameraLock;
 
     //敌人血条
+    [SerializeField] Transform enemyUIs;
     public EnemyFillingUI enemyHealthUI;
 
     //警觉系统
@@ -376,14 +377,14 @@ public class CameraManager : MonoBehaviour
     }
     public void GenerateAlertIcon(EnemyManager enemyManager)
     {
-        var aleartIcon = Instantiate(enemyFillingUI, mainCanvas.transform);
+        var aleartIcon = Instantiate(enemyFillingUI, enemyUIs);
         aleartIcon.SetEnemyManager(enemyManager);
     }
     public void GenerateUIBar(EnemyManager enemyManager) 
     {
         if (!enemyManager.isBoss) 
         {
-            var healthBar = Instantiate(enemyHealthUI, mainCanvas.transform);
+            var healthBar = Instantiate(enemyHealthUI, enemyUIs);
             healthBar.SetEnemyManager(enemyManager);
         }
     }

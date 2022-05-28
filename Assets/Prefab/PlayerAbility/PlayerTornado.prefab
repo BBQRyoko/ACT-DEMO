@@ -33870,8 +33870,8 @@ MonoBehaviour:
   darkKnightOnly: 0
   m_RotateSpeed: 120
   m_SlowDownSpeed: 2
-  m_MinSpeed: 0.5
-  m_Accelerated: 2
+  m_MinSpeed: 0.1
+  m_Accelerated: 1
   m_MaxSpeed: 1
   m_TraceTime: 0.1
   m_LifeTime: 8

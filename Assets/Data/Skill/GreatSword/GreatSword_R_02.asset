@@ -15,7 +15,7 @@ MonoBehaviour:
   skillName: Combo_R_02
   isImmuAttack: 1
   damagePoint: 45
-  tenacityDamagePoint: 30
+  tenacityDamagePoint: 20
   staminaCost: 45
   energyRestore: 2
   pauseDuration: 12

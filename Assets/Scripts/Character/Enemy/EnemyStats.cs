@@ -108,6 +108,14 @@ public class EnemyStats : CharacterStats
             enemyManager.curTarget = characterStats;
         }
     }
+    public void TakeStaminaDamage(float staminaDamage) 
+    {
+        currStamina = currStamina - staminaDamage;
+        if (currStamina <= 0) 
+        {
+            animator.SetTrigger("isBreak");
+        }
+    }
     public void StaminaRegen()
     {
         if (!enemyManager.isInteracting && currStamina < maxStamina)

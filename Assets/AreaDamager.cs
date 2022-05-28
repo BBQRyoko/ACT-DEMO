@@ -45,7 +45,7 @@ public class AreaDamager : MonoBehaviour
                         hitDirection.y = 0;
                         hitDirection.Normalize();
 
-                        playerStats.TakeDamage(curDamage, hitDirection);
+                        //playerStats.TakeDamage(curDamage, hitDirection);
                     }
                 }
             }

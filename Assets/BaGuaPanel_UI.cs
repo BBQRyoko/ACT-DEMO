@@ -80,7 +80,15 @@ public class BaGuaPanel_UI : MonoBehaviour
         actived = false;
         baguaList.Clear();
         commandSlotList.Clear();
-        baGuaManager.BaguaCasting();
+        if (baGuaManager.baguasHolder.Count >= 2)
+        {
+            baGuaManager.BaguaCasting();
+        }
+        else 
+        {
+            baGuaManager.baguasHolder.Clear();
+        }
+
     }
     void PanelSetActiveController() 
     {

@@ -329,7 +329,7 @@ public class EnemyManager : CharacterManager
     }
     public void HandleParryingCheck(float staminaDamage)
     {
-        enemyStats.currStamina -= staminaDamage * 1.5f;
+        enemyStats.currStamina -= staminaDamage * 0.8f;
         if (enemyStats.currStamina > 0)
         {
             enemyAnimatorManager.PlayTargetAnimation("Block_1", true, true);

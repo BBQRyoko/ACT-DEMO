@@ -390,24 +390,6 @@ public class PlayerManager : CharacterManager
             AT_Field_Temp.transform.SetParent(null);
         }
     }
-    public void PerfectBlockCheck() 
-    {
-        if (taiji_Guage == 2)
-        {
-            isWeaponSwitching = false;
-            animatorManager.PlayTargetAnimation("WeaponAbility_01(Success)", true, true);
-            GameObject AT_Field_Temp = Instantiate(aT_Field_Prefab, aT_position.position, Quaternion.identity);
-            sample_VFX.baGuaRelated_List[0].Stop();
-            sample_VFX.baGuaRelated_List[1].Play();
-            AT_Field_Temp.transform.SetParent(null);
-            WeaponSwitchTimerSetUp(2.5f);
-            taiji_Guage = 0;
-        }
-        else 
-        {
-            taiji_Guage += 1;
-        }
-    }
     public void Rest() 
     {
         if (isDead)
