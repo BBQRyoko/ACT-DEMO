@@ -14,7 +14,6 @@ public class ProjectileDamager : MonoBehaviour
     public float staminaDamage;
     public float energyRestoreAmount = 20;
     public float chargeAmount;
-    [SerializeField] float hitFactor;
 
     private void Awake()
     {
@@ -83,7 +82,6 @@ public class ProjectileDamager : MonoBehaviour
         {
             ProjectileDestroy();
         }
-
         if (!isPlayerDamage) //敌人伤害时
         {
             PlayerStats playerStats = other.GetComponent<PlayerStats>();
@@ -101,7 +99,7 @@ public class ProjectileDamager : MonoBehaviour
                     hitDirection.y = 0;
                     hitDirection.Normalize();
 
-                    playerStats.TakeDamage(curDamage, hitDirection * hitFactor, isHeavy);
+                    playerStats.TakeDamage(curDamage, hitDirection, isHeavy);
                     ProjectileDestroy();
                 }
                 else if (parryCollider != null)
@@ -121,14 +119,16 @@ public class ProjectileDamager : MonoBehaviour
         }
         else //玩家伤害 
         {
-            Vector3 hitDirection = new Vector3(0, 0, 0);
             EnemyStats enemyStats = other.GetComponent<EnemyStats>();
             PlayerStats playerStats = FindObjectOfType<PlayerStats>();
             PlayerManager playerManager = playerStats.GetComponent<PlayerManager>();
             AnimatorManager animatorManager = playerStats.GetComponentInChildren<AnimatorManager>();
             if (enemyStats != null) 
             {
-                enemyStats.TakeDamage(curDamage, staminaDamage, hitDirection * hitFactor);
+                Vector3 hitDirection = transform.position - enemyStats.transform.position;
+                hitDirection.y = 0;
+                hitDirection.Normalize();
+                enemyStats.TakeDamage(curDamage, staminaDamage, hitDirection);
                 enemyStats.GetComponent<EnemyManager>().curTarget = playerStats;
                 playerManager.GetComponent<PlayerAttacker>().chargeValue += chargeAmount;
                 playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount);

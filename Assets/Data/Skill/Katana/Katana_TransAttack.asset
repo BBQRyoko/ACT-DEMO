@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: TransAttack
   isImmuAttack: 1
-  skillType: 0
   damagePoint: 25
   tenacityDamagePoint: 30
   staminaCost: 30
-  energyRestore: 35
+  energyRestore: 0
   pauseDuration: 6
   VFXs: []
   SFXs: []
+  isFlyingObject: 0
+  maxSpeed: 20

@@ -7,9 +7,13 @@ using UnityEngine;
 /// </summary>
 public class FlyingObj : MonoBehaviour
 {
+    [SerializeField] TornadoHazard tornadoHazard;
+    [SerializeField] ProjectileDamager projectileDamager;
     FlyingObj flyingObj;
     public Transform shooterPos;
     public bool defelected;
+    public bool isFireBall;
+    public bool isHorizontal;
 
     [SerializeField] bool darkKnightOnly;
     /// <summary>
@@ -45,7 +49,7 @@ public class FlyingObj : MonoBehaviour
     /// <summary>
     /// 追踪目标
     /// </summary>
-    [SerializeField] private Transform m_TraceTarget;
+    public Transform m_TraceTarget;
     [SerializeField] private FlyingMode m_Mode;
     [SerializeField] private bool m_Working;
     [SerializeField] private float m_Speed;
@@ -82,6 +86,8 @@ public class FlyingObj : MonoBehaviour
     {
         if (m_Mode != FlyingMode.Trace) return;
         var lookAt = m_TraceTarget.position - transform.position;
+        if (isHorizontal) lookAt.y = 0;
+        Debug.Log(lookAt);
         //只需要处理旋转就行了
         float angle = Vector3.Angle(transform.forward, lookAt);
         //判断误差
@@ -114,7 +120,6 @@ public class FlyingObj : MonoBehaviour
             }
         }
     }
-
     private void MoveProcess(float timeDelta)
     {
         if (m_Speed < m_MaxSpeed)
@@ -123,7 +128,6 @@ public class FlyingObj : MonoBehaviour
         }
         transform.position += transform.forward * m_Speed * timeDelta;
     }
-
     /// <summary>
     /// 计算lifetime
     /// </summary>
@@ -134,7 +138,18 @@ public class FlyingObj : MonoBehaviour
         m_LifeTime -= timeDelta;
         if (m_LifeTime <= 0)
         {
-            Destroy(gameObject);
+            if (projectileDamager) //普通龙卷用
+            {
+                projectileDamager.ProjectileDestroy();
+            }
+            else if (tornadoHazard) //火龙卷用
+            {
+                tornadoHazard.FireTornadoExplosion();
+            }
+            else //常规飞行道具用
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -144,8 +159,8 @@ public class FlyingObj : MonoBehaviour
     /// <param name="target">追踪目标</param>
     public void StartFlyingObj(Transform target, bool liner = false, Transform shooter = null, bool defelect = false)
     {
-        if (liner) target.position = new Vector3(target.position.x, transform.position.y, target.position.z);
-        if(shooter) shooterPos = shooter;
+        if (liner) isHorizontal = true;
+        if (shooter) shooterPos = shooter;
         defelected = defelect;
         m_Working = true;
         m_Mode = FlyingMode.Trace;

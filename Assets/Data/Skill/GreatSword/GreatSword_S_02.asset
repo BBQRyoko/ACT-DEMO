@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Combo_S_03_01
   isImmuAttack: 1
-  skillType: 0
   damagePoint: 50
+  tenacityDamagePoint: 0
   staminaCost: 60
-  energyRestore: 45
+  energyRestore: 0
   pauseDuration: 15
   VFXs: []
   SFXs: []
+  isFlyingObject: 0
+  maxSpeed: 20

@@ -275,7 +275,6 @@ public class CameraManager : MonoBehaviour
                             availableTarget.Add(character);
                         }
                     }
-
                 }
             }      
         }

@@ -238,18 +238,15 @@ public class PlayerStats : CharacterStats
     }
     public void StaminaController()
     {
-        if (!playerManager.cantBeInterrupted && !playerManager.isSprinting && !playerManager.staminaRegenPause && currStamina < maxStamina && !playerManager.isHolding)
+        if (!playerManager.cantBeInterrupted && !playerManager.isSprinting && !playerManager.staminaRegenPause && currStamina < maxStamina && !playerManager.isHolding)//正常状态
         {
-            if (playerManager.isDefending)
-            {
-                currStamina = currStamina + staminaRegen / 3 * Time.deltaTime;
-            }
-            else
-            {
-                currStamina = currStamina + staminaRegen * Time.deltaTime;
-            }
+            currStamina += staminaRegen * Time.deltaTime;
         }
-        else if (playerManager.isHolding) 
+        else if (playerManager.isHolding && playerManager.isDefending && !playerManager.staminaRegenPause) //防御
+        {
+            currStamina += (staminaRegen * 0.25f )* Time.deltaTime;
+        }
+        else if (playerManager.isHolding && !playerManager.isDefending) //弓箭
         {
             currStamina -= playerInventory.curEquippedWeaponItem.holdingStaminaCost * Time.deltaTime;
         }

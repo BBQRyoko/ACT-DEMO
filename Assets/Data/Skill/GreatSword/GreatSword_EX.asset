@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: GreatSword_EX
   m_EditorClassIdentifier: 
   skillName: BackStab
-  skillType: 0
+  isImmuAttack: 0
   damagePoint: 100
+  tenacityDamagePoint: 0
   staminaCost: 10
-  energyRestore: 60
+  energyRestore: 0
   pauseDuration: 10
   VFXs: []
   SFXs: []
+  isFlyingObject: 0
+  maxSpeed: 20

@@ -8,7 +8,12 @@ public class TornadoHazard : MonoBehaviour
     [SerializeField] Transform shootPos;
     ProjectileDamager curDamager;
     [SerializeField] float defaultCoverDuration = 1.5f;
-    float coveredDuration;
+    float characterCoveredDuration;
+
+    [Header("火旋风相关")]
+    [SerializeField] bool isFireTornado;
+    [SerializeField] FlyingObj fireTornado;
+    [SerializeField] GameObject explosionPrefab;
 
     private void Awake()
     {
@@ -16,19 +21,22 @@ public class TornadoHazard : MonoBehaviour
     }
     private void Update()
     {
-        if (curDamager.coveredPlayer) 
-        {
-            if (coveredDuration > 0)
-            {
-                coveredDuration -= Time.deltaTime;
-            }
-            else
-            {
-                curDamager.ProjectileDestroy();
-            }
-        }
+        //if (curDamager.coveredPlayer) 
+        //{
+        //    if (characterCoveredDuration > 0)
+        //    {
+        //        characterCoveredDuration -= Time.deltaTime;
+        //    }
+        //    else
+        //    {
+        //        curDamager.ProjectileDestroy();
+        //    }
+        //}
     }
-    //可以反弹攻击
+    public void TornadoLifeCheck()
+    {
+        characterCoveredDuration += defaultCoverDuration;
+    }
     void DefelectFlyingObj(FlyingObj obj) 
     {
         if (!deflectFlyingObj)
@@ -49,29 +57,66 @@ public class TornadoHazard : MonoBehaviour
             }
             deflectFlyingObj = null;
         }
-
-        //获得释放者的位置信息，然后以那个为目标发射
-        //飞行道具本身生成时检测是否有playerManager或者enemyManager
-        //然后获取其的TargetPos位置
-        //反射过的无法再触发反射
     }
-    public void TornadoLifeCheck() 
+    void GenerateFireTornado() 
     {
-        coveredDuration += defaultCoverDuration;
+        var obj = Instantiate(fireTornado, transform, false);
+        obj.transform.SetParent(null);
+        obj.gameObject.SetActive(true);
+        obj.StartFlyingObj(GetComponent<FlyingObj>().m_TraceTarget, true, null, true);
+        Destroy(this.gameObject);
     }
-    //可以吸收火焰
+    public void FireTornadoExplosion() 
+    {
+        var obj = Instantiate(explosionPrefab, transform, false);
+        obj.transform.SetParent(null);
+        obj.gameObject.SetActive(true);
+        Destroy(gameObject);
+    }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("DarkKnight"))
+        if (!isFireTornado)
         {
-            other.GetComponentInChildren<EnemyAnimatorManager>().tornadoSlashEnhance = true;
-            Destroy(transform.gameObject);
-        }
+            if (other.CompareTag("DarkKnight"))
+            {
+                other.GetComponentInChildren<EnemyAnimatorManager>().tornadoSlashEnhance = true;
+                Destroy(transform.gameObject);
+            }
 
-        if (other.GetComponentInParent<FlyingObj>() && !other.CompareTag("Player")) 
+            if (other.GetComponentInParent<FlyingObj>() && !other.CompareTag("Player") && !other.CompareTag("Enemy") && !other.GetComponent<TornadoHazard>()) //接触飞行道具, 非龙卷类
+            {
+                //如果是火球的话
+                if (other.GetComponentInParent<FlyingObj>().isFireBall)
+                {
+                    GenerateFireTornado();
+                    Destroy(other.gameObject);
+                }
+                else //普通飞行道具
+                {
+                    DefelectFlyingObj(other.GetComponentInParent<FlyingObj>());
+                    Destroy(other.gameObject);
+                }
+            }
+        }
+        else
         {
-            DefelectFlyingObj(other.GetComponentInParent<FlyingObj>());
-            Destroy(other.gameObject);
+            if (other.gameObject.layer == 8) //碰到场景障碍后触发爆炸
+            {
+                FireTornadoExplosion();
+            }
+
+            if (other.GetComponent<FlyingObj>() && !other.CompareTag("Player") && !other.CompareTag("Enemy")) //接触飞行道具
+            {
+                Destroy(other.gameObject);
+            }
+            else if (other.GetComponentInParent<FlyingObj>() && !other.CompareTag("Player") && !other.CompareTag("Enemy")) //接触其它龙卷
+            {
+                Destroy(other.gameObject);
+            }
+            else if (other.GetComponent<EnemyManager>() || other.GetComponent<PlayerManager>())
+            {
+                FireTornadoExplosion();
+            }
         }
     }
 }

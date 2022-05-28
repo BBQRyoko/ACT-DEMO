@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: SprintAttack
   isImmuAttack: 1
-  skillType: 0
   damagePoint: 55
   tenacityDamagePoint: 45
   staminaCost: 35
-  energyRestore: 35
+  energyRestore: 2
   pauseDuration: 16
   VFXs: []
   SFXs: []
+  isFlyingObject: 0
+  maxSpeed: 20

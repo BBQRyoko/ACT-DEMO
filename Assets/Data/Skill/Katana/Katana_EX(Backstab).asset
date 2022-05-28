@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: BackStab
   isImmuAttack: 0
-  skillType: 0
   damagePoint: 100
+  tenacityDamagePoint: 0
   staminaCost: 10
-  energyRestore: 60
+  energyRestore: 0
   pauseDuration: 0
   VFXs: []
   SFXs: []
+  isFlyingObject: 0
+  maxSpeed: 20

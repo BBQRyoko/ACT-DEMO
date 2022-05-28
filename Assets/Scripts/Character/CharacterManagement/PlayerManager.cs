@@ -79,15 +79,16 @@ public class PlayerManager : CharacterManager
     public bool isArrowLoaded;
 
     //远程攻击
+    public Transform shooting_Target;
+    public Transform straightLineNullTarget;
     [SerializeField] FlyingObj arrow;
     [SerializeField] FlyingObj fireBall;
     [SerializeField] FlyingObj tornado;
     [SerializeField] Transform shoot_Pos;
-    [SerializeField] FlyingObj tornado_ShootPos;
-    public Transform shooting_Target;
-    public Transform straightLineNullTarget;
+    [SerializeField] Transform tornado_ShootPos;
+    [SerializeField] Transform tornado_TargetPos;
 
-    //完美格挡ATField
+    //ATField
     [SerializeField] GameObject aT_Field_Prefab;
     [SerializeField] Transform aT_position;
 
@@ -252,23 +253,22 @@ public class PlayerManager : CharacterManager
             var obj = Instantiate(fireBall, shoot_Pos, false);
             obj.transform.SetParent(null);
             obj.gameObject.SetActive(true);
-            obj.StartFlyingObj(shooting_Target, false, beTargetedPos);
+            obj.StartFlyingObj(shooting_Target, true);
         }
         else if (index == 2) //龙卷
         {
-            var obj = Instantiate(tornado, transform, false);
+            var obj = Instantiate(tornado, tornado_ShootPos, false);
             obj.transform.SetParent(null);
             obj.gameObject.SetActive(true);
-            obj.StartFlyingObj(shooting_Target,true);
+            obj.StartFlyingObj(tornado_TargetPos, true);
         }
     }
     public void HandleDefending() 
     {
         if (isDefending)
         {
-            Debug.Log("123");
             PlayerInventory playerInventory = GetComponent<PlayerInventory>();
-            if (playerInventory.curEquippedWeaponItem.Id == 0) 
+            if (playerInventory.curEquippedWeaponItem.Id == 0) //大剑设置无法移动
             {
                 animator.SetBool("isInteracting", true);
             }
@@ -281,18 +281,31 @@ public class PlayerManager : CharacterManager
     }
     public void HandleParryingCheck(float incomingDamage) 
     {
-        float staminaDamage = incomingDamage * 2f;
-        if (staminaDamage <= playerStats.currStamina)
+        PlayerInventory playerInventory = GetComponent<PlayerInventory>();
+        if (playerInventory.curEquippedWeaponItem.Id == 0)
         {
-            playerStats.currStamina -= staminaDamage;
-            //animatorManager.PlayTargetAnimation("Defend(Success)", true, true);
+            playerStats.currStamina -= playerStats.maxStamina * 0.2f;
+        }
+        else if (playerInventory.curEquippedWeaponItem.Id == 1) 
+        {
+            if (incomingDamage <= playerStats.maxHealth / 2) //小伤害
+            {
+                playerStats.currStamina -= playerStats.maxStamina * 0.45f;
+            }
+            else //大伤害
+            {
+                playerStats.currStamina -= playerStats.maxStamina * 0.9f;
+            }
+        }
+
+        if (playerStats.currStamina > 0)
+        {
+            staminaRegenPauseTimer = 1.5f;
             animator.SetTrigger("isDefendSuccess");
-            staminaRegenPauseTimer = 1f;
         }
         else 
         {
             playerStats.currStamina = 0;
-            //animatorManager.PlayTargetAnimation("Defend(Broken)", true, true);
             animator.SetTrigger("isDefendFailed");
             animatorManager.animator.SetBool("isDefending", false);
         }

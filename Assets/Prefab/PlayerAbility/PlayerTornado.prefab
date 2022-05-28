@@ -28948,6 +28948,7 @@ Transform:
   - {fileID: 572855409618074392}
   - {fileID: 572561905116377672}
   - {fileID: 571360729640382522}
+  - {fileID: 4152229826270731751}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -33860,16 +33861,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45810cfd5e69ae845aba9239c7a756a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tornadoHazard: {fileID: 0}
+  projectileDamager: {fileID: 1147923186524531037}
   shooterPos: {fileID: 0}
   defelected: 0
+  isFireBall: 0
+  isHorizontal: 0
   darkKnightOnly: 0
   m_RotateSpeed: 120
   m_SlowDownSpeed: 2
-  m_MinSpeed: 4
+  m_MinSpeed: 0.5
   m_Accelerated: 2
-  m_MaxSpeed: 6
-  m_TraceTime: 0
-  m_LifeTime: 10000
+  m_MaxSpeed: 1
+  m_TraceTime: 0.1
+  m_LifeTime: 8
   m_TraceTarget: {fileID: 0}
   m_Mode: 1
   m_Working: 0
@@ -33887,6 +33892,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootPos: {fileID: 0}
+  defaultCoverDuration: 1.5
+  isFireTornado: 0
+  fireTornado: {fileID: 1125299340384826289}
+  explosionPrefab: {fileID: 0}
 --- !u!114 &1147923186524531037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33899,15 +33908,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a86f74eb64817f94d97e2609a3d07970, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isToronado: 1
+  tornadoHazard: {fileID: 0}
   coveredPlayer: {fileID: 0}
-  isHeavy: 0
   isPlayerDamage: 0
+  isHeavy: 0
   curDamage: 10
   staminaDamage: 0
   energyRestoreAmount: 20
   chargeAmount: 0
-  hitFactor: 1
 --- !u!1 &569598556576893388
 GameObject:
   m_ObjectHideFlags: 0
@@ -43822,3 +43830,80 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1001 &2277127603504524897
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 571151937303150704}
+    m_Modifications:
+    - target: {fileID: 2739970308809798533, guid: cebcd538935a26448a4af27079a46b64, type: 3}
+      propertyPath: m_Name
+      value: Fire_Tornado
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739970308809798533, guid: cebcd538935a26448a4af27079a46b64, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739970308809798534, guid: cebcd538935a26448a4af27079a46b64, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739970308809798534, guid: cebcd538935a26448a4af27079a46b64, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739970308809798534, guid: cebcd538935a26448a4af27079a46b64, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739970308809798534, guid: cebcd538935a26448a4af27079a46b64, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739970308809798534, guid: cebcd538935a26448a4af27079a46b64, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739970308809798534, guid: cebcd538935a26448a4af27079a46b64, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739970308809798534, guid: cebcd538935a26448a4af27079a46b64, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739970308809798534, guid: cebcd538935a26448a4af27079a46b64, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739970308809798534, guid: cebcd538935a26448a4af27079a46b64, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739970308809798534, guid: cebcd538935a26448a4af27079a46b64, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739970308809798534, guid: cebcd538935a26448a4af27079a46b64, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cebcd538935a26448a4af27079a46b64, type: 3}
+--- !u!114 &1125299340384826289 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1154089959628594640, guid: cebcd538935a26448a4af27079a46b64, type: 3}
+  m_PrefabInstance: {fileID: 2277127603504524897}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45810cfd5e69ae845aba9239c7a756a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &4152229826270731751 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2739970308809798534, guid: cebcd538935a26448a4af27079a46b64, type: 3}
+  m_PrefabInstance: {fileID: 2277127603504524897}
+  m_PrefabAsset: {fileID: 0}

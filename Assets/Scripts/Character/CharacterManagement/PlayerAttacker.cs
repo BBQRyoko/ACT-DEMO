@@ -123,7 +123,7 @@ public class PlayerAttacker : MonoBehaviour
                         comboCount = 1;
                     }
                     //检测是否有足够的体力释放
-                    if (playerManager.GetComponent<PlayerStats>().currStamina >= weapon.regularSkills[comboCount - 1].staminaCost - 15f && !playerManager.cantBeInterrupted && !playerManager.isHolding)
+                    if (playerManager.GetComponent<PlayerStats>().currStamina >= weapon.regularSkills[comboCount - 1].staminaCost - 10f && !playerManager.cantBeInterrupted && !playerManager.isHolding)
                     {
                         playerManager.cantBeInterrupted = true;
                         animatorManager.animator.SetBool("isAttacking", true);
