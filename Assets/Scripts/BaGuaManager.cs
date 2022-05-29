@@ -14,8 +14,6 @@ public class BaGuaManager : MonoBehaviour
     AnimatorManager animatorManager;
 
     Sample_VFX sample_VFX_Ability;
-    public List<int> commandHolder = new List<int>();
-    public int curPiviot;
     public Vector2 curPos;
     public GameObject realPiviot;
 
@@ -76,39 +74,7 @@ public class BaGuaManager : MonoBehaviour
         {
             BaGuaZhen.SetActive(true);
             gameManager.GameSlowDown();
-            realPiviot.transform.position = new Vector2(curPos.x + (inputManager.baguaInputX * 200), curPos.y + (inputManager.baguaInputY * 200));
-            if (commandHolder.Count <= 3)
-            {
-                if (inputManager.baguaInputX >= 0.99 && inputManager.baguaInputY >= -0.13 && inputManager.baguaInputY <= 0.13)
-                {
-                }
-                else if (inputManager.baguaInputX <= -0.99 && inputManager.baguaInputY >= -0.13 && inputManager.baguaInputY <= 0.13)
-                {
-                }
-                else if (inputManager.baguaInputY >= 0.99 && inputManager.baguaInputX >= -0.13 && inputManager.baguaInputX <= 0.13)
-                {
-                }
-                else if (inputManager.baguaInputY <= -0.99 && inputManager.baguaInputX >= -0.13 && inputManager.baguaInputX <= 0.13)
-                {
-
-                }
-                //else if (inputManager.baguaInputX > 0.61 && inputManager.baguaInputX < 0.79 && inputManager.baguaInputY > 0.61 && inputManager.baguaInputX < 0.79)
-                //{
-                //    BaGuaCommand(1);
-                //}
-                //else if (inputManager.baguaInputX < -0.61 && inputManager.baguaInputX > -0.79 && inputManager.baguaInputY > 0.61 && inputManager.baguaInputX < 0.79)
-                //{
-                //    BaGuaCommand(7);
-                //}
-                //else if (inputManager.baguaInputX > 0.61 && inputManager.baguaInputX < 0.79 && inputManager.baguaInputY < -0.61 && inputManager.baguaInputX > -0.79)
-                //{
-                //    BaGuaCommand(3);
-                //}
-                //else if (inputManager.baguaInputX < -0.61 && inputManager.baguaInputX > -0.79 && inputManager.baguaInputY < -0.61 && inputManager.baguaInputX > -0.79)
-                //{
-                //    BaGuaCommand(5);
-                //}
-            }
+            realPiviot.transform.position = new Vector2(curPos.x + (inputManager.baguaInputX * 220), curPos.y + (inputManager.baguaInputY * 220));
         }
         else
         {

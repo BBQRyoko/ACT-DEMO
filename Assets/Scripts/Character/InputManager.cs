@@ -28,6 +28,7 @@ public class InputManager : MonoBehaviour
     public bool crouch_Input;
     public bool jump_Input; //跳跃
     public bool interact_Input; //互动键
+    public bool specialAction_Input;
 
     //战斗
     public bool weaponSwitch_Input;
@@ -79,9 +80,6 @@ public class InputManager : MonoBehaviour
             playerControls.PlayerMovement.Camera.performed += i => cameraInput = i.ReadValue<Vector2>();
             playerControls.PlayerActions.BaGuaSelection.performed += i => baguaInput = i.ReadValue<Vector2>();
 
-            //判定是否有跳跃输入
-            playerControls.PlayerActions.Jump.started += i => jump_Input = true;
-            playerControls.PlayerActions.Jump.canceled += i => jump_Input = false;
             playerControls.PlayerActions.Sprint.performed += i => sprint_Input = true;
             playerControls.PlayerActions.Sprint.canceled += i => sprint_Input = false;
             playerControls.PlayerActions.Roll.performed += i => roll_Input = true;
@@ -91,11 +89,12 @@ public class InputManager : MonoBehaviour
             playerControls.PlayerActions.Interact.performed += i => interact_Input = true;
             playerControls.PlayerActions.Interact.canceled += i => interact_Input = false;
 
+            playerControls.PlayerActions.WeaponSpecialAction.performed += i => specialAction_Input = true;
+            playerControls.PlayerActions.WeaponSpecialAction.canceled += i => specialAction_Input = false;
+
             //攻击输入
             playerControls.PlayerActions.RegularAttack.performed += i => reAttack_Input = true;
             playerControls.PlayerActions.RegularAttack.canceled += i => reAttack_Input = false;
-            playerControls.PlayerActions.SpecialAttack.performed += i => spAttack_Input = true;
-            playerControls.PlayerActions.SpecialAttack.canceled += i => spAttack_Input = false;
             playerControls.PlayerActions.CombieAttack.performed += i => cbAttack_Input = true;
             playerControls.PlayerActions.CombieAttack.canceled += i => cbAttack_Input = false;
 
@@ -137,6 +136,7 @@ public class InputManager : MonoBehaviour
             HandleLockOnInput();
             HandleWeaponSwitch();
             HandleBaguaInput();
+            HandleSpecialActionInput();
         }
         HandleInteractInput();
     }
@@ -183,7 +183,6 @@ public class InputManager : MonoBehaviour
     {
         if (crouch_Input)
         {
-            crouch_Input = false;
             playerLocmotion.HandleCrouch();
         }
     }
@@ -215,8 +214,6 @@ public class InputManager : MonoBehaviour
         if (cbAttack_Input) //要改按键位置
         {
             playerManager.YinYangAbilityActivate();
-            //weaponAbility_Input = false;
-            //reAttack_Input = false;
         }
     }
     private void HandleInteractInput() 
@@ -284,6 +281,13 @@ public class InputManager : MonoBehaviour
             baguaInput.Normalize();
             baguaInputY = baguaInput.y;
             baguaInputX = baguaInput.x;
+        }
+    }
+    private void HandleSpecialActionInput() 
+    {
+        if (specialAction_Input) 
+        {
+            playerManager.PowerArrowController();
         }
     }
 }

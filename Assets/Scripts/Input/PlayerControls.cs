@@ -275,27 +275,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Jump"",
-                    ""type"": ""Button"",
-                    ""id"": ""41a7efc3-9044-402a-bb71-eca9ec34efb6"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""RegularAttack"",
                     ""type"": ""Button"",
                     ""id"": ""9aa7d6ea-4634-4196-9e8c-cd1301daedff"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""SpecialAttack"",
-                    ""type"": ""Button"",
-                    ""id"": ""094a4503-c6f9-4dcd-a3ea-c363b40b8187"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -360,6 +342,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""type"": ""PassThrough"",
                     ""id"": ""d482f79b-b064-4950-9fa0-ece185a73dcb"",
                     ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponSpecialAction"",
+                    ""type"": ""Button"",
+                    ""id"": ""2109ed3d-0a1e-473d-934e-b59a8e74d3a1"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -640,6 +631,28 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""BaGuaSelection"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""89f404b2-739d-4b61-820b-ee10b0d8466a"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WeaponSpecialAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c1537601-f84a-48ad-a8b6-131142909142"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WeaponSpecialAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -696,9 +709,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_PlayerActions_LockOn = m_PlayerActions.FindAction("LockOn", throwIfNotFound: true);
         m_PlayerActions_Roll = m_PlayerActions.FindAction("Roll", throwIfNotFound: true);
         m_PlayerActions_Sprint = m_PlayerActions.FindAction("Sprint", throwIfNotFound: true);
-        m_PlayerActions_Jump = m_PlayerActions.FindAction("Jump", throwIfNotFound: true);
         m_PlayerActions_RegularAttack = m_PlayerActions.FindAction("RegularAttack", throwIfNotFound: true);
-        m_PlayerActions_SpecialAttack = m_PlayerActions.FindAction("SpecialAttack", throwIfNotFound: true);
         m_PlayerActions_Interact = m_PlayerActions.FindAction("Interact", throwIfNotFound: true);
         m_PlayerActions_CombieAttack = m_PlayerActions.FindAction("CombieAttack", throwIfNotFound: true);
         m_PlayerActions_WeaponAbility = m_PlayerActions.FindAction("WeaponAbility", throwIfNotFound: true);
@@ -706,6 +717,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_PlayerActions_BaGuaSystem = m_PlayerActions.FindAction("BaGuaSystem", throwIfNotFound: true);
         m_PlayerActions_Crouch = m_PlayerActions.FindAction("Crouch", throwIfNotFound: true);
         m_PlayerActions_BaGuaSelection = m_PlayerActions.FindAction("BaGuaSelection", throwIfNotFound: true);
+        m_PlayerActions_WeaponSpecialAction = m_PlayerActions.FindAction("WeaponSpecialAction", throwIfNotFound: true);
         // UIActions
         m_UIActions = asset.FindActionMap("UIActions", throwIfNotFound: true);
         m_UIActions_Cancel = m_UIActions.FindAction("Cancel", throwIfNotFound: true);
@@ -828,9 +840,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_LockOn;
     private readonly InputAction m_PlayerActions_Roll;
     private readonly InputAction m_PlayerActions_Sprint;
-    private readonly InputAction m_PlayerActions_Jump;
     private readonly InputAction m_PlayerActions_RegularAttack;
-    private readonly InputAction m_PlayerActions_SpecialAttack;
     private readonly InputAction m_PlayerActions_Interact;
     private readonly InputAction m_PlayerActions_CombieAttack;
     private readonly InputAction m_PlayerActions_WeaponAbility;
@@ -838,6 +848,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_BaGuaSystem;
     private readonly InputAction m_PlayerActions_Crouch;
     private readonly InputAction m_PlayerActions_BaGuaSelection;
+    private readonly InputAction m_PlayerActions_WeaponSpecialAction;
     public struct PlayerActionsActions
     {
         private @PlayerControls m_Wrapper;
@@ -845,9 +856,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @LockOn => m_Wrapper.m_PlayerActions_LockOn;
         public InputAction @Roll => m_Wrapper.m_PlayerActions_Roll;
         public InputAction @Sprint => m_Wrapper.m_PlayerActions_Sprint;
-        public InputAction @Jump => m_Wrapper.m_PlayerActions_Jump;
         public InputAction @RegularAttack => m_Wrapper.m_PlayerActions_RegularAttack;
-        public InputAction @SpecialAttack => m_Wrapper.m_PlayerActions_SpecialAttack;
         public InputAction @Interact => m_Wrapper.m_PlayerActions_Interact;
         public InputAction @CombieAttack => m_Wrapper.m_PlayerActions_CombieAttack;
         public InputAction @WeaponAbility => m_Wrapper.m_PlayerActions_WeaponAbility;
@@ -855,6 +864,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @BaGuaSystem => m_Wrapper.m_PlayerActions_BaGuaSystem;
         public InputAction @Crouch => m_Wrapper.m_PlayerActions_Crouch;
         public InputAction @BaGuaSelection => m_Wrapper.m_PlayerActions_BaGuaSelection;
+        public InputAction @WeaponSpecialAction => m_Wrapper.m_PlayerActions_WeaponSpecialAction;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -873,15 +883,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Sprint.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSprint;
                 @Sprint.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSprint;
                 @Sprint.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSprint;
-                @Jump.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnJump;
-                @Jump.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnJump;
-                @Jump.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnJump;
                 @RegularAttack.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRegularAttack;
                 @RegularAttack.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRegularAttack;
                 @RegularAttack.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRegularAttack;
-                @SpecialAttack.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSpecialAttack;
-                @SpecialAttack.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSpecialAttack;
-                @SpecialAttack.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSpecialAttack;
                 @Interact.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnInteract;
@@ -903,6 +907,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @BaGuaSelection.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnBaGuaSelection;
                 @BaGuaSelection.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnBaGuaSelection;
                 @BaGuaSelection.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnBaGuaSelection;
+                @WeaponSpecialAction.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnWeaponSpecialAction;
+                @WeaponSpecialAction.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnWeaponSpecialAction;
+                @WeaponSpecialAction.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnWeaponSpecialAction;
             }
             m_Wrapper.m_PlayerActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -916,15 +923,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Sprint.started += instance.OnSprint;
                 @Sprint.performed += instance.OnSprint;
                 @Sprint.canceled += instance.OnSprint;
-                @Jump.started += instance.OnJump;
-                @Jump.performed += instance.OnJump;
-                @Jump.canceled += instance.OnJump;
                 @RegularAttack.started += instance.OnRegularAttack;
                 @RegularAttack.performed += instance.OnRegularAttack;
                 @RegularAttack.canceled += instance.OnRegularAttack;
-                @SpecialAttack.started += instance.OnSpecialAttack;
-                @SpecialAttack.performed += instance.OnSpecialAttack;
-                @SpecialAttack.canceled += instance.OnSpecialAttack;
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
@@ -946,6 +947,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @BaGuaSelection.started += instance.OnBaGuaSelection;
                 @BaGuaSelection.performed += instance.OnBaGuaSelection;
                 @BaGuaSelection.canceled += instance.OnBaGuaSelection;
+                @WeaponSpecialAction.started += instance.OnWeaponSpecialAction;
+                @WeaponSpecialAction.performed += instance.OnWeaponSpecialAction;
+                @WeaponSpecialAction.canceled += instance.OnWeaponSpecialAction;
             }
         }
     }
@@ -995,9 +999,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnLockOn(InputAction.CallbackContext context);
         void OnRoll(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
-        void OnJump(InputAction.CallbackContext context);
         void OnRegularAttack(InputAction.CallbackContext context);
-        void OnSpecialAttack(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnCombieAttack(InputAction.CallbackContext context);
         void OnWeaponAbility(InputAction.CallbackContext context);
@@ -1005,6 +1007,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnBaGuaSystem(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
         void OnBaGuaSelection(InputAction.CallbackContext context);
+        void OnWeaponSpecialAction(InputAction.CallbackContext context);
     }
     public interface IUIActionsActions
     {

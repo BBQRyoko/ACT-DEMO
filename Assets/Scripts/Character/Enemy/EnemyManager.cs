@@ -146,7 +146,7 @@ public class EnemyManager : CharacterManager
         ItemDrop();
         isRotatingWithRootMotion = enemyAnimatorManager.animator.GetBool("isRotatingWithRootMotion");
         canRotate = enemyAnimatorManager.animator.GetBool("canRotate");
-        enemyAnimatorManager.animator.SetBool("isStunned", isStunned);
+        isStunned = enemyAnimatorManager.animator.GetBool("isStunned");
 
         //if (!alertIconSpawn) 
         //{
@@ -224,7 +224,6 @@ public class EnemyManager : CharacterManager
     {
         isInteracting = enemyAnimatorManager.animator.GetBool("isInteracting");
         isPreformingAction = isInteracting;
-        isParryBreak = enemyAnimatorManager.animator.GetBool("isParryBreak");
     }
     private void HandleStateMachine() //单位状态机管理
     {
@@ -309,12 +308,6 @@ public class EnemyManager : CharacterManager
     }
     void HandleParryCollider()
     {
-        if (isParryBreak)
-        {
-            isStunned = true;
-            enemyAnimatorManager.animator.SetBool("isParryBreak", false);
-        }
-
         if (parryCollider)
         {
             if (isParrying)
@@ -392,7 +385,7 @@ public class EnemyManager : CharacterManager
         idleState.PlayerNoticeAnnounce(idleState.announceDistance, true);
         if (isStunned) 
         {
-            enemyAnimatorManager.animator.SetBool("isWeak", false);
+            enemyAnimatorManager.animator.SetBool("isStunned", false);
             stunTimer = 0;
             enemyStats.currStamina = enemyStats.maxStamina;
         }

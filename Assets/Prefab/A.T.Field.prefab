@@ -4970,7 +4970,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyAnimatorList: []
-  filedTime: 8
+  filedTime: 6.5
   counterTimer: 0.5
 --- !u!1 &2272751485136828211
 GameObject:

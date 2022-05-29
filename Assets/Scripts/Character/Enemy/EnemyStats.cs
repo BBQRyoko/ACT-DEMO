@@ -97,7 +97,7 @@ public class EnemyStats : CharacterStats
             else 
             {
                 currStamina = 0;
-                animatorManager.PlayTargetAnimation("ParryBreak", true, true);
+                animatorManager.PlayTargetAnimation("Hit_Large", true, true);
             }
 
             if (!enemyManager.isEquipped) 

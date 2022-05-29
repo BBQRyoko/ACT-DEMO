@@ -66,11 +66,10 @@ public class PlayerManager : CharacterManager
     //太极系统
     public bool yinYangAbilityOn;
     [SerializeField] GameObject ultimateHint;
-    int taiji_Guage;
-    [SerializeField] TaijiDurationBar taijiDurationBar;
-    [SerializeField] GameObject taijiBuff_VFX;
     public float transAttackTimer;
     public bool canTransAttack;
+
+    //太刀弹反
     public bool isPerfect;
 
     //蓄力攻击相关
@@ -82,6 +81,7 @@ public class PlayerManager : CharacterManager
     public Transform shooting_Target;
     public Transform straightLineNullTarget;
     [SerializeField] FlyingObj arrow;
+    [SerializeField] FlyingObj powerArrow;
     [SerializeField] FlyingObj fireBall;
     [SerializeField] FlyingObj tornado;
     [SerializeField] Transform shoot_Pos;
@@ -151,7 +151,7 @@ public class PlayerManager : CharacterManager
         }
         playerStats.StaminaController();
         GeneralTimerController();
-        TaijiEffectController();
+        PowerArrowController();
     }
     private void FixedUpdate()
     {
@@ -243,10 +243,25 @@ public class PlayerManager : CharacterManager
     {
         if (index == 0) //弓箭
         {
-            var obj = Instantiate(arrow, shoot_Pos, false);
-            obj.transform.SetParent(null);
-            obj.gameObject.SetActive(true);
-            obj.StartFlyingObj(shooting_Target, false, beTargetedPos);
+            PlayerAttacker playerAttacker = GetComponent<PlayerAttacker>();
+            PlayerInventory playerInventory = GetComponent<PlayerInventory>();
+
+            if (!playerAttacker.isUsingPowerArrow)
+            {
+                var obj = Instantiate(arrow, shoot_Pos, false);
+                obj.transform.SetParent(null);
+                obj.gameObject.SetActive(true);
+                obj.StartFlyingObj(shooting_Target, false, beTargetedPos);
+            }
+            else 
+            {
+                var obj = Instantiate(powerArrow, shoot_Pos, false);
+                obj.transform.SetParent(null);
+                obj.gameObject.SetActive(true);
+                obj.StartFlyingObj(shooting_Target, false, beTargetedPos);
+                playerInventory.powerArrowNum -= 1;
+            }
+
         }
         else if (index == 1) //火球
         {
@@ -331,6 +346,33 @@ public class PlayerManager : CharacterManager
         cooldownTimer.fillAmount = 1;
         cooldownUnit = 1 / timer;
     }
+    public void PowerArrowController() //检测是否开启强击失
+    {
+        PlayerInventory playerInventory = GetComponent<PlayerInventory>();
+        PlayerAttacker playerAttacker = GetComponent<PlayerAttacker>();
+
+        if (playerInventory.powerArrowNum <= 0)
+        {
+            playerAttacker.isUsingPowerArrow = false;
+        }
+        if (playerInventory.powerArrowNum >= 25) 
+        {
+            playerInventory.powerArrowNum = 25;
+        }
+        if (inputManager.specialAction_Input) 
+        {
+            if (playerInventory.powerArrowNum > 0 && !playerAttacker.isUsingPowerArrow)
+            {
+                playerAttacker.isUsingPowerArrow = true;
+                inputManager.specialAction_Input = false;
+            }
+            else if( playerAttacker.isUsingPowerArrow )
+            {
+                playerAttacker.isUsingPowerArrow = false;
+                inputManager.specialAction_Input = false;
+            }
+        }
+    }
     public void HangingController() 
     {
         if (!isHanging)
@@ -357,24 +399,6 @@ public class PlayerManager : CharacterManager
             animatorManager.PlayTargetAnimation("ClimbToTop", true, true);
         }
     }
-    public void PerfectTimer() 
-    {
-
-    }
-    void TaijiEffectController() 
-    {
-        if (taiji_Guage == 2)
-        {
-            taijiBuff_VFX.SetActive(true);
-            //攻击模组变化
-            //消耗减少
-            //移动速度上升
-        }
-        else 
-        {
-            taijiBuff_VFX.SetActive(false);
-        }
-    }
     public void YinYangAbilityActivate() 
     {
         if (yinYangAbilityOn) 
@@ -382,12 +406,15 @@ public class PlayerManager : CharacterManager
             baGuaManager.curYin = 0;
             baGuaManager.curYang = 0;
             yinYangAbilityOn = false;
+            animatorManager.PlayTargetAnimation("Ultimate", true, true);
             GameObject AT_Field_Temp = Instantiate(aT_Field_Prefab, aT_position.position, Quaternion.identity);
             generalAudio.clip = sfxList.Bagua_SFX_List[0];
             generalAudio.Play();
             sample_VFX.baGuaRelated_List[0].Stop();
             sample_VFX.baGuaRelated_List[1].Play();
             AT_Field_Temp.transform.SetParent(null);
+            inputManager.weaponAbility_Input = false;
+            inputManager.reAttack_Input = false;
         }
     }
     public void Rest() 

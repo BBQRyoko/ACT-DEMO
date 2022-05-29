@@ -35,6 +35,7 @@ public class PlayerLocmotion : MonoBehaviour
     [SerializeField] float movementSpeed = 10;
     [SerializeField] float inAirMovementSpeed = 4;
     [SerializeField] float crouchSpeed = 7f;
+    float crouchTimer;
     [SerializeField] float sprintSpeed = 10;
     [SerializeField] float rotationSpeed = 15;
     public bool willRotateTowardsTarget;
@@ -549,10 +550,17 @@ public class PlayerLocmotion : MonoBehaviour
         if (playerManager.isCrouching)
         {
             playerManager.isCrouching = false;
+            inputManager.crouch_Input = false;
         }
         else
         {
-            playerManager.isCrouching = true;
+            crouchTimer += Time.deltaTime;
+            if (crouchTimer >= 0.5f) 
+            {
+                playerManager.isCrouching = true;
+                inputManager.crouch_Input = false;
+                crouchTimer = 0;
+            }
         }
     }
 

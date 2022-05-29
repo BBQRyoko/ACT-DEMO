@@ -14,6 +14,8 @@ public class PlayerInventory : MonoBehaviour
 
     public List<InventoryItemData> items;
 
+    public int powerArrowNum;
+
     private void Awake()
     {
         playerManager = GetComponent<PlayerManager>();

@@ -32,12 +32,58 @@ public class BaGuaEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             unselectedBagua.SetActive(true);
             selectedBagua.SetActive(false);
         }
+        ControlerPointerCheck();
     }
     void BaGuaEntrySelected() 
     {
         unselectedBagua.SetActive(false);
         selectedBagua.SetActive(true);
     }
+
+    void ControlerPointerCheck() 
+    {
+        if (!isSelected && canBeSelected) 
+        {
+            if (Vector2.Distance(transform.position, baGuaManager.realPiviot.transform.position) <= 50f)
+            {
+                rect.DOComplete();
+                rect.DOScale(Vector3.one * 1.2f, 0.1f).SetEase(Ease.OutQuad);
+                if (baGuaManager.baguasHolder.Count < baGuaManager.commandSlotNum)
+                {
+                    baGuaManager.AddBaguaCommand(bagua_Index);
+                    isSelected = true;
+                    baGuaPanel_UI.CommandFilling(bagua_Index);
+                    for (int i = 0; i < baGuaPanel_UI.commandSlotList.Count; i++)
+                    {
+                        if (!baGuaPanel_UI.commandSlotList[i].commandSelected)
+                        {
+                            Color32 color = unselectedBagua.GetComponent<RawImage>().color;
+                            baGuaPanel_UI.commandSlotList[i].CommandFilling(color);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        if (rect.localScale.x == 1.2f) //被选上的状态
+        {
+            if (Vector2.Distance(transform.position, baGuaManager.realPiviot.transform.position) > 50f)
+            {
+                if (isSelected)
+                {
+                    rect.DOComplete();
+                    rect.DOScale(Vector3.one * 0.85f, 0.1f).SetEase(Ease.OutQuad);
+                    BaGuaEntrySelected();
+                }
+                else
+                {
+                    rect.DOComplete();
+                    rect.DOScale(Vector3.one, 0.1f).SetEase(Ease.OutQuad);
+                }
+            }
+        }
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (!isSelected && canBeSelected) 

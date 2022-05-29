@@ -28,6 +28,10 @@ public class PlayerAttacker : MonoBehaviour
     public float attackTimer;
     public float internalDuration = 3.75f;
 
+    //弓箭相关
+    public bool isUsingPowerArrow;
+    [SerializeField] float powerArrowRatio = 1.5f;
+
     //太极切换触发
     public float chargeValue; //switchValue
 
@@ -130,15 +134,26 @@ public class PlayerAttacker : MonoBehaviour
                         attackTimer = internalDuration;
                         //播放指定的攻击动画
                         animatorManager.PlayTargetAnimation(weapon.regularSkills[comboCount - 1].skillName, true, true);
-                        if (playerInventory.curEquippedWeaponItem.Id == 2)
+                        if (playerInventory.curEquippedWeaponItem.Id == 2) //使用弓箭时的状态
                         {
-                            ProjectileDamager projectileDamager = weaponSlotManager.playerArrowFlyObj.GetComponentInChildren<ProjectileDamager>();
+                            ProjectileDamager projectileDamager = weaponSlotManager.curArrowObj.GetComponentInChildren<ProjectileDamager>();
 
-                            projectileDamager.curDamage = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio);
-                            projectileDamager.staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint;
-                            projectileDamager.energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
-                            projectileDamager.chargeAmount = weapon.regularSkills[comboCount - 1].energyRestore;
-                            weaponSlotManager.playerArrowFlyObj.m_MaxSpeed = weapon.regularSkills[comboCount - 1].maxSpeed;
+                            if (!isUsingPowerArrow)
+                            {
+                                projectileDamager.curDamage = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio);
+                                projectileDamager.staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint;
+                                projectileDamager.energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                                projectileDamager.chargeAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                                weaponSlotManager.curArrowObj.m_MaxSpeed = weapon.regularSkills[comboCount - 1].maxSpeed;
+                            }
+                            else 
+                            {
+                                projectileDamager.curDamage = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio) * powerArrowRatio;
+                                projectileDamager.staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint;
+                                projectileDamager.energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                                projectileDamager.chargeAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                                weaponSlotManager.curArrowObj.m_MaxSpeed = weapon.regularSkills[comboCount - 1].maxSpeed;
+                            }
                         }
                         else
                         {
@@ -149,7 +164,6 @@ public class PlayerAttacker : MonoBehaviour
                         }
                         animatorManager.pauseDuration = weapon.regularSkills[comboCount - 1].pauseDuration;
                         playerManager.GetComponent<PlayerStats>().currStamina -= weapon.regularSkills[comboCount - 1].staminaCost;
-                        Debug.Log(weapon.regularSkills[comboCount - 1].staminaCost);
                         //sample_VFX_R.curVFX_List[comboCount - 1].Play();
                         //if (weapon.regularSkills[comboCount - 1].isImmuAttack)
                         //{
@@ -273,9 +287,9 @@ public class PlayerAttacker : MonoBehaviour
         {
             playerLocmotion.HandleRotateTowardsTarger();
             comboCount = 0;
-
-            playerManager.cantBeInterrupted = true;
             animatorManager.animator.SetBool("isAttacking", true);
+            playerManager.cantBeInterrupted = true;
+            playerManager.isWeaponSwitching = false;
             attackTimer = internalDuration;
             //播放指定的攻击动画
             animatorManager.PlayTargetAnimation(weapon.transSkills[0].skillName, true, true);

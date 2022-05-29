@@ -253,27 +253,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Jump",
-                    "type": "Button",
-                    "id": "41a7efc3-9044-402a-bb71-eca9ec34efb6",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "RegularAttack",
                     "type": "Button",
                     "id": "9aa7d6ea-4634-4196-9e8c-cd1301daedff",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SpecialAttack",
-                    "type": "Button",
-                    "id": "094a4503-c6f9-4dcd-a3ea-c363b40b8187",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -338,6 +320,15 @@
                     "type": "PassThrough",
                     "id": "d482f79b-b064-4950-9fa0-ece185a73dcb",
                     "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "WeaponSpecialAction",
+                    "type": "Button",
+                    "id": "2109ed3d-0a1e-473d-934e-b59a8e74d3a1",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -616,6 +607,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "BaGuaSelection",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "89f404b2-739d-4b61-820b-ee10b0d8466a",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "WeaponSpecialAction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c1537601-f84a-48ad-a8b6-131142909142",
+                    "path": "<Keyboard>/t",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "WeaponSpecialAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

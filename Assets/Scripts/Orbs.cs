@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Orbs : MonoBehaviour
 {
-    public enum OrbsType{ health, energy };
+    public enum OrbsType{ health, energy, arrow};
     public OrbsType orb;
     [SerializeField] int restoreAmount;
     private void OnTriggerEnter(Collider other)
@@ -28,6 +28,15 @@ public class Orbs : MonoBehaviour
                     baGuaManager.curEnergyCharge += (float)restoreAmount;
                     Destroy(gameObject.transform.parent.gameObject);
                 }
+            }
+            else if (orb == OrbsType.arrow)
+            {
+                PlayerInventory playerInventory = other.GetComponent<PlayerInventory>();
+                if (playerInventory.powerArrowNum <= 25) 
+                {
+                    playerInventory.powerArrowNum += restoreAmount;
+                }
+                Destroy(gameObject.transform.parent.gameObject);
             }
         }
     }

@@ -142,11 +142,6 @@ public class DamageCollider : MonoBehaviour
                 }
                 else if (!playerStats.GetComponent<PlayerManager>().damageAvoid && !playerStats.GetComponent<PlayerManager>().isPerfect)
                 {
-                    if (playerStats.GetComponent<PlayerManager>().isWeaponSwitching)
-                    {
-                        playerManager.isWeaponSwitching = false;
-                        playerManager.WeaponSwitchTimerSetUp(2.5f);
-                    }
                     attackAudio.volume = 0.08f;
                     int i = sample_SFX.hittedSFX_List.Length;
                     int random = Random.Range(0, i - 1);

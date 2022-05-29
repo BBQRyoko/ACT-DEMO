@@ -87,7 +87,6 @@ public class FlyingObj : MonoBehaviour
         if (m_Mode != FlyingMode.Trace) return;
         var lookAt = m_TraceTarget.position - transform.position;
         if (isHorizontal) lookAt.y = 0;
-        Debug.Log(lookAt);
         //只需要处理旋转就行了
         float angle = Vector3.Angle(transform.forward, lookAt);
         //判断误差

@@ -17,9 +17,13 @@ public class WeaponSlotManager : MonoBehaviour
     public DamageCollider weaponDamageCollider;
     [SerializeField] ParryCollider parryCollider;
     public GameObject mainArmedWeapon;
-    public FlyingObj playerArrowFlyObj;
+    public FlyingObj curArrowObj;
+    public FlyingObj[] arrowObjs; 
     [SerializeField] GameObject[] armedWeaponSlot = new GameObject[4];
-    [SerializeField] GameObject arrow;
+    
+    [Header("displayOnly")]
+    [SerializeField] GameObject arrow; 
+    [SerializeField] GameObject powerArrow;
 
     [SerializeField] GameObject greatSwordIcon;
     [SerializeField] GameObject katanaIcon;
@@ -51,11 +55,19 @@ public class WeaponSlotManager : MonoBehaviour
     }
     public void LoadArrowOnSlot() 
     {
-        arrow.SetActive(true);
+        if (!playerAttacker.isUsingPowerArrow)
+        {
+            arrow.SetActive(true);
+        }
+        else 
+        {
+            powerArrow.SetActive(true);
+        }
     }
     public void UnloadArrowOnSlot() 
     {
         arrow.SetActive(false);
+        powerArrow.SetActive(false);
     }
     public void EquipeWeapon() 
     {
@@ -93,6 +105,7 @@ public class WeaponSlotManager : MonoBehaviour
         {
             if (!playerManager.isGettingDamage)
             {
+                playerAttacker.isUsingPowerArrow = false;
                 PlayerInventory playerInventory = playerManager.GetComponent<PlayerInventory>();
                 if (mainWeapon_Unequipped == unequippedWeaponSlots[0]) //切换至副武器
                 {
@@ -103,6 +116,10 @@ public class WeaponSlotManager : MonoBehaviour
                     mainArmedWeapon = armedWeaponSlot[playerInventory.curEquippedWeaponItem.Id];
                     LoadWeaponOnSlot(playerInventory.unequippedWeaponItems[0], 0);
                     transform.GetComponent<AnimatorManager>().PlayTargetAnimation("WeaponSwitch(Equip)", true, true);
+                    if (playerInventory.curEquippedWeaponItem.Id == 2 && playerInventory.powerArrowNum > 0) 
+                    {
+                        playerAttacker.isUsingPowerArrow = true;
+                    }
                 }
                 else //切换至主武器
                 {
@@ -113,11 +130,16 @@ public class WeaponSlotManager : MonoBehaviour
                     playerInventory.curEquippedWeaponItem = playerInventory.unequippedWeaponItems[0];
                     mainArmedWeapon = armedWeaponSlot[playerInventory.curEquippedWeaponItem.Id];
                     LoadWeaponOnSlot(playerInventory.unequippedWeaponItems[1], 1);
+                    if (playerInventory.curEquippedWeaponItem.Id == 2 && playerInventory.powerArrowNum > 0)
+                    {
+                        playerAttacker.isUsingPowerArrow = true;
+                    }
                 }
             }
         }
         else //切换当前所装备的武器
         {
+            playerAttacker.isUsingPowerArrow = false;
             PlayerInventory playerInventory = playerManager.GetComponent<PlayerInventory>();
             int curIndex = playerInventory.currentWeaponIndex;
             transform.GetComponent<Animator>().runtimeAnimatorController = playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[curIndex].weaponAnimatorController;
@@ -125,13 +147,18 @@ public class WeaponSlotManager : MonoBehaviour
             mainArmedWeapon = armedWeaponSlot[playerInventory.curEquippedWeaponItem.Id];
             LoadWeaponOnSlot(playerInventory.unequippedWeaponItems[curIndex], curIndex);
             transform.GetComponent<AnimatorManager>().PlayTargetAnimation("WeaponSwitch(Equip)", true, true);
+            if (playerInventory.curEquippedWeaponItem.Id == 2 && playerInventory.powerArrowNum > 0)
+            {
+                playerAttacker.isUsingPowerArrow = true;
+            }
         }
     }
     public void AttackSwitchAnimatorController() //切换攻击
     {
         playerManager.transAttackTimer = 0;
         playerManager.canTransAttack = false;
-
+        playerManager.isWeaponSwitching = false;
+        playerAttacker.isUsingPowerArrow = false;
         if (mainWeapon_Unequipped == unequippedWeaponSlots[0])
         {
             playerManager.GetComponent<PlayerInventory>().currentWeaponIndex = 1;
@@ -139,7 +166,8 @@ public class WeaponSlotManager : MonoBehaviour
             mainArmedWeapon = armedWeaponSlot[playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[1].Id];
             transform.GetComponent<Animator>().runtimeAnimatorController = playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[1].weaponAnimatorController;
             weaponDamageCollider = mainArmedWeapon.GetComponentInChildren<DamageCollider>();
-            playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(40f);
+            if (playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[1].Id == 2) playerAttacker.isUsingPowerArrow = true;
+            playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(20f);
             playerAttacker.HandleTransformAttack(playerInventory.unequippedWeaponItems[playerInventory.currentWeaponIndex]);
         }
         else
@@ -149,7 +177,8 @@ public class WeaponSlotManager : MonoBehaviour
             mainArmedWeapon = armedWeaponSlot[playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[0].Id];
             transform.GetComponent<Animator>().runtimeAnimatorController = playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[0].weaponAnimatorController;
             weaponDamageCollider = mainArmedWeapon.GetComponentInChildren<DamageCollider>();
-            playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(40f);
+            if (playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[0].Id == 2) playerAttacker.isUsingPowerArrow = true;
+            playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(20f);
             playerAttacker.HandleTransformAttack(playerInventory.unequippedWeaponItems[playerInventory.currentWeaponIndex]);
         }
     }
