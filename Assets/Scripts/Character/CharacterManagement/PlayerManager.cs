@@ -428,7 +428,6 @@ public class PlayerManager : CharacterManager
             playerStats.currHealth = playerStats.maxHealth;
             playerStats.currStamina = 150f;
             baGuaManager.curEnergyCharge = 0f;
-            baGuaManager.energyGuage = 1;
         }
         else 
         {
@@ -437,8 +436,7 @@ public class PlayerManager : CharacterManager
             animatorManager.generalAudio.Play();
             playerStats.currHealth = playerStats.maxHealth;
             playerStats.currStamina = 150f;
-            if (baGuaManager.energyGuage < 1) 
-            baGuaManager.energyGuage = 1;
+            baGuaManager.curEnergyCharge = 300f;
         }
     }
 }

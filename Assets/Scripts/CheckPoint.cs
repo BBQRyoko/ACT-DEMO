@@ -34,19 +34,6 @@ public class CheckPoint : InteractSystem
     }
     void Unlock()
     {
-        //if (UnlockAbility == Ability.Heal)
-        //{
-        //    baGuaManager.healUnlock = true;
-        //}
-        //else if (UnlockAbility == Ability.FireBall)
-        //{
-        //    baGuaManager.fireBallUnlock = true;
-        //}
-        //else if (UnlockAbility == Ability.Immu)
-        //{
-        //    baGuaManager.immuUnlock = true;
-        //}
-        baGuaManager.energyGuage = 3;
         hasAbility = false;
     }
 

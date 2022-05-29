@@ -39,13 +39,11 @@ public class BaGuaManager : MonoBehaviour
     [SerializeField] List<GameObject> buffList = new List<GameObject>();
 
     [Header("能量相关")]
-    public int energyGuage;
     public float curEnergyCharge;
     [SerializeField] Image energyChargeSlot;
     [SerializeField] Image energyGuage_1;
     [SerializeField] Image energyGuage_2;
     [SerializeField] Image energyGuage_3;
-    [SerializeField] GameObject liCover;
 
     [Header("ui")]
     [SerializeField] GameObject fireballCheatSheet;
@@ -64,13 +62,13 @@ public class BaGuaManager : MonoBehaviour
     void Update()
     {
         YinYangControl();
-        //EnergySourceControl();
+        EnergySourceControl();
         BaguaPanelActive();
         BaguaAbilityController();
     }
     void BaguaPanelActive()
     {
-        if (inputManager.baGua_Input && !isCommandActive && !playerManager.gameStart)
+        if (inputManager.baGua_Input && !isCommandActive && !playerManager.gameStart && curEnergyCharge >= 100)
         {
             BaGuaZhen.SetActive(true);
             gameManager.GameSlowDown();
@@ -83,48 +81,34 @@ public class BaGuaManager : MonoBehaviour
     }
     void EnergySourceControl()
     {
-        energyChargeSlot.fillAmount = curEnergyCharge / 100;
+        energyChargeSlot.fillAmount = curEnergyCharge / 300;
 
-        if (curEnergyCharge >= 100)
+        if (curEnergyCharge >= 300)
         {
-            if (energyGuage == 3)
-            {
-                curEnergyCharge = 100;
-            }
-            else
-            {
-                curEnergyCharge -= 100;
-                energyGuage += 1;
-            }
+            curEnergyCharge = 300;
+            energyGuage_1.fillAmount = 1;
+            energyGuage_2.fillAmount = 1;
+            energyGuage_3.fillAmount = 1;
         }
-
-        if (energyGuage == 1)
+        else if (curEnergyCharge >= 200)
+        {
+            energyGuage_1.fillAmount = 1;
+            energyGuage_2.fillAmount = 1;
+            energyGuage_3.fillAmount = 0;
+        }
+        else if (curEnergyCharge >= 100)
         {
             energyGuage_1.fillAmount = 1;
             energyGuage_2.fillAmount = 0;
             energyGuage_3.fillAmount = 0;
         }
-        else if (energyGuage == 2)
-        {
-            energyGuage_1.fillAmount = 1;
-            energyGuage_2.fillAmount = 1;
-            energyGuage_3.fillAmount = 0;
-        }
-        else if (energyGuage == 3)
-        {
-            energyGuage_1.fillAmount = 1;
-            energyGuage_2.fillAmount = 1;
-            energyGuage_3.fillAmount = 1;
-        }
-        else
+        else 
         {
             energyGuage_1.fillAmount = 0;
             energyGuage_2.fillAmount = 0;
             energyGuage_3.fillAmount = 0;
         }
     }
-
-    //New 
     public void AddBaguaCommand(int baguaIndex)
     {
         baguasHolder.Add(baguaIndex);
@@ -165,7 +149,7 @@ public class BaGuaManager : MonoBehaviour
                     playerStats.currHealth = playerStats.maxHealth;
                 }
                 playerStats.healthBar.SetCurrentHealth(playerStats.currHealth);
-                energyGuage -= 1;
+                curEnergyCharge -= 100;
                 animatorManager.generalAudio.volume = 0.08f;
                 animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[1];
                 animatorManager.generalAudio.Play();
@@ -173,6 +157,7 @@ public class BaGuaManager : MonoBehaviour
             else if (commandString == "27" || commandString == "72") //风buff
             {
                 Instantiate(buffList[1], transform, false);
+                curEnergyCharge -= 100;
                 animatorManager.generalAudio.volume = 0.08f;
                 animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[1];
                 animatorManager.generalAudio.Play();
@@ -180,6 +165,7 @@ public class BaGuaManager : MonoBehaviour
             else if (commandString == "02" || commandString == "20") //火buff
             {
                 Instantiate(buffList[0], transform, false);
+                curEnergyCharge -= 100;
                 animatorManager.generalAudio.volume = 0.08f;
                 animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[1];
                 animatorManager.generalAudio.Play();
@@ -187,7 +173,7 @@ public class BaGuaManager : MonoBehaviour
             else if (commandString == "03" || commandString == "30") //火球
             {
                 animatorManager.PlayTargetAnimation("FireBall", true, true);
-                energyGuage -= 1;
+                curEnergyCharge -= 100;
                 animatorManager.generalAudio.volume = 0.08f;
                 animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[2];
                 animatorManager.generalAudio.Play();
@@ -195,7 +181,7 @@ public class BaGuaManager : MonoBehaviour
             else if (commandString == "73" || commandString == "37") //龙卷
             {
                 animatorManager.PlayTargetAnimation("Tornado", true, true);
-                energyGuage -= 1;
+                curEnergyCharge -= 100;
                 animatorManager.generalAudio.volume = 0.08f;
                 animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[2];
                 animatorManager.generalAudio.Play();

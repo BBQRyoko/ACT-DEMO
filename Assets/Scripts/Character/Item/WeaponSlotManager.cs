@@ -97,7 +97,7 @@ public class WeaponSlotManager : MonoBehaviour
     private void WeaponSwitchTimerSetup() 
     {
         playerManager.isWeaponSwitching = false;
-        playerManager.WeaponSwitchTimerSetUp(2.5f);
+        playerManager.WeaponSwitchTimerSetUp(2f);
     }
     public void WeaponSwitchAnimatorController(bool replaceCurWeapon = false) 
     {
@@ -168,6 +168,7 @@ public class WeaponSlotManager : MonoBehaviour
             weaponDamageCollider = mainArmedWeapon.GetComponentInChildren<DamageCollider>();
             if (playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[1].Id == 2) playerAttacker.isUsingPowerArrow = true;
             playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(20f);
+            playerManager.GetComponent<BaGuaManager>().curEnergyCharge += 50f;
             playerAttacker.HandleTransformAttack(playerInventory.unequippedWeaponItems[playerInventory.currentWeaponIndex]);
         }
         else
@@ -179,6 +180,7 @@ public class WeaponSlotManager : MonoBehaviour
             weaponDamageCollider = mainArmedWeapon.GetComponentInChildren<DamageCollider>();
             if (playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[0].Id == 2) playerAttacker.isUsingPowerArrow = true;
             playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(20f);
+            playerManager.GetComponent<BaGuaManager>().curEnergyCharge += 50f;
             playerAttacker.HandleTransformAttack(playerInventory.unequippedWeaponItems[playerInventory.currentWeaponIndex]);
         }
     }
