@@ -36,6 +36,7 @@ public class PlayerManager : CharacterManager
     public Vector3 climbDirection;
     public bool inInteractTrigger;
     public bool interactObject;
+    public bool canReset;
 
     //通用
     public int keyNum;
@@ -183,6 +184,7 @@ public class PlayerManager : CharacterManager
         isDefending = animator.GetBool("isDefending");
         isGettingDamage = animator.GetBool("isGettingDamage");
         cantBeInterrupted = animator.GetBool("cantBeInterrupted");
+        canReset = animator.GetBool("canReset");
         animator.SetBool("isStunned", isStunned);
         animator.SetBool("isGround", isGround); 
         animator.SetBool("isFalling", isFalling);
@@ -190,6 +192,7 @@ public class PlayerManager : CharacterManager
         inputManager.weaponSwitch_Input = false;
         HandleDefending();
         HoldingAction();
+        ClearAllStatus();
     }
     private void GeneralTimerController() 
     {
@@ -237,6 +240,18 @@ public class PlayerManager : CharacterManager
                 transAttackTimer = 0;
                 canTransAttack = false;
             }
+        }
+    }
+    void ClearAllStatus() 
+    {
+        if (canReset) 
+        {
+            isRolling = false;
+            isPerfect = false;
+            isImmuAttack = false;
+            damageAvoid = false;
+            if (weaponSlotManager.weaponDamageCollider) weaponSlotManager.weaponDamageCollider.DisableDamageCollider();
+            animator.SetBool("canReset", false);
         }
     }
     public void HandleRangeAttack(int index)

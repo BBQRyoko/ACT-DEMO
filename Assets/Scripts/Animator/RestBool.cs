@@ -28,16 +28,17 @@ public class RestBool : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        animator.speed = 1;
+        animator.SetBool("canReset", true);
         animator.SetBool(isInteractingBool, isInteractingStatus);
         animator.SetBool(isUsingRootMotionBool, isUsingRootMotionStatus);
         animator.SetBool(isRotatingWithRootMotion, isRotatingWithRootMotionStatus);
-        animator.SetBool(isGettingDamageBool, isGettingDamageStatus);
-        animator.SetBool(canCombo, canComboStatus);
-        animator.SetBool(cantBeInterruptedBool, cantBeInterrupted);
-        animator.speed = 1;
 
         if (isPlayer) 
         {
+            animator.SetBool(isGettingDamageBool, isGettingDamageStatus);
+            animator.SetBool(canCombo, canComboStatus);
+            animator.SetBool(cantBeInterruptedBool, cantBeInterrupted);
             animator.ResetTrigger("isLeftRoll");
             animator.ResetTrigger("isRightRoll");
             animator.ResetTrigger("isFrontRoll");

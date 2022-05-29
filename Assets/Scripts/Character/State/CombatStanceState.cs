@@ -404,7 +404,7 @@ public class CombatStanceState : State
             isWalkingStop = true;
             walkingTimer = 1.5f;
         }
-        else if (enemyManager.isDamaged)
+        else if (enemyManager.isDamaged && !enemyManager.getingExecute)
         {
             EnemyStats enemyStats = enemyManager.GetComponent<EnemyStats>();
             PlayerStats playerStats = enemyManager.curTarget.GetComponent<PlayerStats>();

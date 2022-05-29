@@ -69,6 +69,7 @@ public class EnemyManager : CharacterManager
     public bool isInteracting;
     public bool isGround;
     public bool isImmuneAttacking;
+    bool canReset;
 
     [Header("敌人主要参数")]
     public float rotationSpeed = 0.8f;
@@ -144,9 +145,6 @@ public class EnemyManager : CharacterManager
         HandleParryCollider();
         HandleHealthBar();
         ItemDrop();
-        isRotatingWithRootMotion = enemyAnimatorManager.animator.GetBool("isRotatingWithRootMotion");
-        canRotate = enemyAnimatorManager.animator.GetBool("canRotate");
-        isStunned = enemyAnimatorManager.animator.GetBool("isStunned");
 
         //if (!alertIconSpawn) 
         //{
@@ -160,6 +158,7 @@ public class EnemyManager : CharacterManager
             Destroy(gameObject.transform.parent.gameObject, 10f);
         }
     }
+
     void GeneralTimerManager()
     {
         if (isDodging) //躲避时间
@@ -223,7 +222,24 @@ public class EnemyManager : CharacterManager
     private void LateUpdate()
     {
         isInteracting = enemyAnimatorManager.animator.GetBool("isInteracting");
+        isRotatingWithRootMotion = enemyAnimatorManager.animator.GetBool("isRotatingWithRootMotion");
+        isInteracting = enemyAnimatorManager.animator.GetBool("isInteracting");
+        canRotate = enemyAnimatorManager.animator.GetBool("canRotate");
+        isStunned = enemyAnimatorManager.animator.GetBool("isStunned");
+        canReset = enemyAnimatorManager.animator.GetBool("canReset");
         isPreformingAction = isInteracting;
+        ClearAllStatus();
+    }
+    void ClearAllStatus() 
+    {
+        if (canReset) 
+        {
+            isDodging = false;
+            isImmuneAttacking = false;
+            getingExecute = false;
+            if (enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().weaponDamageCollider) enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().weaponDamageCollider.DisableDamageCollider();
+            enemyAnimatorManager.animator.SetBool("canReset", false);
+        }
     }
     private void HandleStateMachine() //单位状态机管理
     {

@@ -102,22 +102,6 @@ public class DamageCollider : MonoBehaviour
                 damageCollider.enabled = false;
                 playerManager1.HandleParryingCheck(curDamage);
             }
-           
-
-            //if (parryCollider != null) 
-            //{
-            //    if (parryCollider.isPerfect)
-            //    {
-            //        enemyManager.GetComponentInChildren<EnemyAnimatorManager>().PlayTargetAnimation("GetHit_Up", true, true);
-            //        playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("WeaponAbility_01(Success)", true, true);
-            //        playerManager.PerfectBlock();
-            //    }
-            //    else
-            //    {
-            //        playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("WeaponAbility_01(Broken)", true, true);
-            //    }
-            //    DisableDamageCollider();
-            //}
         }
         else if (collision.tag == "Player" && !isPlayer)
         {
@@ -159,7 +143,7 @@ public class DamageCollider : MonoBehaviour
 
             EnemyStats enemyStats = collision.GetComponent<EnemyStats>();
 
-            if (!enemyStats.GetComponent<EnemyManager>().isParrying && enemyStats != null && enemyStats.currHealth != 0 && !enemyStats.GetComponent<EnemyManager>().isDodging && !enemyStats.GetComponent<EnemyManager>().isBlocking && curDamage >= 5)
+            if (!enemyStats.GetComponent<EnemyManager>().isParrying && enemyStats != null && enemyStats.currHealth != 0 && !enemyStats.GetComponent<EnemyManager>().isDodging && !enemyStats.GetComponent<EnemyManager>().isBlocking)
             {
                 attackAudio.volume = 0.15f;
                 int i = sample_SFX.hittedSFX_List.Length;

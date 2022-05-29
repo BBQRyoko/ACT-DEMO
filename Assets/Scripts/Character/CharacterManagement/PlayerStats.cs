@@ -78,19 +78,17 @@ public class PlayerStats : CharacterStats
                     if (!playerManager.isImmuAttack)
                     {
                         animatorManager.animator.speed = 1;
-                        if (playerManager.isGettingDamage)
+                        if (!playerManager.isImmuAttack)
                         {
                             animatorManager.animator.SetTrigger("beingAttacked_B");
                             animatorManager.animator.SetBool("isInteracting", true);
                             animatorManager.animator.SetBool("isUsingRootMotion", true);
                         }
-                        else 
-                        {
-                            animatorManager.PlayTargetAnimation("Hit_B", true, true);
-                        }
+  
                         playerAttacker.comboCount = 0;
                         playerManager.isImmuAttack = false;
                         playerManager.cantBeInterrupted = false;
+                        weaponSlotManager.weaponDamageCollider.DisableDamageCollider();
                     }
                 }
                 else 
@@ -117,19 +115,17 @@ public class PlayerStats : CharacterStats
                     if (!playerManager.isImmuAttack) 
                     {
                         animatorManager.animator.speed = 1;
-                        if (playerManager.isGettingDamage)
+                        if (!playerManager.isImmuAttack)
                         {
                             animatorManager.animator.SetTrigger("beingAttacked_F");
                             animatorManager.animator.SetBool("isInteracting", true);
                             animatorManager.animator.SetBool("isUsingRootMotion", true);
                         }
-                        else
-                        {
-                            animatorManager.PlayTargetAnimation("Hit_F", true, true);
-                        }
+
                         playerAttacker.comboCount = 0;
                         playerManager.isImmuAttack = false;
                         playerManager.cantBeInterrupted = false;
+                        weaponSlotManager.weaponDamageCollider.DisableDamageCollider();
                     }
                 }
                 else
@@ -149,26 +145,24 @@ public class PlayerStats : CharacterStats
                     animatorManager.PlayTargetAnimation("Hit_Large", true, true);
                 }
             }
-            else if ((damageAngle >= 60 && damageAngle <= 120))
+            else if (damageAngle >= 60 && damageAngle <= 120)
             {
                 if (!isHeavy)
                 {
                     if (!playerManager.isImmuAttack)
                     {
                         animatorManager.animator.speed = 1;
-                        if (playerManager.isGettingDamage)
+                        if (!playerManager.isImmuAttack)
                         {
                             animatorManager.animator.SetTrigger("beingAttacked_R");
                             animatorManager.animator.SetBool("isInteracting", true);
                             animatorManager.animator.SetBool("isUsingRootMotion", true);
                         }
-                        else
-                        {
-                            animatorManager.PlayTargetAnimation("Hit_R", true, true);
-                        }
+
                         playerAttacker.comboCount = 0;
                         playerManager.isImmuAttack = false;
                         playerManager.cantBeInterrupted = false;
+                        weaponSlotManager.weaponDamageCollider.DisableDamageCollider();
                     }
                 }
                 else
@@ -188,26 +182,23 @@ public class PlayerStats : CharacterStats
                     animatorManager.PlayTargetAnimation("Hit_Large", true, true);
                 }
             } //右
-            else if ((damageAngle >= -120 && damageAngle <= -60))
+            else if (damageAngle >= -120 && damageAngle <= -60)
             {
                 if (!isHeavy)
                 {
                     if (!playerManager.isImmuAttack)
                     {
                         animatorManager.animator.speed = 1;
-                        if (playerManager.isGettingDamage)
+                        if (!playerManager.isImmuAttack)
                         {
                             animatorManager.animator.SetTrigger("beingAttacked_L");
                             animatorManager.animator.SetBool("isInteracting", true);
                             animatorManager.animator.SetBool("isUsingRootMotion", true);
                         }
-                        else
-                        {
-                            animatorManager.PlayTargetAnimation("Hit_L", true, true);
-                        }
                         playerAttacker.comboCount = 0;
                         playerManager.isImmuAttack = false;
                         playerManager.cantBeInterrupted = false;
+                        weaponSlotManager.weaponDamageCollider.DisableDamageCollider();
                     }
                 }
                 else

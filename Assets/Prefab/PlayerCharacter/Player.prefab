@@ -9812,7 +9812,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &388349974
 Transform:
   m_ObjectHideFlags: 0
@@ -25702,7 +25702,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aff715d138f0eb4e99ff537567f9c74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 200
+  maxHealth: 2000
   currHealth: 0
   eyePos: {fileID: 459891482}
   currStamina: 0
@@ -25783,6 +25783,7 @@ MonoBehaviour:
   climbDirection: {x: 0, y: 0, z: 0}
   inInteractTrigger: 0
   interactObject: 0
+  canReset: 0
   keyNum: 0
   isHitting: 0
   attackRotate: 0
@@ -25803,8 +25804,6 @@ MonoBehaviour:
   cooldownTimer: {fileID: 0}
   yinYangAbilityOn: 0
   ultimateHint: {fileID: 0}
-  taijiDurationBar: {fileID: 0}
-  taijiBuff_VFX: {fileID: 388349973}
   transAttackTimer: 0
   canTransAttack: 0
   isPerfect: 0
@@ -25814,6 +25813,7 @@ MonoBehaviour:
   shooting_Target: {fileID: 0}
   straightLineNullTarget: {fileID: 1390634369}
   arrow: {fileID: 5284138699985020952}
+  powerArrow: {fileID: 2700604057475825248}
   fireBall: {fileID: 5284138701228007153}
   tornado: {fileID: 1549329599362609774}
   shoot_Pos: {fileID: 1501511167}
@@ -25844,6 +25844,7 @@ MonoBehaviour:
   crouch_Input: 0
   jump_Input: 0
   interact_Input: 0
+  specialAction_Input: 0
   weaponSwitch_Input: 0
   reAttack_Input: 0
   spAttack_Input: 0
@@ -25875,7 +25876,7 @@ MonoBehaviour:
   unequippedWeaponItems:
   - {fileID: 11400000, guid: eed90a0ffde857d4295b675b74041f49, type: 2}
   - {fileID: 0}
-  powerArrowNum: 0
+  powerArrowNum: 10
 --- !u!114 &5049088434596566261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25897,7 +25898,7 @@ MonoBehaviour:
   comboCount: 0
   attackTimer: 0
   internalDuration: 2
-  isUsingPowerArrow: 1
+  isUsingPowerArrow: 0
   powerArrowRatio: 1.5
   chargeValue: 0
 --- !u!114 &1500210604881686266
@@ -25912,8 +25913,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a17fca660ccba3498d6bc53a583ee20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  commandHolder: 
-  curPiviot: 0
   curPos: {x: 0, y: 0}
   realPiviot: {fileID: 0}
   curYin: 80
@@ -25942,13 +25941,11 @@ MonoBehaviour:
   buffList:
   - {fileID: 2043619543306439085, guid: e8ec73dd0e07cac4f899b1a9529265e8, type: 3}
   - {fileID: 6918438363871369049, guid: c8076069c2becb847b43a6a90904d225, type: 3}
-  energyGuage: 3
-  curEnergyCharge: 0
+  curEnergyCharge: 300
   energyChargeSlot: {fileID: 0}
   energyGuage_1: {fileID: 0}
   energyGuage_2: {fileID: 0}
   energyGuage_3: {fileID: 0}
-  liCover: {fileID: 0}
   fireballCheatSheet: {fileID: 0}
 --- !u!114 &1707406399
 MonoBehaviour:
@@ -25963,6 +25960,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aimingCorsshair: {fileID: 0}
+  powerArrowUsingIcon: {fileID: 0}
+  powerArrowNum: {fileID: 0}
 --- !u!1 &8080314465878277564
 GameObject:
   m_ObjectHideFlags: 0
@@ -27694,7 +27693,7 @@ PrefabInstance:
     - target: {fileID: 95357365693442044, guid: d47d5ac7dfc19da419169847c76d638b, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 07f58fb259bb2d74abc47b4466df95fe, type: 2}
+      objectReference: {fileID: 9100000, guid: 3b62c84dd2f00da4488051c514b620ad, type: 2}
     - target: {fileID: 95357365693442044, guid: d47d5ac7dfc19da419169847c76d638b, type: 3}
       propertyPath: m_CullingMode
       value: 0
@@ -27749,7 +27748,10 @@ MonoBehaviour:
   weaponDamageCollider: {fileID: 3287524700922566930}
   parryCollider: {fileID: 0}
   mainArmedWeapon: {fileID: 0}
-  playerArrowFlyObj: {fileID: 5284138699985020952}
+  curArrowObj: {fileID: 2700604057475825248}
+  arrowObjs:
+  - {fileID: 5284138699985020952}
+  - {fileID: 2700604057475825248}
   armedWeaponSlot:
   - {fileID: 2834651857005371552}
   - {fileID: 5812919886020024582}
@@ -28059,7 +28061,8 @@ MonoBehaviour:
   weaponDamageCollider: {fileID: 1500210605682807768}
   parryCollider: {fileID: 0}
   mainArmedWeapon: {fileID: 0}
-  playerArrowFlyObj: {fileID: 0}
+  curArrowObj: {fileID: 0}
+  arrowObjs: []
   armedWeaponSlot:
   - {fileID: 5812919887222596499}
   - {fileID: 2834651856602118232}
@@ -28171,6 +28174,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9def8778f126ef4f8b9bc27a2bb96da, type: 3}
+--- !u!114 &2700604057475825248 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8137789157054400179, guid: d9def8778f126ef4f8b9bc27a2bb96da, type: 3}
+  m_PrefabInstance: {fileID: 6166911181246429395}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45810cfd5e69ae845aba9239c7a756a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2700604057475825249 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8137789157054400178, guid: d9def8778f126ef4f8b9bc27a2bb96da, type: 3}
