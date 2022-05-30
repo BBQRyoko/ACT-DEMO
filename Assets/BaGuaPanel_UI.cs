@@ -36,7 +36,7 @@ public class BaGuaPanel_UI : MonoBehaviour
     void PanelActive()
     {
         commandString = null;
-        for (int i = 0; i < baGuaManager.baguaGameobjectPrefabs.Length; i++) 
+        for (int i = 0; i < baGuaManager.baguaGameobjectPrefabs.Count; i++) 
         {
             AddBaguaEntry(baGuaManager.baguaGameobjectPrefabs[i]);
         }
@@ -50,7 +50,7 @@ public class BaGuaPanel_UI : MonoBehaviour
     }
     void PanelClose() 
     {
-        for (int i = 0; i < baGuaManager.baguaGameobjectPrefabs.Length; i++)
+        for (int i = 0; i < baGuaManager.baguaGameobjectPrefabs.Count; i++)
         {
             RectTransform rect = baguaList[i].GetComponent<RectTransform>();
             GameObject entry = baguaList[i].gameObject;

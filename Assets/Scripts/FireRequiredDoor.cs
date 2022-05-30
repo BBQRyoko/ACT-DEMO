@@ -18,7 +18,7 @@ public class FireRequiredDoor : InteractSystem
         AnimatorManager animatorManager = playerManager.GetComponentInChildren<AnimatorManager>();
         //if (baGuaManager.fireBallUnlock)
         //{
-        //    //将玩家位置放到指定位置，指定朝向
+        //    将玩家位置放到指定位置，指定朝向
         //    animatorManager.PlayTargetAnimation("FireBall", true, true);
         //}
         //else
