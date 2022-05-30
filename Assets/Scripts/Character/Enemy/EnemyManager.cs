@@ -395,7 +395,7 @@ public class EnemyManager : CharacterManager
     }
     void ItemDrop() 
     {
-        if (isDead && !itemDrop) 
+        if (isDead && !itemDrop && (containedItem!=null || containedItem[1] != null)) 
         {
             foreach (GameObject curItem in containedItem)
             {

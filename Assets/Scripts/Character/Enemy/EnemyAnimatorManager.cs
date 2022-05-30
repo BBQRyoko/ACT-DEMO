@@ -157,6 +157,13 @@ public class EnemyAnimatorManager : MainAnimatorManager
             enemyManager.curState = enemyManager.transform.GetComponentInChildren<PursueState>();
         }
     }
+    private void DodgingStart() 
+    {
+        if (!enemyManager.isDodging)
+        {
+            animator.SetBool("isDodging", true);
+        }
+    }
     private void DodgingEnd() 
     {
         if (enemyManager.isDodging)
@@ -166,6 +173,7 @@ public class EnemyAnimatorManager : MainAnimatorManager
     }
     void ExecuteDeadCheck() 
     {
+        animator.SetBool("isDodging", true);
         if (enemyManager.isDead) 
         {
             animator.SetTrigger("isDead");
