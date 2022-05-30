@@ -285,17 +285,11 @@ public class AnimatorManager : MainAnimatorManager
     {
         playerManager.HandleRangeAttack(index);
     }
-    private void RollDamageAvoid() 
+    private void DamageAvoidEnd() 
     {
-        if (!playerManager.damageAvoid)
+        if (playerManager.damageAvoid) 
         {
-            playerManager.damageAvoid = true;
-            rollDamager.EnableDamageCollider();
-        }
-        else 
-        {
-            playerManager.damageAvoid = false;
-            rollDamager.DisableDamageCollider();
+            animator.SetBool("isDodging", false);
         }
     }
     private void ClimbCheck() 

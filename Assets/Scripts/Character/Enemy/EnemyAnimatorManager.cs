@@ -161,11 +161,7 @@ public class EnemyAnimatorManager : MainAnimatorManager
     {
         if (enemyManager.isDodging)
         {
-            enemyManager.isDodging = false;
-        }
-        else 
-        {
-            enemyManager.isDodging = true;
+            animator.SetBool("isDodging", false);
         }
     }
     void ExecuteDeadCheck() 

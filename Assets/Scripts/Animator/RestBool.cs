@@ -33,6 +33,10 @@ public class RestBool : StateMachineBehaviour
         animator.SetBool(isInteractingBool, isInteractingStatus);
         animator.SetBool(isUsingRootMotionBool, isUsingRootMotionStatus);
         animator.SetBool(isRotatingWithRootMotion, isRotatingWithRootMotionStatus);
+        animator.ResetTrigger("beingAttacked_B");
+        animator.ResetTrigger("beingAttacked_F");
+        animator.ResetTrigger("beingAttacked_R");
+        animator.ResetTrigger("beingAttacked_L");
 
         if (isPlayer) 
         {

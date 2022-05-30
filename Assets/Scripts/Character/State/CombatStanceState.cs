@@ -502,7 +502,6 @@ public class CombatStanceState : State
                         //}
                         if (randomDestinationSet && enemyManager.curTarget.GetComponent<PlayerManager>().isAttacking && distanceFromTarget <= 2.5f && !enemyManager.isParrying && enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted)
                         {
-                            enemyManager.isDodging = specialCondition.canDodge;
                             canCounterAttack = false;
                             attackState.curSpecialIndex = index;
                             attackState.curAttack = specialCondition;

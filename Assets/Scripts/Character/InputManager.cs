@@ -214,6 +214,7 @@ public class InputManager : MonoBehaviour
         if (cbAttack_Input) //要改按键位置
         {
             playerManager.YinYangAbilityActivate();
+            cbAttack_Input = false;
         }
     }
     private void HandleInteractInput() 

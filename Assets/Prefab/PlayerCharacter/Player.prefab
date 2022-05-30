@@ -19847,7 +19847,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1328059690}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0000001937151, y: -0.75, z: 2}
+  m_LocalPosition: {x: -0.0000031101872, y: -0.21701911, z: 5.4643908}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -25775,7 +25775,6 @@ MonoBehaviour:
   isCrouching: 0
   isInGrass: 0
   isSprinting: 0
-  isRolling: 0
   isJumping: 0
   isHanging: 0
   hangDirection: {x: 0, y: 0, z: 0}

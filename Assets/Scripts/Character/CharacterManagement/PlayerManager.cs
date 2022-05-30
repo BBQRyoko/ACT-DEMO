@@ -28,7 +28,6 @@ public class PlayerManager : CharacterManager
     public bool isCrouching; //下蹲时
     public bool isInGrass; //草丛里
     public bool isSprinting; 
-    public bool isRolling;
     public bool isJumping; //跳跃上升阶段
     public bool isHanging;
     public Vector3 hangDirection;
@@ -153,6 +152,7 @@ public class PlayerManager : CharacterManager
         playerStats.StaminaController();
         GeneralTimerController();
         PowerArrowController();
+        RollingDamagerController();
     }
     private void FixedUpdate()
     {
@@ -184,6 +184,7 @@ public class PlayerManager : CharacterManager
         isDefending = animator.GetBool("isDefending");
         isGettingDamage = animator.GetBool("isGettingDamage");
         cantBeInterrupted = animator.GetBool("cantBeInterrupted");
+        damageAvoid = animator.GetBool("isDodging");
         canReset = animator.GetBool("canReset");
         animator.SetBool("isStunned", isStunned);
         animator.SetBool("isGround", isGround); 
@@ -246,7 +247,6 @@ public class PlayerManager : CharacterManager
     {
         if (canReset) 
         {
-            isRolling = false;
             isPerfect = false;
             isImmuAttack = false;
             damageAvoid = false;
@@ -388,6 +388,17 @@ public class PlayerManager : CharacterManager
             }
         }
     }
+    void RollingDamagerController() 
+    {
+        if (damageAvoid)
+        {
+            animatorManager.rollDamager.EnableDamageCollider();
+        }
+        else 
+        {
+            animatorManager.rollDamager.DisableDamageCollider();
+        }
+    }
     public void HangingController() 
     {
         if (!isHanging)
@@ -416,7 +427,7 @@ public class PlayerManager : CharacterManager
     }
     public void YinYangAbilityActivate() 
     {
-        if (yinYangAbilityOn) 
+        if (yinYangAbilityOn && !isHolding && !isAiming) 
         {
             baGuaManager.curYin = 0;
             baGuaManager.curYang = 0;

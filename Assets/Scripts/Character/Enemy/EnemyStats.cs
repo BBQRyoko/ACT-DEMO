@@ -92,7 +92,7 @@ public class EnemyStats : CharacterStats
                         animatorManager.animator.SetBool("isInteracting", true);
                         animatorManager.animator.SetBool("isUsingRootMotion", true);
                     }
-                    enemyWeaponSlotManager.weaponDamageCollider.DisableDamageCollider();
+                    if(enemyWeaponSlotManager.weaponDamageCollider) enemyWeaponSlotManager.weaponDamageCollider.DisableDamageCollider();
                     enemyManager.isDamaged = true;
 
                     //if (enemyManager.isStunned) //普通攻击会打醒敌人

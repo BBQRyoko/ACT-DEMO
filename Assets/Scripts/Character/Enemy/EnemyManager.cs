@@ -56,7 +56,6 @@ public class EnemyManager : CharacterManager
     public float firstStrikeTimer;
     public float defaultFirstStrikeTime;
     public bool isDodging;
-    float dodgeTimer;
 
     //待机模式
     public enum IdleType { Stay, Patrol, Boss };
@@ -161,19 +160,6 @@ public class EnemyManager : CharacterManager
 
     void GeneralTimerManager()
     {
-        if (isDodging) //躲避时间
-        {
-            dodgeTimer = 7.5f;
-        }
-        else
-        {
-            dodgeTimer -= Time.deltaTime;
-            if (dodgeTimer <= 0)
-            {
-                dodgeTimer = 0;
-            }
-        }
-
         if (!isFirstStrike)
         {
             if (firstStrikeTimer > 0)
@@ -224,6 +210,7 @@ public class EnemyManager : CharacterManager
         isInteracting = enemyAnimatorManager.animator.GetBool("isInteracting");
         isRotatingWithRootMotion = enemyAnimatorManager.animator.GetBool("isRotatingWithRootMotion");
         isInteracting = enemyAnimatorManager.animator.GetBool("isInteracting");
+        isDodging = enemyAnimatorManager.animator.GetBool("isDodging");
         canRotate = enemyAnimatorManager.animator.GetBool("canRotate");
         isStunned = enemyAnimatorManager.animator.GetBool("isStunned");
         canReset = enemyAnimatorManager.animator.GetBool("canReset");
@@ -234,7 +221,7 @@ public class EnemyManager : CharacterManager
     {
         if (canReset) 
         {
-            isDodging = false;
+            enemyAnimatorManager.animator.SetBool("isDodging", false);
             isImmuneAttacking = false;
             getingExecute = false;
             if (enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().weaponDamageCollider) enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().weaponDamageCollider.DisableDamageCollider();
