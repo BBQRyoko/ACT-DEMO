@@ -40,6 +40,12 @@ public class PlayerStats : CharacterStats
     }
     private void Update()
     {
+        if (currHealth <= 0 && !playerManager.isDead)
+        {
+            currHealth = 0;
+            animatorManager.animator.SetTrigger("isDead");
+            playerManager.isDead = true;
+        }
         healthBar.SetCurrentHealth(currHealth);
         HandleEyePos();
     }
@@ -65,7 +71,7 @@ public class PlayerStats : CharacterStats
         if (currHealth <= 0)
         {
             currHealth = 0;
-            animatorManager.PlayTargetAnimation("Dead", true, true);
+            animatorManager.animator.SetTrigger("isDead");
             playerManager.isDead = true;
         }
         else
