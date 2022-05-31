@@ -30,8 +30,10 @@ public class CameraManager : MonoBehaviour
 
     float lookAngle; //视角左右
     float pivotAngle; //视角上下
-    public float minPivotAngle = -35;
-    public float maxPivotAngle = 35;
+    public float minPivotAngle = -25;
+    public float maxPivotAngle = 25;
+    public float minPivotAngleWhileLockOn = -10;
+    public float maxPivotAngleWhileLockOn = 5;
 
     //八卦相关
     public bool cameraLock;
@@ -175,6 +177,7 @@ public class CameraManager : MonoBehaviour
                 targetRotation = Quaternion.LookRotation(dir);
                 Vector3 eulerAngle = targetRotation.eulerAngles;
                 eulerAngle.y = 0;
+                eulerAngle.x = Mathf.Clamp(eulerAngle.x, minPivotAngleWhileLockOn, maxPivotAngleWhileLockOn);
                 cameraPivotTransform.localEulerAngles = eulerAngle;
             }
         }

@@ -36,7 +36,7 @@ public class BaGuaManager : MonoBehaviour
     bool isCommandActive;
 
     [Header("技能buff相关")]
-    [SerializeField] List<GameObject> buffList = new List<GameObject>();
+    public List<GameObject> buffList = new List<GameObject>();
 
     [Header("能量相关")]
     public float curEnergyCharge;

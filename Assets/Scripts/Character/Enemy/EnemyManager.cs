@@ -156,6 +156,16 @@ public class EnemyManager : CharacterManager
             collider_Combat.enabled = false;
             Destroy(gameObject.transform.parent.gameObject, 10f);
         }
+        if (curTarget)
+        {
+            shootPos = curTarget.GetComponent<PlayerManager>().beTargetedPos;
+            shootPos2 = curTarget.GetComponent<PlayerManager>().beTargetedPos;
+        }
+        else 
+        {
+            shootPos = null;
+            shootPos2 = null;
+        }
     }
 
     void GeneralTimerManager()
@@ -395,7 +405,7 @@ public class EnemyManager : CharacterManager
     }
     void ItemDrop() 
     {
-        if (isDead && !itemDrop && (containedItem!=null || containedItem[1] != null)) 
+        if (isDead && !itemDrop && (containedItem != null || containedItem[1] != null)) 
         {
             foreach (GameObject curItem in containedItem)
             {

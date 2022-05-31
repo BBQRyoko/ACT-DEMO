@@ -52,7 +52,7 @@ public class PlayerManager : CharacterManager
     public bool staminaRegenPause;
     public bool hitRecover;
     public bool damageAvoid;
-    [SerializeField] Transform beTargetedPos;
+    public Transform beTargetedPos;
     [SerializeField] ParryCollider parryCollider;
     [SerializeField] AudioSource generalAudio;
     [SerializeField] Sample_SFX sfxList;
@@ -283,7 +283,7 @@ public class PlayerManager : CharacterManager
             var obj = Instantiate(fireBall, shoot_Pos, false);
             obj.transform.SetParent(null);
             obj.gameObject.SetActive(true);
-            obj.StartFlyingObj(shooting_Target, true);
+            obj.StartFlyingObj(shooting_Target, false, beTargetedPos);
         }
         else if (index == 2) //龙卷
         {
@@ -376,7 +376,7 @@ public class PlayerManager : CharacterManager
         }
         if (inputManager.specialAction_Input) 
         {
-            if (playerInventory.powerArrowNum > 0 && !playerAttacker.isUsingPowerArrow)
+            if (playerInventory.powerArrowNum > 0 && !playerAttacker.isUsingPowerArrow && playerInventory.curEquippedWeaponItem.Id == 2)
             {
                 playerAttacker.isUsingPowerArrow = true;
                 inputManager.specialAction_Input = false;

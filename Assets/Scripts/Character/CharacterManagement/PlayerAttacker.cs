@@ -14,6 +14,8 @@ public class PlayerAttacker : MonoBehaviour
     WeaponSlotManager weaponSlotManager;
     PlayerUIManager playerUIManager;
     [SerializeField] Sample_VFX sample_VFX;
+    [SerializeField] Sample_SFX sample_SFX;
+    [SerializeField] AudioSource generalAudio;
 
     public Sample_VFX sample_VFX_R;
     public Sample_VFX sample_VFX_S;
@@ -338,6 +340,8 @@ public class PlayerAttacker : MonoBehaviour
     {
         if (chargeValue >= 5) 
         {
+            generalAudio.clip = sample_SFX.Bagua_SFX_List[4];
+            generalAudio.Play();
             playerManager.transAttackTimer = 1.75f;
             playerManager.canTransAttack = true;
             chargeValue = 0;

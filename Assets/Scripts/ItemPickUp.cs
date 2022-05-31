@@ -12,10 +12,15 @@ public class ItemPickUp : InteractSystem
     [SerializeField] WeaponItem[] weaponList;
     [SerializeField] GameObject[] weaponPrefabs;
 
+    public bool isBuff;
+    [SerializeField] int buff_Index; // 0 - attack, 1 - movement, 2 - def
     void Start()
     {
         playerManager = FindObjectOfType<PlayerManager>();
-        WeaponInfoUpdate();
+        if (!isBuff) 
+        {
+            WeaponInfoUpdate();
+        }
     }
 
     void WeaponInfoUpdate() 
@@ -32,20 +37,28 @@ public class ItemPickUp : InteractSystem
     {
         base.Interact();
 
-        PlayerInventory playerInventory = playerManager.GetComponent<PlayerInventory>();
-        playerManager.inInteractTrigger = false;
-        playerManager.GetComponent<InputManager>().interact_Input = false;
-        if (playerInventory.unequippedWeaponItems[1] == null) //没有有副武器
+        if (!isBuff)
         {
-            playerInventory.PickUpWeapon(weaponItemInfo);
-            Destroy(gameObject.transform.parent.gameObject);
+            PlayerInventory playerInventory = playerManager.GetComponent<PlayerInventory>();
+            playerManager.inInteractTrigger = false;
+            playerManager.GetComponent<InputManager>().interact_Input = false;
+            if (playerInventory.unequippedWeaponItems[1] == null) //没有有副武器
+            {
+                playerInventory.PickUpWeapon(weaponItemInfo);
+                Destroy(gameObject.transform.parent.gameObject);
+            }
+            else //有副武器
+            {
+                int curIndex = playerInventory.curEquippedWeaponItem.Id;
+                playerInventory.PickUpWeapon(weaponItemInfo);
+                weaponInfoIndex = curIndex;
+                WeaponInfoUpdate();
+            }
         }
-        else //有副武器
+        else 
         {
-            int curIndex = playerInventory.curEquippedWeaponItem.Id;
-            playerInventory.PickUpWeapon(weaponItemInfo);
-            weaponInfoIndex = curIndex;
-            WeaponInfoUpdate();
+            Instantiate(playerManager.GetComponent<BaGuaManager>().buffList[buff_Index], playerManager.transform,false);
+            Destroy(gameObject.transform.parent.gameObject);
         }
     }
 }
