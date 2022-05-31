@@ -82,13 +82,13 @@ public class EnemyStats : CharacterStats
                     }
                     else if (damageAngle >= 60 && damageAngle <= 120)
                     {
-                        animatorManager.animator.SetTrigger("beingAttacked_R");
+                        animatorManager.animator.SetTrigger("beingAttacked_L");
                         animatorManager.animator.SetBool("isInteracting", true);
                         animatorManager.animator.SetBool("isUsingRootMotion", true);
                     }
                     else if (damageAngle >= -120 && damageAngle <= -60)
                     {
-                        animatorManager.animator.SetTrigger("beingAttacked_L");
+                        animatorManager.animator.SetTrigger("beingAttacked_R");
                         animatorManager.animator.SetBool("isInteracting", true);
                         animatorManager.animator.SetBool("isUsingRootMotion", true);
                     }
