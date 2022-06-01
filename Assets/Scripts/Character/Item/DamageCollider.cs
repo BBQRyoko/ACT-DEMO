@@ -155,6 +155,10 @@ public class DamageCollider : MonoBehaviour
                 playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount);
                 if (playerManager.GetComponent<BaGuaManager>().isSwitchAttack)
                 {
+                    if (playerManager.GetComponent<BaGuaManager>().switchAttackTutorial != null) 
+                    {
+                        playerManager.GetComponent<BaGuaManager>().switchAttackTutorial.switchAttackNum += 1;
+                    } 
                     playerManager.GetComponent<BaGuaManager>().curEnergyCharge += 60f;
                     playerManager.GetComponent<BaGuaManager>().isSwitchAttack = false;
                 }
