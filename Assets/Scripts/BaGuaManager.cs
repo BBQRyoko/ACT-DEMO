@@ -59,7 +59,7 @@ public class BaGuaManager : MonoBehaviour
         inputManager = GetComponent<InputManager>();
         animatorManager = GetComponentInChildren<AnimatorManager>();
         sample_VFX_Ability = GetComponentInChildren<Sample_VFX>();
-        curPos = realPiviot.transform.position;
+        curPos = realPiviot.GetComponent<RectTransform>().position;
     }
     void Update()
     {
@@ -74,7 +74,14 @@ public class BaGuaManager : MonoBehaviour
         {
             BaGuaZhen.SetActive(true);
             gameManager.GameSlowDown();
-            realPiviot.transform.position = new Vector2(curPos.x + (inputManager.baguaInputX * 220), curPos.y + (inputManager.baguaInputY * 220));
+
+            float x = curPos.x + (inputManager.baguaInputX * 220 * (curPos.x / 960));
+            float y = curPos.y + (inputManager.baguaInputY * 220 * (curPos.x / 960));
+            Debug.Log(x);
+            Debug.Log(y);
+            RectTransform rect = realPiviot.GetComponent<RectTransform>();
+            rect.position = new Vector2(x, y);
+
         }
         else
         {

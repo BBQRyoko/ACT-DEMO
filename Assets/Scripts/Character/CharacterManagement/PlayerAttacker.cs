@@ -291,9 +291,9 @@ public class PlayerAttacker : MonoBehaviour
             playerLocmotion.HandleRotateTowardsTarger();
             comboCount = 0;
             animatorManager.animator.SetBool("isAttacking", true);
-            playerManager.cantBeInterrupted = true;
+            animatorManager.animator.SetBool("cantBeInterrupted", true);
             playerManager.isWeaponSwitching = false;
-            attackTimer = internalDuration;
+            attackTimer = internalDuration*2;
             //播放指定的攻击动画
             animatorManager.PlayTargetAnimation(weapon.transSkills[0].skillName, true, true);
             playerManager.GetComponent<BaGuaManager>().isSwitchAttack = true;
