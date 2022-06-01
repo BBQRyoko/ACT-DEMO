@@ -22,7 +22,6 @@ public class DamageCollider : MonoBehaviour
     public float chargeAmount;
 
     public float weaponWeightRatio;
-    
     public int duration;
 
     private void Awake()
@@ -154,7 +153,13 @@ public class DamageCollider : MonoBehaviour
                 HitPause(duration);
                 playerManager.GetComponent<PlayerAttacker>().chargeValue += chargeAmount;
                 playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount);
-                playerManager.isHitting = true;
+                if (playerManager.GetComponent<BaGuaManager>().isSwitchAttack)
+                {
+                    playerManager.GetComponent<BaGuaManager>().curEnergyCharge += 60f;
+                    playerManager.GetComponent<BaGuaManager>().isSwitchAttack = false;
+                }
+                playerManager.isHitting = false;
+
             }
         }
         else if (collision.tag == "DestructibleObject")

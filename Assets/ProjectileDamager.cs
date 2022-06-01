@@ -15,6 +15,8 @@ public class ProjectileDamager : MonoBehaviour
     public float energyRestoreAmount = 20;
     public float chargeAmount;
 
+    public bool isSwitchAttack;
+
     private void Awake()
     {
         tornadoHazard = GetComponent<TornadoHazard>();
@@ -132,7 +134,11 @@ public class ProjectileDamager : MonoBehaviour
                 enemyStats.GetComponent<EnemyManager>().curTarget = playerStats;
                 playerManager.GetComponent<PlayerAttacker>().chargeValue += chargeAmount;
                 playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount);
-                //火球击中音效
+                if (playerManager.GetComponent<BaGuaManager>().isSwitchAttack)
+                {
+                    playerManager.GetComponent<BaGuaManager>().curEnergyCharge += 60f;
+                    playerManager.GetComponent<BaGuaManager>().isSwitchAttack = false;
+                }                //火球击中音效
                 //animatorManager.generalAudio.volume = 0.1f;
                 //animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[3];
                 //animatorManager.generalAudio.Play();

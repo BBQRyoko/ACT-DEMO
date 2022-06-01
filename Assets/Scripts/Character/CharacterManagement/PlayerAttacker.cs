@@ -64,7 +64,7 @@ public class PlayerAttacker : MonoBehaviour
         if (!playerManager.cantBeInterrupted && playerManager.isGround && !playerManager.isGettingDamage && !playerManager.isHanging && !playerManager.isClimbing)
         {
             playerLocmotion.HandleRotateTowardsTarger();
-
+            playerManager.GetComponent<BaGuaManager>().isSwitchAttack = false;
             //可处决
             if (executionTarget) //无消耗
             {
@@ -296,12 +296,37 @@ public class PlayerAttacker : MonoBehaviour
             attackTimer = internalDuration;
             //播放指定的攻击动画
             animatorManager.PlayTargetAnimation(weapon.transSkills[0].skillName, true, true);
-            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.transSkills[0].damagePoint * (1 + playerStats.attackBuffRatio);
-            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.transSkills[0].tenacityDamagePoint;
-            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.transSkills[0].energyRestore;
-            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.transSkills[0].energyRestore;
+            playerManager.GetComponent<BaGuaManager>().isSwitchAttack = true;
+            if (playerInventory.curEquippedWeaponItem.Id == 2) //使用弓箭时的状态
+            {
+                ProjectileDamager projectileDamager = weaponSlotManager.curArrowObj.GetComponentInChildren<ProjectileDamager>();
+
+                if (!isUsingPowerArrow)
+                {
+                    projectileDamager.curDamage = weapon.transSkills[0].damagePoint * (1 + playerStats.attackBuffRatio);
+                    projectileDamager.staminaDamage = weapon.transSkills[0].tenacityDamagePoint;
+                    projectileDamager.energyRestoreAmount = weapon.transSkills[0].energyRestore;
+                    projectileDamager.chargeAmount = weapon.transSkills[0].energyRestore;
+                    weaponSlotManager.curArrowObj.m_MaxSpeed = weapon.transSkills[0].maxSpeed;
+                }
+                else
+                {
+                    projectileDamager.curDamage = weapon.transSkills[0].damagePoint * (1 + playerStats.attackBuffRatio) * powerArrowRatio;
+                    projectileDamager.staminaDamage = weapon.transSkills[0].tenacityDamagePoint;
+                    projectileDamager.energyRestoreAmount = weapon.transSkills[0].energyRestore;
+                    projectileDamager.chargeAmount = weapon.transSkills[0].energyRestore;
+                    weaponSlotManager.curArrowObj.m_MaxSpeed = weapon.transSkills[0].maxSpeed;
+                }
+            }
+            else //普通武器
+            {
+                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.transSkills[0].damagePoint * (1 + playerStats.attackBuffRatio);
+                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.transSkills[0].tenacityDamagePoint;
+                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.transSkills[0].energyRestore;
+                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.transSkills[0].energyRestore;
+                playerManager.GetComponent<PlayerStats>().currStamina -= weapon.transSkills[0].staminaCost;
+            }
             animatorManager.pauseDuration = weapon.transSkills[0].pauseDuration;
-            playerManager.GetComponent<PlayerStats>().currStamina -= weapon.transSkills[0].staminaCost;
         }
     }
     public void HandleDefend(WeaponItem weapon) //武器防御
@@ -342,12 +367,15 @@ public class PlayerAttacker : MonoBehaviour
     {
         if (chargeValue >= 5) 
         {
-            noticeAudio.clip = sample_SFX.Bagua_SFX_List[4];
-            noticeAudio.Play();
-            playerManager.transAttackTimer = 1.75f;
-            playerManager.canTransAttack = true;
             chargeValue = 0;
-            sample_VFX.baGuaRelated_List[0].Play();
+            if (playerInventory.unequippedWeaponItems[1] != null) 
+            {
+                noticeAudio.clip = sample_SFX.Bagua_SFX_List[4];
+                noticeAudio.Play();
+                playerManager.transAttackTimer = 1.75f;
+                playerManager.canTransAttack = true;
+                sample_VFX.baGuaRelated_List[1].Play();
+            }
         }
     }
     void ExecutionHandler() 

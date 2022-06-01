@@ -44,6 +44,7 @@ public class BaGuaManager : MonoBehaviour
     [SerializeField] Image energyGuage_1;
     [SerializeField] Image energyGuage_2;
     [SerializeField] Image energyGuage_3;
+    public bool isSwitchAttack; 
 
     [Header("ui")]
     [SerializeField] GameObject fireballCheatSheet;

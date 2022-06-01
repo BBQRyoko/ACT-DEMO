@@ -9,7 +9,6 @@ public class BossRoomTrigger : MonoBehaviour
     [SerializeField] bool playerEntered;
     [SerializeField] EnemyStats bossStats;
     [SerializeField] GameObject bossHealthBar;
-    [SerializeField] CameraManager cameraManager;
 
     public bool katanaRequired;
     [SerializeField] GameObject weaponSwitch_guide;
@@ -56,16 +55,16 @@ public class BossRoomTrigger : MonoBehaviour
             }
             else 
             {
-                //if (playerManager.katanaUnlock)
-                //{
-                //    playerEntered = false;
-                //    weaponSwitch_guide.SetActive(true);
-                //    Destroy(this.gameObject);
-                //}
-                //else 
-                //{
-                //    weaponSwitch_guide.SetActive(false);
-                //}
+                if (playerManager.GetComponent<PlayerInventory>().curEquippedWeaponItem.Id == 1)
+                {
+                    playerEntered = false;
+                    weaponSwitch_guide.SetActive(true);
+                    Destroy(this.gameObject);
+                }
+                else
+                {
+                    weaponSwitch_guide.SetActive(false);
+                }
             }
         }
     }
