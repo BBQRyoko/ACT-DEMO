@@ -13,6 +13,12 @@ public class PlayerUIManager : MonoBehaviour
     public GameObject powerArrowUsingIcon;
     [SerializeField] TextMeshProUGUI powerArrowNum;
 
+    //prompt
+    [SerializeField] GameObject promptInfo;
+    [SerializeField] TextMeshProUGUI promptString;
+    bool promptActive;
+    float promptTimer; //temp
+
     private void Awake()
     {
         playerManager = GetComponent<PlayerManager>();
@@ -29,6 +35,37 @@ public class PlayerUIManager : MonoBehaviour
         else 
         {
             powerArrowUsingIcon.SetActive(false);
+        }
+
+        if (promptActive)
+        {
+            if (promptTimer <= 1)
+            {
+                promptTimer += Time.deltaTime;
+            }
+            else
+            {
+                if (playerManager.GetComponent<InputManager>().interact_Input)
+                {
+                    promptInfo.SetActive(false);
+                    promptString.text = null;
+                    promptActive = false;
+                }
+            }
+        }
+        else 
+        {
+            promptInfo.SetActive(false);
+        }
+    }
+    public void PromptInfoActive(string infoText) 
+    {
+        if (!promptActive) 
+        {
+            promptTimer = 0;
+            promptInfo.SetActive(true);
+            promptString.text = infoText;
+            promptActive = true;
         }
     }
 }

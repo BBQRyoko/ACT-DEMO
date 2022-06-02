@@ -16,6 +16,7 @@ public class FireRequiredDoor : InteractSystem
     public override void Interact()
     {
         base.Interact();
+        playerUIManager.PromptInfoActive(infoText);
         Debug.Log("Can't open this from this way");
         //if (baGuaManager.fireBallUnlock)
         //{

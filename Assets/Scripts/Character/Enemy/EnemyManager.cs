@@ -198,12 +198,12 @@ public class EnemyManager : CharacterManager
         }
 
         //处决状态Timer
-        if (isStunned)
+        if (isStunned && !isToronadoCovered)
         {
             stunTimer += Time.deltaTime;
             if (stunTimer >= 5)
             {
-                isStunned = false;
+                enemyAnimatorManager.animator.SetBool("isStunned", false);
                 stunTimer = 0;
                 enemyStats.currStamina = enemyStats.maxStamina;
             }

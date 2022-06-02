@@ -235,7 +235,7 @@ public class PlayerStats : CharacterStats
     }
     public void StaminaController()
     {
-        if (!playerManager.cantBeInterrupted && !playerManager.isSprinting && !playerManager.staminaRegenPause && currStamina < maxStamina && !playerManager.isHolding)//正常状态
+        if (!playerManager.cantBeInterrupted && !playerManager.isSprinting && !playerManager.isAttacking && !playerManager.staminaRegenPause && currStamina < maxStamina && !playerManager.isHolding)//正常状态
         {
             currStamina += staminaRegen * Time.deltaTime;
         }

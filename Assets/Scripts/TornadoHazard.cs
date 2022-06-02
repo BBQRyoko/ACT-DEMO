@@ -83,7 +83,7 @@ public class TornadoHazard : MonoBehaviour
                 Destroy(transform.gameObject);
             }
 
-            if (other.GetComponentInParent<FlyingObj>() && (!other.GetComponent<PlayerManager>() || !other.GetComponentInParent<PlayerManager>()) 
+            if (other.GetComponentInParent<FlyingObj>() && (!other.GetComponent<PlayerManager>() || !other.GetComponentInParent<PlayerManager>() || !other.GetComponentInChildren<PlayerManager>()) 
                 && (!other.GetComponent<EnemyManager>() || !other.GetComponentInParent<EnemyManager>()) && !other.GetComponent<TornadoHazard>()) //接触飞行道具, 非龙卷类
             {
                 //如果是火球的话
@@ -94,7 +94,7 @@ public class TornadoHazard : MonoBehaviour
                 }
                 else //普通飞行道具
                 {
-                    //DefelectFlyingObj(other.GetComponentInParent<FlyingObj>());
+                    DefelectFlyingObj(other.GetComponentInParent<FlyingObj>());
                     Destroy(other.gameObject);
                 }
             }

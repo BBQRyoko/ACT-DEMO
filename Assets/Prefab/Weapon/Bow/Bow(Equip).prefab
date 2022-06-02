@@ -151,6 +151,19 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: 4e1664fab1d1087438bca405ac83c36d, type: 3}
   m_PrefabInstance: {fileID: 1212187510641750129}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &3273774432735768891
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1212187510641718993}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.001, y: 0.001, z: 0.001}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2674516199914443748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,16 +190,3 @@ MonoBehaviour:
   chargeAmount: 0
   weaponWeightRatio: 0.35
   duration: 0
---- !u!65 &3273774432735768891
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1212187510641718993}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.001, y: 0.001, z: 0.001}
-  m_Center: {x: 0, y: 0, z: 0}

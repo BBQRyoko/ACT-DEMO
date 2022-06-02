@@ -183,6 +183,11 @@ public class PlayerLocmotion : MonoBehaviour
                 moveDirection *= curSpeed;
                 playerStats.CostStamina(15f * (1f + weaponSlotManager.weaponDamageCollider.weaponWeightRatio) * Time.deltaTime);
             }
+            if (playerStats.currStamina <= 0) 
+            {
+                playerManager.isSprinting = false;
+                inputManager.sprint_Input = false;
+            }
         }
         else if (playerManager.isCrouching || playerManager.isHolding || playerManager.isHanging || playerManager.isClimbing)
         {

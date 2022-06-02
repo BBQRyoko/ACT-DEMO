@@ -41,29 +41,47 @@ public class ProjectileDamager : MonoBehaviour
         if (!coveredPlayer)
         {
             PlayerManager playerManager = coveredCharacter.GetComponent<PlayerManager>();
-            PlayerLocmotion playerLocmotion = coveredCharacter.GetComponent<PlayerLocmotion>();
-            playerManager.isStunned = true;
-            playerManager.isToronadoCovered = true;
-            tornadoHazard.TornadoLifeCheck();
-            coveredPlayer = coveredCharacter;
-            coveredCharacter.transform.position = transform.position;
-            coveredCharacter.transform.rotation = transform.rotation;
-            playerLocmotion.rig.velocity = new Vector3(0f, playerLocmotion.rig.velocity.y, 0f);
-            coveredCharacter.transform.parent = transform;
+            EnemyManager enemyManager = coveredCharacter.GetComponent<EnemyManager>();
+            if (playerManager)
+            {
+                PlayerLocmotion playerLocmotion = coveredCharacter.GetComponent<PlayerLocmotion>();
+                playerManager.isStunned = true;
+                playerManager.isToronadoCovered = true;
+                tornadoHazard.TornadoLifeCheck();
+                coveredPlayer = coveredCharacter;
+                coveredCharacter.transform.position = transform.position;
+                coveredCharacter.transform.rotation = transform.rotation;
+                playerLocmotion.rig.velocity = new Vector3(0f, playerLocmotion.rig.velocity.y, 0f);
+                coveredCharacter.transform.parent = transform;
+            }
+            else if (enemyManager) 
+            {
+                Debug.Log("123");
+                EnemyLocomotion enemyLocomotion = coveredCharacter.GetComponent<EnemyLocomotion>();
+                enemyManager.GetComponentInChildren<EnemyAnimatorManager>().animator.SetBool("isStunned", true);
+                enemyManager.isToronadoCovered = true;
+                tornadoHazard.TornadoLifeCheck();
+                coveredPlayer = coveredCharacter;
+                coveredCharacter.transform.position = transform.position;
+                coveredCharacter.transform.rotation = transform.rotation;
+                enemyLocomotion.GetComponent<Rigidbody>().velocity = new Vector3(0f, enemyLocomotion.GetComponent<Rigidbody>().velocity.y, 0f);
+                coveredCharacter.transform.parent = transform;
+            }
         }
         else //如果风里面已经有了一个角色，就直接停下风
         {
-            ProjectileDestroy();
+            ProjectileDestroy(coveredCharacter);
         }
     }
-    public void ProjectileDestroy() 
+    public void ProjectileDestroy(Transform hittedCharacter = null) 
     {
         if (coveredPlayer) //如果玩家在其中就将玩家弹出
         {
-            PlayerManager playerManager = coveredPlayer.GetComponent<PlayerManager>();
-            playerManager.isToronadoCovered = false;
+            CharacterManager characterManager = coveredPlayer.GetComponent<CharacterManager>();
+            characterManager.isToronadoCovered = false;
             coveredPlayer.parent = null;
             coveredPlayer = null;
+            if(hittedCharacter) hittedCharacter.GetComponentInChildren<EnemyAnimatorManager>().animator.SetBool("isStunned", true);
             Destroy(gameObject);
         }
         else 
@@ -84,17 +102,20 @@ public class ProjectileDamager : MonoBehaviour
         {
             ProjectileDestroy();
         }
-        if (!isPlayerDamage) //敌人伤害时
-        {
-            PlayerStats playerStats = other.GetComponent<PlayerStats>();
-            ParryCollider parryCollider = other.GetComponent<ParryCollider>();
 
-            if (tornadoHazard && playerStats) //龙卷check, 如果是龙卷碰到玩家就会无视防御
+        CharacterStats characterStats = other.GetComponent<CharacterStats>();
+
+        if (tornadoHazard && characterStats) //龙卷check, 如果是龙卷碰到玩家就会无视防御
+        {
+            ToronadoCheck(characterStats.transform);
+        }
+        else 
+        {
+            if (!isPlayerDamage) //敌人伤害时
             {
-                ToronadoCheck(playerStats.transform);
-            }
-            else 
-            {
+                PlayerStats playerStats = other.GetComponent<PlayerStats>();
+                ParryCollider parryCollider = other.GetComponent<ParryCollider>();
+
                 if (playerStats != null)
                 {
                     Vector3 hitDirection = transform.position - playerStats.transform.position;
@@ -118,38 +139,39 @@ public class ProjectileDamager : MonoBehaviour
                     Destroy(this.gameObject);
                 }
             }
-        }
-        else //玩家伤害 
-        {
-            EnemyStats enemyStats = other.GetComponent<EnemyStats>();
-            PlayerStats playerStats = FindObjectOfType<PlayerStats>();
-            PlayerManager playerManager = playerStats.GetComponent<PlayerManager>();
-            AnimatorManager animatorManager = playerStats.GetComponentInChildren<AnimatorManager>();
-            if (enemyStats != null) 
+            else //玩家伤害 
             {
-                Vector3 hitDirection = transform.position - enemyStats.transform.position;
-                hitDirection.y = 0;
-                hitDirection.Normalize();
-                enemyStats.TakeDamage(curDamage, staminaDamage, hitDirection);
-                enemyStats.GetComponent<EnemyManager>().curTarget = playerStats;
-                playerManager.GetComponent<PlayerAttacker>().chargeValue += chargeAmount;
-                playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount);
-                if (playerManager.GetComponent<BaGuaManager>().isSwitchAttack)
+                EnemyStats enemyStats = other.GetComponent<EnemyStats>();
+                PlayerStats playerStats = FindObjectOfType<PlayerStats>();
+                PlayerManager playerManager = playerStats.GetComponent<PlayerManager>();
+                AnimatorManager animatorManager = playerStats.GetComponentInChildren<AnimatorManager>();
+                if (enemyStats != null)
                 {
-                    playerManager.GetComponent<BaGuaManager>().curEnergyCharge += 60f;
-                    playerManager.GetComponent<BaGuaManager>().isSwitchAttack = false;
-                }                //火球击中音效
-                //animatorManager.generalAudio.volume = 0.1f;
-                //animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[3];
-                //animatorManager.generalAudio.Play();
+                    Vector3 hitDirection = transform.position - enemyStats.transform.position;
+                    hitDirection.y = 0;
+                    hitDirection.Normalize();
+                    enemyStats.TakeDamage(curDamage, staminaDamage, hitDirection);
+                    enemyStats.GetComponent<EnemyManager>().curTarget = playerStats;
+                    playerManager.GetComponent<PlayerAttacker>().chargeValue += chargeAmount;
+                    playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount);
+                    if (playerManager.GetComponent<BaGuaManager>().isSwitchAttack)
+                    {
+                        playerManager.GetComponent<BaGuaManager>().curEnergyCharge += 60f;
+                        playerManager.GetComponent<BaGuaManager>().isSwitchAttack = false;
+                    }
+                    //火球击中音效
+                    //animatorManager.generalAudio.volume = 0.1f;
+                    //animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[3];
+                    //animatorManager.generalAudio.Play();
 
-                Destroy(transform.parent.gameObject);
-            }
-            else
-            {
-                if (other.CompareTag("FireBlocker"))
+                    Destroy(transform.parent.gameObject);
+                }
+                else
                 {
-                    Destroy(other.gameObject);
+                    if (other.CompareTag("FireBlocker")) //是个隐患，之后可以改一下
+                    {
+                        Destroy(other.gameObject);
+                    }
                 }
             }
         }
