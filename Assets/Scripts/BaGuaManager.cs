@@ -83,6 +83,7 @@ public class BaGuaManager : MonoBehaviour
         }
         else
         {
+            curPos = realPiviot.GetComponent<RectTransform>().position;
             gameManager.Resume();
         }
     }
