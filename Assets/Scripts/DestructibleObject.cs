@@ -15,16 +15,25 @@ public class DestructibleObject : MonoBehaviour
             if (!containUpdraft)
             {
                 GameObject item = Instantiate(curItem, transform.position, transform.rotation);
-                if (!item.GetComponentInChildren<ItemPickUp>().isBuff)
+                ItemPickUp pickUp = item.GetComponentInChildren<ItemPickUp>();
+                if (!pickUp)
                 {
-                    item.transform.eulerAngles = Quaternion.Euler(-180, 0, 0) * transform.up;
                     float angel = Random.Range(-15f, 15f);
                     item.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(angel, Vector3.forward) * Vector3.down * 4f;
                 }
                 else 
                 {
-                    float angel = Random.Range(-15f, 15f);
-                    item.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(angel, Vector3.forward) * Vector3.down * 4f;
+                    if (!item.GetComponentInChildren<ItemPickUp>().isBuff)
+                    {
+                        item.transform.eulerAngles = Quaternion.Euler(-180, 0, 0) * transform.up;
+                        float angel = Random.Range(-15f, 15f);
+                        item.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(angel, Vector3.forward) * Vector3.down * 4f;
+                    }
+                    else 
+                    {
+                        float angel = Random.Range(-15f, 15f);
+                        item.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(angel, Vector3.forward) * Vector3.down * 4f;
+                    }
                 }
             }
             else 

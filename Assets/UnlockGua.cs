@@ -8,6 +8,8 @@ public class UnlockGua : InteractSystem
     [SerializeField] GameObject baguaPrefab;
     [SerializeField] GameObject sealedBagua;
 
+    [SerializeField] GameObject guide;
+
     private void Start()
     {
         baGuaManager = FindObjectOfType<BaGuaManager>();
@@ -24,6 +26,7 @@ public class UnlockGua : InteractSystem
         {
             baGuaManager.baguaGameobjectPrefabs.Add(baguaPrefab);
             sealedBagua.SetActive(false);
+            guide.SetActive(true);
         }
     }
 
@@ -36,6 +39,14 @@ public class UnlockGua : InteractSystem
                 other.GetComponent<PlayerManager>().inInteractTrigger = true;
                 HandleInteractUI(this);
             }
+        }
+    }
+
+    public override void OnTriggerExit(Collider other) 
+    {
+        if (other.CompareTag("Player"))
+        {
+            guide.SetActive(false);
         }
     }
 }

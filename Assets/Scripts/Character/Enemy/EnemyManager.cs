@@ -300,6 +300,8 @@ public class EnemyManager : CharacterManager
         obj.transform.SetParent(null);
         obj.gameObject.SetActive(true);
         obj.StartFlyingObj(target, false, targetMarkTransform);
+        Debug.Log(obj);
+
     }
     public void HandleRangeAttack2() //龙卷
     {
