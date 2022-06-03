@@ -144,7 +144,6 @@ public class DamageCollider : MonoBehaviour
 
             if (!enemyStats.GetComponent<EnemyManager>().isParrying && enemyStats != null && enemyStats.currHealth != 0 && !enemyStats.GetComponent<EnemyManager>().isDodging && !enemyStats.GetComponent<EnemyManager>().isBlocking)
             {
-                Debug.Log(enemyStats.GetComponent<EnemyManager>().isDodging);
                 attackAudio.volume = 0.15f;
                 int i = sample_SFX.hittedSFX_List.Length;
                 int random = Random.Range(0, i - 1);

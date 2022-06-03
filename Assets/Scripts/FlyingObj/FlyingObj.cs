@@ -43,7 +43,7 @@ public class FlyingObj : MonoBehaviour
     /// <summary>
     /// 生命周期
     /// </summary>
-    [SerializeField] private float m_LifeTime;
+    [SerializeField] public float m_LifeTime;
 
     [Header("方便调试，不要手动修改")]
     /// <summary>
@@ -147,7 +147,14 @@ public class FlyingObj : MonoBehaviour
             }
             else //常规飞行道具用
             {
-                Destroy(gameObject);
+                if (GetComponentInChildren<ProjectileDamager>().curProjectilType == ProjectileDamager.ProjectilType.regular)
+                {
+                    GetComponentInChildren<Rigidbody>().useGravity = true;
+                }
+                else 
+                {
+                    Destroy(gameObject);
+                }
             }
         }
     }

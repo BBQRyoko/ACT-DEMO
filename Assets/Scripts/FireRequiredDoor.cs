@@ -17,15 +17,5 @@ public class FireRequiredDoor : InteractSystem
     {
         base.Interact();
         playerUIManager.PromptInfoActive(infoText);
-        Debug.Log("Can't open this from this way");
-        //if (baGuaManager.fireBallUnlock)
-        //{
-        //    将玩家位置放到指定位置，指定朝向
-        //    animatorManager.PlayTargetAnimation("FireBall", true, true);
-        //}
-        //else
-        //{
-        //    Debug.Log("FireBall Required");
-        //}
     }
 }

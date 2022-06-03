@@ -5,6 +5,8 @@ using UnityEngine;
 public class ProjectileDamager : MonoBehaviour
 {
     //dot伤害
+    public enum ProjectilType {regular, magic}; //regular考虑重力, magic不考虑重力
+    public ProjectilType curProjectilType;
     [SerializeField] TornadoHazard tornadoHazard;
     FlyingObj curFlyingObj;
     public Transform coveredPlayer;
@@ -16,6 +18,8 @@ public class ProjectileDamager : MonoBehaviour
     public float chargeAmount;
 
     public bool isSwitchAttack;
+
+    [SerializeField] AudioClip hitAudio;
 
     private void Awake()
     {
@@ -54,18 +58,17 @@ public class ProjectileDamager : MonoBehaviour
                 playerLocmotion.rig.velocity = new Vector3(0f, playerLocmotion.rig.velocity.y, 0f);
                 coveredCharacter.transform.parent = transform;
             }
-            else if (enemyManager) 
+            else if (enemyManager)
             {
-                Debug.Log("123");
                 EnemyLocomotion enemyLocomotion = coveredCharacter.GetComponent<EnemyLocomotion>();
                 enemyManager.GetComponentInChildren<EnemyAnimatorManager>().animator.SetBool("isStunned", true);
                 enemyManager.isToronadoCovered = true;
                 tornadoHazard.TornadoLifeCheck();
-                coveredPlayer = coveredCharacter;
+                coveredPlayer = coveredCharacter.parent.transform;
                 coveredCharacter.transform.position = transform.position;
                 coveredCharacter.transform.rotation = transform.rotation;
                 enemyLocomotion.GetComponent<Rigidbody>().velocity = new Vector3(0f, enemyLocomotion.GetComponent<Rigidbody>().velocity.y, 0f);
-                coveredCharacter.transform.parent = transform;
+                coveredPlayer.parent = transform;
             }
         }
         else //如果风里面已经有了一个角色，就直接停下风
@@ -77,11 +80,23 @@ public class ProjectileDamager : MonoBehaviour
     {
         if (coveredPlayer) //如果玩家在其中就将玩家弹出
         {
-            CharacterManager characterManager = coveredPlayer.GetComponent<CharacterManager>();
+            CharacterManager characterManager = null; 
+            if (coveredPlayer.CompareTag("Player"))
+            {
+                characterManager = coveredPlayer.GetComponent<CharacterManager>();
+            }
+            else 
+            {
+                characterManager = coveredPlayer.GetComponentInChildren<CharacterManager>();
+            }
             characterManager.isToronadoCovered = false;
             coveredPlayer.parent = null;
             coveredPlayer = null;
-            if(hittedCharacter) hittedCharacter.GetComponentInChildren<EnemyAnimatorManager>().animator.SetBool("isStunned", true);
+            if (hittedCharacter)
+            {
+                if (hittedCharacter.GetComponentInChildren<EnemyAnimatorManager>()) hittedCharacter.GetComponentInChildren<EnemyAnimatorManager>().animator.SetBool("isStunned", true);
+                else if (hittedCharacter.GetComponent<PlayerManager>()) hittedCharacter.GetComponent<PlayerManager>().isStunned = true;
+            }
             Destroy(gameObject);
         }
         else 
@@ -105,9 +120,24 @@ public class ProjectileDamager : MonoBehaviour
 
         CharacterStats characterStats = other.GetComponent<CharacterStats>();
 
-        if (tornadoHazard && characterStats) //龙卷check, 如果是龙卷碰到玩家就会无视防御
+        if (tornadoHazard) //龙卷check, 如果是龙卷碰到玩家就会无视防御
         {
-            ToronadoCheck(characterStats.transform);
+            if (characterStats)
+            {
+                ToronadoCheck(characterStats.transform);
+            }
+            else 
+            {
+                if (other.CompareTag("DestructibleObject"))
+                {
+                    DestructibleObject destructibleObject = other.GetComponent<DestructibleObject>();
+
+                    if (destructibleObject != null)
+                    {
+                        destructibleObject.ObjectDestroy();
+                    }
+                }
+            }
         }
         else 
         {
@@ -123,6 +153,11 @@ public class ProjectileDamager : MonoBehaviour
                     hitDirection.Normalize();
 
                     playerStats.TakeDamage(curDamage, hitDirection, isHeavy);
+                    if (hitAudio)
+                    {
+                        playerStats.GetComponentInChildren<AnimatorManager>().generalAudio.clip = hitAudio;
+                        playerStats.GetComponentInChildren<AnimatorManager>().generalAudio.Play();
+                    }
                     ProjectileDestroy();
                 }
                 else if (parryCollider != null)
@@ -159,16 +194,25 @@ public class ProjectileDamager : MonoBehaviour
                         playerManager.GetComponent<BaGuaManager>().curEnergyCharge += 60f;
                         playerManager.GetComponent<BaGuaManager>().isSwitchAttack = false;
                     }
-                    //火球击中音效
-                    //animatorManager.generalAudio.volume = 0.1f;
-                    //animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[3];
-                    //animatorManager.generalAudio.Play();
-
+                    if (hitAudio) 
+                    {
+                        animatorManager.generalAudio.clip = hitAudio;
+                        animatorManager.generalAudio.Play();
+                    }
                     Destroy(transform.parent.gameObject);
                 }
                 else
                 {
-                    if (other.CompareTag("FireBlocker")) //是个隐患，之后可以改一下
+                    if (other.CompareTag("DestructibleObject"))
+                    {
+                        DestructibleObject destructibleObject = other.GetComponent<DestructibleObject>();
+
+                        if (destructibleObject != null)
+                        {
+                            destructibleObject.ObjectDestroy();
+                        }
+                    }
+                    else if (other.CompareTag("FireBlocker")) //是个隐患，之后可以改一下
                     {
                         Destroy(other.gameObject);
                     }

@@ -27,7 +27,7 @@ public class PlayerLocmotion : MonoBehaviour
     [Header("落地检测")]
     [SerializeField] LayerMask groundLayer;
     float rayCastHeightOffset = 0.5f;
-    float radius = 0.2f;
+    float radius = 0.1f;
     public float inAirTimer;
 
     [Header("移动参数")]
@@ -461,7 +461,7 @@ public class PlayerLocmotion : MonoBehaviour
         {
             if (playerManager.isAttacking) //攻击状态下
             {
-                if (playerManager.cantBeInterrupted || !playerManager.isGround || playerManager.isHanging || playerManager.isClimbing)
+                if (playerManager.cantBeInterrupted || !playerManager.isGround || playerManager.isHanging || playerManager.isClimbing || playerManager.isAiming)
                     return;
 
                 //还可以优化：现在只有在玩家背对相机的情况下时才正常，其它方向翻滚方向会不精准

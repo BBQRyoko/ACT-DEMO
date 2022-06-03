@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class EnemyManager : CharacterManager
 {
+    public GameObject enemyHolder;
     CameraManager cameraManager;
     InputManager inputManager;
     EnemyLocomotion enemyLocomotion;
@@ -106,6 +107,7 @@ public class EnemyManager : CharacterManager
 
     private void Awake()
     {
+        enemyHolder = transform.parent.gameObject;
         cameraManager = FindObjectOfType<CameraManager>();
         inputManager = FindObjectOfType<InputManager>();
         enemyLocomotion = GetComponent<EnemyLocomotion>();

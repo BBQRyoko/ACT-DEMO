@@ -39,7 +39,7 @@ public class TornadoHazard : MonoBehaviour
     }
     void DefelectFlyingObj(FlyingObj obj) 
     {
-        if (!deflectFlyingObj)
+        if (!deflectFlyingObj && obj.GetComponentInChildren<ProjectileDamager>() && (!obj.GetComponentInParent<PlayerManager>() || !obj.GetComponentInParent<EnemyManager>())) 
         {
             deflectFlyingObj = obj;
             var defelectObj = Instantiate(deflectFlyingObj, shootPos, false);
@@ -47,6 +47,7 @@ public class TornadoHazard : MonoBehaviour
             defelectObj.gameObject.SetActive(true);
             defelectObj.StartFlyingObj(deflectFlyingObj.shooterPos, false, deflectFlyingObj.shooterPos, true);
             ProjectileDamager projectileDamager = defelectObj.GetComponentInChildren<ProjectileDamager>();
+            defelectObj.m_LifeTime += 1.2f;
             if (projectileDamager.isPlayerDamage)
             {
                 projectileDamager.isPlayerDamage = false;
@@ -83,19 +84,22 @@ public class TornadoHazard : MonoBehaviour
                 Destroy(transform.gameObject);
             }
 
-            if (other.GetComponentInParent<FlyingObj>() && (!other.GetComponent<PlayerManager>() || !other.GetComponentInParent<PlayerManager>() || !other.GetComponentInChildren<PlayerManager>()) 
+            if (other.GetComponentInParent<FlyingObj>() && (!other.GetComponent<PlayerManager>() || !other.GetComponentInParent<PlayerManager>() || !other.GetComponentInChildren<PlayerManager>())
                 && (!other.GetComponent<EnemyManager>() || !other.GetComponentInParent<EnemyManager>()) && !other.GetComponent<TornadoHazard>()) //接触飞行道具, 非龙卷类
             {
-                //如果是火球的话
+                //如果是火球的话, 变成火龙卷
                 if (other.GetComponentInParent<FlyingObj>().isFireBall)
                 {
                     GenerateFireTornado();
                     Destroy(other.gameObject);
                 }
-                else //普通飞行道具
+                else
                 {
-                    DefelectFlyingObj(other.GetComponentInParent<FlyingObj>());
-                    Destroy(other.gameObject);
+                    if (other.GetComponentInParent<FlyingObj>() && (!other.GetComponentInParent<PlayerManager>() || !other.GetComponentInParent<EnemyManager>())) //所有不与玩家绑定的飞行道具
+                    {
+                        DefelectFlyingObj(other.GetComponentInParent<FlyingObj>());
+                        Destroy(other.gameObject);
+                    }
                 }
             }
         }

@@ -132604,6 +132604,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45810cfd5e69ae845aba9239c7a756a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tornadoHazard: {fileID: 0}
+  projectileDamager: {fileID: 0}
+  shooterPos: {fileID: 0}
+  defelected: 0
+  isFireBall: 0
+  isHorizontal: 0
   darkKnightOnly: 0
   m_RotateSpeed: 180
   m_SlowDownSpeed: 2
@@ -132628,10 +132634,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a86f74eb64817f94d97e2609a3d07970, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isToronado: 0
+  curProjectilType: 1
+  tornadoHazard: {fileID: 0}
   coveredPlayer: {fileID: 0}
-  isHeavy: 0
   isPlayerDamage: 0
+  isHeavy: 0
   curDamage: 10
   staminaDamage: 0
-  hitFactor: 1
+  energyRestoreAmount: 20
+  chargeAmount: 0
+  isSwitchAttack: 0
+  hitAudio: {fileID: 0}
