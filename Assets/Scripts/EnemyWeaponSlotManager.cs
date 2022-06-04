@@ -31,6 +31,8 @@ public class EnemyWeaponSlotManager : MonoBehaviour
     }
     private void Start()
     {
+        if (flyingObj) flyingObjectDamager = flyingObj.GetComponentInChildren<ProjectileDamager>();
+        if (flyingObj2) flyingObjectDamager2 = flyingObj2.GetComponent<ProjectileDamager>();
         //if (weaponItem != null)
         //{
         //    LoadWeaponOnSlot(weaponItem);
