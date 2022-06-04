@@ -79,11 +79,9 @@ public class BaGuaManager : MonoBehaviour
             float y = curPos.y + (inputManager.baguaInputY * 220 * (curPos.x / 960));
             RectTransform rect = realPiviot.GetComponent<RectTransform>();
             rect.position = new Vector2(x, y);
-
         }
         else
         {
-            curPos = realPiviot.GetComponent<RectTransform>().position;
             gameManager.Resume();
         }
     }

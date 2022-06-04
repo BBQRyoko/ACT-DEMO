@@ -21,17 +21,17 @@ public class TornadoHazard : MonoBehaviour
     }
     private void Update()
     {
-        //if (curDamager.coveredPlayer) 
-        //{
-        //    if (characterCoveredDuration > 0)
-        //    {
-        //        characterCoveredDuration -= Time.deltaTime;
-        //    }
-        //    else
-        //    {
-        //        curDamager.ProjectileDestroy();
-        //    }
-        //}
+        if (curDamager.coveredPlayer)
+        {
+            if (characterCoveredDuration > 0)
+            {
+                characterCoveredDuration -= Time.deltaTime;
+            }
+            else
+            {
+                curDamager.ProjectileDestroy();
+            }
+        }
     }
     public void TornadoLifeCheck()
     {
@@ -47,6 +47,7 @@ public class TornadoHazard : MonoBehaviour
             defelectObj.gameObject.SetActive(true);
             defelectObj.StartFlyingObj(deflectFlyingObj.shooterPos, false, deflectFlyingObj.shooterPos, true);
             ProjectileDamager projectileDamager = defelectObj.GetComponentInChildren<ProjectileDamager>();
+            defelectObj.GetComponent<Rigidbody>().useGravity = false;
             defelectObj.m_LifeTime += 1.2f;
             if (projectileDamager.isPlayerDamage)
             {
