@@ -345,7 +345,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6a48ad5c0daba847ad8cbdbda536d24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isSelected: 0
+  baGuaManager: {fileID: 0}
+  isOwned: 0
+  canBeSelected: 0
   bagua_Index: 7
   unselectedBagua: {fileID: 6945611025930564669}
   selectedBagua: {fileID: 2609829245207803954}

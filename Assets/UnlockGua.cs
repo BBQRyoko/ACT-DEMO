@@ -5,14 +5,15 @@ using UnityEngine;
 public class UnlockGua : InteractSystem
 {
     BaGuaManager baGuaManager;
-    [SerializeField] GameObject baguaPrefab;
+    AnimatorManager animatorManager;
     [SerializeField] GameObject sealedBagua;
-
+    [SerializeField] int guaIndex;
     [SerializeField] GameObject guide;
 
     private void Start()
     {
         baGuaManager = FindObjectOfType<BaGuaManager>();
+        animatorManager = FindObjectOfType<AnimatorManager>();
     }
     public override void Interact()
     {
@@ -22,11 +23,13 @@ public class UnlockGua : InteractSystem
 
     void UnlockNewGuaEntry()
     {
-        if (!baGuaManager.baguaGameobjectPrefabs.Contains(baguaPrefab))
+        if (!baGuaManager.baguaGameobjectPrefabs[guaIndex].GetComponent<BaGuaEntry>().isOwned)
         {
-            baGuaManager.baguaGameobjectPrefabs.Add(baguaPrefab);
+            baGuaManager.baguaGameobjectPrefabs[guaIndex].GetComponent<BaGuaEntry>().isOwned = true;
             sealedBagua.SetActive(false);
             guide.SetActive(true);
+            animatorManager.generalAudio.clip = animatorManager.sample_SFX.checkPoint_Heal[0];
+            animatorManager.generalAudio.Play();
         }
     }
 
@@ -34,7 +37,7 @@ public class UnlockGua : InteractSystem
     {
         if (other.CompareTag("Player"))
         {
-            if (!baGuaManager.baguaGameobjectPrefabs.Contains(baguaPrefab))
+            if (!baGuaManager.baguaGameobjectPrefabs[guaIndex].GetComponent<BaGuaEntry>().isOwned)
             {
                 other.GetComponent<PlayerManager>().inInteractTrigger = true;
                 HandleInteractUI(this);

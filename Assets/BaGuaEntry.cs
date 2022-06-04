@@ -11,6 +11,8 @@ public class BaGuaEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     [SerializeField] BaGuaManager baGuaManager;
     BaGuaPanel_UI baGuaPanel_UI;
 
+    public bool isOwned;
+
     public bool canBeSelected;
     bool isSelected;
     [SerializeField] int bagua_Index;
@@ -27,11 +29,20 @@ public class BaGuaEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     }
     private void Update()
     {
-        if (!isSelected)
+        if (!isOwned)
         {
-            unselectedBagua.SetActive(true);
-            selectedBagua.SetActive(false);
+            unselectedBagua.SetActive(false);
+            selectedBagua.SetActive(true);
         }
+        else
+        {
+            if (!isSelected)
+            {
+                unselectedBagua.SetActive(true);
+                selectedBagua.SetActive(false);
+            }
+        }
+
         ControlerPointerCheck();
     }
     void BaGuaEntrySelected() 
@@ -42,7 +53,7 @@ public class BaGuaEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     void ControlerPointerCheck() 
     {
-        if (!isSelected && canBeSelected) 
+        if (!isSelected && canBeSelected && isOwned) 
         {
             if (Vector2.Distance(transform.position, baGuaManager.realPiviot.transform.position) <= 50f)
             {
@@ -86,7 +97,7 @@ public class BaGuaEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (!isSelected && canBeSelected) 
+        if (!isSelected && canBeSelected && isOwned) 
         {
             rect.DOComplete();
             rect.DOScale(Vector3.one * 1.2f, 0.1f).SetEase(Ease.OutQuad);
@@ -109,6 +120,8 @@ public class BaGuaEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     }
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (!isOwned) return;
+
         if (isSelected)
         {
             rect.DOComplete();
