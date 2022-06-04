@@ -42,12 +42,13 @@ public class TornadoHazard : MonoBehaviour
         if (!deflectFlyingObj && obj.GetComponentInChildren<ProjectileDamager>() && (!obj.GetComponentInParent<PlayerManager>() || !obj.GetComponentInParent<EnemyManager>())) 
         {
             deflectFlyingObj = obj;
+            Debug.Log(deflectFlyingObj.gameObject.name);
             var defelectObj = Instantiate(deflectFlyingObj, shootPos, false);
             defelectObj.transform.SetParent(null);
             defelectObj.gameObject.SetActive(true);
             defelectObj.StartFlyingObj(deflectFlyingObj.shooterPos, false, deflectFlyingObj.shooterPos, true);
             ProjectileDamager projectileDamager = defelectObj.GetComponentInChildren<ProjectileDamager>();
-            defelectObj.GetComponent<Rigidbody>().useGravity = false;
+            if(projectileDamager.curProjectilType == ProjectileDamager.ProjectilType.regular) defelectObj.GetComponent<Rigidbody>().useGravity = false;
             defelectObj.m_LifeTime += 1.2f;
             if (projectileDamager.isPlayerDamage)
             {
@@ -96,10 +97,14 @@ public class TornadoHazard : MonoBehaviour
                 }
                 else
                 {
-                    if (other.GetComponentInParent<FlyingObj>() && (!other.GetComponentInParent<PlayerManager>() || !other.GetComponentInParent<EnemyManager>())) //所有不与玩家绑定的飞行道具
+                    if (other.GetComponentInParent<FlyingObj>() && other.GetComponent<ProjectileDamager>()
+                        && (!other.GetComponentInParent<PlayerManager>() || !other.GetComponentInParent<EnemyManager>())) //所有不与玩家绑定的飞行道具
                     {
-                        DefelectFlyingObj(other.GetComponentInParent<FlyingObj>());
-                        Destroy(other.gameObject);
+                        if (other.GetComponent<ProjectileDamager>().curProjectilType == ProjectileDamager.ProjectilType.regular) 
+                        {
+                            DefelectFlyingObj(other.GetComponentInParent<FlyingObj>());
+                            Destroy(other.gameObject);
+                        }
                     }
                 }
             }

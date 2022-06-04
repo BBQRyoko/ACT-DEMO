@@ -135,7 +135,7 @@ public class PlayerLocmotion : MonoBehaviour
         if (playerManager.isInteracting || playerManager.isAttacking || playerManager.isStunned)
             return;
 
-        float curSpeed = (movementSpeed - 5 * (weaponSlotManager.weaponDamageCollider.weaponWeightRatio))* (1 + playerStats.movementBuffRatio);
+        float curSpeed = (movementSpeed - 5 * (weaponSlotManager.weaponDamageCollider.weaponWeightRatio)) * (1 + playerStats.movementBuffRatio);
 
         //移动方向取决于相机的正面方向
         if (!playerManager.isHanging && !playerManager.isClimbing)
@@ -168,9 +168,10 @@ public class PlayerLocmotion : MonoBehaviour
             moveDirection = playerManager.climbDirection * inputManager.verticalInput;
             moveDirection.Normalize();
         }
-        
+
         if (playerManager.isSprinting)
         {
+            if (playerManager.isHanging || playerManager.isClimbing) return;
             if (playerManager.isCrouching)
             {
                 curSpeed = crouchSpeed * 1.25f;

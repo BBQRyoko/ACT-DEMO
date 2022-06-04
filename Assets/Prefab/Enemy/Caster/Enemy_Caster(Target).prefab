@@ -1067,7 +1067,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 421929195253311684, guid: 92a0d83ce1919b8418efdbb8a03df058, type: 3}
       propertyPath: m_LifeTime
-      value: 15
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 421929195253311684, guid: 92a0d83ce1919b8418efdbb8a03df058, type: 3}
       propertyPath: m_TraceTime
@@ -1080,6 +1080,10 @@ PrefabInstance:
     - target: {fileID: 423277927437170492, guid: 92a0d83ce1919b8418efdbb8a03df058, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 997239213796885941, guid: 92a0d83ce1919b8418efdbb8a03df058, type: 3}
+      propertyPath: curProjectilType
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92a0d83ce1919b8418efdbb8a03df058, type: 3}
@@ -2612,7 +2616,7 @@ PrefabInstance:
       objectReference: {fileID: 688944382795454217}
     - target: {fileID: 6687984558012795286, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: defaultWalkingTimer
-      value: 0.25
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 6687984558012795286, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: combatCooldownManager
@@ -2637,7 +2641,7 @@ PrefabInstance:
     - target: {fileID: 6687984558012795286, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: enemyAttacks.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: 25dd277d76789ec4ba67e714fbfb4adf, type: 2}
+      objectReference: {fileID: 11400000, guid: 8a3905db99ec71c4a9d80ad3528a15ac, type: 2}
     - target: {fileID: 6687984558012795286, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: enemyAttacks.Array.data[2]
       value: 
@@ -2882,6 +2886,14 @@ PrefabInstance:
       propertyPath: combatPursueStartRange
       value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
+      propertyPath: containedItem.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
+      propertyPath: containedItem.Array.data[0]
+      value: 
+      objectReference: {fileID: 7105417834258670020, guid: c9a7ed8106022ac4a853692425d06d78, type: 3}
     - target: {fileID: 7494814258874909007, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: m_Radius
       value: 0.55

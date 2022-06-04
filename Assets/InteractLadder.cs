@@ -46,6 +46,7 @@ public class InteractLadder : InteractSystem
         }
         else 
         {
+            if (playerManager.isCrouching) playerManager.isCrouching = false;
             playerManager.transform.position = transform.position;
             playerManager.transform.rotation = transform.rotation;
             playerManager.ClimbingController();

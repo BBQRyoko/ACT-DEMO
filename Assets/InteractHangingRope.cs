@@ -27,6 +27,7 @@ public class InteractHangingRope : InteractSystem
         }
         else 
         {
+            if (playerManager.isCrouching) playerManager.isCrouching = false;
             playerManager.transform.position = transform.position;
             playerManager.transform.rotation = transform.rotation;
             playerManager.GetComponent<PlayerLocmotion>().movementVelocity.y = 0;

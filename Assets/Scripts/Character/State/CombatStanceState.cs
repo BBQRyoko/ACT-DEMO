@@ -16,6 +16,7 @@ public class CombatStanceState : State
 
     bool canCounterAttack;
     [SerializeField] bool dummyMode;
+    public bool isStraightDummy;
     [SerializeField] float defaultWalkingTimer = 1.5f;
     public float walkingTimer;
     [SerializeField] bool notFirstWalking;
@@ -51,7 +52,7 @@ public class CombatStanceState : State
         if (dummyMode) 
         {
             attackingAdjustment = true;
-            HandleRotateTowardsTarger(enemyManager);
+            if(!isStraightDummy) HandleRotateTowardsTarger(enemyManager);
             GetNewAttack(enemyManager);
         } 
         if (specialConditionTriggered) //根据条件观测是否触发特殊条件, 触发则直接发动攻击并停止踱步行为

@@ -20,27 +20,29 @@ public class RotateTowardsTargetState : State
             return this;
         }
 
-        if (viewableAngle >= 100 && viewableAngle <= 180 && !enemyManager.isInteracting)
+        if (!combatStanceState.isStraightDummy) 
         {
-            enemyAnimatorManager.PlayTargetAnimationWithRootRotation("Turn180", true);
-            return combatStanceState;
+            if (viewableAngle >= 100 && viewableAngle <= 180 && !enemyManager.isInteracting)
+            {
+                enemyAnimatorManager.PlayTargetAnimationWithRootRotation("Turn180", true);
+                return combatStanceState;
+            }
+            else if (viewableAngle <= -101 && viewableAngle >= -180 && !enemyManager.isInteracting)
+            {
+                enemyAnimatorManager.PlayTargetAnimationWithRootRotation("Turn180", true);
+                return combatStanceState;
+            }
+            else if (viewableAngle <= -45 && viewableAngle >= -100 && !enemyManager.isInteracting)
+            {
+                enemyAnimatorManager.PlayTargetAnimationWithRootRotation("TurnRight90", true);
+                return combatStanceState;
+            }
+            else if (viewableAngle >= 45 && viewableAngle <= 100 && !enemyManager.isInteracting)
+            {
+                enemyAnimatorManager.PlayTargetAnimationWithRootRotation("TurnLeft90", true);
+                return combatStanceState;
+            }
         }
-        else if (viewableAngle <= -101 && viewableAngle >= -180 && !enemyManager.isInteracting)
-        {
-            enemyAnimatorManager.PlayTargetAnimationWithRootRotation("Turn180", true);
-            return combatStanceState;
-        }
-        else if (viewableAngle <= -45 && viewableAngle >= -100 && !enemyManager.isInteracting)
-        {
-            enemyAnimatorManager.PlayTargetAnimationWithRootRotation("TurnRight90", true);
-            return combatStanceState;
-        }
-        else if (viewableAngle >= 45 && viewableAngle <= 100 && !enemyManager.isInteracting)
-        {
-            enemyAnimatorManager.PlayTargetAnimationWithRootRotation("TurnLeft90", true);
-            return combatStanceState;
-        }
-
 
         return combatStanceState;
     }
