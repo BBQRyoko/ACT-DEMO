@@ -151,16 +151,8 @@ public class PlayerLocmotion : MonoBehaviour
             forwardDir.Normalize();
             cameraDir.Normalize();
 
-            if (cameraDir.z * forwardDir.z > 0)
-            {
-                moveDirection = playerManager.hangDirection * inputManager.horizontalInput;
-                moveDirection.Normalize();
-            }
-            else
-            {
-                moveDirection = (-1) * playerManager.hangDirection * inputManager.horizontalInput;
-                moveDirection.Normalize();
-            }
+            moveDirection = playerManager.hangDirection * inputManager.horizontalInput;
+            moveDirection.Normalize();
         }
 
         if (playerManager.isClimbing)

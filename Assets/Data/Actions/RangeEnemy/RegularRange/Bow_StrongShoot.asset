@@ -24,6 +24,6 @@ MonoBehaviour:
   maxAttackAngle: 90
   minAttackAngle: -90
   minDistanceNeedToAttack: 0
-  maxDistanceNeedToAttack: 12
+  maxDistanceNeedToAttack: 50
   isImmune: 0
-  maxSpeed: 25
+  maxSpeed: 30
