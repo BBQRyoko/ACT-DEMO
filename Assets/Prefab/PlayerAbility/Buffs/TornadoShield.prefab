@@ -19437,8 +19437,6 @@ GameObject:
   - component: {fileID: 6920071572433571069}
   - component: {fileID: 7117812740381093875}
   - component: {fileID: 7117158712746659089}
-  - component: {fileID: 7340007579344156684}
-  - component: {fileID: 7340007579344156687}
   - component: {fileID: 4566336573535060748}
   m_Layer: 0
   m_Name: TornadoShield
@@ -24335,32 +24333,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!136 &7340007579344156684
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6918438363871369049}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 1.27
-  m_Height: 5.023361
-  m_Direction: 1
-  m_Center: {x: 0, y: 2.73, z: 0}
---- !u!114 &7340007579344156687
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6918438363871369049}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64945e6f25e2e43458f34c97dc28ae8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4566336573535060748
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -84,6 +84,11 @@ public class DamageCollider : MonoBehaviour
                     damageCollider.enabled = false;
                     playerManager.GetComponent<PlayerAttacker>().chargeValue += chargeAmount * 0.8f;
                     playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount / 2);
+                    if (playerManager.GetComponent<BaGuaManager>().isSwitchAttack)
+                    {
+                        playerManager.GetComponent<BaGuaManager>().curEnergyCharge += 50f;
+                        playerManager.GetComponent<BaGuaManager>().isSwitchAttack = false;
+                    }
                     enemyManager.HandleParryingCheck(curDamage);
                     HitPause(duration);
                 }
@@ -159,7 +164,7 @@ public class DamageCollider : MonoBehaviour
                     {
                         playerManager.GetComponent<BaGuaManager>().switchAttackTutorial.switchAttackNum += 1;
                     } 
-                    playerManager.GetComponent<BaGuaManager>().curEnergyCharge += 60f;
+                    playerManager.GetComponent<BaGuaManager>().curEnergyCharge += 100f;
                     playerManager.GetComponent<BaGuaManager>().isSwitchAttack = false;
                 }
                 playerManager.isHitting = false;

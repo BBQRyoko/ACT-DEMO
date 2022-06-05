@@ -12,8 +12,15 @@ public class RotateTowardsTargetState : State
         enemyAnimatorManager.animator.SetFloat("Vertical", 0);
         enemyAnimatorManager.animator.SetFloat("Horizontal", 0);
 
-        Vector3 targetDirection = enemyManager.curTarget.transform.position - enemyManager.transform.position;
-        viewableAngle = Vector3.SignedAngle(targetDirection, enemyManager.transform.forward, Vector3.up);
+        if (enemyManager.curTarget)
+        {
+            Vector3 targetDirection = enemyManager.curTarget.transform.position - enemyManager.transform.position;
+            viewableAngle = Vector3.SignedAngle(targetDirection, enemyManager.transform.forward, Vector3.up);
+        }
+        else 
+        {
+            return this;
+        }
 
         if (enemyManager.isInteracting) 
         {

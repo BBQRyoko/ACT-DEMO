@@ -29,12 +29,7 @@ public class SamuraiBoss_Teleporting : MonoBehaviour
     {
         dissolveMatrial.SetFloat("Dissolve", dissolveValue);
 
-        //if (CombatStanceState.distanceFromTarget <= 15 && CombatStanceState.distanceFromTarget >0) 
-        //{
-        //    TeleportStartEvent();
-        //}
-
-        if (enemyManager.GetComponent<EnemyStats>().currHealth <= 250)
+        if (CombatStanceState.distanceFromTarget <= 10 && CombatStanceState.distanceFromTarget > 0)
         {
             TeleportStartEvent();
         }
@@ -82,10 +77,11 @@ public class SamuraiBoss_Teleporting : MonoBehaviour
 
     void TeleportingEvent() 
     {
-        enemyManager.AutoLockOn();
-        transform.position = teleportingPos.position;
+        //enemyManager.AutoLockOn();
+        //transform.position = teleportingPos.position;
         enemyManager.GetComponent<EnemyStats>().currHealth = 500;
         leafWindVFX.SetActive(true);
         dissolving = false;
+        Destroy(gameObject);
     }
 }
