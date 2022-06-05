@@ -163,7 +163,7 @@ public class EnemyManager : CharacterManager
             shootPos = curTarget.GetComponent<PlayerManager>().beTargetedPos;
             shootPos2 = curTarget.GetComponent<PlayerManager>().beTargetedPos;
         }
-        else 
+        else
         {
             shootPos = null;
             shootPos2 = null;
@@ -229,9 +229,9 @@ public class EnemyManager : CharacterManager
         isPreformingAction = isInteracting;
         ClearAllStatus();
     }
-    void ClearAllStatus() 
+    void ClearAllStatus()
     {
-        if (canReset) 
+        if (canReset)
         {
             enemyAnimatorManager.animator.SetBool("isDodging", false);
             isImmuneAttacking = false;
@@ -274,7 +274,7 @@ public class EnemyManager : CharacterManager
             beenLocked = false;
             healtBarSpawn = false;
         }
-        else if (cameraManager.currentLockOnTarget.GetComponentInParent<EnemyManager>() == this) 
+        else if (cameraManager.currentLockOnTarget.GetComponentInParent<EnemyManager>() == this)
         {
             beenLocked = true;
         }
@@ -343,30 +343,30 @@ public class EnemyManager : CharacterManager
             enemyAnimatorManager.PlayTargetAnimation("Block_1", true, true);
             isBlocking = true;
         }
-        else 
+        else
         {
             enemyStats.currStamina = 0;
             enemyAnimatorManager.PlayTargetAnimation("ParryBreak", true, true);
         }
     }
-    void AmbushEnemy() 
+    void AmbushEnemy()
     {
         if (ambushEnemy && !isEquipped)
         {
             enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().WeaponEquip();
         }
     }
-    void HandleAlertIcon() 
+    void HandleAlertIcon()
     {
         if (alertTimer > 0)
         {
-            if (!alertIconSpawn && !ambushEnemy) 
+            if (!alertIconSpawn && !ambushEnemy)
             {
                 cameraManager.GenerateAlertIcon(this);
                 alertIconSpawn = true;
             }
         }
-        else 
+        else
         {
             alertingTarget = null;
             alertIconSpawn = false;
@@ -376,11 +376,13 @@ public class EnemyManager : CharacterManager
     {
         if (!curTarget && !isDead)
         {
+            enemyActivated = false;
             backStabArea.GetComponent<Collider>().enabled = true;
             canBeExecuted = true;
         }
-        else 
+        else
         {
+            enemyActivated = true;
             if (!isStunned)
             {
                 backStabArea.GetComponent<Collider>().enabled = false;
@@ -393,21 +395,21 @@ public class EnemyManager : CharacterManager
             }
         }
     }
-    public void HandleExecuted(string skillName) 
+    public void HandleExecuted(string skillName)
     {
         enemyAnimatorManager.PlayTargetAnimation(skillName, true, true);
         IdleState idleState = GetComponentInChildren<IdleState>();
         idleState.PlayerNoticeAnnounce(idleState.announceDistance, true);
-        if (isStunned) 
+        if (isStunned)
         {
             enemyAnimatorManager.animator.SetBool("isStunned", false);
             stunTimer = 0;
             enemyStats.currStamina = enemyStats.maxStamina;
         }
     }
-    void ItemDrop() 
+    void ItemDrop()
     {
-        if (isDead && !itemDrop && (containedItem != null || containedItem[1] != null)) 
+        if (isDead && !itemDrop && (containedItem != null || containedItem[1] != null))
         {
             foreach (GameObject curItem in containedItem)
             {
@@ -419,7 +421,7 @@ public class EnemyManager : CharacterManager
             itemDrop = true;
         }
     }
-    public void AutoLockOn() 
+    public void AutoLockOn()
     {
         if (!cameraManager.currentLockOnTarget)
         {
@@ -427,11 +429,11 @@ public class EnemyManager : CharacterManager
             inputManager.lockOn_Flag = true;
         }
     }
-    public void EnemyReset() 
+    public void EnemyReset()
     {
-        if (enemyActivated) 
+        float distanceFromTarget = Vector3.Distance(enemyOriginalPosition, transform.position);
+        if (distanceFromTarget >= 0.5f)
         {
-            enemyActivated = false;
             transform.position = enemyOriginalPosition;
             transform.rotation = enemyOriginalRotation;
         }

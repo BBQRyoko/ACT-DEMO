@@ -113,7 +113,8 @@ MonoBehaviour:
   promptOn: 0
   curInteractTime: 0
   defaultInteractTime: 0
-  infoText: 
+  interactText: Open
+  infoText: Can't open this way
 --- !u!1 &6124934196914577769
 GameObject:
   m_ObjectHideFlags: 0
@@ -144,7 +145,7 @@ Transform:
   m_GameObject: {fileID: 6124934196914577769}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -2.6737986, y: -5.1909657, z: -1.5939498}
-  m_LocalScale: {x: 4.503118, y: 5.5447235, z: 0.48034143}
+  m_LocalScale: {x: 2.6676528, y: 0.69038993, z: 0.2758333}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6124934195548640591}
@@ -229,6 +230,7 @@ MonoBehaviour:
   promptOn: 0
   curInteractTime: 0
   defaultInteractTime: 1.5
+  interactText: Open
 --- !u!65 &6124934196914577751
 BoxCollider:
   m_ObjectHideFlags: 0

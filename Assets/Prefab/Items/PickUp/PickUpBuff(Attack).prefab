@@ -112,7 +112,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   promptOn: 0
   curInteractTime: 0
-  defaultInteractTime: 0.75
+  defaultInteractTime: 0.25
+  interactText: Attack Up
   weaponInfoIndex: 1
   weaponItemInfo: {fileID: 11400000, guid: 1765f0767a832ac41bb3aabfe48b9d91, type: 2}
   weaponList:
@@ -187,8 +188,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.1965331, y: 0.60855865, z: 1.1301268}
+  m_Center: {x: 0.009157924, y: 0.19572067, z: -0.011044382}
 --- !u!1 &4384262064138547467
 GameObject:
   m_ObjectHideFlags: 0

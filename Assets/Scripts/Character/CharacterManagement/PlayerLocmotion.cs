@@ -200,7 +200,7 @@ public class PlayerLocmotion : MonoBehaviour
             }
         }
         //Assign移动的x,z轴的速度
-        if (playerManager.isInteracting || playerManager.isToronadoCovered || playerManager.isAiming)
+        if (playerManager.isInteracting || playerManager.isToronadoCovered )
         {
             movementVelocity.x = 0f;
             movementVelocity.z = 0f;

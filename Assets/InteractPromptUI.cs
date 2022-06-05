@@ -2,16 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class InteractPromptUI : MonoBehaviour
 {
     public InteractSystem interact;
     public Image imageSlider;
-
-    void Start()
-    {
-        
-    }
+    [SerializeField] TextMeshProUGUI textHolder;
 
     // Update is called once per frame
     void Update()
@@ -26,10 +23,11 @@ public class InteractPromptUI : MonoBehaviour
         }
     }
 
-    public void SetInteractObject(InteractSystem interact) 
+    public void SetInteractObject(InteractSystem interact, string interactText) 
     {
         this.interact = interact;
         imageSlider.fillAmount = interact.curInteractTime / interact.defaultInteractTime;
+        textHolder.text = interactText;
     }
 
     public void DestroyCurrentInteractObject() 

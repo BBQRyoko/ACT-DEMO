@@ -113,7 +113,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   promptOn: 0
   curInteractTime: 0
-  defaultInteractTime: 0.75
+  defaultInteractTime: 0.5
+  interactText: Bow(Equip)
   weaponInfoIndex: 2
   weaponItemInfo: {fileID: 11400000, guid: eed90a0ffde857d4295b675b74041f49, type: 2}
   weaponList:
@@ -124,6 +125,8 @@ MonoBehaviour:
   - {fileID: 383950620346126882}
   - {fileID: 6054989235327402203}
   - {fileID: 6123728601506223454}
+  isBuff: 0
+  buff_Index: 0
 --- !u!1 &2250062059447402869
 GameObject:
   m_ObjectHideFlags: 0

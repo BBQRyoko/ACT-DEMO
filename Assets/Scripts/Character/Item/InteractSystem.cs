@@ -12,6 +12,8 @@ public class InteractSystem : MonoBehaviour
     public float curInteractTime;
     public float defaultInteractTime;
 
+    [SerializeField] string interactText;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -44,7 +46,7 @@ public class InteractSystem : MonoBehaviour
     {
         if (!promptOn)
         {
-            cameraManager.GenerateInteractPrompt(interact);
+            cameraManager.GenerateInteractPrompt(interact, interactText);
             promptOn = true;
         }
     }

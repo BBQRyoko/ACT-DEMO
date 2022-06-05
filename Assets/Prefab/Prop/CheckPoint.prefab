@@ -26,6 +26,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.0000022888714, y: -0.90090084, z: 2.47748}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6410720533949636289}
   m_RootOrder: 2
@@ -58,6 +59,7 @@ Transform:
   m_LocalRotation: {x: -0.5349881, y: -0.00000019371507, z: -0.4623712, w: 0.70710725}
   m_LocalPosition: {x: 0.045, y: -0.08, z: 0.17000115}
   m_LocalScale: {x: 0.5240399, y: 0.5240399, z: 0.5240399}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6410720534798278864}
   m_Father: {fileID: 6410720533949636289}
@@ -4888,6 +4890,7 @@ ParticleSystemRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_RenderMode: 0
+  m_MeshDistribution: 0
   m_SortMode: 0
   m_MinParticleSize: 0
   m_MaxParticleSize: 0.01
@@ -4911,6 +4914,10 @@ ParticleSystemRenderer:
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
+  m_MeshWeighting: 1
+  m_MeshWeighting1: 1
+  m_MeshWeighting2: 1
+  m_MeshWeighting3: 1
   m_MaskInteraction: 0
 --- !u!1 &6410720533476961312
 GameObject:
@@ -4940,7 +4947,8 @@ Transform:
   m_GameObject: {fileID: 6410720533476961312}
   m_LocalRotation: {x: 0, y: 0.34886646, z: 0, w: 0.9371725}
   m_LocalPosition: {x: 13.643251, y: 11.84, z: -203.38503}
-  m_LocalScale: {x: 1.1100004, y: 1.1100001, z: 1.1100004}
+  m_LocalScale: {x: 0.8375465, y: 0.8375401, z: 0.8375465}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6410720534548608973}
   m_Father: {fileID: 0}
@@ -5038,6 +5046,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.03162368, y: 1.1261269, z: 1.758781}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6410720535025514620}
   - {fileID: 6410720533465194352}
@@ -5070,11 +5079,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 303cb14ad3161e04a9c12d3b36b3677c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerManager: {fileID: 0}
-  interactPrompt: {fileID: 6410720535025514619}
+  promptOn: 0
+  curInteractTime: 0
+  defaultInteractTime: 0
+  interactText: CheckPoint
   respawnPos: {fileID: 929391910}
-  hasAbility: 0
-  UnlockAbility: 0
 --- !u!1 &6410720533964154228
 GameObject:
   m_ObjectHideFlags: 0
@@ -5103,6 +5112,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.0000029504295}
   m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 0.1855881, y: 0.1855881, z: 0.1855881}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6410720535025514620}
   m_RootOrder: 1
@@ -5273,6 +5283,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.675676, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6410720535025514620}
   m_RootOrder: 0
@@ -5356,6 +5367,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6410720533465194352}
   m_RootOrder: 0
@@ -5448,6 +5460,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.84, y: 0, z: -0}
   m_LocalScale: {x: 0.60609, y: 0.60609, z: 0.60609}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6410720534106664354}
   - {fileID: 6410720533964154229}
@@ -5728,6 +5741,10 @@ PrefabInstance:
     - target: {fileID: 131728, guid: 3de94979711fb59429961a7394b2df03, type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 131728, guid: 3de94979711fb59429961a7394b2df03, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 410054, guid: 3de94979711fb59429961a7394b2df03, type: 3}
       propertyPath: m_RootOrder

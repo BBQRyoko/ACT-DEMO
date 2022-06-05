@@ -43,7 +43,6 @@ public class IdleState : State
                 return this;
             }
 
-            Vector3 targetDirection = enemyManager.patrolPos[enemyManager.curPatrolIndex].position - enemyManager.transform.position;
             float distanceFromTarget = Vector3.Distance(enemyManager.patrolPos[enemyManager.curPatrolIndex].position, enemyManager.transform.position);
 
             HandleRotateTowardsTarger(enemyManager);
@@ -101,6 +100,10 @@ public class IdleState : State
             }
             else if (distanceFromTarget <= 0.5f)
             {
+                if (enemyManager.patrolPos.Count == 1) 
+                {
+                    enemyManager.EnemyReset();
+                }
                 enemyAnimatorManager.animator.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);   //站着idle状态
 
                 enemyManager.curPatrolIndex = enemyManager.curPatrolIndex + 1;

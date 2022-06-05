@@ -113,7 +113,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   promptOn: 0
   curInteractTime: 0
-  defaultInteractTime: 0.75
+  defaultInteractTime: 0.5
+  interactText: Katana(Equip)
   weaponInfoIndex: 1
   weaponItemInfo: {fileID: 11400000, guid: 1765f0767a832ac41bb3aabfe48b9d91, type: 2}
   weaponList:
@@ -124,6 +125,8 @@ MonoBehaviour:
   - {fileID: 383950620346126882}
   - {fileID: 6054989235327402203}
   - {fileID: 6123728601506223454}
+  isBuff: 0
+  buff_Index: 0
 --- !u!1 &2250062059447402869
 GameObject:
   m_ObjectHideFlags: 0

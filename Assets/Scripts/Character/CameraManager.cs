@@ -391,10 +391,10 @@ public class CameraManager : MonoBehaviour
             healthBar.SetEnemyManager(enemyManager);
         }
     }
-    public void GenerateInteractPrompt(InteractSystem interact)
+    public void GenerateInteractPrompt(InteractSystem interact, string text = "Interact")
     {
         var promptUp = Instantiate(interactPrompt, mainCanvas.transform);
-        promptUp.SetInteractObject(interact);
+        promptUp.SetInteractObject(interact, text);
     }
     public void ClearLockOnTargets() 
     {
