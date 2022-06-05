@@ -79,7 +79,9 @@ public class PlayerAttacker : MonoBehaviour
                     animatorManager.PlayTargetAnimation(weapon.executionSkill[0].skillName, true, true); //背刺
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.executionSkill[0].damagePoint * (1 + playerStats.attackBuffRatio);
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.executionSkill[0].tenacityDamagePoint;
+                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.executionSkill[0].damagePoint * (1 + playerStats.attackBuffRatio)/10;
                     animatorManager.pauseDuration = weapon.executionSkill[0].pauseDuration;
+                    executionTarget.curTarget = playerStats;
                     executionTarget.getingExecute = true;
                     executionTarget.HandleExecuted(weapon.executionSkill[1].skillName);
                 }
@@ -90,6 +92,7 @@ public class PlayerAttacker : MonoBehaviour
                     animatorManager.PlayTargetAnimation(weapon.executionSkill[2].skillName, true, true); //处决
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.executionSkill[2].damagePoint * (1 + playerStats.attackBuffRatio); 
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.executionSkill[2].tenacityDamagePoint;
+                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.executionSkill[2].damagePoint * (1 + playerStats.attackBuffRatio) / 10;
                     animatorManager.pauseDuration = weapon.executionSkill[2].pauseDuration;
                     executionTarget.getingExecute = true;
                     executionTarget.HandleExecuted(weapon.executionSkill[3].skillName);
@@ -116,7 +119,7 @@ public class PlayerAttacker : MonoBehaviour
                         animatorManager.PlayTargetAnimation(weapon.springAttack[0].skillName, true, true);
                         weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.springAttack[0].damagePoint * (1 + playerStats.attackBuffRatio);
                         weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.springAttack[0].tenacityDamagePoint;
-                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.springAttack[0].energyRestore;
+                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.springAttack[0].damagePoint * (1 + playerStats.attackBuffRatio) / 10;
                         weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.springAttack[0].energyRestore;
                         animatorManager.pauseDuration = weapon.springAttack[0].pauseDuration;
                         playerManager.GetComponent<PlayerStats>().currStamina -= weapon.springAttack[0].staminaCost;
@@ -147,7 +150,7 @@ public class PlayerAttacker : MonoBehaviour
                                 projectileDamager.curDamage = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio);
                                 projectileDamager.staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint;
                                 projectileDamager.energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
-                                projectileDamager.chargeAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                                projectileDamager.chargeAmount = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio)/10;
                                 weaponSlotManager.curArrowObj.m_MaxSpeed = weapon.regularSkills[comboCount - 1].maxSpeed;
                             }
                             else 
@@ -155,7 +158,7 @@ public class PlayerAttacker : MonoBehaviour
                                 projectileDamager.curDamage = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio) * powerArrowRatio;
                                 projectileDamager.staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint;
                                 projectileDamager.energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
-                                projectileDamager.chargeAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                                projectileDamager.chargeAmount = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio) * powerArrowRatio / 10;
                                 weaponSlotManager.curArrowObj.m_MaxSpeed = weapon.regularSkills[comboCount - 1].maxSpeed;
                             }
                         }
@@ -163,7 +166,7 @@ public class PlayerAttacker : MonoBehaviour
                         {
                             weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio);
                             weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint;
-                            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio)/10;
                             weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.regularSkills[comboCount - 1].energyRestore;
                         }
                         animatorManager.pauseDuration = weapon.regularSkills[comboCount - 1].pauseDuration;
@@ -305,7 +308,7 @@ public class PlayerAttacker : MonoBehaviour
                 {
                     projectileDamager.curDamage = weapon.transSkills[0].damagePoint * (1 + playerStats.attackBuffRatio);
                     projectileDamager.staminaDamage = weapon.transSkills[0].tenacityDamagePoint;
-                    projectileDamager.energyRestoreAmount = weapon.transSkills[0].energyRestore;
+                    projectileDamager.energyRestoreAmount = weapon.transSkills[0].damagePoint * (1 + playerStats.attackBuffRatio)/10;
                     projectileDamager.chargeAmount = weapon.transSkills[0].energyRestore;
                     weaponSlotManager.curArrowObj.m_MaxSpeed = weapon.transSkills[0].maxSpeed;
                 }
@@ -313,7 +316,7 @@ public class PlayerAttacker : MonoBehaviour
                 {
                     projectileDamager.curDamage = weapon.transSkills[0].damagePoint * (1 + playerStats.attackBuffRatio) * powerArrowRatio;
                     projectileDamager.staminaDamage = weapon.transSkills[0].tenacityDamagePoint;
-                    projectileDamager.energyRestoreAmount = weapon.transSkills[0].energyRestore;
+                    projectileDamager.energyRestoreAmount = weapon.transSkills[0].damagePoint * (1 + playerStats.attackBuffRatio) * powerArrowRatio/10;
                     projectileDamager.chargeAmount = weapon.transSkills[0].energyRestore;
                     weaponSlotManager.curArrowObj.m_MaxSpeed = weapon.transSkills[0].maxSpeed;
                 }
@@ -322,7 +325,7 @@ public class PlayerAttacker : MonoBehaviour
             {
                 weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.transSkills[0].damagePoint * (1 + playerStats.attackBuffRatio);
                 weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.transSkills[0].tenacityDamagePoint;
-                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.transSkills[0].energyRestore;
+                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.transSkills[0].damagePoint * (1 + playerStats.attackBuffRatio)/10;
                 weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.transSkills[0].energyRestore;
                 playerManager.GetComponent<PlayerStats>().currStamina -= weapon.transSkills[0].staminaCost;
             }

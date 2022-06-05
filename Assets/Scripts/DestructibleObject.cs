@@ -41,7 +41,8 @@ public class DestructibleObject : MonoBehaviour
             }
             else 
             {
-                Instantiate(updraft, transform.position, transform.rotation);
+                var updraftGameobject = Instantiate(updraft, transform.position, transform.rotation);
+                updraftGameobject.transform.eulerAngles = Quaternion.Euler(-180, 0, 0) * transform.up;
             }
         }
         Instantiate(brokenPieces, transform.position, transform.rotation);

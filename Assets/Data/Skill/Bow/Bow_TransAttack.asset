@@ -15,7 +15,7 @@ MonoBehaviour:
   skillName: TransAttack
   isImmuAttack: 0
   damagePoint: 45
-  tenacityDamagePoint: 30
+  tenacityDamagePoint: 45
   staminaCost: 30
   energyRestore: 0
   pauseDuration: 6
