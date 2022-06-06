@@ -92,7 +92,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1323461610134798947, guid: 503ffa9e29566bc4d84c6101e20529c5, type: 3}
       propertyPath: m_Radius
-      value: 1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 1323461610134798947, guid: 503ffa9e29566bc4d84c6101e20529c5, type: 3}
       propertyPath: m_IsTrigger
@@ -156,7 +156,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8013069781217456380, guid: 503ffa9e29566bc4d84c6101e20529c5, type: 3}
       propertyPath: restoreAmount
-      value: 80
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 759951428163924025, guid: 503ffa9e29566bc4d84c6101e20529c5, type: 3}

@@ -14,9 +14,9 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI powerArrowNum;
 
     //prompt
-    [SerializeField] GameObject promptInfo;
-    [SerializeField] TextMeshProUGUI promptString;
-    bool promptActive;
+    public GameObject promptInfo;
+    public TextMeshProUGUI promptString;
+    public bool promptActive;
     float promptTimer; //temp
 
     private void Awake()

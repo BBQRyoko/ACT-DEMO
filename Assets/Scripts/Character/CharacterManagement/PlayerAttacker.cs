@@ -373,6 +373,8 @@ public class PlayerAttacker : MonoBehaviour
         if (chargeValue >= 5) 
         {
             chargeValue = 0;
+            BaGuaManager baGuaManager = GetComponent<BaGuaManager>();
+            baGuaManager.curEnergyCharge += 25;
             if (playerInventory.unequippedWeaponItems[1] != null) 
             {
                 noticeAudio.clip = sample_SFX.Bagua_SFX_List[4];

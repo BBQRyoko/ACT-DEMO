@@ -43,7 +43,7 @@ public class PlayerLocmotion : MonoBehaviour
     Vector3 moveDirection;
 
     //翻滚(冲刺)参数
-    [SerializeField] int rollStaminaCost = 30;
+    [SerializeField] int rollStaminaCost = 25;
 
     //人物碰撞器, 用于防止玩家角色与敌人角色攻击时的穿模碰撞
     public CapsuleCollider characterCollider;
@@ -144,7 +144,8 @@ public class PlayerLocmotion : MonoBehaviour
             moveDirection += cameraObject.right * inputManager.horizontalInput;
             moveDirection.Normalize();
         }
-        else
+        
+        if(playerManager.isHanging)
         {
             Vector3 forwardDir = gameObject.transform.forward;
             Vector3 cameraDir = gameObject.transform.position - cameraObject.transform.position;
@@ -214,7 +215,6 @@ public class PlayerLocmotion : MonoBehaviour
             }
             movementVelocity.z = moveDirection.z;
         }
-
         rig.velocity = movementVelocity;
     }
     private void HandleRotation() //还可以优化
@@ -450,7 +450,7 @@ public class PlayerLocmotion : MonoBehaviour
         forwardDir.y = 0;
         cameraDir.y = 0;
 
-        if (playerStats.currStamina >= 5f)
+        if (playerStats.currStamina >= 0f)
         {
             if (playerManager.isAttacking) //攻击状态下
             {
@@ -506,7 +506,6 @@ public class PlayerLocmotion : MonoBehaviour
 
                     playerManager.cantBeInterrupted = true;
                     playerStats.CostStamina(rollStaminaCost);
-                    playerAttacker.comboCount = 0;
                 }
             }
             else //非攻击状态下翻滚, 只有在非互动且站在地上的状态下才能翻滚

@@ -214,8 +214,8 @@ public class ProjectileDamager : MonoBehaviour
                     }
                     else if (other.CompareTag("FireBlocker")) //是个隐患，之后可以改一下
                     {
-                        Destroy(other.GetComponentInChildren<FireRequiredDoor>().fireUi.gameObject);
                         Destroy(other.gameObject);
+                        Destroy(other.GetComponentInChildren<FireRequiredDoor>().fireUi.gameObject);
                     }
                 }
             }

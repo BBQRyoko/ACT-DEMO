@@ -6,16 +6,20 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     PlayerManager playerManager;
+    InputManager inputManager;
     [SerializeField] TutorialSystem tutorialSystem;
     public Transform curCheckPoint;
     [SerializeField] EnemyManager[] enemiesWillSpawn;
 
     public GameObject restartMenu;
+    public GameObject pauseMenu;
+    bool gamePaused;
 
     private void Awake()
     {
         playerManager = FindObjectOfType<PlayerManager>();
         //enemiesWillSpawn = FindObjectsOfType<EnemyManager>();
+        inputManager = FindObjectOfType<InputManager>();
     }
     public void Tutorial(TutorialScriptableObject tutorial) 
     {
@@ -35,6 +39,10 @@ public class GameManager : MonoBehaviour
         playerManager.GetComponentInChildren<WeaponSlotManager>().mainWeapon_Unequipped.gameObject.SetActive(true);
         playerManager.GetComponentInChildren<WeaponSlotManager>().mainArmedWeapon.SetActive(false);
         playerManager.Rest();
+        if (gamePaused) 
+        {
+            pauseMenu.SetActive(false);
+        }
     }
 
     public void GameSlowDown(float slowRate = 0.6f)  
@@ -51,5 +59,17 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
     }
 
-
+    public void GamePausMenu() 
+    {
+        if (!gamePaused)
+        {
+            pauseMenu.SetActive(true);
+            gamePaused = true;
+        }
+        else 
+        {
+            gamePaused = false;
+            pauseMenu.SetActive(false);
+        }
+    }
 }

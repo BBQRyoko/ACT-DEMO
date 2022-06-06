@@ -32,5 +32,11 @@ public class FireRequiredDoor : InteractSystem
     {
         base.OnTriggerExit(other);
         if (isSpecialFireDoor) fireUi = null;
+        if (playerUIManager.promptActive) 
+        {
+            playerUIManager.promptInfo.SetActive(false);
+            playerUIManager.promptString.text = null;
+            playerUIManager.promptActive = false;
+        }
     }
 }

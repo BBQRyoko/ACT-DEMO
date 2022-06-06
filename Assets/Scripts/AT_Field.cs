@@ -23,6 +23,7 @@ public class AT_Field : MonoBehaviour
                 {
                     enemy.GetComponent<Animator>().speed = 0.1f;
                     enemy.GetComponent<EnemyWeaponSlotManager>().CloseWeaponDamageCollider();
+                    enemy.GetComponent<Animator>().SetBool("canReset", true);
                     enemy.GetComponentInParent<Rigidbody>().isKinematic = true;
                 }
             }

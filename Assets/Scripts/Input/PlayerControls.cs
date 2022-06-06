@@ -354,6 +354,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""1a2e7716-0089-4df6-86b1-42c78c0603df"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -653,6 +662,28 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""WeaponSpecialAction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8415ca87-4e1d-445f-b525-876971ca98de"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""04493754-5d2e-4219-ad7f-116785b0b4ee"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -718,6 +749,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_PlayerActions_Crouch = m_PlayerActions.FindAction("Crouch", throwIfNotFound: true);
         m_PlayerActions_BaGuaSelection = m_PlayerActions.FindAction("BaGuaSelection", throwIfNotFound: true);
         m_PlayerActions_WeaponSpecialAction = m_PlayerActions.FindAction("WeaponSpecialAction", throwIfNotFound: true);
+        m_PlayerActions_Pause = m_PlayerActions.FindAction("Pause", throwIfNotFound: true);
         // UIActions
         m_UIActions = asset.FindActionMap("UIActions", throwIfNotFound: true);
         m_UIActions_Cancel = m_UIActions.FindAction("Cancel", throwIfNotFound: true);
@@ -849,6 +881,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_Crouch;
     private readonly InputAction m_PlayerActions_BaGuaSelection;
     private readonly InputAction m_PlayerActions_WeaponSpecialAction;
+    private readonly InputAction m_PlayerActions_Pause;
     public struct PlayerActionsActions
     {
         private @PlayerControls m_Wrapper;
@@ -865,6 +898,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @Crouch => m_Wrapper.m_PlayerActions_Crouch;
         public InputAction @BaGuaSelection => m_Wrapper.m_PlayerActions_BaGuaSelection;
         public InputAction @WeaponSpecialAction => m_Wrapper.m_PlayerActions_WeaponSpecialAction;
+        public InputAction @Pause => m_Wrapper.m_PlayerActions_Pause;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -910,6 +944,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @WeaponSpecialAction.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnWeaponSpecialAction;
                 @WeaponSpecialAction.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnWeaponSpecialAction;
                 @WeaponSpecialAction.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnWeaponSpecialAction;
+                @Pause.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_PlayerActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -950,6 +987,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @WeaponSpecialAction.started += instance.OnWeaponSpecialAction;
                 @WeaponSpecialAction.performed += instance.OnWeaponSpecialAction;
                 @WeaponSpecialAction.canceled += instance.OnWeaponSpecialAction;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -1008,6 +1048,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnCrouch(InputAction.CallbackContext context);
         void OnBaGuaSelection(InputAction.CallbackContext context);
         void OnWeaponSpecialAction(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
     public interface IUIActionsActions
     {

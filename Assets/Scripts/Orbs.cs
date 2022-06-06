@@ -32,11 +32,11 @@ public class Orbs : MonoBehaviour
             else if (orb == OrbsType.arrow)
             {
                 PlayerInventory playerInventory = other.GetComponent<PlayerInventory>();
-                if (playerInventory.powerArrowNum <= 25) 
+                if (playerInventory.powerArrowNum < 25) 
                 {
                     playerInventory.powerArrowNum += restoreAmount;
+                    Destroy(gameObject.transform.parent.gameObject);
                 }
-                Destroy(gameObject.transform.parent.gameObject);
             }
         }
     }

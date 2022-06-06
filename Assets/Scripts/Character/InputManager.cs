@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
+    GameManager gameManager;
     PlayerManager playerManager;
     PlayerStats playerStats;
     PlayerControls playerControls;
@@ -29,6 +30,7 @@ public class InputManager : MonoBehaviour
     public bool jump_Input; //跳跃
     public bool interact_Input; //互动键
     public bool specialAction_Input;
+    public bool pause_Input;
 
     //战斗
     public bool weaponSwitch_Input;
@@ -58,6 +60,7 @@ public class InputManager : MonoBehaviour
 
     private void Awake()
     {
+        gameManager = FindObjectOfType<GameManager>();
         playerManager = GetComponent<PlayerManager>();
         playerStats = GetComponent<PlayerStats>();
         animatorManager = GetComponentInChildren<AnimatorManager>();
@@ -113,6 +116,8 @@ public class InputManager : MonoBehaviour
 
             //UI操作
             playerControls.UIActions.Cancel.performed += i => cancel_Input = true;
+
+            playerControls.PlayerActions.Pause.performed += i => pause_Input = true;
         }
         playerControls.Enable();
     }
@@ -134,6 +139,7 @@ public class InputManager : MonoBehaviour
             HandleWeaponSwitch();
             HandleBaguaInput();
             HandleSpecialActionInput();
+            HandleGamePause();
         }
         HandleInteractInput();
     }
@@ -286,6 +292,13 @@ public class InputManager : MonoBehaviour
         if (specialAction_Input) 
         {
             playerManager.PowerArrowController();
+        }
+    }
+    private void HandleGamePause() 
+    {
+        if (pause_Input) 
+        {
+            gameManager.GamePausMenu();
         }
     }
 }

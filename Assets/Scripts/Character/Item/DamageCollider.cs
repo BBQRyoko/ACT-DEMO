@@ -164,7 +164,7 @@ public class DamageCollider : MonoBehaviour
                     {
                         playerManager.GetComponent<BaGuaManager>().switchAttackTutorial.switchAttackNum += 1;
                     } 
-                    playerManager.GetComponent<BaGuaManager>().curEnergyCharge += 100f;
+                    playerManager.GetComponent<BaGuaManager>().curEnergyCharge += 75f;
                     playerManager.GetComponent<BaGuaManager>().isSwitchAttack = false;
                 }
                 playerManager.isHitting = false;

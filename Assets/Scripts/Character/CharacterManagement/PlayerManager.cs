@@ -168,9 +168,11 @@ public class PlayerManager : CharacterManager
             rig.isKinematic = true;
             gameObject.GetComponent<Collider>().enabled = false;
             playerLocmotion.characterColliderBlocker.enabled = false;
+            animator.SetBool("isHolding", false);
             cameraManager.currentLockOnTarget = null;
             cameraManager.isLockOn = false;
             inputManager.lockOn_Flag = false;
+            
             gameManager.PlayerDead();
         }
         cameraManager.HandleAllCameraMovement();
@@ -191,6 +193,7 @@ public class PlayerManager : CharacterManager
         animator.SetBool("isFalling", isFalling);
         //inputManager.interact_Input = false;
         inputManager.weaponSwitch_Input = false;
+        inputManager.pause_Input = false;
         HandleDefending();
         HoldingAction();
         ClearAllStatus();
@@ -450,6 +453,8 @@ public class PlayerManager : CharacterManager
     }
     public void Rest() 
     {
+        PlayerInventory playerInventory = GetComponent<PlayerInventory>();
+
         if (isDead)
         {
             isDead = false;
@@ -459,6 +464,7 @@ public class PlayerManager : CharacterManager
             playerStats.currHealth = playerStats.maxHealth;
             playerStats.currStamina = 150f;
             baGuaManager.curEnergyCharge = 300f;
+            playerInventory.powerArrowNum = 25;
         }
         else 
         {
@@ -468,6 +474,7 @@ public class PlayerManager : CharacterManager
             playerStats.currHealth = playerStats.maxHealth;
             playerStats.currStamina = 150f;
             baGuaManager.curEnergyCharge = 300f;
+            playerInventory.powerArrowNum = 25;
         }
     }
 }
