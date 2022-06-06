@@ -101,11 +101,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8399679255684394376, guid: ce3f3297f9d024048b86e8ff59c9e2f0, type: 3}
       propertyPath: duration
-      value: 60
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 8399679255684394376, guid: ce3f3297f9d024048b86e8ff59c9e2f0, type: 3}
       propertyPath: buffEffectNum
-      value: 0.75
+      value: 0.25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce3f3297f9d024048b86e8ff59c9e2f0, type: 3}

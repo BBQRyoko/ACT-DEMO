@@ -24348,7 +24348,7 @@ MonoBehaviour:
   buffType: 3
   debuffType: 0
   duration: 30
-  buffEffectNum: 0.25
+  buffEffectNum: 0.45
 --- !u!1 &6918532322957636225
 GameObject:
   m_ObjectHideFlags: 0

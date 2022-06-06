@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
         playerManager.Rest();
     }
 
-    public void GameSlowDown(float slowRate = 0.45f)  
+    public void GameSlowDown(float slowRate = 0.6f)  
     {
         Time.timeScale = slowRate;
     }
