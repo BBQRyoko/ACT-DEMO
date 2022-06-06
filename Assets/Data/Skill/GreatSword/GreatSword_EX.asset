@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: BackStab
   isImmuAttack: 0
-  damagePoint: 100
+  damagePoint: 110
   tenacityDamagePoint: 0
-  staminaCost: 10
+  staminaCost: 0
   energyRestore: 0
   pauseDuration: 10
   VFXs: []

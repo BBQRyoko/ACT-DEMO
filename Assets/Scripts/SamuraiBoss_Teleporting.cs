@@ -77,11 +77,11 @@ public class SamuraiBoss_Teleporting : MonoBehaviour
 
     void TeleportingEvent() 
     {
-        //enemyManager.AutoLockOn();
-        //transform.position = teleportingPos.position;
-        enemyManager.GetComponent<EnemyStats>().currHealth = 500;
-        leafWindVFX.SetActive(true);
+        transform.position = teleportingPos.position;
         dissolving = false;
-        Destroy(gameObject);
+        inputManager.lockOn_Input = false;
+        inputManager.lockOn_Flag = false;
+        cameraManager.ClearLockOnTargets();
+        Destroy(gameObject, 8f);
     }
 }

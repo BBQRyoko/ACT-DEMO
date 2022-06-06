@@ -16,9 +16,6 @@ public class SpecialCondition : EnemyAttackAction
     [Header("判断敌人公用CD的时间(数字越高就意味着刚攻击完, 数字越接近0就越说明其快攻击)")]
     public float requiredRecoveryTime;
 
-    [Header("攻击专用")]
-    public bool canDodge;
-
     [Header("先制专用")]
     public float firstStrikeDistance;
 }

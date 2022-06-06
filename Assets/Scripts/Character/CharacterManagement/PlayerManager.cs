@@ -429,6 +429,11 @@ public class PlayerManager : CharacterManager
     {
         if (yinYangAbilityOn && !isHolding && !isAiming) 
         {
+            if (baGuaManager.tutorialUp) 
+            {
+                baGuaManager.ultimateTutorial.SetActive(false);
+                baGuaManager.tutorialUp = false;
+            }
             baGuaManager.curYin = 0;
             baGuaManager.curYang = 0;
             yinYangAbilityOn = false;
@@ -453,7 +458,7 @@ public class PlayerManager : CharacterManager
             playerLocmotion.characterColliderBlocker.enabled = true;
             playerStats.currHealth = playerStats.maxHealth;
             playerStats.currStamina = 150f;
-            baGuaManager.curEnergyCharge = 0f;
+            baGuaManager.curEnergyCharge = 300f;
         }
         else 
         {

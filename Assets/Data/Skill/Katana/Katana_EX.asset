@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Execution
   isImmuAttack: 0
-  damagePoint: 35
+  damagePoint: 30
   tenacityDamagePoint: 0
   staminaCost: 15
   energyRestore: 0

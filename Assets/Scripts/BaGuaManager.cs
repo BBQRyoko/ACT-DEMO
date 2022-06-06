@@ -12,16 +12,23 @@ public class BaGuaManager : MonoBehaviour
     PlayerStats playerStats;
     PlayerInventory playerInventory;
     AnimatorManager animatorManager;
+    [SerializeField] AudioSource generalAudio;
+    [SerializeField] Sample_SFX sfxList;
 
     Sample_VFX sample_VFX_Ability;
     public Vector2 curPos;
     public GameObject realPiviot;
 
     [Header("阴阳槽相关")]
+
     public float curYin;
     [SerializeField] Image yinChargeSlot;
     public float curYang;
     [SerializeField] Image yangChargeSlot;
+    bool ultimateTeach;
+    public GameObject ultimateTutorial;
+    public bool tutorialUp;
+
 
     [Header("八卦技能相关")]
     public GuidePopup switchAttackTutorial;
@@ -202,8 +209,17 @@ public class BaGuaManager : MonoBehaviour
     {
         yinChargeSlot.fillAmount = curYin / 80;
         yangChargeSlot.fillAmount = curYang / 80;
-        if (curYin >= 80 && curYang >= 80) 
+        if (curYin >= 80 && curYang >= 80 && !playerManager.yinYangAbilityOn) 
         {
+            if (!ultimateTeach) 
+            {
+                ultimateTeach = true;
+                ultimateTutorial.SetActive(true);
+                tutorialUp = true;
+                Destroy(ultimateTutorial.gameObject, 10f);
+            }
+            generalAudio.clip = sfxList.Bagua_SFX_List[0];
+            generalAudio.Play();
             playerManager.yinYangAbilityOn = true;
         }
     }

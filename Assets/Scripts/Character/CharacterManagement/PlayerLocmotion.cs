@@ -315,7 +315,7 @@ public class PlayerLocmotion : MonoBehaviour
     }
     public void HandleRotateTowardsTarger() 
     {
-        if (cameraManager.currentLockOnTarget)
+        if (cameraManager.currentLockOnTarget && !playerManager.damageAvoid)
         {
             Vector3 direction = cameraManager.currentLockOnTarget.transform.position - transform.position;
             direction.y = 0;

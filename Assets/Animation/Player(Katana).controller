@@ -1196,7 +1196,7 @@ AnimatorStateMachine:
     m_Position: {x: 920, y: -560, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5938887597847722518}
-    m_Position: {x: 920, y: -720, z: 0}
+    m_Position: {x: 740, y: -330, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -65255235021343121}
     m_Position: {x: 970, y: -280, z: 0}
@@ -2552,7 +2552,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67989c00f95096d4f9adcca28beab4d9, type: 3}
   m_Name: 
@@ -3945,7 +3945,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67989c00f95096d4f9adcca28beab4d9, type: 3}
   m_Name: 
@@ -4244,7 +4244,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67989c00f95096d4f9adcca28beab4d9, type: 3}
   m_Name: 
@@ -4278,7 +4278,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67989c00f95096d4f9adcca28beab4d9, type: 3}
   m_Name: 
@@ -5505,7 +5505,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isUsingRootMotion
+    m_ConditionEvent: isBackStep
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 4842592219639929611}
@@ -6500,7 +6500,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67989c00f95096d4f9adcca28beab4d9, type: 3}
   m_Name: 

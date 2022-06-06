@@ -26,4 +26,7 @@ public class EnemyAttackAction : EnemyAction
 
     [Header("飞行道具参数")]
     public float maxSpeed = 20f;
+
+    [Header("攻击专用")]
+    public bool canDodge;
 }

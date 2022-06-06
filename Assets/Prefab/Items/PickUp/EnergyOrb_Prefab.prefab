@@ -156,7 +156,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8013069781217456380, guid: 503ffa9e29566bc4d84c6101e20529c5, type: 3}
       propertyPath: restoreAmount
-      value: 50
+      value: 80
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 759951428163924025, guid: 503ffa9e29566bc4d84c6101e20529c5, type: 3}

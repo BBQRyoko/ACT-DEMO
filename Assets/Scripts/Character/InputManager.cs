@@ -41,9 +41,6 @@ public class InputManager : MonoBehaviour
     //Ability
     public bool weaponAbility_Input;
 
-    //大招
-    public bool ultimateAbility_Input;
-
     //八卦盘
     public bool baGua_Input;
     public float baguaInputX;

@@ -404,6 +404,7 @@ public class EnemyManager : CharacterManager
         {
             enemyAnimatorManager.animator.SetBool("isStunned", false);
             stunTimer = 0;
+            enemyStats.maxStamina += 50;
             enemyStats.currStamina = enemyStats.maxStamina;
         }
     }
@@ -421,12 +422,12 @@ public class EnemyManager : CharacterManager
             itemDrop = true;
         }
     }
-    public void AutoLockOn()
+    public void AutoLockOff()
     {
-        if (!cameraManager.currentLockOnTarget)
+        if (cameraManager.currentLockOnTarget)
         {
-            cameraManager.currentLockOnTarget = targetMarkTransform;
-            inputManager.lockOn_Flag = true;
+            cameraManager.currentLockOnTarget = null;
+            inputManager.lockOn_Flag = false;
         }
     }
     public void EnemyReset()

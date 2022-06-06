@@ -23,7 +23,8 @@ MonoBehaviour:
   independtCooldown: 10
   maxAttackAngle: 120
   minAttackAngle: -120
-  minDistanceNeedToAttack: 0
-  maxDistanceNeedToAttack: 3
+  minDistanceNeedToAttack: 2
+  maxDistanceNeedToAttack: 5
   isImmune: 1
   maxSpeed: 20
+  canDodge: 0

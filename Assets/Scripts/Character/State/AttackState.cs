@@ -57,6 +57,13 @@ public class AttackState : State
             enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().weaponDamageCollider.curDamage = curAttack.damagePoint;
             enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().weaponDamageCollider.isHeavyAttack = curAttack.isHeavyAttack;
         }
+
+        if (curAttack.canDodge)
+        {
+            enemyManager.isDamaged = false;
+            enemyManager.GetComponentInChildren<Animator>().SetBool("isDodging", true);
+        }
+
         enemyManager.curRecoveryTime = curAttack.recoveryTime;
         enemyManager.isImmuneAttacking = curAttack.isImmune;
         if (!curAttack.isSpecial)

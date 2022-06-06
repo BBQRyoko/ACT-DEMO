@@ -80,6 +80,7 @@ public class PlayerAttacker : MonoBehaviour
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.executionSkill[0].damagePoint * (1 + playerStats.attackBuffRatio);
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.executionSkill[0].tenacityDamagePoint;
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.executionSkill[0].damagePoint * (1 + playerStats.attackBuffRatio)/10;
+                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = 0;
                     animatorManager.pauseDuration = weapon.executionSkill[0].pauseDuration;
                     executionTarget.curTarget = playerStats;
                     executionTarget.getingExecute = true;
@@ -93,6 +94,7 @@ public class PlayerAttacker : MonoBehaviour
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.executionSkill[2].damagePoint * (1 + playerStats.attackBuffRatio); 
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.executionSkill[2].tenacityDamagePoint;
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.executionSkill[2].damagePoint * (1 + playerStats.attackBuffRatio) / 10;
+                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = 0;
                     animatorManager.pauseDuration = weapon.executionSkill[2].pauseDuration;
                     executionTarget.getingExecute = true;
                     executionTarget.HandleExecuted(weapon.executionSkill[3].skillName);

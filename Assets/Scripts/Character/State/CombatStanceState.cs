@@ -439,6 +439,7 @@ public class CombatStanceState : State
                         {
                             enemyManager.isDamaged = false;
                             enemyManager.curRecoveryTime += 1f;
+                            enemyAnimatorManager.animator.SetBool("isDodging", true);
                             enemyAnimatorManager.PlayTargetAnimation("AttackDodge", true, true);
                             isWalkingStop = false;
                             walkingTimer = 1f;
@@ -459,6 +460,7 @@ public class CombatStanceState : State
                         if (enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted && distanceFromTarget <= enemyManager.maxCombatRange)
                         {
                             enemyManager.isDamaged = false;
+                            enemyAnimatorManager.animator.SetBool("isDodging", true);
                             enemyAnimatorManager.PlayTargetAnimation("Roll", true, true);
                             enemyManager.curRecoveryTime = 0.25f;
                         }
@@ -493,16 +495,17 @@ public class CombatStanceState : State
                     }
                     else if (specialCondition.condition == SpecialCondition.conditionType.玩家攻击型)
                     {
-                        //if (randomDestinationSet && enemyManager.curTarget.GetComponent<PlayerManager>().isAttacking && canCounterAttack)
-                        //{
-                        //    enemyManager.isDodging = specialCondition.canDodge;
-                        //    canCounterAttack = false;
-                        //    attackState.curSpecialIndex = index;
-                        //    attackState.curAttack = specialCondition;
-                        //    specialConditionTriggered = true;
-                        //}
+                        if (randomDestinationSet && enemyManager.curTarget.GetComponent<PlayerManager>().isAttacking && canCounterAttack)
+                        {
+                            enemyManager.GetComponentInChildren<Animator>().SetBool("isDoding", specialCondition.canDodge);
+                            canCounterAttack = false;
+                            attackState.curSpecialIndex = index;
+                            attackState.curAttack = specialCondition;
+                            specialConditionTriggered = true;
+                        }
                         if (randomDestinationSet && enemyManager.curTarget.GetComponent<PlayerManager>().isAttacking && distanceFromTarget <= 2.5f && !enemyManager.isParrying && enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted)
                         {
+                            enemyManager.GetComponentInChildren<Animator>().SetBool("isDoding", specialCondition.canDodge);
                             canCounterAttack = false;
                             attackState.curSpecialIndex = index;
                             attackState.curAttack = specialCondition;
