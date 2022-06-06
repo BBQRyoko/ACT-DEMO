@@ -6,8 +6,8 @@ public class TornadoHazard : MonoBehaviour
 {
     FlyingObj deflectFlyingObj;
     [SerializeField] Transform shootPos;
-    ProjectileDamager curDamager;
-    [SerializeField] float defaultCoverDuration = 1.5f;
+    [SerializeField] ProjectileDamager curDamager;
+    [SerializeField] float defaultCoverDuration = 2.5f;
     float characterCoveredDuration;
 
     [Header("火旋风相关")]
@@ -17,19 +17,22 @@ public class TornadoHazard : MonoBehaviour
 
     private void Awake()
     {
-        curDamager = GetComponent<ProjectileDamager>();
+        if(!isFireTornado) curDamager = GetComponent<ProjectileDamager>();
     }
     private void Update()
     {
-        if (curDamager.coveredPlayer)
+        if (!isFireTornado) 
         {
-            if (characterCoveredDuration > 0)
+            if (curDamager.coveredPlayer)
             {
-                characterCoveredDuration -= Time.deltaTime;
-            }
-            else
-            {
-                curDamager.ProjectileDestroy();
+                if (characterCoveredDuration > 0)
+                {
+                    characterCoveredDuration -= Time.deltaTime;
+                }
+                else
+                {
+                    curDamager.ProjectileDestroy();
+                }
             }
         }
     }
@@ -63,6 +66,22 @@ public class TornadoHazard : MonoBehaviour
     }
     void GenerateFireTornado() 
     {
+        ProjectileDamager projectileDamager = GetComponent<ProjectileDamager>();
+        if (projectileDamager.coveredPlayer)
+        {
+            CharacterManager characterManager = null;
+            if (projectileDamager.coveredPlayer.CompareTag("Player"))
+            {
+                characterManager = projectileDamager.coveredPlayer.GetComponent<CharacterManager>();
+            }
+            else
+            {
+                characterManager = projectileDamager.coveredPlayer.GetComponentInChildren<CharacterManager>();
+            }
+            characterManager.isToronadoCovered = false;
+            projectileDamager.coveredPlayer.parent = null;
+            projectileDamager.coveredPlayer = null;
+        }
         var obj = Instantiate(fireTornado, transform, false);
         obj.transform.SetParent(null);
         obj.gameObject.SetActive(true);
@@ -93,7 +112,7 @@ public class TornadoHazard : MonoBehaviour
                 if (other.GetComponentInParent<FlyingObj>().isFireBall)
                 {
                     GenerateFireTornado();
-                    Destroy(other.gameObject);
+                    Destroy(other.transform.parent.gameObject);
                 }
                 else
                 {

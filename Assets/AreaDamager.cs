@@ -8,6 +8,7 @@ public class AreaDamager : MonoBehaviour
     [SerializeField] float staminaDamage;
     [SerializeField] float radius;
     [SerializeField] float existDuration=3f;
+    bool exploed;
 
     private void Start()
     {
@@ -21,31 +22,36 @@ public class AreaDamager : MonoBehaviour
 
     void DamagerTrigger() 
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
-        if (colliders.Length > 0) 
+        if (!exploed) 
         {
-            for (int i = 0; i < colliders.Length; i++) 
+            Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
+            if (colliders.Length > 0)
             {
-                CharacterManager character = colliders[i].GetComponent<CharacterManager>();
-                if (character != null)
+                for (int i = 0; i < colliders.Length; i++)
                 {
-                    PlayerStats playerStats = character.GetComponent<PlayerStats>();
-                    EnemyStats enemyStats = character.GetComponent<EnemyStats>();
-                    if (enemyStats != null) 
+                    CharacterManager character = colliders[i].GetComponent<CharacterManager>();
+                    if (character != null)
                     {
-                        Vector3 hitDirection = transform.position - enemyStats.transform.position;
-                        hitDirection.y = 0;
-                        hitDirection.Normalize();
+                        PlayerStats playerStats = character.GetComponent<PlayerStats>();
+                        EnemyStats enemyStats = character.GetComponent<EnemyStats>();
+                        if (enemyStats != null)
+                        {
+                            Vector3 hitDirection = transform.position - enemyStats.transform.position;
+                            hitDirection.y = 0;
+                            hitDirection.Normalize();
 
-                        enemyStats.TakeDamage(curDamage, staminaDamage, hitDirection);
-                    }
-                    if (playerStats != null) 
-                    {
-                        Vector3 hitDirection = transform.position - playerStats.transform.position;
-                        hitDirection.y = 0;
-                        hitDirection.Normalize();
+                            enemyStats.TakeDamage(curDamage, staminaDamage, hitDirection);
+                            exploed = true;
+                        }
+                        if (playerStats != null)
+                        {
+                            Vector3 hitDirection = transform.position - playerStats.transform.position;
+                            hitDirection.y = 0;
+                            hitDirection.Normalize();
+                            exploed = true;
 
-                        //playerStats.TakeDamage(curDamage, hitDirection);
+                            //playerStats.TakeDamage(curDamage, hitDirection);
+                        }
                     }
                 }
             }

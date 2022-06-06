@@ -429,7 +429,7 @@ public class PlayerManager : CharacterManager
     {
         if (yinYangAbilityOn && !isHolding && !isAiming) 
         {
-            if (baGuaManager.tutorialUp) 
+            if (baGuaManager.tutorialUp && baGuaManager.ultimateTutorial) 
             {
                 baGuaManager.ultimateTutorial.SetActive(false);
                 baGuaManager.tutorialUp = false;
