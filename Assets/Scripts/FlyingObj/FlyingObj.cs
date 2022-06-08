@@ -135,7 +135,7 @@ public class FlyingObj : MonoBehaviour
     {
         if (m_LifeTime == -1) return;
         m_LifeTime -= timeDelta;
-        if (m_LifeTime <= 0)
+        if (m_LifeTime <= 0 && !darkKnightOnly)
         {
             if (projectileDamager) //普通龙卷用
             {

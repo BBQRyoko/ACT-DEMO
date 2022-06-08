@@ -14,11 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionAnimation: WindOrb
   isSpecial: 0
-  attakPriority: 6
-  recoveryTime: 2
-  independtCooldown: 8
+  isFlyingObject: 0
+  isHeavyKick: 0
+  isHeavyAttack: 0
+  damagePoint: 10
+  attakPriority: 8
+  recoveryTime: 1.5
+  independtCooldown: 6.5
   maxAttackAngle: 90
   minAttackAngle: -90
-  minDistanceNeedToAttack: 7
-  maxDistanceNeedToAttack: 20
+  minDistanceNeedToAttack: 5
+  maxDistanceNeedToAttack: 10
   isImmune: 1
+  maxSpeed: 20
+  canDodge: 0
