@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
         playerManager = FindObjectOfType<PlayerManager>();
         //enemiesWillSpawn = FindObjectsOfType<EnemyManager>();
         inputManager = FindObjectOfType<InputManager>();
+        Cursor.lockState = CursorLockMode.Locked;
     }
     public void Tutorial(TutorialScriptableObject tutorial) 
     {
@@ -56,6 +57,8 @@ public class GameManager : MonoBehaviour
     }
     public void Resume() 
     {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1;
     }
 

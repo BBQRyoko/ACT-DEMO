@@ -79,6 +79,8 @@ public class BaGuaManager : MonoBehaviour
     {
         if (inputManager.baGua_Input && !isCommandActive && !playerManager.gameStart && curEnergyCharge >= 100)
         {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
             BaGuaZhen.SetActive(true);
             gameManager.GameSlowDown();
 
