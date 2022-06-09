@@ -61,10 +61,6 @@ public class EnemyStats : CharacterStats
             {
                 currHealth = 0;
                 enemyWeaponSlotManager.CloseWeaponDamageCollider();
-                if (!enemyManager.getingExecute)
-                {
-                    animatorManager.PlayTargetAnimation("Dead", true);
-                }
                 enemyManager.isDead = true;
             }
             else

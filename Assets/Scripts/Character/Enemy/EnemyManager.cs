@@ -11,6 +11,7 @@ public class EnemyManager : CharacterManager
     InputManager inputManager;
     EnemyLocomotion enemyLocomotion;
     EnemyAnimatorManager enemyAnimatorManager;
+    EnemyWeaponSlotManager enemyWeaponSlotManager;
     EnemyStats enemyStats;
 
     [Header("Reset")]
@@ -116,6 +117,7 @@ public class EnemyManager : CharacterManager
         inputManager = FindObjectOfType<InputManager>();
         enemyLocomotion = GetComponent<EnemyLocomotion>();
         enemyAnimatorManager = GetComponentInChildren<EnemyAnimatorManager>();
+        enemyWeaponSlotManager = GetComponentInChildren<EnemyWeaponSlotManager>();
         enemyStats = GetComponent<EnemyStats>();
         navMeshAgent = GetComponentInChildren<NavMeshAgent>();
         enemyRig = GetComponent<Rigidbody>();
@@ -155,13 +157,17 @@ public class EnemyManager : CharacterManager
         //{
         //    alertingTarget = null;
         //}
-        if (isDead)
+        if (isDead && collider_Self.enabled)
         {
+            if (!getingExecute) enemyAnimatorManager.PlayTargetAnimation("Dead", true);
             curTarget = null;
             collider_Self.enabled = false;
             collider_Combat.enabled = false;
+            if (enemyWeaponSlotManager.weaponDamageCollider) enemyWeaponSlotManager.weaponDamageCollider.DisableDamageCollider();
+            if (enemyWeaponSlotManager.kickDamagerCollider) enemyWeaponSlotManager.kickDamagerCollider.DisableDamageCollider();
             Destroy(gameObject.transform.parent.gameObject, 10f);
         }
+
         if (curTarget)
         {
             shootPos = curTarget.GetComponent<PlayerManager>().beTargetedPos;
