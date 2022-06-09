@@ -458,55 +458,165 @@ public class PlayerLocmotion : MonoBehaviour
                     return;
 
                 //还可以优化：现在只有在玩家背对相机的情况下时才正常，其它方向翻滚方向会不精准
-                if (((Mathf.Abs(cameraDir.x) > Mathf.Abs(cameraDir.z)))) //相机在X轴上时
+                if (!inputManager.lockOn_Flag)
                 {
-                    if (inputManager.verticalInput < 0) //朝后滚
+                    if (((Mathf.Abs(cameraDir.x) > Mathf.Abs(cameraDir.z)))) //相机在X轴上时
                     {
-                        animatorManager.animator.SetTrigger("isBackRoll");
+                        if (inputManager.verticalInput < 0) //朝后滚
+                        {
+                            animatorManager.animator.SetTrigger("isBackRoll");
+                        }
+                        else if (inputManager.horizontalInput > 0) //朝右滚
+                        {
+                            animatorManager.animator.SetTrigger("isRightRoll");
+                        }
+                        else if (inputManager.horizontalInput < 0) //朝左滚
+                        {
+                            animatorManager.animator.SetTrigger("isLeftRoll");
+                        }
+                        else if (inputManager.verticalInput > 0) //朝前滚
+                        {
+                            animatorManager.animator.SetTrigger("isFrontRoll");
+                        }
+                        else if (inputManager.verticalInput == 0)
+                        {
+                            animatorManager.animator.SetTrigger("isBackStep");
+                        }
                     }
-                    else if (inputManager.horizontalInput > 0) //朝右滚
+                    else //相机朝Z轴方向时
                     {
-                        animatorManager.animator.SetTrigger("isRightRoll");
-                    }
-                    else if (inputManager.horizontalInput < 0) //朝左滚
-                    {
-                        animatorManager.animator.SetTrigger("isLeftRoll");
-                    }
-                    else if (inputManager.verticalInput > 0) //朝前滚
-                    {
-                        animatorManager.animator.SetTrigger("isFrontRoll");
-                    }
-                    else if (inputManager.verticalInput == 0)
-                    {
-                        animatorManager.animator.SetTrigger("isBackStep");
+                        if (inputManager.verticalInput < 0) //朝后滚
+                        {
+                            animatorManager.animator.SetTrigger("isBackRoll");
+                        }
+                        else if (inputManager.horizontalInput > 0) //朝右滚
+                        {
+                            animatorManager.animator.SetTrigger("isRightRoll");
+                        }
+                        else if (inputManager.horizontalInput < 0) //朝左滚
+                        {
+                            animatorManager.animator.SetTrigger("isLeftRoll");
+                        }
+                        else if (inputManager.verticalInput > 0) //朝前滚
+                        {
+                            animatorManager.animator.SetTrigger("isFrontRoll");
+                        }
+                        else if (inputManager.verticalInput == 0)
+                        {
+                            animatorManager.animator.SetTrigger("isBackStep");
+                        }
                     }
                 }
-                else //相机朝Z轴方向时
+                else 
                 {
-                    if (inputManager.verticalInput < 0) //朝后滚
-                    {
-                        animatorManager.animator.SetTrigger("isBackRoll");
-                    }
-                    else if (inputManager.horizontalInput > 0) //朝右滚
-                    {
-                        animatorManager.animator.SetTrigger("isRightRoll");
-                    }
-                    else if (inputManager.horizontalInput < 0) //朝左滚
-                    {
-                        animatorManager.animator.SetTrigger("isLeftRoll");
-                    }
-                    else if (inputManager.verticalInput > 0) //朝前滚
-                    {
-                        animatorManager.animator.SetTrigger("isFrontRoll");
-                    }
-                    else if (inputManager.verticalInput == 0)
-                    {
-                        animatorManager.animator.SetTrigger("isBackStep");
-                    }
+                    Transform targetTransform = cameraManager.currentLockOnTarget;
+                    Vector3 targetDir = targetTransform.position - transform.position;
+                    targetDir.y = 0;
+                    targetDir.Normalize();
+                    Debug.Log(targetDir);
+                    Debug.Log(transform.forward);
 
-                    playerManager.cantBeInterrupted = true;
-                    playerStats.CostStamina(rollStaminaCost);
+                    if (((Mathf.Abs(targetDir.x) > Mathf.Abs(targetDir.z))))
+                    {
+                        if (Mathf.Abs(transform.forward.x) > Mathf.Abs(transform.forward.z))
+                        {
+                            if (inputManager.verticalInput * transform.forward.x * targetDir.x < 0) //朝后滚
+                            {
+                                animatorManager.animator.SetTrigger("isBackRoll");
+                            }
+                            else if (inputManager.horizontalInput * transform.forward.x * targetDir.x > 0) //朝右滚
+                            {
+                                animatorManager.animator.SetTrigger("isRightRoll");
+                            }
+                            else if (inputManager.horizontalInput * transform.forward.x * targetDir.x < 0) //朝左滚
+                            {
+                                animatorManager.animator.SetTrigger("isLeftRoll");
+                            }
+                            else if (inputManager.verticalInput * transform.forward.x * targetDir.x > 0) //朝前滚
+                            {
+                                animatorManager.animator.SetTrigger("isFrontRoll");
+                            }
+                            else if (inputManager.verticalInput == 0)
+                            {
+                                animatorManager.animator.SetTrigger("isBackStep");
+                            }
+                        }
+                        else
+                        {
+                            if (inputManager.verticalInput * transform.forward.z * targetDir.x < 0) //朝后滚
+                            {
+                                animatorManager.animator.SetTrigger("isLeftRoll");
+                            }
+                            else if (inputManager.horizontalInput * transform.forward.z * targetDir.x > 0) //朝右滚
+                            {
+                                animatorManager.animator.SetTrigger("isBackRoll");
+                            }
+                            else if (inputManager.horizontalInput * transform.forward.z * targetDir.x < 0) //朝左滚
+                            {
+                                animatorManager.animator.SetTrigger("isFrontRoll");
+                            }
+                            else if (inputManager.verticalInput * transform.forward.z * targetDir.x > 0) //朝前滚
+                            {
+                                animatorManager.animator.SetTrigger("isRightRoll");
+                            }
+                            else if (inputManager.verticalInput * transform.forward.z == 0)
+                            {
+                                animatorManager.animator.SetTrigger("isBackStep");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (Mathf.Abs(transform.forward.x) > Mathf.Abs(transform.forward.z))
+                        {
+                            if (inputManager.verticalInput * transform.forward.x * targetDir.z < 0) //朝后滚
+                            {
+                                animatorManager.animator.SetTrigger("isRightRoll");
+                            }
+                            else if (inputManager.horizontalInput * transform.forward.x * targetDir.z > 0) //朝右滚
+                            {
+                                animatorManager.animator.SetTrigger("isFrontRoll");
+                            }
+                            else if (inputManager.horizontalInput * transform.forward.x * targetDir.z < 0) //朝左滚
+                            {
+                                animatorManager.animator.SetTrigger("isBackRoll");
+                            }
+                            else if (inputManager.verticalInput * transform.forward.x * targetDir.z > 0) //朝前滚
+                            {
+                                animatorManager.animator.SetTrigger("isLeftRoll");
+                            }
+                            else if (inputManager.verticalInput == 0)
+                            {
+                                animatorManager.animator.SetTrigger("isBackStep");
+                            }
+                        }
+                        else
+                        {
+                            if (inputManager.verticalInput * transform.forward.z * targetDir.z < 0) //朝后滚
+                            {
+                                animatorManager.animator.SetTrigger("isBackRoll");
+                            }
+                            else if (inputManager.horizontalInput * transform.forward.z * targetDir.z > 0) //朝右滚
+                            {
+                                animatorManager.animator.SetTrigger("isRightRoll");
+                            }
+                            else if (inputManager.horizontalInput * transform.forward.z * targetDir.z < 0) //朝左滚
+                            {
+                                animatorManager.animator.SetTrigger("isLeftRoll");
+                            }
+                            else if (inputManager.verticalInput * transform.forward.z * targetDir.z > 0) //朝前滚
+                            {
+                                animatorManager.animator.SetTrigger("isFrontRoll");
+                            }
+                            else if (inputManager.verticalInput * transform.forward.z == 0)
+                            {
+                                animatorManager.animator.SetTrigger("isBackStep");
+                            }
+                        }
+                    }
                 }
+                animatorManager.animator.SetBool("cantBeInterrupted",true);
+                playerStats.CostStamina(rollStaminaCost);
             }
             else //非攻击状态下翻滚, 只有在非互动且站在地上的状态下才能翻滚
             {
@@ -519,27 +629,113 @@ public class PlayerLocmotion : MonoBehaviour
                 }
                 else
                 {
-                    if (inputManager.verticalInput < 0) //朝后滚
+                    Transform targetTransform = cameraManager.currentLockOnTarget;
+                    Vector3 targetDir = targetTransform.position - transform.position;
+                    targetDir.y = 0;
+                    targetDir.Normalize();
+                    Debug.Log(targetDir);
+                    Debug.Log(transform.forward);
+
+                    if (((Mathf.Abs(targetDir.x) > Mathf.Abs(targetDir.z))))
                     {
-                        animatorManager.PlayTargetAnimation("BackRoll", true, true);
+                        if (Mathf.Abs(transform.forward.x) > Mathf.Abs(transform.forward.z))
+                        {
+                            if (inputManager.verticalInput * transform.forward.x * targetDir.x < 0) //朝后滚
+                            {
+                                animatorManager.PlayTargetAnimation("BackRoll", true, true);
+                            }
+                            else if (inputManager.horizontalInput * transform.forward.x * targetDir.x > 0) //朝右滚
+                            {
+                                animatorManager.PlayTargetAnimation("RightRoll", true, true);
+                            }
+                            else if (inputManager.horizontalInput * transform.forward.x * targetDir.x < 0) //朝左滚
+                            {
+                                animatorManager.PlayTargetAnimation("LeftRoll", true, true);
+                            }
+                            else if (inputManager.verticalInput * transform.forward.x * targetDir.x > 0) //朝前滚
+                            {
+                                animatorManager.PlayTargetAnimation("FrontRoll", true, true);
+                            }
+                            else if (inputManager.verticalInput == 0)
+                            {
+                                animatorManager.PlayTargetAnimation("StepBack", true, true);
+                            }
+                        }
+                        else
+                        {
+                            if (inputManager.verticalInput * transform.forward.z * targetDir.x < 0) //朝后滚
+                            {
+                                animatorManager.PlayTargetAnimation("LeftRoll", true, true);
+                            }
+                            else if (inputManager.horizontalInput * transform.forward.z * targetDir.x > 0) //朝右滚
+                            {
+                                animatorManager.PlayTargetAnimation("BackRoll", true, true);
+                            }
+                            else if (inputManager.horizontalInput * transform.forward.z * targetDir.x< 0) //朝左滚
+                            {
+                                animatorManager.PlayTargetAnimation("FrontRoll", true, true);
+                            }
+                            else if (inputManager.verticalInput * transform.forward.z * targetDir.x > 0) //朝前滚
+                            {
+                                animatorManager.PlayTargetAnimation("RightRoll", true, true);
+                            }
+                            else if (inputManager.verticalInput * transform.forward.z == 0)
+                            {
+                                animatorManager.PlayTargetAnimation("StepBack", true, true);
+                            }
+                        }
                     }
-                    else if (inputManager.horizontalInput > 0) //朝右滚
+                    else 
                     {
-                        animatorManager.PlayTargetAnimation("RightRoll", true, true);
-                    }
-                    else if (inputManager.horizontalInput < 0) //朝左滚
-                    {
-                        animatorManager.PlayTargetAnimation("LeftRoll", true, true);
-                    }
-                    else if (inputManager.verticalInput > 0) //朝前滚
-                    {
-                        animatorManager.PlayTargetAnimation("FrontRoll", true, true);
-                    }
-                    else if (inputManager.verticalInput == 0)
-                    {
-                        animatorManager.PlayTargetAnimation("StepBack", true, true);
+                        if (Mathf.Abs(transform.forward.x) > Mathf.Abs(transform.forward.z))
+                        {
+                            if (inputManager.verticalInput * transform.forward.x * targetDir.z < 0) //朝后滚
+                            {
+                                animatorManager.PlayTargetAnimation("RightRoll", true, true);
+                            }
+                            else if (inputManager.horizontalInput * transform.forward.x * targetDir.z > 0) //朝右滚
+                            {
+                                animatorManager.PlayTargetAnimation("FrontRoll", true, true);
+                            }
+                            else if (inputManager.horizontalInput * transform.forward.x * targetDir.z < 0) //朝左滚
+                            {
+                                animatorManager.PlayTargetAnimation("BackRoll", true, true);
+                            }
+                            else if (inputManager.verticalInput * transform.forward.x * targetDir.z > 0) //朝前滚
+                            {
+                                animatorManager.PlayTargetAnimation("LeftRoll", true, true);
+                            }
+                            else if (inputManager.verticalInput == 0)
+                            {
+                                animatorManager.PlayTargetAnimation("StepBack", true, true);
+                            }
+                        }
+                        else
+                        {
+                            if (inputManager.verticalInput * transform.forward.z * targetDir.z < 0) //朝后滚
+                            {
+                                animatorManager.PlayTargetAnimation("BackRoll", true, true);
+                            }
+                            else if (inputManager.horizontalInput * transform.forward.z * targetDir.z > 0) //朝右滚
+                            {
+                                animatorManager.PlayTargetAnimation("RightRoll", true, true);
+                            }
+                            else if (inputManager.horizontalInput * transform.forward.z * targetDir.z < 0) //朝左滚
+                            {
+                                animatorManager.PlayTargetAnimation("LeftRoll", true, true);
+                            }
+                            else if (inputManager.verticalInput * transform.forward.z * targetDir.z > 0) //朝前滚
+                            {
+                                animatorManager.PlayTargetAnimation("FrontRoll", true, true);
+                            }
+                            else if (inputManager.verticalInput * transform.forward.z == 0)
+                            {
+                                animatorManager.PlayTargetAnimation("StepBack", true, true);
+                            }
+                        }
                     }
                 }
+                animatorManager.animator.SetBool("cantBeInterrupted", true);
                 playerStats.CostStamina(rollStaminaCost);
             }
         }

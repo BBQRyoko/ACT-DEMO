@@ -159,6 +159,12 @@ public class ProjectileDamager : MonoBehaviour
                         playerStats.GetComponentInChildren<AnimatorManager>().generalAudio.Play();
                     }
                     ProjectileDestroy();
+                    if (!playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget && GetComponentInParent<FlyingObj>())
+                    {
+                        playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget = GetComponentInParent<FlyingObj>().shooterPos;
+
+                        playerStats.GetComponent<InputManager>().lockOn_Flag = true;
+                    }
                 }
                 else if (parryCollider != null)
                 {

@@ -512,7 +512,7 @@ public class CombatStanceState : State
                             specialConditionTriggered = true;
                         }
                     }
-                    else if (specialCondition.condition == SpecialCondition.conditionType.玩家蓄力硬直型)
+                    else if (specialCondition.condition == SpecialCondition.conditionType.玩家蓄力硬直型) //玩家在aiming holding的时候
                     {
                         //if (randomDestinationSet && enemyManager.curTarget.GetComponent<PlayerManager>().isCharging && distanceFromTarget<=specialCondition.maxDistanceNeedToAttack) 
                         //{

@@ -15,13 +15,14 @@ public class CameraManager : MonoBehaviour
     public LayerMask ignoreLayers; //除了选定的层外都可以穿透
     float defaultPosition; //相机的初始Z点
     Vector3 cameraFollowVelocity = Vector3.zero; //ref
-    Vector3 cameraVectorPosition;
+    [SerializeField]Vector3 cameraVectorPosition;
 
     public static CameraManager singleton;
 
     public float cameraCollisionRadius = 0.2f;
     public float cameraCollisionOffset = 0.2f;
     public float minCollisionOffset = 0.2f;
+
     public float cameraFollowSpeed = 0.1f;
     public float cameraAimingLookSpeed = 5f;
     public float cameraLookSpeed = 0.1f;
@@ -428,5 +429,11 @@ public class CameraManager : MonoBehaviour
         dangerMark = Instantiate(dangerMark_Prefab, FindObjectOfType<Canvas>().transform).GetComponent<Image>();
         curEnemy = enemyManager;
         Destroy(dangerMark.gameObject, 1f);
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(cameraPivotTransform.position, cameraCollisionRadius);
     }
 }

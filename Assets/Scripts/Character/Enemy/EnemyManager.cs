@@ -43,10 +43,6 @@ public class EnemyManager : CharacterManager
     public bool getingExecute;
     public bool isNoWeapon;
     public bool isEquipped;
-    public float defPriority;
-    public float dodgePriority;
-    public float rollAtkPriority;
-    public float defensiveRatio;
     public bool isParrying;
     public bool isBlocking;
     public bool isDamaged;
@@ -92,6 +88,14 @@ public class EnemyManager : CharacterManager
     public float minDetectionAngle = -70;
     public bool attackLock;
     public float curRecoveryTime = 0;
+
+    [Header("战斗参数")]
+    public float hitRatio = 0.25f; //0~1，数值越高越难出现受击
+    public float hitGaugeRecoveryRate = 1;
+    public float defPriority;
+    public float dodgePriority;
+    public float rollAtkPriority;
+    public float defensiveRatio;
 
     [Header("飞行道具参数, 当前一个角色最多可以有两种不同类型/属性的飞行道具")]
     public FlyingObj arrow;

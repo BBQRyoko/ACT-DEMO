@@ -136,6 +136,11 @@ public class DamageCollider : MonoBehaviour
                     attackAudio.clip = sample_SFX.hittedSFX_List[random];
                     attackAudio.Play();
                     playerStats.TakeDamage(curDamage, hitDirection, isHeavyAttack);
+                    if (!playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget) 
+                    {
+                        playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget = enemyManager.lockOnTransform;
+                        playerStats.GetComponent<InputManager>().lockOn_Flag = true;
+                    } 
                 }
             }
         }
@@ -144,10 +149,8 @@ public class DamageCollider : MonoBehaviour
             Vector3 hitDirection = transform.position - collision.transform.position;
             hitDirection.y = 0;
             hitDirection.Normalize();
-
             EnemyStats enemyStats = collision.GetComponent<EnemyStats>();
-
-            if (!enemyStats.GetComponent<EnemyManager>().isParrying && enemyStats != null && enemyStats.currHealth != 0 && !enemyStats.GetComponent<EnemyManager>().isDodging && !enemyStats.GetComponent<EnemyManager>().isBlocking)
+            if (!enemyStats.GetComponent<EnemyManager>().isParrying && enemyStats != null && enemyStats.currHealth != 0 && !enemyStats.GetComponent<EnemyManager>().isDodging && !enemyStats.GetComponent<EnemyManager>().isBlocking && curDamage>=5)
             {
                 attackAudio.volume = 0.15f;
                 int i = sample_SFX.hittedSFX_List.Length;

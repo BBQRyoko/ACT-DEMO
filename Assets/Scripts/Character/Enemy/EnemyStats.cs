@@ -11,6 +11,7 @@ public class EnemyStats : CharacterStats
     EnemyAnimatorManager animatorManager;
     EnemyWeaponSlotManager enemyWeaponSlotManager;
 
+    float hitGauge;
     //Boss 血条
     [SerializeField] HealthBar healthBar;
 
@@ -42,6 +43,8 @@ public class EnemyStats : CharacterStats
             float damageAngle = Vector3.SignedAngle(collisionDir, enemyManager.transform.forward, Vector3.up);
             currHealth = currHealth - damage;
             currStamina = currStamina - staminaDamage;
+            hitGauge += staminaDamage;
+            enemyManager.isDamaged = true;
 
             if (!enemyManager.healtBarSpawn)
             {
@@ -57,16 +60,16 @@ public class EnemyStats : CharacterStats
             if (currHealth <= 0)
             {
                 currHealth = 0;
+                enemyWeaponSlotManager.CloseWeaponDamageCollider();
                 if (!enemyManager.getingExecute)
                 {
                     animatorManager.PlayTargetAnimation("Dead", true);
                 }
-                enemyWeaponSlotManager.CloseWeaponDamageCollider();
                 enemyManager.isDead = true;
             }
             else
             {
-                if (currStamina > 0)
+                if (currStamina > 0 && hitGauge>= enemyManager.hitRatio * maxStamina)
                 {
                     if (!enemyManager.isImmuneAttacking && !enemyManager.getingExecute && !enemyManager.isDodging)
                     {
@@ -94,21 +97,21 @@ public class EnemyStats : CharacterStats
                             animatorManager.animator.SetBool("isInteracting", true);
                             animatorManager.animator.SetBool("isUsingRootMotion", true);
                         }
-                        if (enemyWeaponSlotManager.weaponDamageCollider) enemyWeaponSlotManager.weaponDamageCollider.DisableDamageCollider();
-                        enemyManager.isDamaged = true;
 
-                        //if (enemyManager.isStunned) //普通攻击会打醒敌人
-                        //{
-                        //    enemyManager.isStunned = false;
-                        //    enemyManager.stunTimer = 0;
-                        //}
+                        if (enemyWeaponSlotManager.weaponDamageCollider) 
+                        {
+                            enemyWeaponSlotManager.weaponDamageCollider.DisableDamageCollider();
+                        } 
+                        hitGauge = 0;
                     }
                 }
-                else
+                else if(currStamina <= 0)
                 {
                     currStamina = 0;
+                    hitGauge = 0;
                     animatorManager.PlayTargetAnimation("Hit_Large", true, true);
                 }
+
                 if (!enemyManager.isEquipped)
                 {
                     enemyWeaponSlotManager.WeaponEquip();
@@ -130,6 +133,11 @@ public class EnemyStats : CharacterStats
         if (!enemyManager.isInteracting && currStamina < maxStamina)
         {
             currStamina = currStamina + staminaRegen * Time.deltaTime;
+        }
+
+        if (!enemyManager.isInteracting && hitGauge >0 ) 
+        {
+            hitGauge -= Time.deltaTime * enemyManager.hitGaugeRecoveryRate;
         }
     }
 }

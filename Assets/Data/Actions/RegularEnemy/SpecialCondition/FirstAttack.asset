@@ -25,11 +25,11 @@ MonoBehaviour:
   minAttackAngle: -60
   minDistanceNeedToAttack: 0
   maxDistanceNeedToAttack: 2.5
-  isImmune: 0
+  isImmune: 1
   maxSpeed: 20
+  canDodge: 0
   condition: 5
   minRange: 0
   maxRange: 0
   requiredRecoveryTime: 0
-  canDodge: 1
   firstStrikeDistance: 2.5
