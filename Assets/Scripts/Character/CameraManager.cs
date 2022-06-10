@@ -101,7 +101,15 @@ public class CameraManager : MonoBehaviour
         HandleExecutingMark();
         LockOnDistanceChecking();
 
-        if (currentLockOnTarget && currentLockOnTarget.GetComponentInParent<EnemyStats>().currHealth<=0) 
+        if (currentLockOnTarget)
+        {
+            if (currentLockOnTarget.GetComponentInParent<EnemyStats>().currHealth <= 0) 
+            {
+                inputManager.lockOn_Flag = false;
+                currentLockOnTarget = null;
+            }
+        }
+        else 
         {
             inputManager.lockOn_Flag = false;
             currentLockOnTarget = null;
@@ -429,11 +437,5 @@ public class CameraManager : MonoBehaviour
         dangerMark = Instantiate(dangerMark_Prefab, FindObjectOfType<Canvas>().transform).GetComponent<Image>();
         curEnemy = enemyManager;
         Destroy(dangerMark.gameObject, 1f);
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(cameraPivotTransform.position, cameraCollisionRadius);
     }
 }

@@ -15,10 +15,9 @@ public class EnemyManager : CharacterManager
     EnemyStats enemyStats;
 
     [Header("Reset")]
-    [SerializeField] GameObject enemyResetPrefab;
-    [SerializeField] Transform enemyOriginalTransform;
     [SerializeField] Vector3 enemyOriginalPosition;
     [SerializeField] Quaternion enemyOriginalRotation;
+    public Transform originalParent;
     public bool enemyActivated;
 
     [Header("OtherParameter")]
@@ -35,7 +34,7 @@ public class EnemyManager : CharacterManager
     public Transform execute_Front;
     public Transform execute_Back;
     [SerializeField] GameObject backStabArea;
-    [SerializeField] ParryCollider parryCollider;
+    public ParryCollider parryCollider;
 
     //CombatRelated
     public bool beenLocked;
@@ -54,6 +53,7 @@ public class EnemyManager : CharacterManager
     public float firstStrikeTimer;
     public float defaultFirstStrikeTime;
     public bool isDodging;
+    public bool isTaijied;
 
     //待机模式
     public enum IdleType { Stay, Patrol, Boss };
@@ -124,10 +124,9 @@ public class EnemyManager : CharacterManager
         combatCooldownManager = GetComponentInChildren<CombatCooldownManager>();
         combatStanceState = GetComponentInChildren<CombatStanceState>();
         navMeshAgent.enabled = false;
-        enemyResetPrefab = transform.parent.gameObject;
-        enemyOriginalTransform = transform.transform;
         enemyOriginalPosition = transform.position;
         enemyOriginalRotation = transform.rotation;
+        originalParent = transform.parent;
         patrolPos.Clear();
     }
     private void Start()
@@ -231,7 +230,6 @@ public class EnemyManager : CharacterManager
     {
         isInteracting = enemyAnimatorManager.animator.GetBool("isInteracting");
         isRotatingWithRootMotion = enemyAnimatorManager.animator.GetBool("isRotatingWithRootMotion");
-        isInteracting = enemyAnimatorManager.animator.GetBool("isInteracting");
         isDodging = enemyAnimatorManager.animator.GetBool("isDodging");
         canRotate = enemyAnimatorManager.animator.GetBool("canRotate");
         isStunned = enemyAnimatorManager.animator.GetBool("isStunned");
@@ -246,6 +244,7 @@ public class EnemyManager : CharacterManager
             enemyAnimatorManager.animator.SetBool("isDodging", false);
             isImmuneAttacking = false;
             getingExecute = false;
+            enemyAnimatorManager.animator.SetBool("isInteracting",false);
             if (enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().weaponDamageCollider) enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().weaponDamageCollider.DisableDamageCollider();
             enemyAnimatorManager.animator.SetBool("canReset", false);
         }
@@ -440,7 +439,23 @@ public class EnemyManager : CharacterManager
             inputManager.lockOn_Flag = false;
         }
     }
-    public void EnemyReset()
+
+    public void EnemyRestartReset() 
+    {
+        float distanceFromTarget = Vector3.Distance(enemyOriginalPosition, transform.position);
+        if (distanceFromTarget >= 0.5f)
+        {
+            transform.position = enemyOriginalPosition;
+            transform.rotation = enemyOriginalRotation;
+        }
+        curTarget = null;
+        if(enemyStats.currHealth < enemyStats.maxHealth) enemyStats.currHealth = enemyStats.maxHealth;
+        if (curState != GetComponentInChildren<IdleState>()) curState = GetComponentInChildren<IdleState>();
+        isDamaged = false;
+        enemyAnimatorManager.animator.SetBool("canReset", true);
+    }
+
+    public void EnemyPosReset() 
     {
         float distanceFromTarget = Vector3.Distance(enemyOriginalPosition, transform.position);
         if (distanceFromTarget >= 0.5f)
@@ -449,6 +464,7 @@ public class EnemyManager : CharacterManager
             transform.rotation = enemyOriginalRotation;
         }
     }
+
     private void OnDrawGizmosSelected()
     {
             //警戒范围

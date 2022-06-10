@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class AT_Field : MonoBehaviour
 {
-    [SerializeField] List<EnemyAnimatorManager> enemyAnimatorList;
+    [SerializeField] List<EnemyManager> enemyManagerList;
     [SerializeField] float filedTime;
     [SerializeField] float counterTimer = 0.5f;
+    [SerializeField] float filedRadius;
 
     private void Start()
     {
@@ -15,51 +16,55 @@ public class AT_Field : MonoBehaviour
 
     private void Update()
     {
-        if (enemyAnimatorList != null) 
+        Collider[] colliders = Physics.OverlapSphere(transform.position, filedRadius);
+        if (colliders.Length > 0) 
         {
-            foreach (EnemyAnimatorManager enemy in enemyAnimatorList) 
+            for (int i = 0; i < colliders.Length; i++) 
             {
-                if (enemy.GetComponent<Animator>() != null) 
+                EnemyManager enemyManager = colliders[i].GetComponent<EnemyManager>();
+                if (enemyManager != null && !enemyManager.isTaijied) 
                 {
-                    enemy.GetComponent<Animator>().speed = 0.1f;
-                    enemy.GetComponent<EnemyWeaponSlotManager>().CloseWeaponDamageCollider();
-                    enemy.GetComponent<Animator>().SetBool("canReset", true);
-                    enemy.GetComponentInParent<Rigidbody>().isKinematic = true;
+                    enemyManagerList.Add(enemyManager);
                 }
             }
         }
 
         if (transform.localScale.x < 8)
         {
-            transform.localScale += new Vector3(1,0,1) * 8f * Time.deltaTime;
+            transform.localScale += new Vector3(1, 0, 1) * 8f * Time.deltaTime;
         }
-        else 
+        else
         {
             counterTimer -= Time.deltaTime;
+        }
+
+        if (enemyManagerList != null) 
+        {
+            foreach (EnemyManager enemy in enemyManagerList) 
+            {
+                enemy.GetComponentInChildren<Animator>().speed = 0.1f;
+                enemy.GetComponentInChildren<EnemyWeaponSlotManager>().CloseWeaponDamageCollider();
+                enemy.GetComponentInChildren<Animator>().SetBool("canReset", true);
+                enemy.GetComponent<Rigidbody>().isKinematic = true;
+                enemy.isTaijied = true;
+            }
         }
 
         if (counterTimer <= 0) 
         {
             counterTimer = 0;
-            foreach (EnemyAnimatorManager enemy in enemyAnimatorList)
+            foreach (EnemyManager enemy in enemyManagerList)
             {
-                enemy.animator.speed = 1f;
-                enemy.GetComponentInParent<Rigidbody>().isKinematic = false;
+                enemy.GetComponentInChildren<Animator>().speed = 1f;
+                enemy.GetComponent<Rigidbody>().isKinematic = false;
+                enemy.isTaijied = false;
             }
-
             Destroy(gameObject);
         }
     }
-    private void OnTriggerEnter(Collider other)
+    void OnDrawGizmosSelected()
     {
-        if (other.CompareTag("Enemy")) 
-        {
-            EnemyAnimatorManager enemyAnimatorManager = other.GetComponentInChildren<EnemyAnimatorManager>();
-
-            if (enemyAnimatorManager != null) 
-            {
-                enemyAnimatorList.Add(enemyAnimatorManager);
-            }
-        }
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(transform.position, filedRadius);
     }
 }

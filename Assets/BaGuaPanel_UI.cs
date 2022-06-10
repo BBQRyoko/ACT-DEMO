@@ -129,8 +129,8 @@ public class BaGuaPanel_UI : MonoBehaviour
 
             
             rect.localScale = Vector3.zero;
-            rect.DOScale(Vector3.one, 0.25f).SetEase(Ease.OutQuad);
-            rect.DOAnchorPos(new Vector3(x, y, 0f), 0.25f).SetEase(Ease.OutQuad).onComplete =
+            rect.DOScale(Vector3.one, 0.15f).SetEase(Ease.OutQuad);
+            rect.DOAnchorPos(new Vector3(x, y, 0f), 0.15f).SetEase(Ease.OutQuad).onComplete =
                 delegate ()
                 {
                     BaGuaEntry baGuaEntry = rect.GetComponent<BaGuaEntry>();

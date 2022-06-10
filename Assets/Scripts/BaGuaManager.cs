@@ -89,10 +89,6 @@ public class BaGuaManager : MonoBehaviour
             RectTransform rect = realPiviot.GetComponent<RectTransform>();
             rect.position = new Vector2(x, y);
         }
-        else
-        {
-            gameManager.Resume();
-        }
     }
     void EnergySourceControl()
     {

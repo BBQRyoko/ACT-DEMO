@@ -513,8 +513,6 @@ public class PlayerLocmotion : MonoBehaviour
                     Vector3 targetDir = targetTransform.position - transform.position;
                     targetDir.y = 0;
                     targetDir.Normalize();
-                    Debug.Log(targetDir);
-                    Debug.Log(transform.forward);
 
                     if (((Mathf.Abs(targetDir.x) > Mathf.Abs(targetDir.z))))
                     {
@@ -633,8 +631,6 @@ public class PlayerLocmotion : MonoBehaviour
                     Vector3 targetDir = targetTransform.position - transform.position;
                     targetDir.y = 0;
                     targetDir.Normalize();
-                    Debug.Log(targetDir);
-                    Debug.Log(transform.forward);
 
                     if (((Mathf.Abs(targetDir.x) > Mathf.Abs(targetDir.z))))
                     {
@@ -761,5 +757,4 @@ public class PlayerLocmotion : MonoBehaviour
             }
         }
     }
-
 }

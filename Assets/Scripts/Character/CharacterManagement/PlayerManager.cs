@@ -145,7 +145,7 @@ public class PlayerManager : CharacterManager
         {
             ultimateHint.SetActive(false);
         }
-        if (!isDead) 
+        if (!isDead)
         {
             inputManager.HandleAllInputs();
         }
@@ -172,7 +172,6 @@ public class PlayerManager : CharacterManager
             cameraManager.currentLockOnTarget = null;
             cameraManager.isLockOn = false;
             inputManager.lockOn_Flag = false;
-            
             gameManager.PlayerDead();
         }
         cameraManager.HandleAllCameraMovement();

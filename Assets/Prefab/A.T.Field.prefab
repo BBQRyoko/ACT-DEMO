@@ -4972,6 +4972,7 @@ MonoBehaviour:
   enemyAnimatorList: []
   filedTime: 6.5
   counterTimer: 0.5
+  filedRadius: 8.8
 --- !u!1 &2272751485136828211
 GameObject:
   m_ObjectHideFlags: 0

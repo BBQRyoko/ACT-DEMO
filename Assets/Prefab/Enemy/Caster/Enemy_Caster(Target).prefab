@@ -2576,7 +2576,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6687984558012795286, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: dummyMode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6687984558012795286, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: idleState
@@ -2584,7 +2584,7 @@ PrefabInstance:
       objectReference: {fileID: 688944382795454217}
     - target: {fileID: 6687984558012795286, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: defaultWalkingTimer
-      value: 0.75
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 6687984558012795286, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: combatCooldownManager
@@ -2780,7 +2780,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: alertRadius
-      value: 18
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: backStabArea
@@ -2804,7 +2804,7 @@ PrefabInstance:
       objectReference: {fileID: 674533474881551011}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: canAlertOthers
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: maxAttackRange
@@ -2812,23 +2812,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: maxCombatRange
-      value: 15
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: minCombatRange
-      value: 10
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: detectionRadius
-      value: 15
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: lockOnTransform
       value: 
       objectReference: {fileID: 6342267315457864132}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
+      propertyPath: maxDetectionAngle
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
+      propertyPath: minDetectionAngle
+      value: -60
+      objectReference: {fileID: 0}
+    - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: pursueMaxDistance
-      value: 15
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: rangeRecoveryTime
@@ -2852,7 +2860,7 @@ PrefabInstance:
       objectReference: {fileID: 1349034716, guid: 85b47e44e8b279b48b9937b68f60edf5, type: 3}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: combatPursueStartRange
-      value: 18
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: containedItem.Array.size
@@ -3056,7 +3064,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7352694024846952724, guid: 3d103c6ad29802f4cb6a821cc224e7f2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 3d103c6ad29802f4cb6a821cc224e7f2, type: 3}
 --- !u!1 &5526974985967541480 stripped
 GameObject:

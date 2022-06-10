@@ -79,4 +79,11 @@ public class BossRoomTrigger : MonoBehaviour
         }
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject == bossStats.gameObject) 
+        {
+            //bossStats.GetComponent<EnemyManager>().EnemyRestartReset();
+        }
+    }
 }

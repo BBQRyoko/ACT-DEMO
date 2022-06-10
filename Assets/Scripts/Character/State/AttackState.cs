@@ -19,14 +19,26 @@ public class AttackState : State
         enemyManager.isParrying = false;
         RotateTowardsTargetWhiletAttacking(enemyManager);
 
-        if (distanceFromTarget > enemyManager.maxCombatRange && !enemyManager.isFirstStrike) //如果突然离开最大攻击范围, 重新进入追击
+        if (distanceFromTarget > enemyManager.maxCombatRange && !enemyManager.isFirstStrike && !enemyManager) //如果突然离开最大攻击范围, 重新进入追击
         {
             return pursueState;
         }
 
+        if(!enemyManager.isEquipped) enemyAnimatorManager.PlayTargetAnimation("Equip", true, true);
+
         if (!hasPerformedAttack) 
         {
-            AttackTarget(enemyAnimatorManager, enemyManager); //进行普通攻击动画的播放
+            if (enemyManager.isNoWeapon)
+            {
+                AttackTarget(enemyAnimatorManager, enemyManager); //进行普通攻击动画的播放
+            }
+            else
+            {
+                if (enemyManager.isEquipped) 
+                {
+                    AttackTarget(enemyAnimatorManager, enemyManager); //进行普通攻击动画的播放
+                }
+            }
         }
 
         if (!enemyManager.isInteracting)

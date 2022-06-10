@@ -54,7 +54,7 @@ public class IdleState : State
             else
             {
                 enemyAnimatorManager.animator.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);   //站着idle状态
-                enemyManager.EnemyReset();
+                enemyManager.EnemyPosReset();
             }
 
             enemyManager.navMeshAgent.transform.localPosition = Vector3.zero;
@@ -87,7 +87,7 @@ public class IdleState : State
             Vector3 targetDirection = enemyManager.patrolPos[enemyManager.curPatrolIndex].position - enemyManager.transform.position;
             float distanceFromTarget = Vector3.Distance(enemyManager.patrolPos[enemyManager.curPatrolIndex].position, enemyManager.transform.position);
 
-            if (distanceFromTarget > 0.5f)
+            if (distanceFromTarget > 0.55f)
             {
                 if (!enemyManager.alertingTarget)
                 {
@@ -98,11 +98,11 @@ public class IdleState : State
                     enemyAnimatorManager.animator.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);   //站着idle状态
                 }
             }
-            else if (distanceFromTarget <= 0.5f)
+            else if (distanceFromTarget <= 0.55f)
             {
                 if (enemyManager.patrolPos.Count == 1) 
                 {
-                    enemyManager.EnemyReset();
+                    enemyManager.EnemyPosReset();
                 }
                 enemyAnimatorManager.animator.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);   //站着idle状态
 
@@ -282,6 +282,7 @@ public class IdleState : State
             announcePrefab.announceSoundDistance = maxDistance;
             announcePrefab.isExecutionCall = executionCall;
         }
+
         else 
         {
             if (enemyManager.canAlertOthers && distanceFromTarget<= enemyManager.detectionRadius) 

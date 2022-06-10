@@ -9,8 +9,9 @@ public class GameManager : MonoBehaviour
     InputManager inputManager;
     [SerializeField] TutorialSystem tutorialSystem;
     public Transform curCheckPoint;
-    [SerializeField] EnemyManager[] enemiesWillSpawn;
+    [SerializeField] EnemyManager[] enemyList;
 
+    bool restartMenuOn;
     public GameObject restartMenu;
     public GameObject pauseMenu;
     bool gamePaused;
@@ -18,10 +19,22 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         playerManager = FindObjectOfType<PlayerManager>();
-        //enemiesWillSpawn = FindObjectsOfType<EnemyManager>();
         inputManager = FindObjectOfType<InputManager>();
         Cursor.lockState = CursorLockMode.Locked;
     }
+
+    private void Update()
+    {
+        if (gamePaused)
+        {
+            GamePause();
+        }
+        else
+        {
+            if(!inputManager.baGua_Input && !restartMenuOn) Resume();
+        }
+    }
+
     public void Tutorial(TutorialScriptableObject tutorial) 
     {
         tutorialSystem.OpenTutorial(tutorial);
@@ -29,31 +42,39 @@ public class GameManager : MonoBehaviour
     }
     public void PlayerDead() 
     {
-        restartMenu.SetActive(true);
+        if (!restartMenuOn)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            restartMenu.SetActive(true);
+            restartMenuOn = true;
+        }
     }
     public void Restart()
     {
         //黑屏那些
         restartMenu.SetActive(false);
+        pauseMenu.SetActive(false);
         playerManager.transform.position = curCheckPoint.position;
         playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Respawn",true,true);
         playerManager.GetComponentInChildren<WeaponSlotManager>().mainWeapon_Unequipped.gameObject.SetActive(true);
         playerManager.GetComponentInChildren<WeaponSlotManager>().mainArmedWeapon.SetActive(false);
         playerManager.Rest();
-        if (gamePaused) 
-        {
-            pauseMenu.SetActive(false);
-        }
+        EnemiesReset();
+        if (gamePaused) gamePaused = false;
+        if (restartMenuOn) restartMenuOn = false;
     }
 
-    public void GameSlowDown(float slowRate = 0.6f)  
+    public void GameSlowDown(float slowRate = 0.65f)  
     {
         Time.timeScale = slowRate;
     }
 
     void GamePause() 
     {
-        Time.timeScale = 0;
+        Time.timeScale = 0f;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
     public void Resume() 
     {
@@ -73,6 +94,14 @@ public class GameManager : MonoBehaviour
         {
             gamePaused = false;
             pauseMenu.SetActive(false);
+        }
+    }
+    void EnemiesReset() 
+    {
+        enemyList = FindObjectsOfType<EnemyManager>();
+        foreach (EnemyManager enemy in enemyList) 
+        {
+            if (!enemy.isDead) enemy.EnemyRestartReset();
         }
     }
 }

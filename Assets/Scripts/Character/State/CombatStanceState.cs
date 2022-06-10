@@ -249,7 +249,7 @@ public class CombatStanceState : State
             }
         }
         //防御踱步
-        else if (enemyManager.defPriority>0 && defendRandomNum < defendProbility)
+        else if (enemyManager.defPriority>0 && defendRandomNum < defendProbility && !enemyManager.isTaijied)
         {
             walkingTimer += 1f;
             if (!notFirstWalking)
@@ -429,7 +429,7 @@ public class CombatStanceState : State
             }
             float TriggerProbility = Random.Range(0.001f,1f);
             float DamageTakenRandomNum = Random.Range(0.001f, dodgeProbility + defendProbility + rollAttackProbility);
-            if (!enemyManager.isInteracting) 
+            if (!enemyManager.isInteracting && !enemyManager.isTaijied) 
             {
                 if (TriggerProbility <= dodgeProbility + defendProbility + rollAttackProbility)
                 {

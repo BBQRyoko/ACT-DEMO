@@ -49,13 +49,18 @@ public class ProjectileDamager : MonoBehaviour
             if (playerManager)
             {
                 PlayerLocmotion playerLocmotion = coveredCharacter.GetComponent<PlayerLocmotion>();
+                if (playerManager.isFalling && !playerManager.isGround) 
+                {
+                    playerManager.isFalling = false;
+                    playerManager.isGround = true;
+                }
                 playerManager.isStunned = true;
                 playerManager.isToronadoCovered = true;
                 tornadoHazard.TornadoLifeCheck();
                 coveredPlayer = coveredCharacter;
                 coveredCharacter.transform.position = transform.position;
                 coveredCharacter.transform.rotation = transform.rotation;
-                playerLocmotion.rig.velocity = new Vector3(0f, playerLocmotion.rig.velocity.y, 0f);
+                playerLocmotion.rig.velocity = new Vector3(0f, 0f, 0f);
                 coveredCharacter.transform.parent = transform;
             }
             else if (enemyManager)
@@ -64,7 +69,7 @@ public class ProjectileDamager : MonoBehaviour
                 enemyManager.GetComponentInChildren<EnemyAnimatorManager>().animator.SetBool("isStunned", true);
                 enemyManager.isToronadoCovered = true;
                 tornadoHazard.TornadoLifeCheck();
-                coveredPlayer = coveredCharacter.parent.transform;
+                coveredPlayer = coveredCharacter;
                 coveredCharacter.transform.position = transform.position;
                 coveredCharacter.transform.rotation = transform.rotation;
                 enemyLocomotion.GetComponent<Rigidbody>().velocity = new Vector3(0f, enemyLocomotion.GetComponent<Rigidbody>().velocity.y, 0f);
@@ -84,20 +89,24 @@ public class ProjectileDamager : MonoBehaviour
             if (coveredPlayer.CompareTag("Player"))
             {
                 characterManager = coveredPlayer.GetComponent<CharacterManager>();
+                characterManager.isToronadoCovered = false;
+                coveredPlayer.parent = null;
             }
-            else 
+            else //Enemy
             {
                 characterManager = coveredPlayer.GetComponentInChildren<CharacterManager>();
+                characterManager.isToronadoCovered = false;
+                coveredPlayer.parent = characterManager.GetComponent<EnemyManager>().originalParent;
             }
-            characterManager.isToronadoCovered = false;
-            coveredPlayer.parent = null;
+            if (characterManager.GetComponent<EnemyManager>()) 
             coveredPlayer = null;
             if (hittedCharacter)
             {
                 if (hittedCharacter.GetComponentInChildren<EnemyAnimatorManager>()) hittedCharacter.GetComponentInChildren<EnemyAnimatorManager>().animator.SetBool("isStunned", true);
                 else if (hittedCharacter.GetComponent<PlayerManager>()) hittedCharacter.GetComponent<PlayerManager>().isStunned = true;
             }
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+            Destroy(gameObject,5f);
         }
         else 
         {
@@ -113,7 +122,7 @@ public class ProjectileDamager : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == 8) //碰到场景障碍后消失
+        if (other.gameObject.layer == 8 && !other.CompareTag("DestructibleObject")) //碰到场景障碍后消失
         {
             ProjectileDestroy();
         }
@@ -159,11 +168,23 @@ public class ProjectileDamager : MonoBehaviour
                         playerStats.GetComponentInChildren<AnimatorManager>().generalAudio.Play();
                     }
                     ProjectileDestroy();
-                    if (!playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget && GetComponentInParent<FlyingObj>())
+                    if (!playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget)
                     {
-                        playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget = GetComponentInParent<FlyingObj>().shooterPos;
+                        if (GetComponentInParent<FlyingObj>())
+                        {
+                            playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget = GetComponentInParent<FlyingObj>().shooterPos.GetComponentInParent<EnemyManager>().lockOnTransform;
 
-                        playerStats.GetComponent<InputManager>().lockOn_Flag = true;
+                            playerStats.GetComponent<InputManager>().lockOn_Flag = true;
+                        }
+                        else 
+                        {
+                            if (GetComponent<FlyingObj>())
+                            {
+                                Debug.Log(GetComponent<FlyingObj>().shooterPos);
+                                playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget = GetComponent<FlyingObj>().shooterPos.GetComponentInParent<EnemyManager>().lockOnTransform;
+                                playerStats.GetComponent<InputManager>().lockOn_Flag = true;
+                            }
+                        }
                     }
                 }
                 else if (parryCollider != null)

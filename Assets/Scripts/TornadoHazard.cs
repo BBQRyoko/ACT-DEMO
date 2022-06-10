@@ -7,7 +7,7 @@ public class TornadoHazard : MonoBehaviour
     FlyingObj deflectFlyingObj;
     [SerializeField] Transform shootPos;
     [SerializeField] ProjectileDamager curDamager;
-    [SerializeField] float defaultCoverDuration = 2.5f;
+    [SerializeField] float defaultCoverDuration = 3f;
     float characterCoveredDuration;
 
     [Header("火旋风相关")]
