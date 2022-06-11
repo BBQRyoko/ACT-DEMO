@@ -59,6 +59,8 @@ Material:
     - _Distortionpower: 100
     - _Emission: 2
     - _InvFade: 2
+    - _QueueControl: 1
+    - _QueueOffset: 0
     m_Colors: []
   m_BuildTextureStacks: []
 --- !u!114 &5607743495609897651

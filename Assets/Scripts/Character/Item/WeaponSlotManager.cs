@@ -160,6 +160,7 @@ public class WeaponSlotManager : MonoBehaviour
             transform.GetComponent<Animator>().runtimeAnimatorController = playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[1].weaponAnimatorController;
             weaponDamageCollider = mainArmedWeapon.GetComponentInChildren<DamageCollider>();
             if (playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[1].Id == 2) playerAttacker.isUsingPowerArrow = true;
+            playerInventory.curEquippedWeaponItem = playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[1];
             playerAttacker.HandleTransformAttack(playerInventory.unequippedWeaponItems[playerInventory.currentWeaponIndex]);
         }
         else
@@ -170,6 +171,7 @@ public class WeaponSlotManager : MonoBehaviour
             transform.GetComponent<Animator>().runtimeAnimatorController = playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[0].weaponAnimatorController;
             weaponDamageCollider = mainArmedWeapon.GetComponentInChildren<DamageCollider>();
             if (playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[0].Id == 2) playerAttacker.isUsingPowerArrow = true;
+            playerInventory.curEquippedWeaponItem = playerManager.GetComponent<PlayerInventory>().unequippedWeaponItems[0];
             playerAttacker.HandleTransformAttack(playerInventory.unequippedWeaponItems[playerInventory.currentWeaponIndex]);
         }
     }

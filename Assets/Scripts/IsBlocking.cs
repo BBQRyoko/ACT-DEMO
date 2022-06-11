@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class IsBlocking : StateMachineBehaviour
 {
+    public bool isGS;
+
     public string isBlockingBool;
     public bool isBlockStatus;
 
@@ -22,8 +24,11 @@ public class IsBlocking : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        isBlockStatus = false;
-        animator.SetBool(isBlockingBool, isBlockStatus);
+        if (!isGS) 
+        {
+            isBlockStatus = false;
+            animator.SetBool(isBlockingBool, isBlockStatus);
+        }
         cantBeInterrupted = false;
         animator.SetBool(cantBeInterruptedBool, cantBeInterrupted);
     }

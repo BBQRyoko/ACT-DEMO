@@ -11,6 +11,9 @@ public class PlayerUIManager : MonoBehaviour
     PlayerInventory playerInventory;
     public GameObject aimingCorsshair;
     public GameObject powerArrowUsingIcon;
+    public GameObject gsChargeBar;
+    public Image gsChargeBarSlider;
+
     [SerializeField] TextMeshProUGUI powerArrowNum;
 
     //prompt

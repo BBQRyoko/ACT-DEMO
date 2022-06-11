@@ -60,6 +60,8 @@ Material:
     - _InvFade: 1
     - _Opacity: 20
     - _PathSet0ifyouuseinPS: 0
+    - _QueueControl: 0
+    - _QueueOffset: 0
     - _Usedepth: 0
     m_Colors:
     - _AddColor: {r: 0.6367924, g: 0.83823544, b: 1, a: 1}

@@ -22,6 +22,7 @@ public class PlayerInventory : MonoBehaviour
         playerInventory = GetComponent<PlayerInventory>();
         WeaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
         items = new List<InventoryItemData>();
+        curEquippedWeaponItem = unequippedWeaponItems[0];
     }
 
     private void Start()

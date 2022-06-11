@@ -251,7 +251,8 @@ public class PlayerManager : CharacterManager
         if (canReset) 
         {
             isPerfect = false;
-            //isImmuAttack = false;
+            isImmuAttack = false;
+            isWeaponSwitching = false;
             damageAvoid = false;
             if (weaponSlotManager.weaponDamageCollider) weaponSlotManager.weaponDamageCollider.DisableDamageCollider();
             animator.SetBool("canReset", false);
@@ -317,7 +318,7 @@ public class PlayerManager : CharacterManager
         PlayerAttacker playerAttacker = GetComponent<PlayerAttacker>();
         if (playerInventory.curEquippedWeaponItem.Id == 0) //大剑防御
         {
-            playerStats.currStamina -= playerStats.maxStamina * 0.25f;
+            playerStats.currStamina -= playerStats.maxStamina * 0.35f;
             playerAttacker.gsChargeSlot += incomingDamage;
         }
         else if (playerInventory.curEquippedWeaponItem.Id == 1) 
@@ -331,18 +332,23 @@ public class PlayerManager : CharacterManager
                 playerStats.currStamina -= playerStats.maxStamina * 0.9f;
             }
         }
-
         if (playerStats.currStamina > 0)
         {
             staminaRegenPauseTimer = 1.5f;
             animator.SetTrigger("isDefendSuccess");
         }
-        else 
+        else
         {
             playerStats.currStamina = 0;
             animator.SetTrigger("isDefendFailed");
             animatorManager.animator.SetBool("isDefending", false);
+            animator.SetBool("isHolding", false);
+            animator.ResetTrigger("isHoldingCancel");
+            inputManager.weaponAbility_Input = false;
+            isStunned = true;
+            stunTimer = -2f;
         }
+
     }
     private void HoldingAction() //按键保持
     {
@@ -394,7 +400,6 @@ public class PlayerManager : CharacterManager
         {
             bowChargingTimer = 0;
             sample_VFX.weaponVfx_List[1].Stop();
-            weaponSlotManager.UnloadArrowOnSlot();
         }
     }
     void RollingDamagerController() 

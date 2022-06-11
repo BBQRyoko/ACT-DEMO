@@ -83,6 +83,10 @@ public class DamageCollider : MonoBehaviour
                     damageCollider.enabled = false;
                     playerManager.GetComponent<PlayerAttacker>().chargeValue += chargeAmount * 0.8f;
                     playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount / 2);
+                    if (playerManager.GetComponent<PlayerAttacker>().gsChargeLevel >= 1)
+                    {
+                        playerManager.GetComponent<PlayerAttacker>().gsChargeSlot -= 50;
+                    }
                     if (playerManager.GetComponent<BaGuaManager>().isSwitchAttack)
                     {
                         playerManager.GetComponent<BaGuaManager>().curEnergyCharge += 50f;
@@ -159,9 +163,12 @@ public class DamageCollider : MonoBehaviour
                 attackAudio.Play();
                 enemyStats.TakeDamage(curDamage, staminaDamage, hitDirection, playerManager.GetComponent<PlayerStats>());
                 //HitPause(duration);
-                Debug.Log(sample_SFX.hittedSFX_List[random]);
                 playerManager.GetComponent<PlayerAttacker>().chargeValue += chargeAmount;
                 playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount);
+                if (playerManager.GetComponent<PlayerAttacker>().gsChargeLevel >= 1) 
+                {
+                    playerManager.GetComponent<PlayerAttacker>().gsChargeSlot -= 50;
+                }
                 if (playerManager.GetComponent<BaGuaManager>().isSwitchAttack)
                 {
                     if (playerManager.GetComponent<BaGuaManager>().switchAttackTutorial != null) 
