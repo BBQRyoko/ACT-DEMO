@@ -72,6 +72,9 @@ public class PlayerManager : CharacterManager
     //太刀弹反
     public bool isPerfect;
 
+    //弓箭蓄力相关
+    [SerializeField]float bowChargingTimer;
+
     //蓄力攻击相关
     public bool isHolding;
     public bool isAiming;
@@ -80,8 +83,6 @@ public class PlayerManager : CharacterManager
     //远程攻击
     public Transform shooting_Target;
     public Transform straightLineNullTarget;
-    [SerializeField] FlyingObj arrow;
-    [SerializeField] FlyingObj powerArrow;
     [SerializeField] FlyingObj fireBall;
     [SerializeField] FlyingObj tornado;
     [SerializeField] Transform shoot_Pos;
@@ -250,7 +251,7 @@ public class PlayerManager : CharacterManager
         if (canReset) 
         {
             isPerfect = false;
-            isImmuAttack = false;
+            //isImmuAttack = false;
             damageAvoid = false;
             if (weaponSlotManager.weaponDamageCollider) weaponSlotManager.weaponDamageCollider.DisableDamageCollider();
             animator.SetBool("canReset", false);
@@ -261,22 +262,21 @@ public class PlayerManager : CharacterManager
         if (index == 0) //弓箭
         {
             PlayerAttacker playerAttacker = GetComponent<PlayerAttacker>();
-            PlayerInventory playerInventory = GetComponent<PlayerInventory>();
-
             if (!playerAttacker.isUsingPowerArrow)
             {
-                var obj = Instantiate(arrow, shoot_Pos, false);
+                var obj = Instantiate(weaponSlotManager.arrowObjs[0], shoot_Pos, false);
                 obj.transform.SetParent(null);
                 obj.gameObject.SetActive(true);
                 obj.StartFlyingObj(shooting_Target, false, beTargetedPos);
             }
             else 
             {
-                var obj = Instantiate(powerArrow, shoot_Pos, false);
+                var obj = Instantiate(weaponSlotManager.arrowObjs[1], shoot_Pos, false);
                 obj.transform.SetParent(null);
                 obj.gameObject.SetActive(true);
                 obj.StartFlyingObj(shooting_Target, false, beTargetedPos);
-                playerInventory.powerArrowNum -= 1;
+                playerAttacker.isUsingPowerArrow = false;
+                bowChargingTimer = 0;
             }
 
         }
@@ -314,15 +314,17 @@ public class PlayerManager : CharacterManager
     public void HandleParryingCheck(float incomingDamage) 
     {
         PlayerInventory playerInventory = GetComponent<PlayerInventory>();
-        if (playerInventory.curEquippedWeaponItem.Id == 0)
+        PlayerAttacker playerAttacker = GetComponent<PlayerAttacker>();
+        if (playerInventory.curEquippedWeaponItem.Id == 0) //大剑防御
         {
-            playerStats.currStamina -= playerStats.maxStamina * 0.2f;
+            playerStats.currStamina -= playerStats.maxStamina * 0.25f;
+            playerAttacker.gsChargeSlot += incomingDamage;
         }
         else if (playerInventory.curEquippedWeaponItem.Id == 1) 
         {
             if (incomingDamage <= playerStats.maxHealth / 2) //小伤害
             {
-                playerStats.currStamina -= playerStats.maxStamina * 0.45f;
+                playerStats.currStamina -= playerStats.maxStamina * 0.55f;
             }
             else //大伤害
             {
@@ -368,26 +370,31 @@ public class PlayerManager : CharacterManager
         PlayerInventory playerInventory = GetComponent<PlayerInventory>();
         PlayerAttacker playerAttacker = GetComponent<PlayerAttacker>();
 
-        if (playerInventory.powerArrowNum <= 0)
+        if (isHolding && playerInventory.curEquippedWeaponItem.Id == 2) //蓄力且拿弓时
         {
-            playerAttacker.isUsingPowerArrow = false;
-        }
-        if (playerInventory.powerArrowNum >= 25) 
-        {
-            playerInventory.powerArrowNum = 25;
-        }
-        if (inputManager.specialAction_Input) 
-        {
-            if (playerInventory.powerArrowNum > 0 && !playerAttacker.isUsingPowerArrow && playerInventory.curEquippedWeaponItem.Id == 2)
+            if (bowChargingTimer <= 0) 
             {
-                playerAttacker.isUsingPowerArrow = true;
-                inputManager.specialAction_Input = false;
+                sample_VFX.weaponVfx_List[1].Play();
             }
-            else if( playerAttacker.isUsingPowerArrow )
+            bowChargingTimer += Time.deltaTime;
+            if (bowChargingTimer >= 2f)
+            {
+                bowChargingTimer = 2f;
+                playerAttacker.isUsingPowerArrow = true;
+                weaponSlotManager.LoadPowerArrowOnSlot();
+                playerAttacker.PowerArrowSetUp();
+                //添加一个完成音效提醒玩家
+            }
+            else 
             {
                 playerAttacker.isUsingPowerArrow = false;
-                inputManager.specialAction_Input = false;
             }
+        }
+        else 
+        {
+            bowChargingTimer = 0;
+            sample_VFX.weaponVfx_List[1].Stop();
+            weaponSlotManager.UnloadArrowOnSlot();
         }
     }
     void RollingDamagerController() 

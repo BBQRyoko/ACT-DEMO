@@ -83,7 +83,7 @@ public class BossRoomTrigger : MonoBehaviour
     {
         if (other.gameObject == bossStats.gameObject) 
         {
-            //bossStats.GetComponent<EnemyManager>().EnemyRestartReset();
+            bossStats.GetComponent<EnemyManager>().EnemyRestartReset();
         }
     }
 }

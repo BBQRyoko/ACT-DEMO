@@ -9,7 +9,7 @@ public class Buff : MonoBehaviour
     bool buffed;
     [SerializeField] int buffType; // 0 - normal, 1 - attack, 2 - defend, 3 - movement
     [SerializeField] int debuffType; // 0 - normal, 1 - burning
-    [SerializeField] float duration;
+    public float duration;
     [SerializeField] float buffEffectNum;
 
     private void Awake()

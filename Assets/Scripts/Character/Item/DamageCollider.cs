@@ -50,7 +50,6 @@ public class DamageCollider : MonoBehaviour
     public void DisableDamageCollider() 
     {
         damageCollider.enabled = false;
-        playerManager.isHitting = false;
     }
     public void weaponColliderDamageModifier(int damage) 
     {
@@ -90,7 +89,7 @@ public class DamageCollider : MonoBehaviour
                         playerManager.GetComponent<BaGuaManager>().isSwitchAttack = false;
                     }
                     enemyManager.HandleParryingCheck(curDamage);
-                    HitPause(duration);
+                    //HitPause(duration);
                 }
             }
             else if (playerManager1 != null && !isPlayer) //玩家的格挡
@@ -152,13 +151,15 @@ public class DamageCollider : MonoBehaviour
             EnemyStats enemyStats = collision.GetComponent<EnemyStats>();
             if (!enemyStats.GetComponent<EnemyManager>().isParrying && enemyStats != null && enemyStats.currHealth != 0 && !enemyStats.GetComponent<EnemyManager>().isDodging && !enemyStats.GetComponent<EnemyManager>().isBlocking && curDamage>=5)
             {
+                attackAudio.Stop();
                 attackAudio.volume = 0.15f;
                 int i = sample_SFX.hittedSFX_List.Length;
                 int random = Random.Range(0, i - 1);
                 attackAudio.clip = sample_SFX.hittedSFX_List[random];
                 attackAudio.Play();
                 enemyStats.TakeDamage(curDamage, staminaDamage, hitDirection, playerManager.GetComponent<PlayerStats>());
-                HitPause(duration);
+                //HitPause(duration);
+                Debug.Log(sample_SFX.hittedSFX_List[random]);
                 playerManager.GetComponent<PlayerAttacker>().chargeValue += chargeAmount;
                 playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount);
                 if (playerManager.GetComponent<BaGuaManager>().isSwitchAttack)
@@ -170,8 +171,7 @@ public class DamageCollider : MonoBehaviour
                     playerManager.GetComponent<BaGuaManager>().curEnergyCharge += 75f;
                     playerManager.GetComponent<BaGuaManager>().isSwitchAttack = false;
                 }
-                playerManager.isHitting = false;
-
+                playerManager.isHitting = true;
             }
         }
         else if (collision.tag == "DestructibleObject")
@@ -203,7 +203,7 @@ public class DamageCollider : MonoBehaviour
     IEnumerator Hitted(int dur) 
     {
         float pauseTime = dur / 60f;
-        Time.timeScale = 0.6f;
+        Time.timeScale = 0.5f;
         yield return new WaitForSecondsRealtime(pauseTime);
         Time.timeScale = 1f;
     }

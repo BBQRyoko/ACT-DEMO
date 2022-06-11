@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TornadoHazard : MonoBehaviour
 {
+    [SerializeField] bool isBuff;
     FlyingObj deflectFlyingObj;
     [SerializeField] Transform shootPos;
     [SerializeField] ProjectileDamager curDamager;
@@ -17,11 +18,11 @@ public class TornadoHazard : MonoBehaviour
 
     private void Awake()
     {
-        if(!isFireTornado) curDamager = GetComponent<ProjectileDamager>();
+        if (!isFireTornado || !isBuff) curDamager = GetComponent<ProjectileDamager>();
     }
     private void Update()
     {
-        if (!isFireTornado) 
+        if (!isFireTornado && curDamager) 
         {
             if (curDamager.coveredPlayer)
             {
@@ -45,13 +46,12 @@ public class TornadoHazard : MonoBehaviour
         if (!deflectFlyingObj && obj.GetComponentInChildren<ProjectileDamager>() && (!obj.GetComponentInParent<PlayerManager>() || !obj.GetComponentInParent<EnemyManager>())) 
         {
             deflectFlyingObj = obj;
-            Debug.Log(deflectFlyingObj.gameObject.name);
             var defelectObj = Instantiate(deflectFlyingObj, shootPos, false);
             defelectObj.transform.SetParent(null);
             defelectObj.gameObject.SetActive(true);
             defelectObj.StartFlyingObj(deflectFlyingObj.shooterPos, false, deflectFlyingObj.shooterPos, true);
             ProjectileDamager projectileDamager = defelectObj.GetComponentInChildren<ProjectileDamager>();
-            if(projectileDamager.curProjectilType == ProjectileDamager.ProjectilType.regular) defelectObj.GetComponent<Rigidbody>().useGravity = false;
+            if(projectileDamager.curProjectilType == ProjectileDamager.ProjectilType.regular) defelectObj.GetComponentInChildren<Rigidbody>().useGravity = false;
             defelectObj.m_LifeTime += 1.2f;
             if (projectileDamager.isPlayerDamage)
             {
@@ -60,6 +60,10 @@ public class TornadoHazard : MonoBehaviour
             else
             {
                 projectileDamager.isPlayerDamage = true;
+            }
+            if (isBuff) 
+            {
+                GetComponent<Buff>().duration -= 5f;
             }
             deflectFlyingObj = null;
         }
@@ -99,17 +103,11 @@ public class TornadoHazard : MonoBehaviour
     {
         if (!isFireTornado)
         {
-            if (other.CompareTag("DarkKnight"))
-            {
-                other.GetComponentInChildren<EnemyAnimatorManager>().tornadoSlashEnhance = true;
-                Destroy(transform.gameObject);
-            }
-
             if (other.GetComponentInParent<FlyingObj>() && (!other.GetComponent<PlayerManager>() || !other.GetComponentInParent<PlayerManager>() || !other.GetComponentInChildren<PlayerManager>())
                 && (!other.GetComponent<EnemyManager>() || !other.GetComponentInParent<EnemyManager>()) && !other.GetComponent<TornadoHazard>()) //接触飞行道具, 非龙卷类
             {
                 //如果是火球的话, 变成火龙卷
-                if (other.GetComponentInParent<FlyingObj>().isFireBall)
+                if (other.GetComponentInParent<FlyingObj>().isFireBall && !isBuff)
                 {
                     GenerateFireTornado();
                     Destroy(other.transform.parent.gameObject);
@@ -122,7 +120,7 @@ public class TornadoHazard : MonoBehaviour
                         if (other.GetComponent<ProjectileDamager>().curProjectilType == ProjectileDamager.ProjectilType.regular) 
                         {
                             DefelectFlyingObj(other.GetComponentInParent<FlyingObj>());
-                            Destroy(other.gameObject);
+                            Destroy(other.transform.parent.gameObject);
                         }
                     }
                 }

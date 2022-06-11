@@ -2356,7 +2356,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyManager: {fileID: 0}
-  weaponItem: {fileID: 11400000, guid: 7ede01df6de35b74994b129dbe4948bd, type: 2}
+  weaponItem: {fileID: 11400000, guid: 3acaeb85f71003940904c54fc12579dc, type: 2}
   UnequipWeapon: {fileID: 6640638429444256080}
   distanceToTarget: 0
   distanceCheck: 0
@@ -2780,7 +2780,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: alertRadius
-      value: 30
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: backStabArea
@@ -2812,7 +2812,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: maxCombatRange
-      value: 30
+      value: 14.5
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: minCombatRange
@@ -2820,7 +2820,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: detectionRadius
-      value: 28
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: lockOnTransform
@@ -2836,7 +2836,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: pursueMaxDistance
-      value: 31
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: rangeRecoveryTime
@@ -2860,7 +2860,7 @@ PrefabInstance:
       objectReference: {fileID: 1349034716, guid: 85b47e44e8b279b48b9937b68f60edf5, type: 3}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: combatPursueStartRange
-      value: 30
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 7494814258874909006, guid: e6ba73300f5fc22439e1112202c9bc8f, type: 3}
       propertyPath: containedItem.Array.size

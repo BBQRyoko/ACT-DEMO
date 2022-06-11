@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Combo_R_03
   isImmuAttack: 0
-  damagePoint: 15
+  damagePoint: 35
   tenacityDamagePoint: 20
   staminaCost: 15
   energyRestore: 2

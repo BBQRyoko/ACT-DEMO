@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Bow_TransAttack
   m_EditorClassIdentifier: 
   skillName: TransAttack
-  isImmuAttack: 0
-  damagePoint: 45
-  tenacityDamagePoint: 45
-  staminaCost: 30
+  isImmuAttack: 1
+  damagePoint: 55
+  tenacityDamagePoint: 65
+  staminaCost: 0
   energyRestore: 0
   pauseDuration: 6
   VFXs: []
   SFXs: []
   isFlyingObject: 0
-  maxSpeed: 55
+  maxSpeed: 65

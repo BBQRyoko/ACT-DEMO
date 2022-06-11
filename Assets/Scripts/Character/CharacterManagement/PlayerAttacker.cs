@@ -32,9 +32,13 @@ public class PlayerAttacker : MonoBehaviour
     public float attackTimer;
     public float internalDuration = 3.75f;
 
+    //大剑相关
+    public int gsChargeLevel;
+    public float gsChargeSlot;
+
     //弓箭相关
     public bool isUsingPowerArrow;
-    [SerializeField] float powerArrowRatio = 1.5f;
+    [SerializeField] float powerArrowRatio = 1.2f;
 
     //太极切换触发
     public float chargeValue; //switchValue
@@ -108,7 +112,7 @@ public class PlayerAttacker : MonoBehaviour
             else
             {
                 playerManager.isCrouching = false;
-                if (playerManager.isSprinting)
+                if (playerManager.isSprinting && playerInventory.curEquippedWeaponItem.Id != 2)
                 {
                     comboCount = 0;
                     comboCount++;
@@ -145,24 +149,12 @@ public class PlayerAttacker : MonoBehaviour
                         animatorManager.PlayTargetAnimation(weapon.regularSkills[comboCount - 1].skillName, true, true);
                         if (playerInventory.curEquippedWeaponItem.Id == 2) //使用弓箭时的状态
                         {
-                            ProjectileDamager projectileDamager = weaponSlotManager.curArrowObj.GetComponentInChildren<ProjectileDamager>();
-
-                            if (!isUsingPowerArrow)
-                            {
-                                projectileDamager.curDamage = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio);
-                                projectileDamager.staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint;
-                                projectileDamager.energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
-                                projectileDamager.chargeAmount = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio)/10;
-                                weaponSlotManager.curArrowObj.m_MaxSpeed = weapon.regularSkills[comboCount - 1].maxSpeed;
-                            }
-                            else 
-                            {
-                                projectileDamager.curDamage = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio) * powerArrowRatio;
-                                projectileDamager.staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint;
-                                projectileDamager.energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
-                                projectileDamager.chargeAmount = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio) * powerArrowRatio / 10;
-                                weaponSlotManager.curArrowObj.m_MaxSpeed = weapon.regularSkills[comboCount - 1].maxSpeed;
-                            }
+                            ProjectileDamager projectileDamager = weaponSlotManager.arrowObjs[0].GetComponentInChildren<ProjectileDamager>();
+                            projectileDamager.curDamage = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio);
+                            projectileDamager.staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint;
+                            projectileDamager.energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                            projectileDamager.chargeAmount = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio) / 10;
+                            weaponSlotManager.arrowObjs[0].m_MaxSpeed = weapon.regularSkills[comboCount - 1].maxSpeed;
                         }
                         else
                         {
@@ -304,24 +296,13 @@ public class PlayerAttacker : MonoBehaviour
             playerManager.GetComponent<BaGuaManager>().isSwitchAttack = true;
             if (playerInventory.curEquippedWeaponItem.Id == 2) //使用弓箭时的状态
             {
-                ProjectileDamager projectileDamager = weaponSlotManager.curArrowObj.GetComponentInChildren<ProjectileDamager>();
+                ProjectileDamager projectileDamager = weaponSlotManager.arrowObjs[1].GetComponentInChildren<ProjectileDamager>(); //必为强击
 
-                if (!isUsingPowerArrow)
-                {
-                    projectileDamager.curDamage = weapon.transSkills[0].damagePoint * (1 + playerStats.attackBuffRatio);
-                    projectileDamager.staminaDamage = weapon.transSkills[0].tenacityDamagePoint;
-                    projectileDamager.energyRestoreAmount = weapon.transSkills[0].damagePoint * (1 + playerStats.attackBuffRatio)/10;
-                    projectileDamager.chargeAmount = weapon.transSkills[0].energyRestore;
-                    weaponSlotManager.curArrowObj.m_MaxSpeed = weapon.transSkills[0].maxSpeed;
-                }
-                else
-                {
-                    projectileDamager.curDamage = weapon.transSkills[0].damagePoint * (1 + playerStats.attackBuffRatio) * powerArrowRatio;
-                    projectileDamager.staminaDamage = weapon.transSkills[0].tenacityDamagePoint;
-                    projectileDamager.energyRestoreAmount = weapon.transSkills[0].damagePoint * (1 + playerStats.attackBuffRatio) * powerArrowRatio/10;
-                    projectileDamager.chargeAmount = weapon.transSkills[0].energyRestore;
-                    weaponSlotManager.curArrowObj.m_MaxSpeed = weapon.transSkills[0].maxSpeed;
-                }
+                projectileDamager.curDamage = weapon.transSkills[0].damagePoint * (1 + playerStats.attackBuffRatio);
+                projectileDamager.staminaDamage = weapon.transSkills[0].tenacityDamagePoint;
+                projectileDamager.energyRestoreAmount = weapon.transSkills[0].damagePoint * (1 + playerStats.attackBuffRatio);
+                projectileDamager.chargeAmount = weapon.transSkills[0].energyRestore;
+                weaponSlotManager.arrowObjs[1].m_MaxSpeed = weapon.transSkills[0].maxSpeed;
             }
             else //普通武器
             {
@@ -330,6 +311,14 @@ public class PlayerAttacker : MonoBehaviour
                 weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.transSkills[0].damagePoint * (1 + playerStats.attackBuffRatio)/10;
                 weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.transSkills[0].energyRestore;
                 playerManager.GetComponent<PlayerStats>().currStamina -= weapon.transSkills[0].staminaCost;
+            }
+            if (weapon.transSkills[0].isImmuAttack)
+            {
+                playerManager.isImmuAttack = true;
+            }
+            else
+            {
+                playerManager.isImmuAttack = false;
             }
             animatorManager.pauseDuration = weapon.transSkills[0].pauseDuration;
         }
@@ -352,21 +341,6 @@ public class PlayerAttacker : MonoBehaviour
     }
     void HoldingController() 
     {
-        //if (playerInventory.curEquippedWeaponItem.Id == 2) //弓
-        //{
-        //    if (playerManager.isHolding)
-        //    {
-
-        //    }
-        //    else
-        //    {
-
-        //    }
-        //}
-        //else 
-        //{
-
-        //}
     }
     void HandleAttackCharge() 
     {
@@ -395,6 +369,44 @@ public class PlayerAttacker : MonoBehaviour
         {
             executionTarget = null;
             playerManager.cameraManager.curExuectionTarget = null;
+        }
+    }
+    public void PowerArrowSetUp() 
+    {
+        ProjectileDamager PowerfulProjectileDamager = weaponSlotManager.arrowObjs[1].GetComponentInChildren<ProjectileDamager>();
+        ProjectileDamager projectileDamager = weaponSlotManager.arrowObjs[0].GetComponentInChildren<ProjectileDamager>();
+        PowerfulProjectileDamager.curDamage = projectileDamager.curDamage * powerArrowRatio;
+        PowerfulProjectileDamager.staminaDamage = projectileDamager.staminaDamage * 2f;
+        PowerfulProjectileDamager.energyRestoreAmount = projectileDamager.energyRestoreAmount * 1.5f;
+        PowerfulProjectileDamager.chargeAmount = projectileDamager.chargeAmount * powerArrowRatio / 10;
+    }
+    public void GreatSwordChargeController()
+    {
+        if (playerInventory.curEquippedWeaponItem.Id == 0) 
+        {
+            if (gsChargeSlot >= 0 && gsChargeSlot < 50)
+            {
+                gsChargeLevel = 0;
+            }
+            else if (gsChargeSlot >= 50 && gsChargeSlot < 100)
+            {
+                gsChargeLevel = 1;
+            }
+            else if (gsChargeSlot >= 100)
+            {
+                gsChargeSlot = 100;
+                gsChargeLevel = 2;
+            }
+            else
+            {
+                gsChargeSlot = 0;
+                gsChargeLevel = 0;
+            }
+
+            if (!playerManager.isDefending && gsChargeSlot>0)
+            {
+                gsChargeSlot -= 5 * Time.deltaTime;
+            }
         }
     }
     private void OnDrawGizmos()

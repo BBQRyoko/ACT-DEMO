@@ -202,10 +202,6 @@ public class AnimatorManager : MainAnimatorManager
                     }
                 }
             }
-            else
-            {
-                //想想办法
-            }
         }
     }
     //Animator Events Editor  
@@ -309,5 +305,6 @@ public class AnimatorManager : MainAnimatorManager
         animator.speed = 0;
         yield return new WaitForSecondsRealtime(pauseTime);
         animator.speed = 1;
+        playerManager.isHitting = false;
     }
 }

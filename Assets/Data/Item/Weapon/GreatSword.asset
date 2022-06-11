@@ -24,7 +24,6 @@ MonoBehaviour:
   regularSkills:
   - {fileID: 11400000, guid: 4a6371e08e6ebd84bb49539772932855, type: 2}
   - {fileID: 11400000, guid: 416909517e026214bac11c1b3b168b41, type: 2}
-  - {fileID: 11400000, guid: bdd0038ee62414b46a040cbe1ca38eef, type: 2}
   specialSkills: []
   transSkills:
   - {fileID: 11400000, guid: b510fd292c4b4e74badb3c1f79274b2c, type: 2}

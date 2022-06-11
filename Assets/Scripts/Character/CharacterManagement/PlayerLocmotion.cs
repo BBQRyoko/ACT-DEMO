@@ -613,6 +613,7 @@ public class PlayerLocmotion : MonoBehaviour
                         }
                     }
                 }
+                weaponSlotManager.UnloadArrowOnSlot();
                 animatorManager.animator.SetBool("cantBeInterrupted",true);
                 playerStats.CostStamina(rollStaminaCost);
             }

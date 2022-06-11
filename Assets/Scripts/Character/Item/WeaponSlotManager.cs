@@ -17,13 +17,12 @@ public class WeaponSlotManager : MonoBehaviour
     public DamageCollider weaponDamageCollider;
     [SerializeField] ParryCollider parryCollider;
     public GameObject mainArmedWeapon;
-    public FlyingObj curArrowObj;
     public FlyingObj[] arrowObjs; 
     [SerializeField] GameObject[] armedWeaponSlot = new GameObject[4];
     
     [Header("displayOnly")]
-    [SerializeField] GameObject arrow; 
-    [SerializeField] GameObject powerArrow;
+    [SerializeField] GameObject arrowPrefab; 
+    [SerializeField] GameObject powerArrowPrefab;
 
     [SerializeField] GameObject greatSwordIcon;
     [SerializeField] GameObject katanaIcon;
@@ -55,19 +54,17 @@ public class WeaponSlotManager : MonoBehaviour
     }
     public void LoadArrowOnSlot() 
     {
-        if (!playerAttacker.isUsingPowerArrow)
-        {
-            arrow.SetActive(true);
-        }
-        else 
-        {
-            powerArrow.SetActive(true);
-        }
+        arrowPrefab.SetActive(true);
+    }
+    public void LoadPowerArrowOnSlot() 
+    {
+        arrowPrefab.SetActive(false);
+        powerArrowPrefab.SetActive(true);
     }
     public void UnloadArrowOnSlot() 
     {
-        arrow.SetActive(false);
-        powerArrow.SetActive(false);
+        arrowPrefab.SetActive(false);
+        powerArrowPrefab.SetActive(false);
     }
     public void EquipeWeapon() 
     {
@@ -84,6 +81,7 @@ public class WeaponSlotManager : MonoBehaviour
                 GetComponentInChildren<WeaponSlotManager>().mainWeapon_Unequipped.gameObject.SetActive(true);
                 WeaponSwitchAnimatorController();
                 playerManager.isWeaponSwitching = true;
+                UnloadArrowOnSlot();
             }
             else if(playerManager.canTransAttack) //可触发条件
             {
@@ -91,6 +89,7 @@ public class WeaponSlotManager : MonoBehaviour
                 GetComponentInChildren<WeaponSlotManager>().mainWeapon_Unequipped.gameObject.SetActive(true);
                 AttackSwitchAnimatorController();
                 playerManager.isWeaponSwitching = true;
+                UnloadArrowOnSlot();
             }
         }
     }
@@ -130,12 +129,9 @@ public class WeaponSlotManager : MonoBehaviour
                     playerInventory.curEquippedWeaponItem = playerInventory.unequippedWeaponItems[0];
                     mainArmedWeapon = armedWeaponSlot[playerInventory.curEquippedWeaponItem.Id];
                     LoadWeaponOnSlot(playerInventory.unequippedWeaponItems[1], 1);
-                    if (playerInventory.curEquippedWeaponItem.Id == 2 && playerInventory.powerArrowNum > 0)
-                    {
-                        playerAttacker.isUsingPowerArrow = true;
-                    }
                 }
             }
+            UnloadArrowOnSlot();
         }
         else //切换当前所装备的武器
         {
@@ -147,10 +143,7 @@ public class WeaponSlotManager : MonoBehaviour
             mainArmedWeapon = armedWeaponSlot[playerInventory.curEquippedWeaponItem.Id];
             LoadWeaponOnSlot(playerInventory.unequippedWeaponItems[curIndex], curIndex);
             transform.GetComponent<AnimatorManager>().PlayTargetAnimation("WeaponSwitch(Equip)", true, true);
-            if (playerInventory.curEquippedWeaponItem.Id == 2 && playerInventory.powerArrowNum > 0)
-            {
-                playerAttacker.isUsingPowerArrow = true;
-            }
+            UnloadArrowOnSlot();
         }
     }
     public void AttackSwitchAnimatorController() //切换攻击

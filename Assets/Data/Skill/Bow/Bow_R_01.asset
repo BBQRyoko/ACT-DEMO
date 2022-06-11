@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: HoldingAbility
   isImmuAttack: 0
-  damagePoint: 35
-  tenacityDamagePoint: 35
+  damagePoint: 20
+  tenacityDamagePoint: 15
   staminaCost: 5
-  energyRestore: 3
+  energyRestore: 2
   pauseDuration: 4
   VFXs: []
   SFXs: []

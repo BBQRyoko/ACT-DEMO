@@ -207,6 +207,8 @@ public class ProjectileDamager : MonoBehaviour
                 PlayerStats playerStats = FindObjectOfType<PlayerStats>();
                 PlayerManager playerManager = playerStats.GetComponent<PlayerManager>();
                 AnimatorManager animatorManager = playerStats.GetComponentInChildren<AnimatorManager>();
+                ParryCollider parryCollider = other.GetComponent<ParryCollider>();
+
                 if (enemyStats != null)
                 {
                     Vector3 hitDirection = transform.position - enemyStats.transform.position;
@@ -226,6 +228,25 @@ public class ProjectileDamager : MonoBehaviour
                         animatorManager.generalAudio.clip = hitAudio;
                         animatorManager.generalAudio.Play();
                     }
+                    Destroy(transform.parent.gameObject);
+                }
+                else if(parryCollider != null) 
+                {
+                    //普通箭
+                    EnemyManager enemyManager = parryCollider.GetComponentInParent<EnemyManager>();
+                    enemyManager.GetComponentInChildren<AudioSource>().volume = 0.2f;
+                    int i = enemyManager.GetComponentInChildren<Sample_SFX>().blockedSFX_List.Length;
+                    int random = Random.Range(0, i - 1);
+                    enemyManager.GetComponentInChildren<AudioSource>().clip = enemyManager.GetComponentInChildren<Sample_SFX>().blockedSFX_List[random];
+                    enemyManager.GetComponentInChildren<AudioSource>().Play();
+                    playerManager.GetComponent<PlayerAttacker>().chargeValue += chargeAmount * 0.8f;
+                    playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount / 2);
+                    if (playerManager.GetComponent<BaGuaManager>().isSwitchAttack)
+                    {
+                        playerManager.GetComponent<BaGuaManager>().curEnergyCharge += 50f;
+                        playerManager.GetComponent<BaGuaManager>().isSwitchAttack = false;
+                    }
+                    enemyManager.HandleParryingCheck(curDamage);
                     Destroy(transform.parent.gameObject);
                 }
                 else

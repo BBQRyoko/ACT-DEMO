@@ -19438,6 +19438,8 @@ GameObject:
   - component: {fileID: 7117812740381093875}
   - component: {fileID: 7117158712746659089}
   - component: {fileID: 4566336573535060748}
+  - component: {fileID: 462194065006267584}
+  - component: {fileID: 1703794034466327368}
   m_Layer: 0
   m_Name: TornadoShield
   m_TagString: Untagged
@@ -24349,6 +24351,39 @@ MonoBehaviour:
   debuffType: 0
   duration: 30
   buffEffectNum: 0.45
+--- !u!114 &462194065006267584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6918438363871369049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64945e6f25e2e43458f34c97dc28ae8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isBuff: 1
+  shootPos: {fileID: 0}
+  curDamager: {fileID: 0}
+  defaultCoverDuration: 3
+  isFireTornado: 0
+  fireTornado: {fileID: 0}
+  explosionPrefab: {fileID: 0}
+--- !u!136 &1703794034466327368
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6918438363871369049}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1.25
+  m_Height: 5.65
+  m_Direction: 1
+  m_Center: {x: 0, y: 2.6, z: 0}
 --- !u!1 &6918532322957636225
 GameObject:
   m_ObjectHideFlags: 0

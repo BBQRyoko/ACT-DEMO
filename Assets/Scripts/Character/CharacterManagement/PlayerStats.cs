@@ -246,6 +246,7 @@ public class PlayerStats : CharacterStats
         else if (playerManager.isHolding && !playerManager.isDefending) //弓箭
         {
             currStamina -= playerInventory.curEquippedWeaponItem.holdingStaminaCost * Time.deltaTime;
+            if (currStamina <= 0) animatorManager.animator.SetTrigger("isHoldingCancel");
         }
 
         staminaBar.SetCurrentStamina(currStamina);

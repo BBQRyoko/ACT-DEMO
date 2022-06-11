@@ -18,7 +18,7 @@ MonoBehaviour:
   tenacityDamagePoint: 45
   staminaCost: 30
   energyRestore: 2
-  pauseDuration: 12
+  pauseDuration: 3
   VFXs: []
   SFXs: []
   isFlyingObject: 0

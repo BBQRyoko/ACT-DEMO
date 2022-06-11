@@ -17,7 +17,7 @@ MonoBehaviour:
   itemName: FireSword_Enemy
   HasHeapUp: 0
   ExecutableOperation: 0
-  modelPrefab: {fileID: 6640638428303676973, guid: 61a122736500e564aaf3baa02adf328c, type: 3}
+  modelPrefab: {fileID: 6640638428303676973, guid: 4d2382f36a0fbfd428af5e564f56b73f, type: 3}
   isEquipped: 1
   weaponAnimatorController: {fileID: 0}
   holdingStaminaCost: 0
