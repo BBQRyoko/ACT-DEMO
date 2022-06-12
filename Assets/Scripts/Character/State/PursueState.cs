@@ -30,7 +30,7 @@ public class PursueState : State
 
         if (!idleState.announcedByOther)   //确定是否为第一发现者
         {
-            maxPursueDistance = enemyManager.pursueMaxDistance;
+            maxPursueDistance = enemyManager.alertDetectionRadius + 5f;
         }
         else
         {
@@ -40,7 +40,7 @@ public class PursueState : State
 
         if (distanceFromTarget >= maxPursueDistance ) //先判断是否在追击距离内, 不在就收武器会Idle
         {
-            if (!enemyManager.isNoWeapon) 
+            if (!enemyManager.isNoWeapon && !enemyManager.isAlerting) 
             {
                 enemyAnimatorManager.PlayTargetAnimation("Unarm", true, true);
             }
@@ -50,6 +50,12 @@ public class PursueState : State
         }
         else if (distanceFromTarget < maxPursueDistance)
         {
+            if (enemyManager.isAlerting)
+            {
+                enemyManager.isAlerting = false;
+                enemyManager.alertingTarget = null;
+                enemyManager.alertTimer = 0;
+            }
             if (enemyManager.isFirstStrike) //在范围内就判断是否有先制攻击 
             {
                 if (distanceFromTarget > combatStanceState.conditionList[0].firstStrikeDistance) //有先制且距离大于先制范围时

@@ -74,15 +74,16 @@ public class EnemyManager : CharacterManager
     public float alertRadius = 15;
     public float alertTimer;
     public bool canAlertOthers = true;
+    public bool calledAlready;
     public CharacterStats alertingTarget;
     public bool isAlerting;
-    public float alertingPeriod;
     public bool alertIconSpawn;
+    public float curDetectionRadius;
     public float detectionRadius = 10;
+    public float alertDetectionRadius;
     public float minCombatRange = 3f;
     public float maxCombatRange = 3f;
     public float combatPursueStartRange = 6f;
-    public float pursueMaxDistance = 20;
     public float announcedPursueDistance = 25;
 
     public float maxDetectionAngle = 70;
@@ -142,12 +143,11 @@ public class EnemyManager : CharacterManager
     }
     private void Update()
     {
-        //DistanceCheck
         HandleRecoveryTimer();
         AmbushEnemy();
         ExecutedArea();
         GeneralTimerManager();
-        HandleAlertIcon();
+        HandleAlert();
         HandleParryCollider();
         HandleHealthBar();
         ItemDrop();
@@ -178,7 +178,6 @@ public class EnemyManager : CharacterManager
             shootPos2 = null;
         }
     }
-
     void GeneralTimerManager()
     {
         if (!isFirstStrike)
@@ -191,21 +190,6 @@ public class EnemyManager : CharacterManager
             {
                 firstStrikeTimer = 0;
             }
-        }
-
-        if (isAlerting)
-        {
-            alertTimer = 5f;
-            alertingPeriod += Time.deltaTime;
-            if (alertingPeriod >= 5f)
-            {
-                isAlerting = false;
-                alertingPeriod = 0;
-            }
-        }
-        else
-        {
-            alertingPeriod = 0;
         }
 
         //处决状态Timer
@@ -365,8 +349,14 @@ public class EnemyManager : CharacterManager
             enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().WeaponEquip();
         }
     }
-    void HandleAlertIcon()
+    void HandleAlert()
     {
+        alertDetectionRadius = 1.5f * detectionRadius;
+        if (alertingTarget) isAlerting = true;
+        if (isAlerting)
+        {
+            curDetectionRadius = alertDetectionRadius;
+        }
         if (alertTimer > 0)
         {
             if (!alertIconSpawn && !ambushEnemy)
@@ -439,7 +429,6 @@ public class EnemyManager : CharacterManager
             inputManager.lockOn_Flag = false;
         }
     }
-
     public void EnemyRestartReset() 
     {
         float distanceFromTarget = Vector3.Distance(enemyOriginalPosition, transform.position);
@@ -454,7 +443,6 @@ public class EnemyManager : CharacterManager
         isDamaged = false;
         enemyAnimatorManager.animator.SetBool("canReset", true);
     }
-
     public void EnemyPosReset() 
     {
         float distanceFromTarget = Vector3.Distance(enemyOriginalPosition, transform.position);
@@ -464,7 +452,6 @@ public class EnemyManager : CharacterManager
             transform.rotation = enemyOriginalRotation;
         }
     }
-
     private void OnDrawGizmosSelected()
     {
             //警戒范围
@@ -473,6 +460,9 @@ public class EnemyManager : CharacterManager
             //直接视野范围
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, detectionRadius);
+            //警戒状态直接视野范围
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position, alertDetectionRadius);
             //攻击范围
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, maxCombatRange);    

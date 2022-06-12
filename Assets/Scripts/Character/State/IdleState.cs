@@ -19,6 +19,7 @@ public class IdleState : State
 
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
     {
+        //纯Idle与巡逻的机制, 不掺杂其它内容
         if (enemyManager.idleType == EnemyManager.IdleType.Stay || enemyManager.idleType == EnemyManager.IdleType.Boss) //站岗的敌人
         {
             if (!enemyManager.ambushEnemy)
@@ -31,7 +32,7 @@ public class IdleState : State
                 {
                     enemyAnimatorManager.animator.SetFloat("Horizontal", 0, 0.1f, Time.deltaTime);
                 }
-            }
+            } //是否为潜伏类敌人相关
             else 
             {
                 enemyAnimatorManager.animator.SetFloat("Horizontal", 0, 0.1f, Time.deltaTime);
@@ -47,10 +48,10 @@ public class IdleState : State
 
             HandleRotateTowardsTarger(enemyManager);
 
-            if (distanceFromTarget > 1f)
+            if (distanceFromTarget > 1f && !enemyManager.isAlerting)
             {
                 enemyAnimatorManager.animator.SetFloat("Vertical", 1f, 0.1f, Time.deltaTime);   //跑回初始点
-            }
+            }//位置重置相关
             else
             {
                 enemyAnimatorManager.animator.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);   //站着idle状态
@@ -89,7 +90,7 @@ public class IdleState : State
 
             if (distanceFromTarget > 0.55f)
             {
-                if (!enemyManager.alertingTarget)
+                if (!enemyManager.alertingTarget && !enemyManager.isAlerting)
                 {
                     enemyAnimatorManager.animator.SetFloat("Vertical", 0.5f, 0.1f, Time.deltaTime);   //朝着目标单位进行移动
                 }
@@ -143,13 +144,16 @@ public class IdleState : State
                     crouchFactor = 1f;
                 }
                 float alertIncreaseRate = 0.5f * ((enemyManager.alertRadius + 1.5f) - distance) * crouchFactor;
-                if (viewableAngle > enemyManager.minDetectionAngle && viewableAngle < enemyManager.maxDetectionAngle)
+
+                if (viewableAngle > enemyManager.minDetectionAngle && viewableAngle < enemyManager.maxDetectionAngle) //预警范围内看到玩家
                 {
                     if (characterStats.GetComponent<PlayerManager>()) 
                     {
+                        enemyManager.isAlerting = true;
                         enemyManager.alertingTarget = characterStats;
                     }
-                    if (enemyManager.alertTimer <= 5)
+
+                    if (enemyManager.alertTimer < 5) //进行警戒量的提升
                     {
                         enemyManager.alertTimer += alertIncreaseRate*Time.deltaTime;
                     }
@@ -157,26 +161,10 @@ public class IdleState : State
                     {
                         enemyManager.curTarget = characterStats;
                         enemyManager.alertingTarget = null;
+                        enemyManager.isAlerting = false;
                     }
                 }
                 else
-                {
-                    if (!enemyManager.isAlerting)
-                    {
-                        if (enemyManager.alertTimer > 0)
-                        {
-                            enemyManager.alertTimer -= 0.5f * Time.deltaTime;
-                        }
-                        else
-                        {
-                            enemyManager.alertTimer = 0;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                if (!enemyManager.isAlerting)
                 {
                     if (enemyManager.alertTimer > 0)
                     {
@@ -184,14 +172,12 @@ public class IdleState : State
                     }
                     else
                     {
+                        enemyManager.isAlerting = false;
                         enemyManager.alertTimer = 0;
                     }
                 }
             }
-        }
-        if (alertCollider.Length <= 0)
-        {
-            if (!enemyManager.isAlerting)
+            else
             {
                 if (enemyManager.alertTimer > 0)
                 {
@@ -199,14 +185,27 @@ public class IdleState : State
                 }
                 else
                 {
+                    enemyManager.isAlerting = false;
                     enemyManager.alertTimer = 0;
                 }
+            }
+        }
+        if (alertCollider.Length <= 0)
+        {
+            if (enemyManager.alertTimer > 0)
+            {
+                enemyManager.alertTimer -= 0.5f * Time.deltaTime;
+            }
+            else
+            {
+                enemyManager.isAlerting = false;
+                enemyManager.alertTimer = 0;
             }
         }
         #endregion
 
         #region 敌人的直接侦测范围设置
-        colliders = Physics.OverlapSphere(enemyManager.transform.position, enemyManager.detectionRadius, detectionLayer);
+        colliders = Physics.OverlapSphere(enemyManager.transform.position, enemyManager.curDetectionRadius, detectionLayer);
         for (int i = 0; i < colliders.Length; i++)
         {
             CharacterStats characterStats = colliders[i].transform.GetComponent<CharacterStats>();
@@ -231,7 +230,7 @@ public class IdleState : State
         }
         #endregion
 
-        if (enemyManager.alertingTarget != null)
+        if (enemyManager.isAlerting)
         {
             if (!enemyManager.isEquipped && !enemyManager.ambushEnemy && !enemyManager.isNoWeapon) //没装备武器就把武器装上
             {
@@ -257,9 +256,6 @@ public class IdleState : State
             {
                 PlayerNoticeAnnounce(announceDistance);
             }
-            enemyManager.isAlerting = false;
-            enemyManager.alertingTarget = null;
-            enemyManager.alertTimer = 0;
             enemyAnimatorManager.animator.SetFloat("Horizontal", 0, 0.1f, Time.deltaTime);
             return pursueState; //当发现目标后, 进入追踪模式
         }
@@ -274,26 +270,27 @@ public class IdleState : State
         EnemyManager enemyManager = transform.GetComponentInParent<EnemyManager>();
         EnemyAnimatorManager enemyAnimatorManager = enemyManager.GetComponentInChildren<EnemyAnimatorManager>();
 
-        float distanceFromTarget = Vector3.Distance(enemyManager.curTarget.transform.position, enemyManager.transform.position);
-
-        if (executionCall)
+        if (!enemyManager.calledAlready) 
         {
-            announcePrefab.gameObject.SetActive(true);
-            announcePrefab.announceSoundDistance = maxDistance;
-            announcePrefab.isExecutionCall = executionCall;
-        }
-
-        else 
-        {
-            if (enemyManager.canAlertOthers && distanceFromTarget<= enemyManager.detectionRadius) 
+            if (executionCall)
             {
                 announcePrefab.gameObject.SetActive(true);
                 announcePrefab.announceSoundDistance = maxDistance;
                 announcePrefab.isExecutionCall = executionCall;
-                enemyAnimatorManager.attackAudio.volume = 0.15f;
-                enemyAnimatorManager.attackAudio.clip = enemyAnimatorManager.sample_SFX.EnemyCallingSFX;
-                enemyAnimatorManager.attackAudio.Play();
             }
+            else
+            {
+                if (enemyManager.canAlertOthers)
+                {
+                    announcePrefab.gameObject.SetActive(true);
+                    announcePrefab.announceSoundDistance = maxDistance;
+                    enemyAnimatorManager.attackAudio.volume = 0.15f;
+                    announcePrefab.isExecutionCall = executionCall;
+                    enemyAnimatorManager.attackAudio.clip = enemyAnimatorManager.sample_SFX.EnemyCallingSFX;
+                    enemyAnimatorManager.attackAudio.Play();
+                }
+            }
+            enemyManager.calledAlready = true;
         }
     }
     public void AnnouncedByOtherEnemy(EnemyStats announcingEnemy, bool executionCall = false) 
@@ -312,6 +309,8 @@ public class IdleState : State
             {
                 announcedByOther = true;
                 selfEnemyManager.curTarget = announcingEnemyManager.curTarget;
+                selfEnemyManager.isAlerting = true;
+                selfEnemyManager.alertTimer = 5f;
             }
             else //但如果看到玩家的话
             {
@@ -330,6 +329,7 @@ public class IdleState : State
         {
             //ExecutionDeadCall
             selfEnemyManager.isAlerting = true;
+            selfEnemyManager.alertTimer = 5f;
             selfEnemyManager.alertingTarget = announcingEnemy;
         }
     }

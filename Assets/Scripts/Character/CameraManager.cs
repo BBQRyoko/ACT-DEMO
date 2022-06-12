@@ -54,7 +54,7 @@ public class CameraManager : MonoBehaviour
     public Transform currentLockOnTarget;
     public Image lockOnPrefab;
     Image lockOnMark;
-    [SerializeField] float maxLockingResetDistance = 50f;
+    [SerializeField] float maxLockingResetDistance = 20f;
     float lockOnResetTimer;
 
     //瞄准相关
@@ -75,7 +75,7 @@ public class CameraManager : MonoBehaviour
     public Transform nearestLockOnTarget;
     public Transform leftLockTarget;
     public Transform rightLockTarget;
-    public float maxLockOnDistance = 30;
+    public float maxLockOnDistance = 18f;
     public bool isLockOn;
 
     private void Awake()
@@ -419,7 +419,7 @@ public class CameraManager : MonoBehaviour
             float distanceFromTarget = Vector3.Distance(currentLockOnTarget.transform.position, targetTransform.transform.position);
             if (distanceFromTarget > maxLockingResetDistance)
             {
-                if (lockOnResetTimer < 4f)
+                if (lockOnResetTimer < 1f)
                 {
                     lockOnResetTimer += Time.deltaTime;
                 }

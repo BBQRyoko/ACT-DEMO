@@ -22,6 +22,7 @@ public class EnemyStats : CharacterStats
         animator = GetComponentInChildren<Animator>();
         animatorManager = GetComponentInChildren<EnemyAnimatorManager>();
         enemyWeaponSlotManager = GetComponentInChildren<EnemyWeaponSlotManager>();
+        idleState = GetComponentInChildren<IdleState>();
     }
     private void Start()
     {
@@ -108,9 +109,18 @@ public class EnemyStats : CharacterStats
                     animatorManager.PlayTargetAnimation("Hit_Large", true, true);
                 }
 
-                if (!enemyManager.isEquipped)
+                if (enemyManager.canAlertOthers && !enemyManager.calledAlready) 
                 {
-                    enemyWeaponSlotManager.WeaponEquip();
+                    idleState.PlayerNoticeAnnounce(idleState.announceDistance, false);
+                }
+                if (!enemyManager.isAlerting && !enemyManager.curTarget)
+                {
+                    enemyManager.isAlerting = true;
+                    enemyManager.alertTimer = 5f;
+                }
+                else 
+                {
+                    enemyManager.alertTimer = 5f;
                 }
                 enemyManager.curTarget = characterStats;
             }

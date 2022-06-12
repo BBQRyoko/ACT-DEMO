@@ -5,10 +5,11 @@ using UnityEngine.UI;
 
 public class EnemyFillingUI : MonoBehaviour
 {
-    public enum fillingType {health, alert};
+    public enum fillingType {health, alert, stamina};
     public fillingType fillUIType;
     public EnemyManager enemyManager;
     public Slider slider;
+    [SerializeField] EnemyFillingUI staminaFillingUI;
 
     private void Update()
     {
@@ -16,9 +17,13 @@ public class EnemyFillingUI : MonoBehaviour
         {
             slider.value = enemyManager.GetComponent<EnemyStats>().currHealth;
         }
-        else if (fillUIType == fillingType.alert) 
+        else if (fillUIType == fillingType.alert)
         {
             slider.value = enemyManager.alertTimer;
+        }
+        else if (fillUIType == fillingType.stamina) 
+        {
+            slider.value = GetComponentInParent<EnemyFillingUI>().enemyManager.GetComponent<EnemyStats>().currStamina;
         }
 
         if (slider.value <= 0)
@@ -38,10 +43,14 @@ public class EnemyFillingUI : MonoBehaviour
             Destroy(gameObject, 1.5f);
         }
 
-        if (fillUIType == fillingType.alert && enemyManager.curTarget)
+        if (fillUIType == fillingType.alert)
         {
-            Destroy(gameObject);
+            if (enemyManager.isDead || (enemyManager.curTarget && !enemyManager.isAlerting))
+            {
+                Destroy(gameObject);
+            }
         }
+
     }
     public void SetEnemyManager(EnemyManager enemyManager) 
     {
@@ -49,6 +58,8 @@ public class EnemyFillingUI : MonoBehaviour
         if (fillUIType == fillingType.health && enemyManager != null)
         {
             slider.maxValue = enemyManager.GetComponent<EnemyStats>().maxHealth;
+            staminaFillingUI.slider.maxValue = enemyManager.GetComponent<EnemyStats>().maxStamina;
+            staminaFillingUI.enemyManager = enemyManager;
         }
         else if (fillUIType == fillingType.alert)
         {

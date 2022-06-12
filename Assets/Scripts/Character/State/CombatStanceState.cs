@@ -41,6 +41,15 @@ public class CombatStanceState : State
             enemyAnimatorManager.animator.SetFloat("Horizontal", 0);
             return this;
         }
+        //最大侦测距离调整
+        if (enemyManager.curDetectionRadius != enemyManager.detectionRadius) enemyManager.curDetectionRadius = enemyManager.detectionRadius;
+        //重置alert
+        if (enemyManager.isAlerting)
+        {
+            enemyManager.isAlerting = false;
+            enemyManager.alertingTarget = null;
+            enemyManager.alertTimer = 0;
+        }
         //确认单位与目标间的距离
         distanceFromTarget = Vector3.Distance(enemyManager.curTarget.transform.position, enemyManager.transform.position);
         enemyAnimatorManager.animator.SetFloat("Vertical", verticalMovementVaule, 0.2f, Time.deltaTime);

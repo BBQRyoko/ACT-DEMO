@@ -441,7 +441,7 @@ public class PlayerManager : CharacterManager
     }
     public void YinYangAbilityActivate() 
     {
-        if (yinYangAbilityOn && !isHolding && !isAiming) 
+        if (yinYangAbilityOn && !isHolding && !isAiming && !isStunned) 
         {
             if (baGuaManager.tutorialUp && baGuaManager.ultimateTutorial) 
             {

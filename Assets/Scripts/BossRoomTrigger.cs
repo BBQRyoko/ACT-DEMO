@@ -9,6 +9,7 @@ public class BossRoomTrigger : MonoBehaviour
     [SerializeField] bool playerEntered;
     [SerializeField] EnemyStats bossStats;
     [SerializeField] GameObject bossHealthBar;
+    [SerializeField] StaminaBar bossStaminaBar;
 
     public bool katanaRequired;
     [SerializeField] GameObject weaponSwitch_guide;
@@ -17,6 +18,7 @@ public class BossRoomTrigger : MonoBehaviour
     void Start()
     {
         playerManager = FindObjectOfType<PlayerManager>();
+        bossStaminaBar = bossHealthBar.GetComponentInChildren<StaminaBar>();
     }
 
     // Update is called once per frame
@@ -37,6 +39,7 @@ public class BossRoomTrigger : MonoBehaviour
         if (playerEntered)
         {
             bossHealthBar.GetComponent<HealthBar>().SetCurrentHealth(bossStats.currHealth);
+            bossStaminaBar.SetCurrentStamina(bossStats.currStamina);
         }
 
         if (playerManager.isDead)
@@ -76,6 +79,7 @@ public class BossRoomTrigger : MonoBehaviour
             playerEntered = true;
             bossHealthBar.SetActive(true);
             bossHealthBar.GetComponent<HealthBar>().SetMaxHealth(bossStats.maxHealth);
+            bossStaminaBar.SetMaxStamina(bossStats.maxStamina);
         }
     }
 

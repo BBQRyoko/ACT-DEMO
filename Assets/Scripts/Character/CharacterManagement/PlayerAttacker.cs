@@ -70,7 +70,7 @@ public class PlayerAttacker : MonoBehaviour
     public void HandleRegularAttack(WeaponItem weapon) //左键普攻
     {
         //使用指定武器信息中的普通攻击
-        if (!playerManager.cantBeInterrupted && playerManager.isGround && !playerManager.isGettingDamage && !playerManager.isHanging && !playerManager.isClimbing)
+        if (!playerManager.cantBeInterrupted && playerManager.isGround && !playerManager.isGettingDamage && !playerManager.isHanging && !playerManager.isClimbing && !playerManager.isDefending && !playerManager.isStunned)
         {
             playerLocmotion.HandleRotateTowardsTarger();
             playerManager.GetComponent<BaGuaManager>().isSwitchAttack = false;
@@ -258,11 +258,13 @@ public class PlayerAttacker : MonoBehaviour
         if (playerManager.isInteracting || !playerManager.isGround || playerManager.isHanging || playerManager.isClimbing) return;
         if (playerInventory.curEquippedWeaponItem.Id == 0) //大剑
         {
+            playerLocmotion.HandleRotateTowardsTarger();
             HandleHoldingAbility();
             animatorManager.animator.SetBool("isDefending", playerManager.isHolding);
         }
         else if (playerInventory.curEquippedWeaponItem.Id == 1) //太刀
         {
+            playerLocmotion.HandleRotateTowardsTarger();
             HandleHoldingAbility();
             animatorManager.animator.SetBool("isDefending", playerManager.isHolding);
         }

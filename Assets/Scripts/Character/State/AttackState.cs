@@ -15,6 +15,13 @@ public class AttackState : State
     public bool hasPerformedAttack = false;
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
     {
+        if (enemyManager.isAlerting) 
+        {
+            enemyManager.isAlerting = false;
+            enemyManager.alertingTarget = null;
+            enemyManager.alertTimer = 0;
+        }
+
         float distanceFromTarget = Vector3.Distance(enemyManager.curTarget.transform.position, enemyManager.transform.position);
         enemyManager.isParrying = false;
         RotateTowardsTargetWhiletAttacking(enemyManager);
