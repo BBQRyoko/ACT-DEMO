@@ -55,8 +55,8 @@ public class CombatStanceState : State
         enemyAnimatorManager.animator.SetFloat("Vertical", verticalMovementVaule, 0.2f, Time.deltaTime);
         enemyAnimatorManager.animator.SetFloat("Horizontal", horizontalMovementVaule, 0.2f, Time.deltaTime);
         attackState.hasPerformedAttack = false;
-        SpecialActionWatcher(enemyManager);
         DamageTakenWindow(enemyManager, enemyAnimatorManager); //位置可能要改
+        SpecialActionWatcher(enemyManager);
 
         if (dummyMode) 
         {
@@ -425,11 +425,11 @@ public class CombatStanceState : State
             }
             else if (enemyManager.dodgePriority > 0 && enemyManager.defPriority <= 0) 
             {
-                defendProbility = (1 - (float)enemyStats.currHealth / (float)enemyStats.maxHealth) * enemyManager.defPriority;
+                dodgeProbility = (1 - (float)enemyStats.currHealth / (float)enemyStats.maxHealth) * enemyManager.dodgePriority;
             }
             else if (enemyManager.dodgePriority <= 0 && enemyManager.defPriority > 0)
             {
-                dodgeProbility = (1 - (float)enemyStats.currHealth / (float)enemyStats.maxHealth) * enemyManager.dodgePriority;
+                defendProbility = (1 - (float)enemyStats.currHealth / (float)enemyStats.maxHealth) * enemyManager.defPriority;
             }
             if (enemyManager.rollAtkPriority > 0) 
             {
@@ -447,11 +447,11 @@ public class CombatStanceState : State
                         if (enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted && distanceFromTarget <= enemyManager.minCombatRange)
                         {
                             enemyManager.isDamaged = false;
-                            enemyManager.curRecoveryTime += 1f;
+                            enemyManager.curRecoveryTime = 0.75f;
                             enemyAnimatorManager.animator.SetBool("isDodging", true);
                             enemyAnimatorManager.PlayTargetAnimation("AttackDodge", true, true);
                             isWalkingStop = false;
-                            walkingTimer = 1f;
+                            walkingTimer = 0.25f;
                         }
                     }
                     else if (DamageTakenRandomNum > dodgeProbility && DamageTakenRandomNum <= dodgeProbility + defendProbility) //格挡
@@ -474,13 +474,11 @@ public class CombatStanceState : State
                             enemyManager.curRecoveryTime = 0.25f;
                         }
                     }
-
-                    enemyManager.isDamaged = false;
                 }
-                else
-                {
-                    enemyManager.isDamaged = false;
-                }
+                //else 
+                //{
+                //    isDamaged = false;
+                //}
             }
         }
     }
@@ -523,20 +521,25 @@ public class CombatStanceState : State
                     }
                     else if (specialCondition.condition == SpecialCondition.conditionType.玩家蓄力硬直型) //玩家在aiming holding的时候
                     {
-                        //if (randomDestinationSet && enemyManager.curTarget.GetComponent<PlayerManager>().isCharging && distanceFromTarget<=specialCondition.maxDistanceNeedToAttack) 
-                        //{
-                        //    attackState.curSpecialIndex = index;
-                        //    attackState.curAttack = specialCondition;
-                        //    specialConditionTriggered = true;
-                        //}
+                        if (randomDestinationSet && enemyManager.curTarget.GetComponent<PlayerManager>().isHolding && enemyManager.curTarget.GetComponent<PlayerInventory>().curEquippedWeaponItem.Id == 2) //玩家正在防御时
+                        {
+                            attackState.curSpecialIndex = index;
+                            attackState.curAttack = specialCondition;
+                            specialConditionTriggered = true;
+                        }
                     }
                     else if (specialCondition.condition == SpecialCondition.conditionType.玩家防御型)
                     {
-
+                        if (randomDestinationSet && enemyManager.curTarget.GetComponent<PlayerManager>().isDefending) //玩家正在防御时
+                        {
+                            canCounterAttack = false;
+                            attackState.curSpecialIndex = index;
+                            attackState.curAttack = specialCondition;
+                            specialConditionTriggered = true;
+                        }
                     }
                     else if (specialCondition.condition == SpecialCondition.conditionType.飞行道具型)
                     {
-
                     }
                     else if (specialCondition.condition == SpecialCondition.conditionType.先制型) 
                     {

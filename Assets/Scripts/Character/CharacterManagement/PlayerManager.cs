@@ -251,7 +251,7 @@ public class PlayerManager : CharacterManager
         if (canReset) 
         {
             isPerfect = false;
-            isImmuAttack = false;
+            if(!isWeaponSwitching) isImmuAttack = false;
             isWeaponSwitching = false;
             damageAvoid = false;
             if (weaponSlotManager.weaponDamageCollider) weaponSlotManager.weaponDamageCollider.DisableDamageCollider();

@@ -79,7 +79,6 @@ public class AttackState : State
 
         if (curAttack.canDodge)
         {
-            enemyManager.isDamaged = false;
             enemyManager.GetComponentInChildren<Animator>().SetBool("isDodging", true);
         }
 

@@ -337,7 +337,7 @@ public class PlayerAttacker : MonoBehaviour
             playerManager.isWeaponSwitching = false;
             attackTimer = internalDuration*2;
             //播放指定的攻击动画
-
+            playerManager.isImmuAttack = true;
             animatorManager.PlayTargetAnimation(weapon.transSkills[0].skillName, true, true);
             playerManager.GetComponent<BaGuaManager>().isSwitchAttack = true;
             if (weapon.Id == 2) //使用弓箭时的状态
@@ -357,14 +357,6 @@ public class PlayerAttacker : MonoBehaviour
                 weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.transSkills[0].damagePoint * (1 + playerStats.attackBuffRatio)/10;
                 weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.transSkills[0].energyRestore;
                 playerManager.GetComponent<PlayerStats>().currStamina -= weapon.transSkills[0].staminaCost;
-            }
-            if (weapon.transSkills[0].isImmuAttack)
-            {
-                playerManager.isImmuAttack = true;
-            }
-            else
-            {
-                playerManager.isImmuAttack = false;
             }
             animatorManager.pauseDuration = weapon.transSkills[0].pauseDuration;
         }

@@ -230,7 +230,7 @@ public class ProjectileDamager : MonoBehaviour
                     }
                     Destroy(transform.parent.gameObject);
                 }
-                else if(parryCollider != null) 
+                else if(parryCollider != null && curProjectilType == ProjectilType.regular) 
                 {
                     //普通箭
                     EnemyManager enemyManager = parryCollider.GetComponentInParent<EnemyManager>();

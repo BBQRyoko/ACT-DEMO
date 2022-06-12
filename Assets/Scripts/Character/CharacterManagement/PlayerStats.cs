@@ -63,6 +63,7 @@ public class PlayerStats : CharacterStats
     public void TakeDamage(float damage, Vector3 collisionDirection, bool isHeavy = false)
     {
         float damageAngle = Vector3.SignedAngle(collisionDirection, playerManager.transform.forward, Vector3.up);
+        if (playerManager.isImmuAttack) damage = damage / 2;
         currHealth = currHealth - damage;
         healthBar.SetCurrentHealth(currHealth);
         playerAttacker.comboCount = 0;
@@ -202,7 +203,6 @@ public class PlayerStats : CharacterStats
                             animatorManager.animator.SetBool("isUsingRootMotion", true);
                         }
                         playerAttacker.comboCount = 0;
-                        playerManager.isImmuAttack = false;
                         playerManager.cantBeInterrupted = false;
                         weaponSlotManager.weaponDamageCollider.DisableDamageCollider();
                     }
