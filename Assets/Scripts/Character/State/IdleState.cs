@@ -48,7 +48,7 @@ public class IdleState : State
 
             HandleRotateTowardsTarger(enemyManager);
 
-            if (distanceFromTarget > 1f && !enemyManager.isAlerting)
+            if (distanceFromTarget > 1f && !enemyManager.isAlerting && !enemyManager.isPhaseChaging)
             {
                 enemyAnimatorManager.animator.SetFloat("Vertical", 1f, 0.1f, Time.deltaTime);   //跑回初始点
             }//位置重置相关
@@ -90,7 +90,7 @@ public class IdleState : State
 
             if (distanceFromTarget > 0.55f)
             {
-                if (!enemyManager.alertingTarget && !enemyManager.isAlerting)
+                if (!enemyManager.alertingTarget && !enemyManager.isAlerting && !enemyManager.isPhaseChaging)
                 {
                     enemyAnimatorManager.animator.SetFloat("Vertical", 0.5f, 0.1f, Time.deltaTime);   //朝着目标单位进行移动
                 }
@@ -246,7 +246,7 @@ public class IdleState : State
         }
 
         #region 切换至追踪模式
-        if (enemyManager.curTarget != null)
+        if (enemyManager.curTarget != null && !enemyManager.isPhaseChaging)
         {
             if (!enemyManager.isEquipped && !enemyManager.isNoWeapon) //没装备武器就把武器装上
             {

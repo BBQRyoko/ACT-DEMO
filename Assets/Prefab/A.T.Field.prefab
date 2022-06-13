@@ -4901,7 +4901,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2105112448511016748}
-  - component: {fileID: 2105112448511016749}
   - component: {fileID: 54087066773912864}
   - component: {fileID: 347775381894376938}
   m_Layer: 0
@@ -4927,20 +4926,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &2105112448511016749
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2105112448511016751}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 1.05
-  m_Height: 41.86604
-  m_Direction: 1
-  m_Center: {x: 0.000000043822315, y: 6.5409303, z: -0.00000008764463}
 --- !u!54 &54087066773912864
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4969,7 +4954,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4607299c036775045beeff3da46c1c57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyAnimatorList: []
+  enemyManagerList: []
   filedTime: 6.5
   counterTimer: 0.5
   filedRadius: 8.8

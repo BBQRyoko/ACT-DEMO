@@ -19,6 +19,10 @@ public class EnemyWeaponSlotManager : MonoBehaviour
     public ProjectileDamager flyingObjectDamager2;
     [SerializeField] FlyingObj flyingObj2;
 
+    [Header("FinalBossOnly")]
+    public ProjectileDamager specialProjectilDamager;
+
+
     private void Awake()
     {
         enemyManager = GetComponentInParent<EnemyManager>();
@@ -41,6 +45,7 @@ public class EnemyWeaponSlotManager : MonoBehaviour
     private void Update()
     {
         ComboCheck();
+        if (enemyManager.phaseChanged) { FinalBossProjectileChange(); }
     }
     public void LoadWeaponOnSlot(WeaponItem weaponItem)
     {
@@ -134,6 +139,15 @@ public class EnemyWeaponSlotManager : MonoBehaviour
             {
                 UnequipWeapon.SetActive(true);
             }
+        }
+    }
+    void FinalBossProjectileChange() 
+    {
+        if (flyingObjectDamager != specialProjectilDamager) 
+        {
+            flyingObjectDamager = specialProjectilDamager;
+            flyingObj = specialProjectilDamager.GetComponent<FlyingObj>();
+            enemyManager.arrow = specialProjectilDamager.GetComponent<FlyingObj>();
         }
     }
 }

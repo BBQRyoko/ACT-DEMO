@@ -10,11 +10,8 @@ public class PlayerUIManager : MonoBehaviour
     PlayerManager playerManager;
     PlayerInventory playerInventory;
     public GameObject aimingCorsshair;
-    public GameObject powerArrowUsingIcon;
     public GameObject gsChargeBar;
     public Image gsChargeBarSlider;
-
-    [SerializeField] TextMeshProUGUI powerArrowNum;
 
     //prompt
     public GameObject promptInfo;
@@ -30,16 +27,6 @@ public class PlayerUIManager : MonoBehaviour
 
     private void Update()
     {
-        powerArrowNum.text = playerInventory.powerArrowNum.ToString();
-        if (playerManager.GetComponent<PlayerAttacker>().isUsingPowerArrow)
-        {
-            powerArrowUsingIcon.SetActive(true);
-        }
-        else 
-        {
-            powerArrowUsingIcon.SetActive(false);
-        }
-
         if (promptActive)
         {
             if (promptTimer <= 1)

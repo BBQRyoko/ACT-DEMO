@@ -28,6 +28,11 @@ public class CombatStanceState : State
     float horizontalMovementVaule = 0;
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
     {
+        if (enemyManager.isPhaseChaging)
+        {
+            return idleState;
+        }
+
         if (enemyManager.curTarget.GetComponent<PlayerManager>().isDead) //玩家死亡(临时的, 之后要改)
         {
             enemyAnimatorManager.PlayTargetAnimation("Unarm", true, true);
@@ -35,6 +40,7 @@ public class CombatStanceState : State
             enemyStats.currHealth = enemyStats.maxHealth; //回满血
             return idleState;
         } //判断玩家是否死亡
+
         if (enemyManager.isInteracting) //首先确认是否处在互动状态
         {
             enemyAnimatorManager.animator.SetFloat("Vertical", 0);
@@ -549,6 +555,18 @@ public class CombatStanceState : State
                             attackState.curAttack = specialCondition;
                             specialConditionTriggered = true;
                             enemyManager.firstStrikeTimer = enemyManager.defaultFirstStrikeTime;
+                        }
+                    }
+                    else if (specialCondition.condition == SpecialCondition.conditionType.处决型)
+                    {
+                        if (enemyManager.curTarget.GetComponent<PlayerManager>().isStunned && enemyManager.canExecute) //当玩家处于晕眩状态, 且处决trigger内有玩家单位
+                        {
+                            attackState.isExecution = true;
+                            attackState.curSpecialIndex = index;
+                            attackState.curAttack = specialCondition;
+                            specialConditionTriggered = true;
+                            //加一个额外的bool值让attackState知道，然后开始攻击时让玩家同时播放被处决动画, 玩家位置位移至boss的被处决位置
+                            //同时播放处决音效
                         }
                     }
                 }

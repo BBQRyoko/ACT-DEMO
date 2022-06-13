@@ -14,6 +14,8 @@ public class SamuraiBoss_Teleporting : MonoBehaviour
     public bool dissolving;
     bool teleported;
 
+    [SerializeField] bool isFinalBoss;
+
     [SerializeField] GameObject leafWindVFX;
     [SerializeField] CombatStanceState CombatStanceState;
     // Start is called before the first frame update
@@ -29,9 +31,15 @@ public class SamuraiBoss_Teleporting : MonoBehaviour
     {
         dissolveMatrial.SetFloat("Dissolve", dissolveValue);
 
-        if (CombatStanceState.distanceFromTarget <= 10 && CombatStanceState.distanceFromTarget > 0)
+        if (CombatStanceState.distanceFromTarget <= 10 && CombatStanceState.distanceFromTarget > 0 && !isFinalBoss) 
         {
             TeleportStartEvent();
+        }
+        if (isFinalBoss && enemyManager.GetComponent<EnemyStats>().currHealth <= enemyManager.GetComponent<EnemyStats>().maxHealth -10  && !enemyManager.phaseChanged && !enemyManager.isInteracting) 
+        {
+            TeleportStartEvent();
+            enemyManager.phaseChanged = true;
+            //给enemyManager加一个特殊条件，在结束前保持半血且无敌
         }
 
         if (dissolveValue <= 0)
@@ -47,7 +55,7 @@ public class SamuraiBoss_Teleporting : MonoBehaviour
         {
             if (dissolveValue < 0.85f)
             {
-                dissolveValue += 0.35f * Time.deltaTime;
+                dissolveValue += 0.45f * Time.deltaTime;
             }
             else 
             {
@@ -57,9 +65,17 @@ public class SamuraiBoss_Teleporting : MonoBehaviour
         }
         else 
         {
-            if (dissolveValue > 0) 
+            if (dissolveValue > 0)
             {
-                dissolveValue -= 0.35f * Time.deltaTime;
+                dissolveValue -= 0.65f * Time.deltaTime;
+                if (dissolveValue <= 0) 
+                {
+                    if (enemyManager.phaseChanged && isFinalBoss)
+                    {
+                        enemyManager.isPhaseChaging = true;
+                        enemyManager.GetComponentInChildren<EnemyAnimatorManager>().animator.SetTrigger("teleportingComplete");
+                    }
+                }
             }
         }
     }
@@ -79,9 +95,12 @@ public class SamuraiBoss_Teleporting : MonoBehaviour
     {
         transform.position = teleportingPos.position;
         dissolving = false;
-        inputManager.lockOn_Input = false;
-        inputManager.lockOn_Flag = false;
-        cameraManager.ClearLockOnTargets();
-        Destroy(gameObject, 8f);
+        if (!isFinalBoss)
+        {
+            inputManager.lockOn_Input = false;
+            inputManager.lockOn_Flag = false;
+            cameraManager.ClearLockOnTargets();
+            Destroy(gameObject, 8f);
+        }
     }
 }

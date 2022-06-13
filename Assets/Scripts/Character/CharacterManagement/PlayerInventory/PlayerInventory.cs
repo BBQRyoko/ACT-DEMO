@@ -13,9 +13,6 @@ public class PlayerInventory : MonoBehaviour
     public WeaponItem[] unequippedWeaponItems = new WeaponItem[2];
 
     public List<InventoryItemData> items;
-
-    public int powerArrowNum;
-
     private void Awake()
     {
         playerManager = GetComponent<PlayerManager>();

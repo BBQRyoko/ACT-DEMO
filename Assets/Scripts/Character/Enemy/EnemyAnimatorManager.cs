@@ -203,7 +203,6 @@ public class EnemyAnimatorManager : MainAnimatorManager
     void CombatGroundInitial() 
     {
         TornadoArea.SetActive(true);
-        TornadoArea.transform.parent = null;
     }
     void TornadoSlashBegin(int time) 
     {
@@ -212,6 +211,17 @@ public class EnemyAnimatorManager : MainAnimatorManager
     public void TornadoSlashSpawn() 
     {
         TornadoSlash.SetActive(true);
+    }
+    void WindShieldCast() 
+    {
+        Instantiate(enemyManager.windShield, enemyManager.transform, false);
+    }
+    void phaseChangeComplete() 
+    {
+        if (enemyManager.isPhaseChaging) 
+        {
+            enemyManager.isPhaseChaging = false;
+        }
     }
     IEnumerator Timer(int dur) //播放器暂停
     {

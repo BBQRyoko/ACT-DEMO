@@ -87,7 +87,7 @@ public class BossRoomTrigger : MonoBehaviour
     {
         if (other.gameObject == bossStats.gameObject) 
         {
-            bossStats.GetComponent<EnemyManager>().EnemyRestartReset();
+            if(!bossStats.GetComponent<EnemyManager>().isTaijied) bossStats.GetComponent<EnemyManager>().EnemyRestartReset();
         }
     }
 }

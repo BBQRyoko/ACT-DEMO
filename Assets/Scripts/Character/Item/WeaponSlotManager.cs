@@ -115,10 +115,6 @@ public class WeaponSlotManager : MonoBehaviour
                     mainArmedWeapon = armedWeaponSlot[playerInventory.curEquippedWeaponItem.Id];
                     LoadWeaponOnSlot(playerInventory.unequippedWeaponItems[0], 0);
                     transform.GetComponent<AnimatorManager>().PlayTargetAnimation("WeaponSwitch(Equip)", true, true);
-                    if (playerInventory.curEquippedWeaponItem.Id == 2 && playerInventory.powerArrowNum > 0) 
-                    {
-                        playerAttacker.isUsingPowerArrow = true;
-                    }
                 }
                 else //切换至主武器
                 {

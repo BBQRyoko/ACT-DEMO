@@ -15,6 +15,7 @@ public class Buff : MonoBehaviour
     private void Awake()
     {
         playerStats = GetComponentInParent<PlayerStats>();
+        enemyManager = GetComponentInParent<EnemyManager>();
     }
 
     public void Update()

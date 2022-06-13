@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RotateTowardsTargetState : State
 {
+    public IdleState idleState;
     public CombatStanceState combatStanceState;
     public float viewableAngle;
 
@@ -11,6 +12,11 @@ public class RotateTowardsTargetState : State
     {
         enemyAnimatorManager.animator.SetFloat("Vertical", 0);
         enemyAnimatorManager.animator.SetFloat("Horizontal", 0);
+
+        if (enemyManager.isPhaseChaging)
+        {
+            return idleState;
+        }
 
         if (enemyManager.curTarget)
         {

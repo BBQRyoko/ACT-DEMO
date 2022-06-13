@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "AI/Enemy Actions/SpecialCondition")]
 public class SpecialCondition : EnemyAttackAction
 {
-    public enum conditionType { 距离型, 玩家攻击型, 玩家蓄力硬直型, 玩家防御型, 飞行道具型, 先制型 };
+    public enum conditionType { 距离型, 玩家攻击型, 玩家蓄力硬直型, 玩家防御型, 飞行道具型, 先制型, 处决型 };
     public conditionType condition;
 
     [Header("特殊条件")]

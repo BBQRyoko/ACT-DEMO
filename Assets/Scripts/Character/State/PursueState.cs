@@ -18,6 +18,11 @@ public class PursueState : State
         float viewableAngle = Vector3.SignedAngle(targetDirection, enemyManager.transform.forward, Vector3.up);
         HandleRotateTowardsTarger(enemyManager);
 
+        if (enemyManager.isPhaseChaging) 
+        {
+            return idleState;
+        }
+
         if (enemyManager.isInteracting)
             return this;
 

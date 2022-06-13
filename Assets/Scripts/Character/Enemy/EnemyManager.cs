@@ -111,6 +111,13 @@ public class EnemyManager : CharacterManager
     [SerializeField] GameObject[] containedItem;
     bool itemDrop;
 
+    [Header("FinalBossOnly")]
+    public bool isPhaseChaging;
+    public bool phaseChanged;
+    public bool canExecute;
+    public GameObject windShield;
+
+
     private void Awake()
     {
         enemyHolder = transform.parent.gameObject;
@@ -150,6 +157,7 @@ public class EnemyManager : CharacterManager
         HandleAlert();
         HandleParryCollider();
         HandleHealthBar();
+        FinalBossController();
         ItemDrop();
 
         //if (!alertIconSpawn) 
@@ -450,6 +458,24 @@ public class EnemyManager : CharacterManager
         {
             transform.position = enemyOriginalPosition;
             transform.rotation = enemyOriginalRotation;
+        }
+    }
+    void FinalBossController() 
+    {
+        if (isPhaseChaging)
+        {
+            IdleState idleState = GetComponentInChildren<IdleState>();
+            AttackState attackState = GetComponentInChildren<AttackState>();
+            collider_Self.enabled = false;
+            if (attackState.curAttack) 
+            {
+                attackState.curAttack = null;
+            }
+            curState = idleState;
+        }
+        else 
+        {
+            if (!collider_Self.enabled) collider_Self.enabled = true;
         }
     }
     private void OnDrawGizmosSelected()

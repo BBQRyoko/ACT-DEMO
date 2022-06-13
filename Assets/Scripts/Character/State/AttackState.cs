@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AttackState : State
 {
+    public IdleState idleState;
     public RotateTowardsTargetState rotateTowardsTargetState;
     public CombatStanceState combatStanceState;
     public PursueState pursueState;
@@ -12,14 +13,21 @@ public class AttackState : State
     public int curSpecialIndex;
     public CombatCooldownManager combatCooldownManager;
 
+    public bool isExecution;
+
     public bool hasPerformedAttack = false;
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
     {
-        if (enemyManager.isAlerting) 
+        if (enemyManager.isAlerting)
         {
             enemyManager.isAlerting = false;
             enemyManager.alertingTarget = null;
             enemyManager.alertTimer = 0;
+        }
+
+        if (enemyManager.isPhaseChaging) 
+        {
+            return idleState;
         }
 
         float distanceFromTarget = Vector3.Distance(enemyManager.curTarget.transform.position, enemyManager.transform.position);
@@ -31,9 +39,9 @@ public class AttackState : State
             return pursueState;
         }
 
-        if(!enemyManager.isEquipped) enemyAnimatorManager.PlayTargetAnimation("Equip", true, true);
+        if (!enemyManager.isEquipped) enemyAnimatorManager.PlayTargetAnimation("Equip", true, true);
 
-        if (!hasPerformedAttack) 
+        if (!hasPerformedAttack)
         {
             if (enemyManager.isNoWeapon)
             {
@@ -41,7 +49,7 @@ public class AttackState : State
             }
             else
             {
-                if (enemyManager.isEquipped) 
+                if (enemyManager.isEquipped)
                 {
                     AttackTarget(enemyAnimatorManager, enemyManager); //进行普通攻击动画的播放
                 }
@@ -80,6 +88,14 @@ public class AttackState : State
         if (curAttack.canDodge)
         {
             enemyManager.GetComponentInChildren<Animator>().SetBool("isDodging", true);
+        }
+
+        if (isExecution) 
+        {
+            enemyManager.curTarget.transform.position = enemyManager.execute_Front.position;
+            enemyManager.curTarget.GetComponent<PlayerManager>().HandleExecuted();
+            enemyManager.canExecute = false;
+            isExecution = false;
         }
 
         enemyManager.curRecoveryTime = curAttack.recoveryTime;

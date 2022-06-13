@@ -219,6 +219,7 @@ public class PlayerManager : CharacterManager
 
         if (isStunned && !isToronadoCovered)
         {
+            rig.velocity = new Vector3(0, 0, 0);
             if (!isFalling)
             {
                 stunTimer += Time.deltaTime;
@@ -311,6 +312,11 @@ public class PlayerManager : CharacterManager
         {
             parryCollider.DisableParryCollider();
         }
+    }
+    public void HandleExecuted() 
+    {
+        animatorManager.PlayTargetAnimation("PlayerExecuted", true, true);
+        isStunned = false;
     }
     public void HandleParryingCheck(float incomingDamage) 
     {
@@ -475,7 +481,6 @@ public class PlayerManager : CharacterManager
             playerStats.currHealth = playerStats.maxHealth;
             playerStats.currStamina = 150f;
             baGuaManager.curEnergyCharge = 300f;
-            playerInventory.powerArrowNum = 25;
         }
         else 
         {
@@ -485,7 +490,6 @@ public class PlayerManager : CharacterManager
             playerStats.currHealth = playerStats.maxHealth;
             playerStats.currStamina = 150f;
             baGuaManager.curEnergyCharge = 300f;
-            playerInventory.powerArrowNum = 25;
         }
     }
 }

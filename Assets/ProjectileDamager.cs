@@ -172,6 +172,7 @@ public class ProjectileDamager : MonoBehaviour
                     {
                         if (GetComponentInParent<FlyingObj>())
                         {
+                            Debug.Log("123");
                             playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget = GetComponentInParent<FlyingObj>().shooterPos.GetComponentInParent<EnemyManager>().lockOnTransform;
 
                             playerStats.GetComponent<InputManager>().lockOn_Flag = true;
@@ -180,7 +181,6 @@ public class ProjectileDamager : MonoBehaviour
                         {
                             if (GetComponent<FlyingObj>())
                             {
-                                Debug.Log(GetComponent<FlyingObj>().shooterPos);
                                 playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget = GetComponent<FlyingObj>().shooterPos.GetComponentInParent<EnemyManager>().lockOnTransform;
                                 playerStats.GetComponent<InputManager>().lockOn_Flag = true;
                             }
