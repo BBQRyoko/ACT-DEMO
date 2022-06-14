@@ -341,15 +341,9 @@ public class PlayerManager : CharacterManager
         }
         else if (playerInventory.curEquippedWeaponItem.Id == 1) 
         {
-            if (incomingDamage <= playerStats.maxHealth / 2) //小伤害
-            {
-                playerStats.currStamina -= playerStats.maxStamina * 0.55f;
-            }
-            else //大伤害
-            {
-                playerStats.currStamina -= playerStats.maxStamina * 0.9f;
-            }
+            playerStats.currStamina -= playerStats.maxStamina * 0.55f;
         }
+
         if (playerStats.currStamina > 0)
         {
             staminaRegenPauseTimer = 1.5f;

@@ -93,6 +93,7 @@ public class EnemyManager : CharacterManager
 
     [Header("战斗参数")]
     public float hitRatio = 0.25f; //0~1，数值越高越难出现受击
+    public float attackRatio = 1;
     public float hitGaugeRecoveryRate = 1;
     public float defPriority;
     public float dodgePriority;

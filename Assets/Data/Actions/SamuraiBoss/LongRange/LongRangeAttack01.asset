@@ -17,14 +17,14 @@ MonoBehaviour:
   isFlyingObject: 1
   isHeavyKick: 0
   isHeavyAttack: 0
-  damagePoint: 30
+  damagePoint: 40
   attakPriority: 20
   recoveryTime: 2
   independtCooldown: 12
   maxAttackAngle: 35
   minAttackAngle: -35
-  minDistanceNeedToAttack: 4.5
+  minDistanceNeedToAttack: 4
   maxDistanceNeedToAttack: 15
   isImmune: 0
-  maxSpeed: 25
+  maxSpeed: 55
   canDodge: 0

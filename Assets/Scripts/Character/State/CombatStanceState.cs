@@ -512,17 +512,21 @@ public class CombatStanceState : State
                         {
                             enemyManager.GetComponentInChildren<Animator>().SetBool("isDoding", specialCondition.canDodge);
                             canCounterAttack = false;
+                            enemyManager.isDamaged = false;
                             attackState.curSpecialIndex = index;
                             attackState.curAttack = specialCondition;
                             specialConditionTriggered = true;
+                            enemyManager.curRecoveryTime = 0.25f;
                         }
                         if (randomDestinationSet && enemyManager.curTarget.GetComponent<PlayerManager>().isAttacking && distanceFromTarget <= 2.5f && !enemyManager.isParrying && enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted)
                         {
                             enemyManager.GetComponentInChildren<Animator>().SetBool("isDoding", specialCondition.canDodge);
                             canCounterAttack = false;
+                            enemyManager.isDamaged = false;
                             attackState.curSpecialIndex = index;
                             attackState.curAttack = specialCondition;
                             specialConditionTriggered = true;
+                            enemyManager.curRecoveryTime = 0.25f;
                         }
                     }
                     else if (specialCondition.condition == SpecialCondition.conditionType.玩家蓄力硬直型) //玩家在aiming holding的时候
@@ -538,7 +542,6 @@ public class CombatStanceState : State
                     {
                         if (randomDestinationSet && enemyManager.curTarget.GetComponent<PlayerManager>().isDefending) //玩家正在防御时
                         {
-                            canCounterAttack = false;
                             attackState.curSpecialIndex = index;
                             attackState.curAttack = specialCondition;
                             specialConditionTriggered = true;

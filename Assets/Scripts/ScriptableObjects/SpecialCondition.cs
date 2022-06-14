@@ -18,4 +18,7 @@ public class SpecialCondition : EnemyAttackAction
 
     [Header("先制专用")]
     public float firstStrikeDistance;
+
+    [Header("防御对策专用")]
+    public bool usingMultiAttack;
 }

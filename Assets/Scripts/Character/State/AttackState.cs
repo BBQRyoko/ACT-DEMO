@@ -74,17 +74,17 @@ public class AttackState : State
         enemyAnimatorManager.PlayTargetAnimation(curAttack.actionAnimation, true);
         if (curAttack.isFlyingObject)
         {
-            enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().flyingObjectDamager.curDamage = curAttack.damagePoint;
+            enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().flyingObjectDamager.curDamage = curAttack.damagePoint * enemyManager.attackRatio;
             enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().flyingObjectDamager.isHeavy = curAttack.isHeavyAttack;
         }
         else if(curAttack.isHeavyKick)
         {
-            enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().kickDamagerCollider.curDamage = curAttack.damagePoint;
+            enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().kickDamagerCollider.curDamage = curAttack.damagePoint * enemyManager.attackRatio;
             enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().kickDamagerCollider.isHeavyAttack = curAttack.isHeavyAttack;
         }
         else 
         {
-            enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().weaponDamageCollider.curDamage = curAttack.damagePoint;
+            enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().weaponDamageCollider.curDamage = curAttack.damagePoint * enemyManager.attackRatio;
             enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().weaponDamageCollider.isHeavyAttack = curAttack.isHeavyAttack;
         }
 
