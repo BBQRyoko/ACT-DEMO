@@ -414,11 +414,11 @@ public class CombatStanceState : State
         if (enemyManager.isBlocking)
         {
             enemyManager.isBlocking = false;
-            enemyManager.curRecoveryTime += 1.5f;
+            enemyManager.curRecoveryTime += 0.75f;
             horizontalMovementVaule = 2f;
             verticalMovementVaule = 0f;
             isWalkingStop = true;
-            walkingTimer = 1.5f;
+            walkingTimer = 1f;
         }
         else if (enemyManager.isDamaged && !enemyManager.getingExecute)
         {
@@ -549,7 +549,7 @@ public class CombatStanceState : State
                     }
                     else if (specialCondition.condition == SpecialCondition.conditionType.先制型) 
                     {
-                        if (distanceFromTarget <= specialCondition.firstStrikeDistance && enemyManager.isFirstStrike) 
+                        if (distanceFromTarget <= specialCondition.firstStrikeDistance && enemyManager.isFirstStrike && enemyManager.isEquipped) 
                         {
                             attackState.curSpecialIndex = index;
                             attackState.curAttack = specialCondition;

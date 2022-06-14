@@ -48,7 +48,7 @@ public class BossRoomTrigger : MonoBehaviour
             bossHealthBar.SetActive(false);
         }
 
-        if (bossStats.currHealth <= 0) 
+        if (bossStats.currHealth <= 0)
         {
             bossHealthBar.SetActive(false);
             if (!katanaRequired)
@@ -56,7 +56,7 @@ public class BossRoomTrigger : MonoBehaviour
                 playerEntered = false;
                 Destroy(this.gameObject);
             }
-            else 
+            else
             {
                 if (playerManager.GetComponent<PlayerInventory>().curEquippedWeaponItem.Id == 1)
                 {
@@ -74,7 +74,7 @@ public class BossRoomTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) 
+        if (other.CompareTag("Player"))
         {
             playerEntered = true;
             bossHealthBar.SetActive(true);
@@ -85,9 +85,9 @@ public class BossRoomTrigger : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject == bossStats.gameObject) 
+        if (other.gameObject == bossStats.gameObject)
         {
-            if(!bossStats.GetComponent<EnemyManager>().isTaijied) bossStats.GetComponent<EnemyManager>().EnemyRestartReset();
+            if (!bossStats.GetComponent<EnemyManager>().isTaijied && !playerEntered) bossStats.GetComponent<EnemyManager>().EnemyRestartReset();
         }
     }
 }

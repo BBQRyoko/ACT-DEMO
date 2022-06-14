@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: TransAttack
   isImmuAttack: 1
-  damagePoint: 55
-  tenacityDamagePoint: 65
+  isHeavy: 0
+  damagePoint: 60
+  tenacityDamagePoint: 40
   staminaCost: 0
-  energyRestore: 0
+  hitPoint: 3
+  energyRestore: 20
   pauseDuration: 6
   VFXs: []
   SFXs: []

@@ -7,10 +7,12 @@ public class Skill : ScriptableObject
 {
     public string skillName;
     public bool isImmuAttack = false;
-    public int damagePoint;
-    public int tenacityDamagePoint;
-    public int staminaCost = 15;
-    public int energyRestore = 20;
+    public bool isHeavy;
+    public float damagePoint;
+    public float tenacityDamagePoint;
+    public float staminaCost = 15;
+    public float hitPoint = 3;
+    public float energyRestore = 5;
     public int pauseDuration = 10;
     //public Animation animation;
     public ParticleSystem[] VFXs;

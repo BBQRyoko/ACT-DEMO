@@ -37,9 +37,9 @@ public class EnemyStats : CharacterStats
     {
         StaminaRegen();
     }
-    public void TakeDamage(float damage, float staminaDamage, Vector3 collisionDir, CharacterStats characterStats = null)
+    public void TakeDamage(float damage, float staminaDamage, bool isHeavy, Vector3 collisionDir, CharacterStats characterStats = null)
     {
-        if (!enemyManager.isDodging) 
+        if (!enemyManager.isDodging)
         {
             float damageAngle = Vector3.SignedAngle(collisionDir, enemyManager.transform.forward, Vector3.up);
             currHealth = currHealth - damage;
@@ -66,7 +66,7 @@ public class EnemyStats : CharacterStats
             }
             else
             {
-                if (currStamina > 0 && hitGauge>= enemyManager.hitRatio * maxStamina)
+                if (currStamina > 0 && (hitGauge >= enemyManager.hitRatio * maxStamina || isHeavy == true))
                 {
                     if (!enemyManager.isImmuneAttacking && !enemyManager.getingExecute && !enemyManager.isDodging)
                     {
@@ -136,9 +136,16 @@ public class EnemyStats : CharacterStats
     }
     public void StaminaRegen()
     {
-        if (!enemyManager.isInteracting && currStamina < maxStamina)
+        if (!enemyManager.isInteracting && currStamina < maxStamina && !enemyManager.isDamaged)
         {
-            currStamina = currStamina + staminaRegen * Time.deltaTime;
+            if (!enemyManager.isParrying && !enemyManager.isDamaged && !enemyManager.isBlocking)
+            {
+                currStamina = currStamina + staminaRegen * Time.deltaTime;
+            }
+            else 
+            {
+                currStamina = currStamina + staminaRegen/2 * Time.deltaTime;
+            }
         }
 
         if (!enemyManager.isInteracting && hitGauge >0 ) 

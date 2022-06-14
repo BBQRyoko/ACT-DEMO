@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: Katana_R_03
   m_EditorClassIdentifier: 
   skillName: Combo_R_03
-  isImmuAttack: 0
-  damagePoint: 35
-  tenacityDamagePoint: 20
+  isImmuAttack: 1
+  isHeavy: 0
+  damagePoint: 30
+  tenacityDamagePoint: 25
   staminaCost: 15
-  energyRestore: 2
+  hitPoint: 2
+  energyRestore: 5
   pauseDuration: 6
   VFXs: []
   SFXs: []

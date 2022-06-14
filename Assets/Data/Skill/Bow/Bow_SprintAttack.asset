@@ -10,16 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 925f15faf6a65f94189f6e4e2885f970, type: 3}
-  m_Name: GreatSword_R_03
+  m_Name: Bow_SprintAttack
   m_EditorClassIdentifier: 
-  skillName: Combo_R_03
+  skillName: SprintAttack
   isImmuAttack: 1
-  damagePoint: 75
-  tenacityDamagePoint: 45
-  staminaCost: 30
-  energyRestore: 2
-  pauseDuration: 3
+  isHeavy: 0
+  damagePoint: 30
+  tenacityDamagePoint: 20
+  staminaCost: 15
+  hitPoint: 2
+  energyRestore: 6
+  pauseDuration: 6
   VFXs: []
   SFXs: []
   isFlyingObject: 0
-  maxSpeed: 20
+  maxSpeed: 55

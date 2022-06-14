@@ -299,6 +299,15 @@ public class AnimatorManager : MainAnimatorManager
             playerManager.isClimbing = true;
         }
     }
+    private void ExecutedDeadCheck() 
+    {
+        animator.SetBool("isDodging", true);
+        if (!playerManager.isDead)
+        {
+            animator.SetTrigger("isAlive");
+        }
+    }
+
     IEnumerator Pause(int dur) //播放器暂停
     {
         float pauseTime = dur / 60f;

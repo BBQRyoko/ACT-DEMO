@@ -132,6 +132,7 @@ public class EnemyManager : CharacterManager
         combatCooldownManager = GetComponentInChildren<CombatCooldownManager>();
         combatStanceState = GetComponentInChildren<CombatStanceState>();
         navMeshAgent.enabled = false;
+        curDetectionRadius = detectionRadius;
         enemyOriginalPosition = transform.position;
         enemyOriginalRotation = transform.rotation;
         originalParent = transform.parent;
@@ -338,7 +339,7 @@ public class EnemyManager : CharacterManager
     }
     public void HandleParryingCheck(float staminaDamage)
     {
-        enemyStats.currStamina -= staminaDamage * 0.8f;
+        enemyStats.currStamina -= staminaDamage;
         if (enemyStats.currStamina > 0)
         {
             enemyAnimatorManager.PlayTargetAnimation("Block_1", true, true);
@@ -411,7 +412,6 @@ public class EnemyManager : CharacterManager
         {
             enemyAnimatorManager.animator.SetBool("isStunned", false);
             stunTimer = 0;
-            enemyStats.maxStamina += 50;
             enemyStats.currStamina = enemyStats.maxStamina;
         }
     }
@@ -475,7 +475,7 @@ public class EnemyManager : CharacterManager
         }
         else 
         {
-            if (!collider_Self.enabled) collider_Self.enabled = true;
+            if (!collider_Self.enabled && !isDead) collider_Self.enabled = true;
         }
     }
     private void OnDrawGizmosSelected()

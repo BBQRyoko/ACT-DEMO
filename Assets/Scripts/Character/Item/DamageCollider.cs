@@ -6,6 +6,7 @@ public class DamageCollider : MonoBehaviour
 {
     //还是要设置攻击的类型
     public bool isHeavyAttack;
+    public bool isEnhanced;
     [SerializeField] CharacterManager characterManager;
     public EnemyManager enemyManager;
     public PlayerManager playerManager;
@@ -18,8 +19,9 @@ public class DamageCollider : MonoBehaviour
 
     public float curDamage = 10;
     public float staminaDamage;
+    public float hitChargeAmount;
     public float energyRestoreAmount = 20;
-    public float chargeAmount;
+
 
     public float weaponWeightRatio;
     public int duration;
@@ -81,8 +83,8 @@ public class DamageCollider : MonoBehaviour
                     attackAudio.clip = sample_SFX.blockedSFX_List[random];
                     attackAudio.Play();
                     damageCollider.enabled = false;
-                    playerManager.GetComponent<PlayerAttacker>().chargeValue += chargeAmount * 0.8f;
-                    playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount / 2);
+                    playerManager.GetComponent<PlayerAttacker>().chargeValue += hitChargeAmount * 0.8f;
+                    playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount * 0.8f);
                     if (playerManager.GetComponent<PlayerAttacker>().gsChargeLevel >= 1)
                     {
                         playerManager.GetComponent<PlayerAttacker>().gsChargeSlot -= 50;
@@ -92,7 +94,15 @@ public class DamageCollider : MonoBehaviour
                         playerManager.GetComponent<BaGuaManager>().curEnergyCharge += 50f;
                         playerManager.GetComponent<BaGuaManager>().isSwitchAttack = false;
                     }
-                    enemyManager.HandleParryingCheck(curDamage);
+                    if (isEnhanced)
+                    {
+                        enemyManager.HandleParryingCheck(2 * staminaDamage);
+                    }
+                    else 
+                    {
+                        enemyManager.HandleParryingCheck(staminaDamage/2);
+                    }
+                    isEnhanced = false;
                     //HitPause(duration);
                 }
             }
@@ -161,9 +171,9 @@ public class DamageCollider : MonoBehaviour
                 int random = Random.Range(0, i - 1);
                 attackAudio.clip = sample_SFX.hittedSFX_List[random];
                 attackAudio.Play();
-                enemyStats.TakeDamage(curDamage, staminaDamage, hitDirection, playerManager.GetComponent<PlayerStats>());
+                enemyStats.TakeDamage(curDamage, staminaDamage, isHeavyAttack, hitDirection, playerManager.GetComponent<PlayerStats>());
                 //HitPause(duration);
-                playerManager.GetComponent<PlayerAttacker>().chargeValue += chargeAmount;
+                playerManager.GetComponent<PlayerAttacker>().chargeValue += hitChargeAmount;
                 playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount);
                 if (playerManager.GetComponent<PlayerAttacker>().gsChargeLevel >= 1) 
                 {

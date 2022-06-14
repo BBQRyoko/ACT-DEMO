@@ -8,6 +8,7 @@ public class AreaDamager : MonoBehaviour
     [SerializeField] float staminaDamage;
     [SerializeField] float radius;
     [SerializeField] float existDuration=3f;
+    [SerializeField] bool isHeavy;
     bool exploed;
 
     private void Start()
@@ -40,7 +41,7 @@ public class AreaDamager : MonoBehaviour
                             hitDirection.y = 0;
                             hitDirection.Normalize();
 
-                            enemyStats.TakeDamage(curDamage, staminaDamage, hitDirection);
+                            enemyStats.TakeDamage(curDamage, staminaDamage, isHeavy, hitDirection);
                             exploed = true;
                         }
                         if (playerStats != null)

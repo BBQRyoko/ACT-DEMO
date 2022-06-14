@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Combo_R_02
   isImmuAttack: 1
+  isHeavy: 0
   damagePoint: 40
-  tenacityDamagePoint: 20
+  tenacityDamagePoint: 25
   staminaCost: 20
-  energyRestore: 2
+  hitPoint: 3
+  energyRestore: 5
   pauseDuration: 6
   VFXs: []
   SFXs: []

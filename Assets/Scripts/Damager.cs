@@ -74,7 +74,7 @@ public class Damager : MonoBehaviour
             AnimatorManager animatorManager = playerStats.GetComponentInChildren<AnimatorManager>();
             if (enemyStats != null)
             {
-                enemyStats.TakeDamage(curDamage,staminaDamage, hitDirection);
+                enemyStats.TakeDamage(curDamage,staminaDamage, isHeavy,hitDirection);
                 enemyStats.GetComponent<EnemyManager>().curTarget = playerStats;
                 animatorManager.generalAudio.volume = 0.1f;
                 animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[3];

@@ -63,12 +63,17 @@ public class PlayerStats : CharacterStats
     public void TakeDamage(float damage, Vector3 collisionDirection, bool isHeavy = false)
     {
         float damageAngle = Vector3.SignedAngle(collisionDirection, playerManager.transform.forward, Vector3.up);
-        if (playerManager.isImmuAttack) damage = damage / 2;
+        if (playerManager.isImmuAttack) damage = damage * 0.65f;
         currHealth = currHealth - damage;
         healthBar.SetCurrentHealth(currHealth);
         playerAttacker.comboCount = 0;
         weaponSlotManager.UnloadArrowOnSlot();
         playerManager.isHanging = false;
+        playerManager.isHolding = false;
+        playerManager.isDefending = false;
+        inputManager.weaponAbility_Input = false;
+        animatorManager.animator.ResetTrigger("isHoldingCancel");
+
         if (currHealth <= 0)
         {
             currHealth = 0;
@@ -82,7 +87,7 @@ public class PlayerStats : CharacterStats
             {
                 if (!isHeavy)
                 {
-                    if (!playerManager.isImmuAttack)
+                    if (!playerManager.isImmuAttack && !playerManager.isGetingExecuted)
                     {
                         animatorManager.animator.speed = 1;
                         if (!playerManager.isImmuAttack)
@@ -119,7 +124,7 @@ public class PlayerStats : CharacterStats
             {
                 if (!isHeavy)
                 {
-                    if (!playerManager.isImmuAttack) 
+                    if (!playerManager.isImmuAttack && !playerManager.isGetingExecuted) 
                     {
                         animatorManager.animator.speed = 1;
                         if (!playerManager.isImmuAttack)
@@ -156,7 +161,7 @@ public class PlayerStats : CharacterStats
             {
                 if (!isHeavy)
                 {
-                    if (!playerManager.isImmuAttack)
+                    if (!playerManager.isImmuAttack && !playerManager.isGetingExecuted)
                     {
                         animatorManager.animator.speed = 1;
                         if (!playerManager.isImmuAttack)
@@ -193,7 +198,7 @@ public class PlayerStats : CharacterStats
             {
                 if (!isHeavy)
                 {
-                    if (!playerManager.isImmuAttack)
+                    if (!playerManager.isImmuAttack && !playerManager.isGetingExecuted)
                     {
                         animatorManager.animator.speed = 1;
                         if (!playerManager.isImmuAttack)

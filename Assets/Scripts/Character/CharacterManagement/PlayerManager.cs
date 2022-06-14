@@ -47,6 +47,7 @@ public class PlayerManager : CharacterManager
     public bool isImmuAttack;
     public bool cantBeInterrupted;
     public bool isGettingDamage;
+    public bool isGetingExecuted;
     public bool isDefending;
     float staminaRegenPauseTimer;
     public bool staminaRegenPause;
@@ -253,6 +254,7 @@ public class PlayerManager : CharacterManager
         {
             isPerfect = false;
             if(!isWeaponSwitching) isImmuAttack = false;
+            isGetingExecuted = false;
             isWeaponSwitching = false;
             damageAvoid = false;
             if (weaponSlotManager.weaponDamageCollider) weaponSlotManager.weaponDamageCollider.DisableDamageCollider();
@@ -299,9 +301,10 @@ public class PlayerManager : CharacterManager
     }
     public void HandleDefending() 
     {
+        PlayerInventory playerInventory = GetComponent<PlayerInventory>();
+
         if (isDefending)
         {
-            PlayerInventory playerInventory = GetComponent<PlayerInventory>();
             if (playerInventory.curEquippedWeaponItem.Id == 0) //大剑设置无法移动
             {
                 animator.SetBool("isInteracting", true);
@@ -312,10 +315,19 @@ public class PlayerManager : CharacterManager
         {
             parryCollider.DisableParryCollider();
         }
+
+        if (!inputManager.weaponAbility_Input && playerInventory.curEquippedWeaponItem.Id == 0) 
+        {
+            isDefending = false;
+            animator.ResetTrigger("isHoldingCancel");
+        }
     }
     public void HandleExecuted() 
     {
         animatorManager.PlayTargetAnimation("PlayerExecuted", true, true);
+        animatorManager.generalAudio.volume = 0.1f;
+        animatorManager.generalAudio.clip = animatorManager.sample_SFX.ExecutionSFX;
+        animatorManager.generalAudio.Play();
         isStunned = false;
     }
     public void HandleParryingCheck(float incomingDamage) 

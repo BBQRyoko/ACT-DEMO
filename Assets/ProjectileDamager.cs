@@ -14,9 +14,10 @@ public class ProjectileDamager : MonoBehaviour
     public bool isHeavy;
     public float curDamage = 10;
     public float staminaDamage;
+    public float hitChargeAmount;
     public float energyRestoreAmount = 20;
-    public float chargeAmount;
 
+    public bool isEnhanced;
     public bool isSwitchAttack;
 
     [SerializeField] AudioClip hitAudio;
@@ -172,7 +173,6 @@ public class ProjectileDamager : MonoBehaviour
                     {
                         if (GetComponentInParent<FlyingObj>())
                         {
-                            Debug.Log("123");
                             playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget = GetComponentInParent<FlyingObj>().shooterPos.GetComponentInParent<EnemyManager>().lockOnTransform;
 
                             playerStats.GetComponent<InputManager>().lockOn_Flag = true;
@@ -187,7 +187,7 @@ public class ProjectileDamager : MonoBehaviour
                         }
                     }
                 }
-                else if (parryCollider != null)
+                else if (parryCollider != null) //飞行道具打到格挡
                 {
                     PlayerManager playerManager = parryCollider.GetComponentInParent<PlayerManager>();
                     AudioSource attackAudioSource = playerManager.GetComponentInChildren<AudioSource>();
@@ -209,28 +209,7 @@ public class ProjectileDamager : MonoBehaviour
                 AnimatorManager animatorManager = playerStats.GetComponentInChildren<AnimatorManager>();
                 ParryCollider parryCollider = other.GetComponent<ParryCollider>();
 
-                if (enemyStats != null)
-                {
-                    Vector3 hitDirection = transform.position - enemyStats.transform.position;
-                    hitDirection.y = 0;
-                    hitDirection.Normalize();
-                    enemyStats.TakeDamage(curDamage, staminaDamage, hitDirection);
-                    enemyStats.GetComponent<EnemyManager>().curTarget = playerStats;
-                    playerManager.GetComponent<PlayerAttacker>().chargeValue += chargeAmount;
-                    playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount);
-                    if (playerManager.GetComponent<BaGuaManager>().isSwitchAttack)
-                    {
-                        playerManager.GetComponent<BaGuaManager>().curEnergyCharge += 60f;
-                        playerManager.GetComponent<BaGuaManager>().isSwitchAttack = false;
-                    }
-                    if (hitAudio) 
-                    {
-                        animatorManager.generalAudio.clip = hitAudio;
-                        animatorManager.generalAudio.Play();
-                    }
-                    Destroy(transform.parent.gameObject);
-                }
-                else if(parryCollider != null && curProjectilType == ProjectilType.regular) 
+                if(parryCollider != null && curProjectilType == ProjectilType.regular) 
                 {
                     //普通箭
                     EnemyManager enemyManager = parryCollider.GetComponentInParent<EnemyManager>();
@@ -239,14 +218,42 @@ public class ProjectileDamager : MonoBehaviour
                     int random = Random.Range(0, i - 1);
                     enemyManager.GetComponentInChildren<AudioSource>().clip = enemyManager.GetComponentInChildren<Sample_SFX>().blockedSFX_List[random];
                     enemyManager.GetComponentInChildren<AudioSource>().Play();
-                    playerManager.GetComponent<PlayerAttacker>().chargeValue += chargeAmount * 0.8f;
-                    playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount / 2);
+                    playerManager.GetComponent<PlayerAttacker>().chargeValue += hitChargeAmount * 0.8f;
+                    playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount * 0.8f);
                     if (playerManager.GetComponent<BaGuaManager>().isSwitchAttack)
                     {
                         playerManager.GetComponent<BaGuaManager>().curEnergyCharge += 50f;
                         playerManager.GetComponent<BaGuaManager>().isSwitchAttack = false;
                     }
-                    enemyManager.HandleParryingCheck(curDamage);
+                    if (isEnhanced)
+                    {
+                        enemyManager.HandleParryingCheck(2 * staminaDamage);
+                    }
+                    else 
+                    {
+                        enemyManager.HandleParryingCheck(staminaDamage / 2);
+                    }
+                    Destroy(transform.parent.gameObject);
+                }
+                else if (enemyStats != null)
+                {
+                    Vector3 hitDirection = transform.position - enemyStats.transform.position;
+                    hitDirection.y = 0;
+                    hitDirection.Normalize();
+                    enemyStats.TakeDamage(curDamage, staminaDamage, isHeavy, hitDirection);
+                    enemyStats.GetComponent<EnemyManager>().curTarget = playerStats;
+                    playerManager.GetComponent<PlayerAttacker>().chargeValue += hitChargeAmount;
+                    playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount);
+                    if (playerManager.GetComponent<BaGuaManager>().isSwitchAttack)
+                    {
+                        playerManager.GetComponent<BaGuaManager>().curEnergyCharge += 75f;
+                        playerManager.GetComponent<BaGuaManager>().isSwitchAttack = false;
+                    }
+                    if (hitAudio)
+                    {
+                        animatorManager.generalAudio.clip = hitAudio;
+                        animatorManager.generalAudio.Play();
+                    }
                     Destroy(transform.parent.gameObject);
                 }
                 else

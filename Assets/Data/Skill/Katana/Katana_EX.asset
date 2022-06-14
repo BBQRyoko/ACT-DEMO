@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Execution
   isImmuAttack: 0
-  damagePoint: 30
+  isHeavy: 0
+  damagePoint: 22.5
   tenacityDamagePoint: 0
-  staminaCost: 15
-  energyRestore: 0
-  pauseDuration: 0
+  staminaCost: 0
+  hitPoint: 0
+  energyRestore: 2
+  pauseDuration: 3
   VFXs: []
   SFXs: []
   isFlyingObject: 0

@@ -37,12 +37,12 @@ public class PlayerAttacker : MonoBehaviour
     //大剑相关
     public int gsChargeLevel;
     public float gsChargeSlot;
-    [SerializeField] float gsEnhanceRatio = 1.5f;
+    [SerializeField] float gsEnhanceRatio = 1.75f;
     [SerializeField] GameObject gsEnhanceVFX;
 
     //弓箭相关
     public bool isUsingPowerArrow;
-    [SerializeField] float powerArrowRatio = 1.2f;
+    [SerializeField] float powerArrowRatio = 2f;
 
     //太极切换触发
     public float chargeValue; //switchValue
@@ -89,20 +89,20 @@ public class PlayerAttacker : MonoBehaviour
                     if (playerInventory.curEquippedWeaponItem.Id == 0 && gsChargeLevel >= 1) //当大剑有储能时
                     {
                         weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.executionSkill[0].damagePoint * (1 + playerStats.attackBuffRatio) * gsEnhanceRatio;
-                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.executionSkill[0].tenacityDamagePoint * 2f;
-                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.executionSkill[0].damagePoint * (1 + playerStats.attackBuffRatio) * gsEnhanceRatio / 10;
+                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.executionSkill[0].energyRestore;
                     }
                     else 
                     {
                         weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.executionSkill[0].damagePoint * (1 + playerStats.attackBuffRatio);
-                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.executionSkill[0].tenacityDamagePoint;
-                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.executionSkill[0].damagePoint * (1 + playerStats.attackBuffRatio) / 10;
+                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.executionSkill[0].energyRestore;
                     }
-                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = 0;
+                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = 0;
+                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().hitChargeAmount = 0;
                     animatorManager.pauseDuration = weapon.executionSkill[0].pauseDuration;
                     executionTarget.curTarget = playerStats;
                     executionTarget.getingExecute = true;
                     executionTarget.HandleExecuted(weapon.executionSkill[1].skillName);
+                    playerManager.isImmuAttack = true;
                 }
                 else //常规处决
                 {
@@ -112,16 +112,15 @@ public class PlayerAttacker : MonoBehaviour
                     if (playerInventory.curEquippedWeaponItem.Id == 0 && gsChargeLevel >= 1) //当大剑有储能时
                     {
                         weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.executionSkill[2].damagePoint * (1 + playerStats.attackBuffRatio) * gsEnhanceRatio;
-                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.executionSkill[2].tenacityDamagePoint * 2f;
-                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.executionSkill[2].damagePoint * (1 + playerStats.attackBuffRatio) * gsEnhanceRatio / 10;
+                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.executionSkill[2].energyRestore;
                     }
                     else 
                     {
                         weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.executionSkill[2].damagePoint * (1 + playerStats.attackBuffRatio);
-                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.executionSkill[2].tenacityDamagePoint;
-                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.executionSkill[2].damagePoint * (1 + playerStats.attackBuffRatio) / 10;
+                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.executionSkill[2].energyRestore;
                     }
-                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = 0;
+                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = 0;
+                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().hitChargeAmount = 0;
                     animatorManager.pauseDuration = weapon.executionSkill[2].pauseDuration;
                     executionTarget.getingExecute = true;
                     executionTarget.HandleExecuted(weapon.executionSkill[3].skillName);
@@ -130,6 +129,7 @@ public class PlayerAttacker : MonoBehaviour
                 animatorManager.generalAudio.clip = animatorManager.sample_SFX.ExecutionSFX;
                 animatorManager.generalAudio.Play();
                 executionTarget = null;
+                playerManager.isImmuAttack = true;
             }
             //普通攻击
             else
@@ -149,16 +149,18 @@ public class PlayerAttacker : MonoBehaviour
                         if (playerInventory.curEquippedWeaponItem.Id == 0 && gsChargeLevel >= 1) //当大剑有储能时
                         {
                             weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.springAttack[0].damagePoint * (1 + playerStats.attackBuffRatio) * gsEnhanceRatio;
-                            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.springAttack[0].tenacityDamagePoint * 2f;
-                            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.springAttack[0].damagePoint * (1 + playerStats.attackBuffRatio) * gsEnhanceRatio / 10;
-                            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.springAttack[0].energyRestore;
+                            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.springAttack[0].tenacityDamagePoint * (1 + playerStats.attackBuffRatio) * gsEnhanceRatio;
+                            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.springAttack[0].energyRestore;
+                            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().hitChargeAmount = weapon.springAttack[0].hitPoint;
+                            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().isEnhanced = true;
+                            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().isHeavyAttack = true;
                         }
-                        else 
+                        else
                         {
                             weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.springAttack[0].damagePoint * (1 + playerStats.attackBuffRatio);
-                            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.springAttack[0].tenacityDamagePoint;
-                            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.springAttack[0].damagePoint * (1 + playerStats.attackBuffRatio) / 10;
-                            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.springAttack[0].energyRestore;
+                            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.springAttack[0].tenacityDamagePoint * (1 + playerStats.attackBuffRatio);
+                            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.springAttack[0].energyRestore;
+                            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().hitChargeAmount = weapon.springAttack[0].hitPoint;
                         }
                         animatorManager.pauseDuration = weapon.springAttack[0].pauseDuration;
                         playerManager.GetComponent<PlayerStats>().currStamina -= weapon.springAttack[0].staminaCost;
@@ -184,9 +186,9 @@ public class PlayerAttacker : MonoBehaviour
                         {
                             ProjectileDamager projectileDamager = weaponSlotManager.arrowObjs[0].GetComponentInChildren<ProjectileDamager>();
                             projectileDamager.curDamage = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio);
-                            projectileDamager.staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint;
+                            projectileDamager.staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint * (1 + playerStats.attackBuffRatio);
                             projectileDamager.energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
-                            projectileDamager.chargeAmount = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio) / 10;
+                            projectileDamager.hitChargeAmount = weapon.regularSkills[comboCount - 1].hitPoint;
                             weaponSlotManager.arrowObjs[0].m_MaxSpeed = weapon.regularSkills[comboCount - 1].maxSpeed;
                         }
                         else
@@ -194,28 +196,23 @@ public class PlayerAttacker : MonoBehaviour
                             if (playerInventory.curEquippedWeaponItem.Id == 0 && gsChargeLevel >= 1) //当大剑有储能时
                             {
                                 weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio) * gsEnhanceRatio;
-                                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint * 2f;
-                                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio) * gsEnhanceRatio / 10;
-                                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint * (1 + playerStats.attackBuffRatio) * gsEnhanceRatio;
+                                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().hitChargeAmount = weapon.regularSkills[comboCount - 1].hitPoint;
+                                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().isEnhanced = true;
+                                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().isHeavyAttack = true;
                             }
                             else 
                             {
                                 weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio);
-                                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint;
-                                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio) / 10;
-                                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.regularSkills[comboCount - 1].tenacityDamagePoint * (1 + playerStats.attackBuffRatio);
+                                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
+                                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().hitChargeAmount = weapon.regularSkills[comboCount - 1].hitPoint;
                             }
                         }
                         animatorManager.pauseDuration = weapon.regularSkills[comboCount - 1].pauseDuration;
                         playerManager.GetComponent<PlayerStats>().currStamina -= weapon.regularSkills[comboCount - 1].staminaCost;
-                        if (weapon.regularSkills[comboCount - 1].isImmuAttack)
-                        {
-                            playerManager.isImmuAttack = true;
-                        }
-                        else
-                        {
-                            playerManager.isImmuAttack = false;
-                        }
+                        playerManager.isImmuAttack = weapon.regularSkills[comboCount - 1].isImmuAttack;
                     }
                     else
                     {
@@ -225,34 +222,6 @@ public class PlayerAttacker : MonoBehaviour
             }
         }
     }
-    public void HandleSpecialAttack(WeaponItem weapon) //右键特殊攻击
-    {
-        playerLocmotion.HandleRotateTowardsTarger();
-        if (!playerManager.cantBeInterrupted && playerManager.isGround && !playerManager.isGettingDamage)
-        {
-            playerManager.cantBeInterrupted = true;
-            animatorManager.animator.SetBool("isAttacking", true);
-            attackTimer = internalDuration;
-            if (comboCount == 0)
-            {
-                //右键的第一下就是普通的第一下
-                animatorManager.PlayTargetAnimation(weapon.regularSkills[comboCount].skillName, true, true);
-                comboCount++;
-            }
-            else
-            {
-                ////其余都播放特殊攻击的动作
-                animatorManager.PlayTargetAnimation(weapon.specialSkills[comboCount - 1].skillName, true, true);
-                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.regularSkills[comboCount - 1].damagePoint * (1 + playerStats.attackBuffRatio);
-                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
-                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.regularSkills[comboCount - 1].energyRestore;
-                playerManager.GetComponent<PlayerStats>().currStamina -= weapon.regularSkills[comboCount - 1].staminaCost;
-                //sample_VFX_S.curVFX_List[comboCount - 1].Play();
-                comboCount = 0;
-            }
-        }
-        //rig.velocity = new Vector3(0, rig.velocity.y, 0);
-    } //重攻击
     public void HandleWeaponAbility(WeaponItem weapon)
     {
         if (playerManager.isInteracting || !playerManager.isGround || playerManager.isHanging || playerManager.isClimbing) return;
@@ -344,18 +313,22 @@ public class PlayerAttacker : MonoBehaviour
             {
                 ProjectileDamager projectileDamager = weaponSlotManager.arrowObjs[1].GetComponentInChildren<ProjectileDamager>(); //必为强击
                 projectileDamager.curDamage = weapon.transSkills[0].damagePoint * (1 + playerStats.attackBuffRatio);
-                projectileDamager.staminaDamage = weapon.transSkills[0].tenacityDamagePoint;
-                projectileDamager.energyRestoreAmount = weapon.transSkills[0].damagePoint * (1 + playerStats.attackBuffRatio);
-                projectileDamager.chargeAmount = weapon.transSkills[0].energyRestore;
+                projectileDamager.staminaDamage = weapon.transSkills[0].tenacityDamagePoint * (1 + playerStats.attackBuffRatio);
+                projectileDamager.energyRestoreAmount = weapon.transSkills[0].energyRestore;
+                projectileDamager.hitChargeAmount = weapon.transSkills[0].hitPoint;
                 weaponSlotManager.arrowObjs[1].m_MaxSpeed = weapon.transSkills[0].maxSpeed;
             }
             else 
             {
-                if (weapon.Id == 0) gsChargeSlot += 50;
+                if (weapon.Id == 0) 
+                {
+                    gsChargeSlot += 50;
+                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().isEnhanced = true;
+                }
                 weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().curDamage = weapon.transSkills[0].damagePoint * (1 + playerStats.attackBuffRatio);
-                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.transSkills[0].tenacityDamagePoint;
-                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.transSkills[0].damagePoint * (1 + playerStats.attackBuffRatio)/10;
-                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().chargeAmount = weapon.transSkills[0].energyRestore;
+                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.transSkills[0].tenacityDamagePoint * (1 + playerStats.attackBuffRatio);
+                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.transSkills[0].energyRestore;
+                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().hitChargeAmount = weapon.transSkills[0].hitPoint;
                 playerManager.GetComponent<PlayerStats>().currStamina -= weapon.transSkills[0].staminaCost;
             }
             animatorManager.pauseDuration = weapon.transSkills[0].pauseDuration;
@@ -414,9 +387,11 @@ public class PlayerAttacker : MonoBehaviour
         ProjectileDamager PowerfulProjectileDamager = weaponSlotManager.arrowObjs[1].GetComponentInChildren<ProjectileDamager>();
         ProjectileDamager projectileDamager = weaponSlotManager.arrowObjs[0].GetComponentInChildren<ProjectileDamager>();
         PowerfulProjectileDamager.curDamage = projectileDamager.curDamage * powerArrowRatio;
-        PowerfulProjectileDamager.staminaDamage = projectileDamager.staminaDamage * 2f;
-        PowerfulProjectileDamager.energyRestoreAmount = projectileDamager.energyRestoreAmount * 1.5f;
-        PowerfulProjectileDamager.chargeAmount = projectileDamager.chargeAmount * powerArrowRatio / 10;
+        PowerfulProjectileDamager.staminaDamage = projectileDamager.staminaDamage * powerArrowRatio;
+        PowerfulProjectileDamager.energyRestoreAmount = 10f;
+        PowerfulProjectileDamager.hitChargeAmount = 3f;
+        PowerfulProjectileDamager.isEnhanced = true;
+        PowerfulProjectileDamager.isHeavy = true;
     }
     public void GreatSwordChargeController() 
     {

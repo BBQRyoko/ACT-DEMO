@@ -39,7 +39,10 @@ public class AttackState : State
             return pursueState;
         }
 
-        if (!enemyManager.isEquipped) enemyAnimatorManager.PlayTargetAnimation("Equip", true, true);
+        if (!enemyManager.isEquipped) 
+        {
+            enemyAnimatorManager.PlayTargetAnimation("Equip", true, true);
+        }
 
         if (!hasPerformedAttack)
         {
@@ -93,6 +96,7 @@ public class AttackState : State
         if (isExecution) 
         {
             enemyManager.curTarget.transform.position = enemyManager.execute_Front.position;
+            enemyManager.curTarget.GetComponent<PlayerManager>().isGetingExecuted = true;
             enemyManager.curTarget.GetComponent<PlayerManager>().HandleExecuted();
             enemyManager.canExecute = false;
             isExecution = false;

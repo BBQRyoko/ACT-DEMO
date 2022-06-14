@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: BackStab(GreatSword)
   isImmuAttack: 0
+  isHeavy: 0
   damagePoint: 0
   tenacityDamagePoint: 0
-  staminaCost: 15
+  staminaCost: 0
+  hitPoint: 0
   energyRestore: 0
   pauseDuration: 0
   VFXs: []
