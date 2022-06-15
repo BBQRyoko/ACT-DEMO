@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b61a1b5062951144d92cac760fe3e832, type: 3}
+  m_Name: Tornado_Drain
+  m_EditorClassIdentifier: 
+  actionAnimation: Tornado_Drain
+  isSpecial: 0
+  isFlyingObject: 0
+  isHeavyKick: 0
+  isHeavyAttack: 0
+  damagePoint: 1
+  attakPriority: 100
+  recoveryTime: 6
+  independtCooldown: 45
+  maxAttackAngle: 90
+  minAttackAngle: -90
+  minDistanceNeedToAttack: 6.75
+  maxDistanceNeedToAttack: 25
+  isImmune: 0
+  maxSpeed: 45
+  canDodge: 0

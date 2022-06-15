@@ -28,8 +28,9 @@ MonoBehaviour:
   isImmune: 0
   maxSpeed: 20
   canDodge: 1
-  condition: 0
+  condition: 1
   minRange: 0
   maxRange: 2
   requiredRecoveryTime: 2
   firstStrikeDistance: 0
+  usingMultiAttack: 0

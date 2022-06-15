@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b61a1b5062951144d92cac760fe3e832, type: 3}
-  m_Name: Boss3WindOrb
+  m_Name: FrontDash_P2
   m_EditorClassIdentifier: 
-  actionAnimation: Boss3WindOrb
+  actionAnimation: Slide_F
   isSpecial: 0
-  isFlyingObject: 1
+  isFlyingObject: 0
   isHeavyKick: 0
   isHeavyAttack: 0
-  damagePoint: 35
-  attakPriority: 50
-  recoveryTime: 2.5
-  independtCooldown: 15
-  maxAttackAngle: 70
-  minAttackAngle: -70
-  minDistanceNeedToAttack: 8
-  maxDistanceNeedToAttack: 25
-  isImmune: 0
-  maxSpeed: 45
+  damagePoint: 0
+  attakPriority: 10
+  recoveryTime: 0.25
+  independtCooldown: 18
+  maxAttackAngle: 90
+  minAttackAngle: -90
+  minDistanceNeedToAttack: 4
+  maxDistanceNeedToAttack: 10
+  isImmune: 1
+  maxSpeed: 20
   canDodge: 0

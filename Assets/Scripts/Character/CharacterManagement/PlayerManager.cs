@@ -336,8 +336,8 @@ public class PlayerManager : CharacterManager
         PlayerAttacker playerAttacker = GetComponent<PlayerAttacker>();
         if (playerInventory.curEquippedWeaponItem.Id == 0) //大剑防御
         {
-            playerStats.currStamina -= playerStats.maxStamina * 0.35f;
-            playerAttacker.gsChargeSlot += incomingDamage;
+            playerStats.currStamina -= playerStats.maxStamina * 0.2f;
+            playerAttacker.gsChargeSlot += incomingDamage*1.25f;
         }
         else if (playerInventory.curEquippedWeaponItem.Id == 1) 
         {

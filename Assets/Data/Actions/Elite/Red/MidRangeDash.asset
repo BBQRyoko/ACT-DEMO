@@ -20,10 +20,10 @@ MonoBehaviour:
   damagePoint: 65
   attakPriority: 6
   recoveryTime: 1.75
-  independtCooldown: 4
+  independtCooldown: 5
   maxAttackAngle: 90
   minAttackAngle: -90
-  minDistanceNeedToAttack: 6.5
+  minDistanceNeedToAttack: 5.5
   maxDistanceNeedToAttack: 10
   isImmune: 1
   maxSpeed: 20

@@ -35,7 +35,7 @@ public class SamuraiBoss_Teleporting : MonoBehaviour
         {
             TeleportStartEvent();
         }
-        if (isFinalBoss && enemyManager.GetComponent<EnemyStats>().currHealth <= enemyManager.GetComponent<EnemyStats>().maxHealth -10  && !enemyManager.phaseChanged && !enemyManager.isInteracting) 
+        if (isFinalBoss && enemyManager.GetComponent<EnemyStats>().currHealth <= 600  && !enemyManager.phaseChanged && !enemyManager.isInteracting) 
         {
             TeleportStartEvent();
             enemyManager.phaseChanged = true;

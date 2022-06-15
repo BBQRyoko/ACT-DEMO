@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b61a1b5062951144d92cac760fe3e832, type: 3}
+  m_Name: Boss3WindOrb
+  m_EditorClassIdentifier: 
+  actionAnimation: Boss3WindOrb
+  isSpecial: 0
+  isFlyingObject: 1
+  isHeavyKick: 0
+  isHeavyAttack: 0
+  damagePoint: 35
+  attakPriority: 12
+  recoveryTime: 2
+  independtCooldown: 35
+  maxAttackAngle: 70
+  minAttackAngle: -70
+  minDistanceNeedToAttack: 7.5
+  maxDistanceNeedToAttack: 25
+  isImmune: 0
+  maxSpeed: 55
+  canDodge: 0

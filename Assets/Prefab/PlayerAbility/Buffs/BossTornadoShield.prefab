@@ -24349,7 +24349,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buffType: 3
   debuffType: 0
-  duration: 30
+  duration: 20
   buffEffectNum: 0.45
 --- !u!114 &462194065006267584
 MonoBehaviour:

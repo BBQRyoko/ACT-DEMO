@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b61a1b5062951144d92cac760fe3e832, type: 3}
-  m_Name: Tornado_Drain
+  m_Name: FullCombo01_P2
   m_EditorClassIdentifier: 
-  actionAnimation: Tornado_Drain
+  actionAnimation: FullCombo01
   isSpecial: 0
   isFlyingObject: 0
   isHeavyKick: 0
   isHeavyAttack: 0
-  damagePoint: 1
-  attakPriority: 100
-  recoveryTime: 6
-  independtCooldown: 40
-  maxAttackAngle: 90
-  minAttackAngle: -90
-  minDistanceNeedToAttack: 0
-  maxDistanceNeedToAttack: 25
-  isImmune: 0
-  maxSpeed: 45
+  damagePoint: 30
+  attakPriority: 5
+  recoveryTime: 3.5
+  independtCooldown: 30
+  maxAttackAngle: 60
+  minAttackAngle: -60
+  minDistanceNeedToAttack: 2
+  maxDistanceNeedToAttack: 6
+  isImmune: 1
+  maxSpeed: 20
   canDodge: 0
