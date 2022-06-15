@@ -113,11 +113,13 @@ public class EnemyManager : CharacterManager
     bool itemDrop;
 
     [Header("FinalBossOnly")]
+    [SerializeField] StaminaBar bossStaminaBar;
     public bool isPhaseChaging;
     public bool phaseChanged;
     public bool canExecute;
     public GameObject windShield;
-
+    public EnemyAttackAction[] boss2ndPhaseAttacks;
+    public List<SpecialCondition> boss2ndPhaseConditionList;
 
     private void Awake()
     {
@@ -477,6 +479,25 @@ public class EnemyManager : CharacterManager
         else 
         {
             if (!collider_Self.enabled && !isDead) collider_Self.enabled = true;
+        }
+
+        if (phaseChanged) //boss二阶段的状态
+        {
+            combatStanceState.enemyAttacks = boss2ndPhaseAttacks;
+            combatStanceState.conditionList = boss2ndPhaseConditionList;
+            combatStanceState.combatCooldownManager.CombatCooldownReset();
+            enemyStats.currHealth = enemyStats.maxHealth;
+            enemyStats.maxStamina = 250f;
+            enemyStats.currStamina = enemyStats.maxStamina;
+            bossStaminaBar.SetMaxStamina(enemyStats.maxStamina);
+            enemyStats.staminaRegen = 25f;
+            attackRatio = 1.1f;
+            defPriority = 1.25f;
+            dodgePriority = 1.75f;
+            rollAtkPriority = 2f;
+            defensiveRatio = 0.85f;
+            combatStanceState.walkingTimer = 0.55f;
+
         }
     }
     private void OnDrawGizmosSelected()

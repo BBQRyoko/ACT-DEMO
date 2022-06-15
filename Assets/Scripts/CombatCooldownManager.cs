@@ -21,6 +21,21 @@ public class CombatCooldownManager : MonoBehaviour
         }
     }
 
+    public void CombatCooldownReset() 
+    {
+        regularAttackCooldownTimer.Clear();
+        specialAttackCooldownTimer.Clear();
+        foreach (EnemyAttackAction attackAction in combatStanceState.enemyAttacks)
+        {
+            regularAttackCooldownTimer.Add(0);
+        }
+
+        foreach (EnemyAttackAction specialAction in combatStanceState.conditionList)
+        {
+            specialAttackCooldownTimer.Add(0);
+        }
+    }
+
     public void CountDownAllTimer() 
     {
         for (int i = 0; i < regularAttackCooldownTimer.Count; i++) 

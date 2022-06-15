@@ -104,10 +104,21 @@ public class EnemyStats : CharacterStats
                 }
                 else if(currStamina <= 0)
                 {
-                    currStamina = 0;
-                    hitGauge = 0;
-                    animatorManager.PlayTargetAnimation("Hit_Large", true, true);
+                    if (enemyManager.isStunned)
+                    {
+                        GetComponentInChildren<EnemyAnimatorManager>().animator.SetBool("isStunned", false);
+                        enemyManager.stunTimer = 0;
+                        currStamina = maxStamina;
+                        hitGauge = 0;
+                    }
+                    else 
+                    {
+                        animatorManager.PlayTargetAnimation("Hit_Large", true, true);
+                        currStamina = 0;
+                        hitGauge = 0;
+                    }
                 }
+
 
                 if (enemyManager.canAlertOthers && !enemyManager.calledAlready) 
                 {

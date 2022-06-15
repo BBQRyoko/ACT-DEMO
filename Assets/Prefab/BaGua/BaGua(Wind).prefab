@@ -346,7 +346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baGuaManager: {fileID: 0}
-  isOwned: 0
+  isOwned: 1
   canBeSelected: 0
   bagua_Index: 7
   unselectedBagua: {fileID: 6945611025930564669}

@@ -490,7 +490,7 @@ public class CombatStanceState : State
     }
     void SpecialActionWatcher(EnemyManager enemyManager) 
     {
-        if (conditionList != null && enemyManager.curRecoveryTime<=0.5f) 
+        if (conditionList != null && enemyManager.curRecoveryTime<=0.5f && !enemyManager.isTaijied) 
         {
             foreach (SpecialCondition specialCondition in conditionList) 
             {

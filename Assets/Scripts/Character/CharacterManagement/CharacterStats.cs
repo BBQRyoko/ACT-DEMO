@@ -12,7 +12,7 @@ public class CharacterStats : MonoBehaviour
 
     public float currStamina;
     public float maxStamina = 100;
-    [SerializeField] protected float staminaRegen = 5;
+    public float staminaRegen = 5;
 
     private void Update()
     {

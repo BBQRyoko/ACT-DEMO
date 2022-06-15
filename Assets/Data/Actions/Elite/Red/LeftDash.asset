@@ -27,4 +27,4 @@ MonoBehaviour:
   maxDistanceNeedToAttack: 8
   isImmune: 1
   maxSpeed: 20
-  canDodge: 1
+  canDodge: 0

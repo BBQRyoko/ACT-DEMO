@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57779812461a80b4b9efcd1cbae126d2, type: 3}
+  m_Name: FirstAttack_Blue
+  m_EditorClassIdentifier: 
+  actionAnimation: LongRangeAttack01
+  isSpecial: 1
+  isFlyingObject: 1
+  isHeavyKick: 0
+  isHeavyAttack: 0
+  damagePoint: 30
+  attakPriority: 3
+  recoveryTime: 3.5
+  independtCooldown: 10
+  maxAttackAngle: 90
+  minAttackAngle: -90
+  minDistanceNeedToAttack: 0
+  maxDistanceNeedToAttack: 5
+  isImmune: 0
+  maxSpeed: 45
+  canDodge: 0
+  condition: 5
+  minRange: 0
+  maxRange: 0
+  requiredRecoveryTime: 0
+  firstStrikeDistance: 10
+  usingMultiAttack: 0
