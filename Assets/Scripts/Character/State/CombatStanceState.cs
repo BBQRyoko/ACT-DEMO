@@ -75,22 +75,55 @@ public class CombatStanceState : State
             randomDestinationSet = false;
             return attackState;
         }
-        if (enemyManager.curRecoveryTime <= 0 && !enemyManager.attackLock && attackState.curAttack != null && !enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted)
+        if (enemyManager.curRecoveryTime <= 0 && !enemyManager.attackLock && attackState.curAttack != null)
         {
-            if (distanceFromTarget > attackState.curAttack.minDistanceNeedToAttack && !attackingAdjustment && !dummyMode)
+            if (enemyManager.curTarget.GetComponent<PlayerManager>().cantBeInterrupted) //玩家在正好开始攻击时/或者防御状态时
             {
-                notFirstWalking = true;
-                attackingAdjustment = true;
-                WalkAroundTarget(enemyManager, enemyAnimatorManager);
+                if (enemyManager.curTarget.GetComponent<PlayerManager>().isDefending) 
+                {
+                    float attackRandomNum = Random.Range(0.001f, 1);
+                    if (attackRandomNum >= 0.45f)
+                    {
+                        if (distanceFromTarget > attackState.curAttack.minDistanceNeedToAttack && !attackingAdjustment && !dummyMode)
+                        {
+                            notFirstWalking = true;
+                            attackingAdjustment = true;
+                            WalkAroundTarget(enemyManager, enemyAnimatorManager);
+                        }
+                        else
+                        {
+                            walkingTimer = 0f;
+                            randomDestinationSet = false;
+                            notFirstWalking = false;
+                            isWalkingStop = false;
+                            attackingAdjustment = false;
+                            return attackState;
+                        }
+                    }
+                    else 
+                    {
+                        attackState.curAttack = null;
+                        WalkAroundTarget(enemyManager, enemyAnimatorManager);
+                    }
+                }
             }
-            else
-            { 
-                walkingTimer = 0f;
-                randomDestinationSet = false;
-                notFirstWalking = false;
-                isWalkingStop = false;
-                attackingAdjustment = false;
-                return attackState;
+            else 
+            {
+                if (distanceFromTarget > attackState.curAttack.minDistanceNeedToAttack && !attackingAdjustment && !dummyMode)
+                {
+                    notFirstWalking = true;
+                    attackingAdjustment = true;
+                    WalkAroundTarget(enemyManager, enemyAnimatorManager);
+                }
+                else
+                {
+                    walkingTimer = 0f;
+                    randomDestinationSet = false;
+                    notFirstWalking = false;
+                    isWalkingStop = false;
+                    attackingAdjustment = false;
+                    return attackState;
+                }
             }
         }//当GCD转完且有了攻击并且玩家为非攻击状态(以免撞上)
 

@@ -169,14 +169,17 @@ public class EnemyManager : CharacterManager
         //{
         //    alertingTarget = null;
         //}
-        if (isDead && collider_Self.enabled)
+        if (isDead)
         {
             curTarget = null;
-            collider_Self.enabled = false;
-            collider_Combat.enabled = false;
             if (enemyWeaponSlotManager.weaponDamageCollider) enemyWeaponSlotManager.weaponDamageCollider.DisableDamageCollider();
             if (enemyWeaponSlotManager.kickDamagerCollider) enemyWeaponSlotManager.kickDamagerCollider.DisableDamageCollider();
-            Destroy(gameObject.transform.parent.gameObject, 10f);
+            if (collider_Self.enabled) 
+            {
+                collider_Self.enabled = false;
+                collider_Combat.enabled = false;
+                Destroy(gameObject.transform.parent.gameObject, 10f);
+            }
         }
 
         if (curTarget)
