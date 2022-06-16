@@ -1014,7 +1014,7 @@ AnimatorStateMachine:
     m_Position: {x: 40, y: -1100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5676812846551114946}
-    m_Position: {x: -700, y: -150, z: 0}
+    m_Position: {x: -530, y: -150, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2187741689451845656}
     m_Position: {x: -540, y: -630, z: 0}
@@ -1077,7 +1077,7 @@ AnimatorStateMachine:
     m_Position: {x: 440, y: 660, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4339069011985458020}
-    m_Position: {x: -310, y: -240, z: 0}
+    m_Position: {x: -280, y: -190, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5944135821999534896}
     m_Position: {x: -120, y: -340, z: 0}

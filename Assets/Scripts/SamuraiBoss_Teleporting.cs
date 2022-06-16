@@ -15,8 +15,6 @@ public class SamuraiBoss_Teleporting : MonoBehaviour
     public bool dissolving;
     bool teleported;
 
-    [SerializeField] bool isFinalBoss;
-
     [SerializeField] GameObject leafWindVFX;
     [SerializeField] CombatStanceState CombatStanceState;
     // Start is called before the first frame update
@@ -32,15 +30,18 @@ public class SamuraiBoss_Teleporting : MonoBehaviour
     {
         dissolveMatrial.SetFloat("Dissolve", dissolveValue);
 
-        if (CombatStanceState.distanceFromTarget <= 10 && CombatStanceState.distanceFromTarget > 0 && !isFinalBoss) 
+        if (CombatStanceState.distanceFromTarget <= 10 && CombatStanceState.distanceFromTarget > 0 && !enemyManager.isFinalBoss) 
         {
             TeleportStartEvent();
         }
-        if (isFinalBoss && enemyManager.GetComponent<EnemyStats>().currHealth <= requiredHP && !enemyManager.phaseChanged && !enemyManager.isInteracting && !enemyManager.isTaijied && !enemyManager.isStunned) 
+        if (enemyManager.isFinalBoss && enemyManager.GetComponent<EnemyStats>().currHealth <= requiredHP) 
         {
-            TeleportStartEvent();
-            enemyManager.phaseChanged = true;
-            //给enemyManager加一个特殊条件，在结束前保持半血且无敌
+            if (!enemyManager.phaseChanged && !enemyManager.isInteracting && !enemyManager.isTaijied && !enemyManager.isStunned) 
+            {
+                TeleportStartEvent();
+                enemyManager.phaseChanged = true;
+                //给enemyManager加一个特殊条件，在结束前保持半血且无敌
+            }
         }
 
         if (dissolveValue <= 0)
@@ -71,7 +72,7 @@ public class SamuraiBoss_Teleporting : MonoBehaviour
                 dissolveValue -= 0.65f * Time.deltaTime;
                 if (dissolveValue <= 0) 
                 {
-                    if (enemyManager.phaseChanged && isFinalBoss)
+                    if (enemyManager.phaseChanged && enemyManager.isFinalBoss)
                     {
                         enemyManager.isPhaseChaging = true;
                         enemyManager.GetComponentInChildren<EnemyAnimatorManager>().animator.SetTrigger("teleportingComplete");
@@ -96,7 +97,7 @@ public class SamuraiBoss_Teleporting : MonoBehaviour
     {
         transform.position = teleportingPos.position;
         dissolving = false;
-        if (!isFinalBoss)
+        if (!enemyManager.isFinalBoss)
         {
             inputManager.lockOn_Input = false;
             inputManager.lockOn_Flag = false;

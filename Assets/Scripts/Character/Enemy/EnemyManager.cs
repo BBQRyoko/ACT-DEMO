@@ -113,6 +113,7 @@ public class EnemyManager : CharacterManager
     bool itemDrop;
 
     [Header("FinalBossOnly")]
+    public bool isFinalBoss;
     [SerializeField] StaminaBar bossStaminaBar;
     public bool isPhaseChaging;
     public bool phaseChanged;
