@@ -9,6 +9,7 @@ public class SamuraiBoss_Teleporting : MonoBehaviour
     EnemyManager enemyManager;
     [SerializeField] Transform teleportingPos;
 
+    [SerializeField] float requiredHP = 1000;
     public Material dissolveMatrial;
     public float dissolveValue;
     public bool dissolving;
@@ -35,7 +36,7 @@ public class SamuraiBoss_Teleporting : MonoBehaviour
         {
             TeleportStartEvent();
         }
-        if (isFinalBoss && enemyManager.GetComponent<EnemyStats>().currHealth <= 600  && !enemyManager.phaseChanged && !enemyManager.isInteracting) 
+        if (isFinalBoss && enemyManager.GetComponent<EnemyStats>().currHealth <= requiredHP && !enemyManager.phaseChanged && !enemyManager.isInteracting && !enemyManager.isTaijied && !enemyManager.isStunned) 
         {
             TeleportStartEvent();
             enemyManager.phaseChanged = true;

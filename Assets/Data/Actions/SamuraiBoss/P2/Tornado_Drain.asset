@@ -21,8 +21,8 @@ MonoBehaviour:
   attakPriority: 100
   recoveryTime: 6
   independtCooldown: 45
-  maxAttackAngle: 90
-  minAttackAngle: -90
+  maxAttackAngle: 180
+  minAttackAngle: -180
   minDistanceNeedToAttack: 6.75
   maxDistanceNeedToAttack: 25
   isImmune: 0

@@ -18,6 +18,7 @@ public class BaGuaEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     [SerializeField] int bagua_Index;
 
     RectTransform rect;
+    [SerializeField] GameObject unownedBagua;
     [SerializeField] GameObject unselectedBagua;
     [SerializeField] GameObject selectedBagua;
 
