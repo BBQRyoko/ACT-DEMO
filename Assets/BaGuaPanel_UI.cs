@@ -14,9 +14,13 @@ public class BaGuaPanel_UI : MonoBehaviour
     [SerializeField] Transform commandSlotsHolder;
     public List<CommandSlotEntry> commandSlotList;
     [SerializeField] RawImage baguaIcon;
-    [SerializeField] TextMeshProUGUI commandName;
     public string commandString;
+    [SerializeField] GameObject noAbilityIcon;
+    [SerializeField] GameObject abilityIcon;
+    [SerializeField] Image abilityIcon_Image;
 
+    [SerializeField] Sprite[] abilityIcons;
+    [SerializeField] GameObject[] arrows;
 
     [SerializeField] float panelRaduis;
     public bool actived;
@@ -46,6 +50,7 @@ public class BaGuaPanel_UI : MonoBehaviour
         }
         BaGuaRearrange();
         CommandSlotRerrange();
+        noAbilityIcon.SetActive(true);
         actived = true;
     }
     void PanelClose() 
@@ -76,7 +81,6 @@ public class BaGuaPanel_UI : MonoBehaviour
                     gameObject.SetActive(false);
                 };
         }
-        commandName.gameObject.SetActive(false);
         actived = false;
         baguaList.Clear();
         commandSlotList.Clear();
@@ -88,7 +92,9 @@ public class BaGuaPanel_UI : MonoBehaviour
         {
             baGuaManager.baguasHolder.Clear();
         }
-
+        commandString = null;
+        abilityIcon.SetActive(false);
+        foreach (GameObject arrow in arrows) arrow.SetActive(false);
     }
     void PanelSetActiveController() 
     {
@@ -149,10 +155,11 @@ public class BaGuaPanel_UI : MonoBehaviour
             rect.DORotateQuaternion(Quaternion.Euler(0, 0, radiansOfSeparation * (i+1)), 0f);
         }
     }
-    public void CommandFilling(int index)
+    public void CommandFilling(int index, int dir)
     {
         baguaIcon.gameObject.SetActive(true);
         baguaIcon.texture = baGuaManager.baguaRawImage[index];
+        arrows[dir].SetActive(true);
         RectTransform rect = baguaIcon.GetComponent<RectTransform>();
         commandString += index.ToString();
         //Dotween动画
@@ -169,23 +176,41 @@ public class BaGuaPanel_UI : MonoBehaviour
     {
         if (baGuaManager.baguasHolder.Count >= 2)
         {
-            commandName.gameObject.SetActive(true);
             if (commandString == "23" || commandString == "32") //治疗
             {
-                commandName.text = "Heal";
+                abilityIcon.SetActive(true);
+                noAbilityIcon.SetActive(false);
+                abilityIcon_Image.sprite = abilityIcons[0];
             }
             else if (commandString == "03" || commandString == "30") //火球
             {
-                commandName.text = "Fire";
+                abilityIcon.SetActive(true);
+                noAbilityIcon.SetActive(false);
+                abilityIcon_Image.sprite = abilityIcons[1];
+            }
+            else if (commandString == "02" || commandString == "20") //攻击
+            {
+                abilityIcon.SetActive(true);
+                noAbilityIcon.SetActive(false);
+                abilityIcon_Image.sprite = abilityIcons[2];
+            }
+            else if (commandString == "73" || commandString == "37") //龙卷
+            {
+                abilityIcon.SetActive(true);
+                noAbilityIcon.SetActive(false);
+                abilityIcon_Image.sprite = abilityIcons[3];
+            }
+            else if (commandString == "72" || commandString == "27") //风buff
+            {
+                abilityIcon.SetActive(true);
+                noAbilityIcon.SetActive(false);
+                abilityIcon_Image.sprite = abilityIcons[4];
             }
             else
             {
-                commandName.text = "Fail Match";
+                abilityIcon.SetActive(false);
+                noAbilityIcon.SetActive(true);
             }
-        }
-        else 
-        {
-            commandName.gameObject.SetActive(false);
         }
     }
 }

@@ -27,7 +27,7 @@ RectTransform:
   m_GameObject: {fileID: 8520981795578039113}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8520981796497288172}
@@ -203,6 +203,8 @@ MonoBehaviour:
   isOwned: 1
   canBeSelected: 0
   bagua_Index: 3
+  dir_Index: 3
+  unownedBagua: {fileID: 0}
   unselectedBagua: {fileID: 8520981796497288173}
   selectedBagua: {fileID: 8918302296149815211}
 --- !u!1 &8520981796997405969
@@ -232,7 +234,7 @@ RectTransform:
   m_GameObject: {fileID: 8520981796997405969}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8520981796518027667}

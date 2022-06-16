@@ -18,28 +18,28 @@ public class CommandSlotEntry : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        CommandSlotIconController();
-    }
-    void CommandSlotIconController() 
-    {
-        if (!commandSelected)
-        { 
-            slotFillColor.fillAmount = 0; 
-        }
-        else 
-        {
-            slotFillColor.fillAmount += 1.5f * Time.deltaTime;
-            if (slotFillColor.fillAmount >= (1 / (float)baGuaManager.commandSlotNum)) 
-            {
-                slotFillColor.fillAmount = 1 / (float)baGuaManager.commandSlotNum;
-            }
-        }
-    }
-    public void CommandFilling(Color32 color) 
-    {
-        commandSelected = true;
-        slotFillColor.color = color;
-    }
+    //void Update()
+    //{
+    //    CommandSlotIconController();
+    //}
+    //void CommandSlotIconController()
+    //{
+    //    if (!commandSelected)
+    //    {
+    //        slotFillColor.fillAmount = 0;
+    //    }
+    //    else
+    //    {
+    //        slotFillColor.fillAmount += 1.5f * Time.deltaTime;
+    //        if (slotFillColor.fillAmount >= (1 / (float)baGuaManager.commandSlotNum))
+    //        {
+    //            slotFillColor.fillAmount = 1 / (float)baGuaManager.commandSlotNum;
+    //        }
+    //    }
+    //}
+    //public void CommandFilling(Color32 color)
+    //{
+    //    commandSelected = true;
+    //    slotFillColor.color = color;
+    //}
 }

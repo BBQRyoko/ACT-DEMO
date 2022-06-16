@@ -167,13 +167,13 @@ public class PlayerLocmotion : MonoBehaviour
             if (playerManager.isHanging || playerManager.isClimbing) return;
             if (playerManager.isCrouching)
             {
-                curSpeed = crouchSpeed * 1.25f;
+                curSpeed = crouchSpeed * 1.25f * (1 + playerStats.movementBuffRatio); ;
                 moveDirection *= curSpeed;
                 playerStats.CostStamina(15f * Time.deltaTime);
             }
             else
             {
-                curSpeed = sprintSpeed;
+                curSpeed = sprintSpeed * (1 + playerStats.movementBuffRatio);
                 moveDirection *= curSpeed;
                 playerStats.CostStamina(15f * (1f + weaponSlotManager.weaponDamageCollider.weaponWeightRatio) * Time.deltaTime);
             }
@@ -185,7 +185,7 @@ public class PlayerLocmotion : MonoBehaviour
         }
         else if (playerManager.isCrouching || playerManager.isHolding || playerManager.isHanging || playerManager.isClimbing)
         {
-            curSpeed = crouchSpeed;
+            curSpeed = crouchSpeed * (1 + playerStats.movementBuffRatio); ;
             moveDirection *= curSpeed;
         }
         else

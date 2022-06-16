@@ -16,6 +16,7 @@ public class BaGuaEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public bool canBeSelected;
     bool isSelected;
     [SerializeField] int bagua_Index;
+    [SerializeField] int dir_Index;
 
     RectTransform rect;
     [SerializeField] GameObject unownedBagua;
@@ -64,16 +65,7 @@ public class BaGuaEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 {
                     baGuaManager.AddBaguaCommand(bagua_Index);
                     isSelected = true;
-                    baGuaPanel_UI.CommandFilling(bagua_Index);
-                    for (int i = 0; i < baGuaPanel_UI.commandSlotList.Count; i++)
-                    {
-                        if (!baGuaPanel_UI.commandSlotList[i].commandSelected)
-                        {
-                            Color32 color = unselectedBagua.GetComponent<RawImage>().color;
-                            baGuaPanel_UI.commandSlotList[i].CommandFilling(color);
-                            return;
-                        }
-                    }
+                    baGuaPanel_UI.CommandFilling(bagua_Index, dir_Index);
                 }
             }
         }
@@ -106,16 +98,7 @@ public class BaGuaEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             {
                 baGuaManager.AddBaguaCommand(bagua_Index);
                 isSelected = true;
-                baGuaPanel_UI.CommandFilling(bagua_Index);
-                for (int i = 0; i < baGuaPanel_UI.commandSlotList.Count; i++)
-                {
-                    if (!baGuaPanel_UI.commandSlotList[i].commandSelected)
-                    {
-                        Color32 color = unselectedBagua.GetComponent<RawImage>().color;
-                        baGuaPanel_UI.commandSlotList[i].CommandFilling(color);
-                        return;
-                    }
-                }
+                baGuaPanel_UI.CommandFilling(bagua_Index, dir_Index);
             }
         }
     }

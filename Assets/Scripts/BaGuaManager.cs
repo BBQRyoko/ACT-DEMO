@@ -6,6 +6,7 @@ using DG.Tweening;
 
 public class BaGuaManager : MonoBehaviour
 {
+    BaGuaPanel_UI baGuaPanel_UI;
     GameManager gameManager;
     InputManager inputManager;
     PlayerManager playerManager;
@@ -59,6 +60,7 @@ public class BaGuaManager : MonoBehaviour
 
     void Awake()
     {
+        baGuaPanel_UI = FindObjectOfType<BaGuaPanel_UI>();
         gameManager = FindObjectOfType<GameManager>();
         playerManager = GetComponent<PlayerManager>();
         playerStats = GetComponent<PlayerStats>();
@@ -84,8 +86,16 @@ public class BaGuaManager : MonoBehaviour
             BaGuaZhen.SetActive(true);
             gameManager.GameSlowDown();
 
-            float x = curPos.x + (inputManager.baguaInputX * 220 * (curPos.x / 960));
-            float y = curPos.y + (inputManager.baguaInputY * 220 * (curPos.x / 960));
+            if (inputManager.baguaInputX == 0 && inputManager.baguaInputY == 0)
+            {
+                realPiviot.gameObject.SetActive(false);
+            }
+            else 
+            {
+                realPiviot.gameObject.SetActive(true);
+            }
+            float x = curPos.x + (inputManager.baguaInputX * 210 * (curPos.x / 960));
+            float y = curPos.y + (inputManager.baguaInputY * 210 * (curPos.x / 960));
             RectTransform rect = realPiviot.GetComponent<RectTransform>();
             rect.position = new Vector2(x, y);
         }
