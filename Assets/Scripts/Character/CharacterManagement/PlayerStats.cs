@@ -252,10 +252,12 @@ public class PlayerStats : CharacterStats
         if (!playerManager.cantBeInterrupted && !playerManager.isSprinting && !playerManager.isAttacking && !playerManager.staminaRegenPause && currStamina < maxStamina && !playerManager.isHolding)//正常状态
         {
             currStamina += staminaRegen * Time.deltaTime;
+            if (currStamina >= maxStamina) currStamina = maxStamina;
         }
         else if (playerManager.isHolding && playerManager.isDefending && !playerManager.staminaRegenPause) //防御
         {
             currStamina += (staminaRegen * 0.25f )* Time.deltaTime;
+            if (currStamina >= maxStamina) currStamina = maxStamina;
         }
         else if (playerManager.isHolding && !playerManager.isDefending) //弓箭
         {

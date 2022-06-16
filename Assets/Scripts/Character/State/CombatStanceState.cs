@@ -103,7 +103,7 @@ public class CombatStanceState : State
                     else 
                     {
                         attackState.curAttack = null;
-                        enemyManager.curRecoveryTime += 0.75f;
+                        enemyManager.curRecoveryTime += 0.5f;
                         WalkAroundTarget(enemyManager, enemyAnimatorManager);
                     }
                 }

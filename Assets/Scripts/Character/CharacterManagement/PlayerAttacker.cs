@@ -224,7 +224,7 @@ public class PlayerAttacker : MonoBehaviour
     }
     public void HandleWeaponAbility(WeaponItem weapon)
     {
-        if (playerManager.isInteracting || !playerManager.isGround || playerManager.isHanging || playerManager.isClimbing) return;
+        if (playerManager.isInteracting || !playerManager.isGround || playerManager.isHanging || playerManager.isClimbing || playerManager.isGettingDamage) return;
         if (playerInventory.curEquippedWeaponItem.Id == 0) //大剑
         {
             playerLocmotion.HandleRotateTowardsTarger();

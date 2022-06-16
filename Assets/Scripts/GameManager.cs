@@ -56,7 +56,13 @@ public class GameManager : MonoBehaviour
         restartMenu.SetActive(false);
         pauseMenu.SetActive(false);
         playerManager.transform.position = curCheckPoint.position;
-        playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Respawn",true,true);
+        playerManager.GetComponentInChildren<AnimatorManager>().animator.SetBool("isInteracting", false);
+        playerManager.GetComponentInChildren<AnimatorManager>().animator.SetBool("isUsingRootMotion", false);
+        playerManager.GetComponentInChildren<AnimatorManager>().animator.SetBool("isDefending", false);
+        playerManager.GetComponentInChildren<AnimatorManager>().animator.SetBool("isHolding", false);
+        playerManager.GetComponentInChildren<AnimatorManager>().animator.SetBool("isGettingDamage", false);
+        playerManager.GetComponentInChildren<AnimatorManager>().animator.SetBool("cantBeInterrupted", false);
+        playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Respawn", true, true);
         playerManager.GetComponentInChildren<WeaponSlotManager>().mainWeapon_Unequipped.gameObject.SetActive(true);
         playerManager.GetComponentInChildren<WeaponSlotManager>().mainArmedWeapon.SetActive(false);
         playerManager.Rest();

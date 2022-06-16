@@ -19,8 +19,8 @@ MonoBehaviour:
   isHeavyAttack: 0
   damagePoint: 35
   attakPriority: 6
-  recoveryTime: 1.25
-  independtCooldown: 3.5
+  recoveryTime: 1.5
+  independtCooldown: 4
   maxAttackAngle: 60
   minAttackAngle: -60
   minDistanceNeedToAttack: 0
