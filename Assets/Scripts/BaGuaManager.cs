@@ -43,6 +43,7 @@ public class BaGuaManager : MonoBehaviour
     [SerializeField] Transform baguaCharacterPosHolder;
     string commandString;
     bool isCommandActive;
+    public float openTimer;
 
     [Header("技能buff相关")]
     public List<GameObject> buffList = new List<GameObject>();
@@ -72,6 +73,11 @@ public class BaGuaManager : MonoBehaviour
     }
     void Update()
     {
+        openTimer -= Time.deltaTime;
+        if (openTimer <= 0)
+        {
+            openTimer = 0;
+        }
         YinYangControl();
         EnergySourceControl();
         BaguaPanelActive();
@@ -79,7 +85,7 @@ public class BaGuaManager : MonoBehaviour
     }
     void BaguaPanelActive()
     {
-        if (inputManager.baGua_Input && !isCommandActive && !playerManager.gameStart && curEnergyCharge >= 100)
+        if (inputManager.baGua_Input && !isCommandActive && !playerManager.gameStart && curEnergyCharge >= 100 && openTimer<=0)
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;

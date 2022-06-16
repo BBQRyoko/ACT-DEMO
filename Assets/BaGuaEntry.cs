@@ -10,6 +10,7 @@ public class BaGuaEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 {
     [SerializeField] BaGuaManager baGuaManager;
     BaGuaPanel_UI baGuaPanel_UI;
+    InputManager inputManager;
 
     public bool isOwned;
 
@@ -27,6 +28,7 @@ public class BaGuaEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         baGuaPanel_UI = FindObjectOfType<BaGuaPanel_UI>();
         baGuaManager = FindObjectOfType<BaGuaManager>();
+        inputManager = FindObjectOfType<InputManager>();
         rect = GetComponent<RectTransform>();
     }
     private void Update()
@@ -55,7 +57,7 @@ public class BaGuaEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     void ControlerPointerCheck() 
     {
-        if (!isSelected && canBeSelected && isOwned) 
+        if (!isSelected && canBeSelected && isOwned && inputManager.baGua_Input) 
         {
             if (Vector2.Distance(transform.position, baGuaManager.realPiviot.transform.position) <= 50f)
             {
@@ -90,7 +92,7 @@ public class BaGuaEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (!isSelected && canBeSelected && isOwned) 
+        if (!isSelected && canBeSelected && isOwned && inputManager.baGua_Input) 
         {
             rect.DOComplete();
             rect.DOScale(Vector3.one * 1.2f, 0.1f).SetEase(Ease.OutQuad);

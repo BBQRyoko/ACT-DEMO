@@ -94,6 +94,7 @@ public class BaGuaPanel_UI : MonoBehaviour
         }
         commandString = null;
         abilityIcon.SetActive(false);
+        baGuaManager.openTimer = 0.5f;
         foreach (GameObject arrow in arrows) arrow.SetActive(false);
     }
     void PanelSetActiveController() 
