@@ -69,10 +69,19 @@ public class PlayerStats : CharacterStats
         playerAttacker.comboCount = 0;
         weaponSlotManager.UnloadArrowOnSlot();
         playerManager.isHanging = false;
-        playerManager.isHolding = false;
-        playerManager.isDefending = false;
+        animatorManager.animator.SetBool("isDefending", false);
+        animatorManager.animator.SetBool("isHolding", false);
+        animatorManager.animator.SetBool("isInteracting", false);
         inputManager.weaponAbility_Input = false;
         animatorManager.animator.ResetTrigger("isHoldingCancel");
+        if (playerManager.isStunned)
+        {
+            playerManager.isStunned = false;
+            playerManager.stunTimer = 0;
+            currStamina = maxStamina;
+        }
+
+        //stun状态会被取消
 
         if (currHealth <= 0)
         {

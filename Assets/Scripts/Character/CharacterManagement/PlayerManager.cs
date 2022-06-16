@@ -395,9 +395,9 @@ public class PlayerManager : CharacterManager
                 sample_VFX.weaponVfx_List[1].Play();
             }
             bowChargingTimer += Time.deltaTime;
-            if (bowChargingTimer >= 2f)
+            if (bowChargingTimer >= 1.75f)
             {
-                bowChargingTimer = 2f;
+                bowChargingTimer = 1.75f;
                 playerAttacker.isUsingPowerArrow = true;
                 weaponSlotManager.LoadPowerArrowOnSlot();
                 playerAttacker.PowerArrowSetUp();
@@ -453,12 +453,18 @@ public class PlayerManager : CharacterManager
     }
     public void YinYangAbilityActivate() 
     {
-        if (yinYangAbilityOn && !isHolding && !isAiming && !isStunned) 
+        if (yinYangAbilityOn && !isAiming && !isStunned) 
         {
             if (baGuaManager.tutorialUp && baGuaManager.ultimateTutorial) 
             {
                 baGuaManager.ultimateTutorial.SetActive(false);
                 baGuaManager.tutorialUp = false;
+            }
+            if (isHolding) 
+            {
+                animator.SetBool("isDefending", false);
+                animator.SetBool("isHolding", false);
+                animator.SetBool("isInteracting", false);
             }
             baGuaManager.curYin = 0;
             baGuaManager.curYang = 0;

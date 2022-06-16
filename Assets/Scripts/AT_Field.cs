@@ -29,7 +29,7 @@ public class AT_Field : MonoBehaviour
             }
         }
 
-        if (transform.localScale.x < 8)
+        if (transform.localScale.x < 8f)
         {
             transform.localScale += new Vector3(1, 0, 1) * 8f * Time.deltaTime;
         }

@@ -17,9 +17,11 @@ MonoBehaviour:
   itemName: GreatSword
   HasHeapUp: 0
   ExecutableOperation: 0
+  weaponImage: {fileID: 21300000, guid: c4014d2b1c9e99e4c9829e168487283b, type: 3}
   modelPrefab: {fileID: 6640638428303676973, guid: 0de574395fb15c9458bb9396c6c68acd, type: 3}
   isEquipped: 1
   weaponAnimatorController: {fileID: 9100000, guid: 232456b12cce1ad4bb3a178b85267da9, type: 2}
+  holdingStaminaCost: 0
   regularSkills:
   - {fileID: 11400000, guid: b126cc560dd213741a5a658dd68ae218, type: 2}
   - {fileID: 11400000, guid: 836018923d7504d4ca50c2e6c435dd1b, type: 2}

@@ -12,6 +12,8 @@ public class PlayerUIManager : MonoBehaviour
     public GameObject aimingCorsshair;
     public GameObject gsChargeBar;
     public Image gsChargeBarSlider;
+    [SerializeField] Image weaponImage;
+    [SerializeField] Image switchAttackTimer;
 
     //prompt
     public GameObject promptInfo;
@@ -23,6 +25,7 @@ public class PlayerUIManager : MonoBehaviour
     {
         playerManager = GetComponent<PlayerManager>();
         playerInventory = GetComponent<PlayerInventory>();
+        switchAttackTimer.fillAmount = playerManager.transAttackTimer / 1.75f;
     }
 
     private void Update()
@@ -47,6 +50,8 @@ public class PlayerUIManager : MonoBehaviour
         {
             promptInfo.SetActive(false);
         }
+        weaponImage.sprite = playerInventory.curEquippedWeaponItem.weaponImage;
+        switchAttackTimer.fillAmount = playerManager.transAttackTimer / 1.75f;
     }
     public void PromptInfoActive(string infoText) 
     {

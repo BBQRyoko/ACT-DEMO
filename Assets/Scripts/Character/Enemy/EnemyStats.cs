@@ -60,6 +60,7 @@ public class EnemyStats : CharacterStats
 
             if (currHealth <= 0)
             {
+                if (!enemyManager.getingExecute) animator.SetTrigger("isDead");
                 currHealth = 0;
                 enemyWeaponSlotManager.CloseWeaponDamageCollider();
                 enemyManager.isDead = true;
@@ -68,7 +69,7 @@ public class EnemyStats : CharacterStats
             {
                 if (currStamina > 0 && (hitGauge >= enemyManager.hitRatio * maxStamina || isHeavy == true))
                 {
-                    if (!enemyManager.isImmuneAttacking && !enemyManager.getingExecute && !enemyManager.isDodging)
+                    if (!enemyManager.isImmuneAttacking && !enemyManager.getingExecute && !enemyManager.isDodging && !enemyManager.phaseChanged)
                     {
                         if ((damageAngle > 120 && damageAngle <= 180) || (damageAngle < -120 && damageAngle >= -180))
                         {
@@ -94,7 +95,6 @@ public class EnemyStats : CharacterStats
                             animatorManager.animator.SetBool("isInteracting", true);
                             animatorManager.animator.SetBool("isUsingRootMotion", true);
                         }
-
                         if (enemyWeaponSlotManager.weaponDamageCollider) 
                         {
                             enemyWeaponSlotManager.weaponDamageCollider.DisableDamageCollider();

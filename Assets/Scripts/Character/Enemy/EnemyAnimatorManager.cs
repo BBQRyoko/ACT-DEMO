@@ -176,7 +176,7 @@ public class EnemyAnimatorManager : MainAnimatorManager
         animator.SetBool("isDodging", true);
         if (enemyManager.isDead) 
         {
-            animator.SetTrigger("isDead");
+            animator.SetTrigger("isExecuted");
         }
     }
     private void EnemyDangerWarning() 

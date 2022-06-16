@@ -4955,7 +4955,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyManagerList: []
-  filedTime: 6.5
+  filedTime: 5
   counterTimer: 0.5
   filedRadius: 8.8
 --- !u!1 &2272751485136828211
@@ -5003,7 +5003,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2272751485136828211}
   serializedVersion: 8
-  lengthInSec: 6
+  lengthInSec: 8
   simulationSpeed: 0.75
   stopAction: 0
   cullingMode: 1
@@ -5078,7 +5078,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 6
+      scalar: 4.5
       minScalar: 5
       maxCurve:
         serializedVersion: 2

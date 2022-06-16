@@ -170,7 +170,6 @@ public class EnemyManager : CharacterManager
         //}
         if (isDead && collider_Self.enabled)
         {
-            if (!getingExecute) enemyAnimatorManager.PlayTargetAnimation("Dead", true);
             curTarget = null;
             collider_Self.enabled = false;
             collider_Combat.enabled = false;

@@ -169,23 +169,24 @@ public class ProjectileDamager : MonoBehaviour
                         playerStats.GetComponentInChildren<AnimatorManager>().generalAudio.Play();
                     }
                     ProjectileDestroy();
-                    if (!playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget)
-                    {
-                        if (GetComponentInParent<FlyingObj>())
-                        {
-                            playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget = GetComponentInParent<FlyingObj>().shooterPos.GetComponentInParent<EnemyManager>().lockOnTransform;
+                    //自动锁定功能
+                    //if (!playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget)
+                    //{
+                    //    if (GetComponentInParent<FlyingObj>())
+                    //    {
+                    //        playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget = GetComponentInParent<FlyingObj>().shooterPos.GetComponentInParent<EnemyManager>().lockOnTransform;
 
-                            playerStats.GetComponent<InputManager>().lockOn_Flag = true;
-                        }
-                        else 
-                        {
-                            if (GetComponent<FlyingObj>())
-                            {
-                                playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget = GetComponent<FlyingObj>().shooterPos.GetComponentInParent<EnemyManager>().lockOnTransform;
-                                playerStats.GetComponent<InputManager>().lockOn_Flag = true;
-                            }
-                        }
-                    }
+                    //        playerStats.GetComponent<InputManager>().lockOn_Flag = true;
+                    //    }
+                    //    else 
+                    //    {
+                    //        if (GetComponent<FlyingObj>())
+                    //        {
+                    //            playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget = GetComponent<FlyingObj>().shooterPos.GetComponentInParent<EnemyManager>().lockOnTransform;
+                    //            playerStats.GetComponent<InputManager>().lockOn_Flag = true;
+                    //        }
+                    //    }
+                    //}
                 }
                 else if (parryCollider != null) //飞行道具打到格挡
                 {

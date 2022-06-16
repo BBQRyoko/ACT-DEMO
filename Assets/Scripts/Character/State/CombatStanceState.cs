@@ -28,7 +28,7 @@ public class CombatStanceState : State
     float horizontalMovementVaule = 0;
     public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
     {
-        if (enemyManager.isPhaseChaging)
+        if (enemyManager.phaseChanged)
         {
             return idleState;
         }

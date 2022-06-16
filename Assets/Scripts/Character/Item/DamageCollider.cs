@@ -149,11 +149,11 @@ public class DamageCollider : MonoBehaviour
                     attackAudio.clip = sample_SFX.hittedSFX_List[random];
                     attackAudio.Play();
                     playerStats.TakeDamage(curDamage, hitDirection, isHeavyAttack);
-                    if (!playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget) 
-                    {
-                        playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget = enemyManager.lockOnTransform;
-                        playerStats.GetComponent<InputManager>().lockOn_Flag = true;
-                    } 
+                    //if (!playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget) 
+                    //{
+                    //    playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget = enemyManager.lockOnTransform;
+                    //    playerStats.GetComponent<InputManager>().lockOn_Flag = true;
+                    //} 
                 }
             }
         }

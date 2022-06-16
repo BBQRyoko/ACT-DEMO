@@ -17,6 +17,7 @@ MonoBehaviour:
   itemName: GreatSword
   HasHeapUp: 0
   ExecutableOperation: 0
+  weaponImage: {fileID: 21300000, guid: 2e1881e12160542409170848b6544d8e, type: 3}
   modelPrefab: {fileID: 3158534588828042178, guid: 60320b22a93bea4448b34fa8ce1f5d57, type: 3}
   isEquipped: 1
   weaponAnimatorController: {fileID: 9100000, guid: 3b62c84dd2f00da4488051c514b620ad, type: 2}
