@@ -5082,7 +5082,7 @@ MonoBehaviour:
   promptOn: 0
   curInteractTime: 0
   defaultInteractTime: 0
-  interactText: CheckPoint
+  interactText: "\u5B58\u6863\u70B9"
   respawnPos: {fileID: 929391910}
 --- !u!1 &6410720533964154228
 GameObject:

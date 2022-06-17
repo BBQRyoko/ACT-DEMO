@@ -6,6 +6,8 @@ using TMPro;
 
 public class GuidePopup : MonoBehaviour
 {
+    public enum tutorialType { 普通, 弹窗};
+    public tutorialType curTutorialType;
     //当前只触发教程
     [SerializeField] GameObject guide;
 
@@ -44,6 +46,10 @@ public class GuidePopup : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            if (curTutorialType == tutorialType.弹窗) 
+            {
+                other.GetComponent<PlayerUIManager>().tutorialPopup = guide;
+            }
             guide.SetActive(true);
             if(switchAttackTutorial) playerEntered= true;
         }
@@ -53,7 +59,10 @@ public class GuidePopup : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            guide.SetActive(false);
+            if (curTutorialType == tutorialType.普通)
+            {
+                guide.SetActive(false);
+            }
         }
     }
 }

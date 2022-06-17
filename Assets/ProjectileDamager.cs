@@ -199,7 +199,14 @@ public class ProjectileDamager : MonoBehaviour
                     attackAudioSource.clip = sample_SFX_Source.blockedSFX_List[random];
                     attackAudioSource.Play();
                     playerManager.HandleParryingCheck(curDamage);
-                    Destroy(this.gameObject);
+                    if (transform.parent)
+                    {
+                        Destroy(transform.parent.gameObject);
+                    }
+                    else
+                    {
+                        Destroy(transform.gameObject);
+                    }
                 }
             }
             else //玩家伤害 

@@ -230,11 +230,20 @@ public class BaGuaManager : MonoBehaviour
                 ultimateTeach = true;
                 ultimateTutorial.SetActive(true);
                 tutorialUp = true;
-                Destroy(ultimateTutorial.gameObject, 10f);
+                gameManager.gamePaused = true;
             }
             generalAudio.clip = sfxList.Bagua_SFX_List[0];
             generalAudio.Play();
             playerManager.yinYangAbilityOn = true;
+        }
+        if (tutorialUp) 
+        {
+            if (inputManager.interact_Input) 
+            {
+                ultimateTutorial.SetActive(false);
+                tutorialUp = false;
+                gameManager.gamePaused = false;
+            }
         }
     }
     public void YinYangChargeUp(float chargeValue) 

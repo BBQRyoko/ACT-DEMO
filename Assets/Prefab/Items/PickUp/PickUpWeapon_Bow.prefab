@@ -114,7 +114,7 @@ MonoBehaviour:
   promptOn: 0
   curInteractTime: 0
   defaultInteractTime: 0.5
-  interactText: Bow(Equip)
+  interactText: "\u5F13(\u88C5\u5907)"
   weaponInfoIndex: 2
   weaponItemInfo: {fileID: 11400000, guid: eed90a0ffde857d4295b675b74041f49, type: 2}
   weaponList:

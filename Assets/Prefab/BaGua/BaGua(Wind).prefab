@@ -420,7 +420,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baGuaManager: {fileID: 0}
-  isOwned: 1
+  isOwned: 0
   canBeSelected: 0
   bagua_Index: 7
   dir_Index: 2

@@ -7,6 +7,7 @@ using TMPro;
 
 public class PlayerUIManager : MonoBehaviour
 {
+    GameManager gameManager;
     PlayerManager playerManager;
     PlayerInventory playerInventory;
     public GameObject aimingCorsshair;
@@ -21,8 +22,16 @@ public class PlayerUIManager : MonoBehaviour
     public bool promptActive;
     float promptTimer; //temp
 
+    //tutorial
+    public GameObject tutorialPopup;
+    public GameObject bowTutorial;
+    bool bowTutorialUp;
+    bool bowTaught;
+
+
     private void Awake()
     {
+        gameManager = FindObjectOfType<GameManager>();
         playerManager = GetComponent<PlayerManager>();
         playerInventory = GetComponent<PlayerInventory>();
         switchAttackTimer.fillAmount = playerManager.transAttackTimer / 1.75f;
@@ -30,6 +39,8 @@ public class PlayerUIManager : MonoBehaviour
 
     private void Update()
     {
+        TutorialPopupController();
+        BowTutorialPopup();
         if (promptActive)
         {
             if (promptTimer <= 1)
@@ -61,6 +72,38 @@ public class PlayerUIManager : MonoBehaviour
             promptInfo.SetActive(true);
             promptString.text = infoText;
             promptActive = true;
+        }
+    }
+
+    void TutorialPopupController() 
+    {
+        if (tutorialPopup != null) 
+        {
+            if (playerManager.GetComponent<InputManager>().interact_Input)
+            {
+                tutorialPopup.SetActive(false);
+                tutorialPopup = null;
+            }
+        }
+    }
+
+    void BowTutorialPopup()
+    {
+        if (playerInventory.curEquippedWeaponItem.Id == 2 && !bowTutorialUp && !bowTaught) 
+        {
+            bowTutorial.SetActive(true);
+            bowTaught = true;
+            bowTutorialUp = true;
+            gameManager.gamePaused = true;
+        }
+        if (bowTutorialUp)
+        {
+            if (playerManager.GetComponent<InputManager>().interact_Input)
+            {
+                bowTutorial.SetActive(false);
+                bowTutorialUp = false;
+                gameManager.gamePaused = false;
+            }
         }
     }
 }

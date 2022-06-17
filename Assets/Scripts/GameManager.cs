@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     bool restartMenuOn;
     public GameObject restartMenu;
     public GameObject pauseMenu;
-    bool gamePaused;
+    public bool gamePaused;
 
     private void Awake()
     {

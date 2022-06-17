@@ -113,7 +113,7 @@ MonoBehaviour:
   promptOn: 0
   curInteractTime: 0
   defaultInteractTime: 0.25
-  interactText: Speed Up
+  interactText: "\u98CE\u76FE"
   weaponInfoIndex: 1
   weaponItemInfo: {fileID: 11400000, guid: 1765f0767a832ac41bb3aabfe48b9d91, type: 2}
   weaponList:

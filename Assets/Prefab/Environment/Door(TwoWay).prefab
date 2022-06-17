@@ -114,6 +114,7 @@ MonoBehaviour:
   promptOn: 0
   curInteractTime: 0
   defaultInteractTime: 1.5
+  interactText: "\u5F00\u542F"
 --- !u!65 &6124934196914577751
 BoxCollider:
   m_ObjectHideFlags: 0
