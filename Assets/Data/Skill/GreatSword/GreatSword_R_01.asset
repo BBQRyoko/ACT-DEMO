@@ -15,7 +15,7 @@ MonoBehaviour:
   skillName: Combo_R_01
   isImmuAttack: 1
   isHeavy: 0
-  damagePoint: 40
+  damagePoint: 30
   tenacityDamagePoint: 25
   staminaCost: 20
   hitPoint: 3

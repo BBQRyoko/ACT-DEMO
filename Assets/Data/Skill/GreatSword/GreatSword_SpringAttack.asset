@@ -15,7 +15,7 @@ MonoBehaviour:
   skillName: SprintAttack
   isImmuAttack: 1
   isHeavy: 0
-  damagePoint: 45
+  damagePoint: 35
   tenacityDamagePoint: 30
   staminaCost: 10
   hitPoint: 3
