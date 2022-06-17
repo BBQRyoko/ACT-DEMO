@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
 
     void GamePause() 
     {
-        Time.timeScale = 0f;
+        Time.timeScale = 0.000000001f;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
     }
