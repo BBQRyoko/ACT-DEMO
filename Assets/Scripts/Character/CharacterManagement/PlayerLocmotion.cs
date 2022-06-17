@@ -91,7 +91,7 @@ public class PlayerLocmotion : MonoBehaviour
         {
             if (!playerManager.isToronadoCovered) 
             {
-                playerManager.isInteracting = false;
+                animatorManager.animator.SetBool("isInteracting", false);
                 playerManager.isFalling = movementVelocity.y <= 0.0f || (!inputManager.jump_Input && jumpTakeEffectTimer >= 0.1f); //当y轴速度小于等于0时或者跳跃键松开时都进入下落
             }
         }
