@@ -489,7 +489,7 @@ public class CombatStanceState : State
                             enemyManager.isDamaged = false;
                             enemyManager.curRecoveryTime = 0.75f;
                             enemyAnimatorManager.animator.SetBool("isDodging", true);
-                            enemyAnimatorManager.PlayTargetAnimation("AttackDodge", true, true);
+                            enemyAnimatorManager.PlayTargetDodgingAnimation("AttackDodge", true, true);
                             isWalkingStop = false;
                             walkingTimer = 0.25f;
                         }
@@ -510,7 +510,7 @@ public class CombatStanceState : State
                         {
                             enemyManager.isDamaged = false;
                             enemyAnimatorManager.animator.SetBool("isDodging", true);
-                            enemyAnimatorManager.PlayTargetAnimation("Roll", true, true);
+                            enemyAnimatorManager.PlayTargetDodgingAnimation("Roll", true, true);
                             enemyManager.curRecoveryTime = 0.25f;
                         }
                     }

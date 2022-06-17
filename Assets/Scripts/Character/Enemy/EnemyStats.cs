@@ -177,6 +177,7 @@ public class EnemyStats : CharacterStats
                 }
                 if (!enemyManager.isEquipped) 
                 {
+                    enemyManager.isEquipped = true;
                     enemyWeaponSlotManager.LoadWeaponOnSlot(enemyWeaponSlotManager.weaponItem);
                 }
                 enemyManager.curTarget = characterStats;

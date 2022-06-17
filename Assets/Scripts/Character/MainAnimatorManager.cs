@@ -14,6 +14,13 @@ public class MainAnimatorManager : MonoBehaviour
         animator.CrossFade(targetAnimation, 0.2f);
     }
 
+    public void PlayTargetDodgingAnimation(string targetAnimation, bool isInteracting, bool useRootMotion = false) //播放指定动画, 并确定是否锁定玩家的输入, 是否开启rootMotion模式
+    {
+        animator.SetBool("isInteracting", isInteracting);
+        animator.SetBool("isUsingRootMotion", useRootMotion);
+        animator.CrossFade(targetAnimation, 0);
+    }
+
     public void PlayTargetAnimationWithRootRotation(string targetAnimation, bool isInteracting) 
     {
         animator.applyRootMotion = isInteracting;

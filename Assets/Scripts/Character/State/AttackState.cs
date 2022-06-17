@@ -71,7 +71,17 @@ public class AttackState : State
     private void AttackTarget(EnemyAnimatorManager enemyAnimatorManager, EnemyManager enemyManager) 
     {
         //使用Combat State中所决定的攻击动画, 并计算攻击恢复时间,是否霸体,技能独立CD
-        enemyAnimatorManager.PlayTargetAnimation(curAttack.actionAnimation, true);
+
+        if (curAttack.canDodge)
+        {
+            enemyManager.GetComponentInChildren<Animator>().SetBool("isDodging", true);
+            enemyAnimatorManager.PlayTargetDodgingAnimation(curAttack.actionAnimation, true);
+        }
+        else 
+        {
+            enemyAnimatorManager.PlayTargetAnimation(curAttack.actionAnimation, true);
+        }
+
         if (curAttack.isFlyingObject)
         {
             enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().flyingObjectDamager.curDamage = curAttack.damagePoint * enemyManager.attackRatio;
@@ -86,11 +96,6 @@ public class AttackState : State
         {
             enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().weaponDamageCollider.curDamage = curAttack.damagePoint * enemyManager.attackRatio;
             enemyAnimatorManager.GetComponent<EnemyWeaponSlotManager>().weaponDamageCollider.isHeavyAttack = curAttack.isHeavyAttack;
-        }
-
-        if (curAttack.canDodge)
-        {
-            enemyManager.GetComponentInChildren<Animator>().SetBool("isDodging", true);
         }
 
         if (isExecution) 
