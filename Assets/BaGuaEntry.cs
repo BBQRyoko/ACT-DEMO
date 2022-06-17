@@ -35,22 +35,24 @@ public class BaGuaEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         if (!isOwned)
         {
+            unownedBagua.SetActive(true);
             unselectedBagua.SetActive(false);
-            selectedBagua.SetActive(true);
+            selectedBagua.SetActive(false);
         }
         else
         {
             if (!isSelected)
             {
+                unownedBagua.SetActive(false);
                 unselectedBagua.SetActive(true);
                 selectedBagua.SetActive(false);
             }
         }
-
         ControlerPointerCheck();
     }
     void BaGuaEntrySelected() 
     {
+        unownedBagua.SetActive(false);
         unselectedBagua.SetActive(false);
         selectedBagua.SetActive(true);
     }
@@ -78,7 +80,7 @@ public class BaGuaEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 if (isSelected)
                 {
                     rect.DOComplete();
-                    rect.DOScale(Vector3.one * 0.85f, 0.1f).SetEase(Ease.OutQuad);
+                    rect.DOScale(Vector3.one, 0.1f).SetEase(Ease.OutQuad);
                     BaGuaEntrySelected();
                 }
                 else
@@ -111,7 +113,7 @@ public class BaGuaEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         if (isSelected)
         {
             rect.DOComplete();
-            rect.DOScale(Vector3.one * 0.85f, 0.1f).SetEase(Ease.OutQuad);
+            rect.DOScale(Vector3.one, 0.1f).SetEase(Ease.OutQuad);
             BaGuaEntrySelected();
         }
         else 

@@ -60,8 +60,7 @@ public class BaGuaPanel_UI : MonoBehaviour
             RectTransform rect = baguaList[i].GetComponent<RectTransform>();
             GameObject entry = baguaList[i].gameObject;
 
-            rect.DOScale(Vector3.zero, 0.15f).SetEase(Ease.OutQuad);
-            rect.DOAnchorPos(Vector3.zero, .15f).SetEase(Ease.OutQuad).onComplete =
+            rect.DOScale(Vector3.zero, 0.15f).SetEase(Ease.OutQuad).onComplete =
                 delegate ()
                 {
                     Destroy(entry);
@@ -73,8 +72,7 @@ public class BaGuaPanel_UI : MonoBehaviour
             RectTransform rect = commandSlotList[i].GetComponent<RectTransform>();
             GameObject entry = commandSlotList[i].gameObject;
 
-            rect.DOScale(Vector3.zero, 0.15f).SetEase(Ease.OutQuad);
-            rect.DOAnchorPos(Vector3.zero, .15f).SetEase(Ease.OutQuad).onComplete =
+            rect.DOScale(Vector3.zero, 0.15f).SetEase(Ease.OutQuad).onComplete =
                 delegate ()
                 {
                     Destroy(entry);
@@ -133,11 +131,9 @@ public class BaGuaPanel_UI : MonoBehaviour
             float y = Mathf.Cos(radiansOfSeparation * i) * panelRaduis;
 
             RectTransform rect = baguaList[i].GetComponent<RectTransform>();
-
-            
-            rect.localScale = Vector3.zero;
-            rect.DOScale(Vector3.one, 0.15f).SetEase(Ease.OutQuad);
-            rect.DOAnchorPos(new Vector3(x, y, 0f), 0.15f).SetEase(Ease.OutQuad).onComplete =
+            rect.position = new Vector3(x, y, 0);
+            rect.DOScale(Vector3.one, 0f);
+            rect.DOAnchorPos(new Vector3(x, y, 0f), 0f).onComplete =
                 delegate ()
                 {
                     BaGuaEntry baGuaEntry = rect.GetComponent<BaGuaEntry>();
@@ -152,7 +148,6 @@ public class BaGuaPanel_UI : MonoBehaviour
         {
             RectTransform rect = commandSlotList[i].GetComponent<RectTransform>();
 
-            rect.DOAnchorPos(Vector3.zero, 0f);
             rect.DORotateQuaternion(Quaternion.Euler(0, 0, radiansOfSeparation * (i+1)), 0f);
         }
     }
