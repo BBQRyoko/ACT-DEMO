@@ -256,7 +256,7 @@ public class PlayerManager : CharacterManager
             if(!isWeaponSwitching) isImmuAttack = false;
             isGetingExecuted = false;
             isWeaponSwitching = false;
-            damageAvoid = false;
+            animator.SetBool("isDodging", false);
             if (weaponSlotManager.weaponDamageCollider) weaponSlotManager.weaponDamageCollider.DisableDamageCollider();
             animator.SetBool("canReset", false);
         }

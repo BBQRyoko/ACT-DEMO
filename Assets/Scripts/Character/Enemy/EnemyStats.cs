@@ -175,6 +175,10 @@ public class EnemyStats : CharacterStats
                 {
                     enemyManager.alertTimer = 5f;
                 }
+                if (!enemyManager.isEquipped) 
+                {
+                    enemyWeaponSlotManager.LoadWeaponOnSlot(enemyWeaponSlotManager.weaponItem);
+                }
                 enemyManager.curTarget = characterStats;
             }
         }
