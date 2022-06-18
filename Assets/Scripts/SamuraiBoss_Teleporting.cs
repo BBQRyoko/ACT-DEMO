@@ -88,7 +88,7 @@ public class SamuraiBoss_Teleporting : MonoBehaviour
         dissolving = true;
         if (dissolveValue <= 0) 
         {
-            enemyManager.GetComponentInChildren<EnemyAnimatorManager>().PlayTargetAnimation("DodgeB(Medium)", true,true);
+            enemyManager.GetComponentInChildren<EnemyAnimatorManager>().PlayTargetDodgingAnimation("DodgeB(Medium)", true,true);
             enemyManager.GetComponentInChildren<Animator>().SetTrigger("isTeleporting");
         }
     }

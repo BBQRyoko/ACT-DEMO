@@ -139,7 +139,7 @@ public class PlayerAttacker : MonoBehaviour
                 {
                     comboCount = 0;
                     comboCount++;
-                    if (playerManager.GetComponent<PlayerStats>().currStamina >= weapon.springAttack[0].staminaCost - 15f && !playerManager.cantBeInterrupted)
+                    if (playerManager.GetComponent<PlayerStats>().currStamina >= weapon.springAttack[0].staminaCost - 10f && !playerManager.isAttacking)
                     {
                         playerManager.cantBeInterrupted = true;
                         animatorManager.animator.SetBool("isAttacking", true);

@@ -50,6 +50,11 @@ public class GameManager : MonoBehaviour
             restartMenuOn = true;
         }
     }
+
+    public void GameExit() 
+    {
+        Application.Quit();
+    }
     public void Restart()
     {
         //黑屏那些

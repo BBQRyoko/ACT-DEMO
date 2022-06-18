@@ -121,6 +121,7 @@ public class EnemyManager : CharacterManager
     public GameObject windShield;
     public EnemyAttackAction[] boss2ndPhaseAttacks;
     public List<SpecialCondition> boss2ndPhaseConditionList;
+    public AudioClip secondPhaseBGM;
 
     private void Awake()
     {

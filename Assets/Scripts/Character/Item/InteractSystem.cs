@@ -12,7 +12,7 @@ public class InteractSystem : MonoBehaviour
     public float curInteractTime;
     public float defaultInteractTime;
 
-    [SerializeField] string interactText;
+    public string interactText;
 
     // Start is called before the first frame update
     void Awake()

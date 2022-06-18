@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class BossRoomTrigger : MonoBehaviour
 {
@@ -13,12 +14,16 @@ public class BossRoomTrigger : MonoBehaviour
 
     public bool katanaRequired;
     [SerializeField] GameObject weaponSwitch_guide;
+    [SerializeField] AudioClip combatClip;
+    [SerializeField] BGMManager combatBGM;
+    bool bgmChanged;
 
     // Start is called before the first frame update
     void Start()
     {
         playerManager = FindObjectOfType<PlayerManager>();
         bossStaminaBar = bossHealthBar.GetComponentInChildren<StaminaBar>();
+        combatBGM = FindObjectOfType<BGMManager>();
     }
 
     // Update is called once per frame
@@ -46,6 +51,7 @@ public class BossRoomTrigger : MonoBehaviour
         {
             playerEntered = false;
             bossHealthBar.SetActive(false);
+            CombatBGMStop();
         }
 
         if (bossStats.currHealth <= 0)
@@ -54,6 +60,7 @@ public class BossRoomTrigger : MonoBehaviour
             if (!katanaRequired)
             {
                 playerEntered = false;
+                if (combatClip) combatBGM.BGMStop();
                 Destroy(this.gameObject);
             }
             else
@@ -70,6 +77,17 @@ public class BossRoomTrigger : MonoBehaviour
                 }
             }
         }
+        if (bossStats.GetComponent<EnemyManager>().isPhaseChaging && !bgmChanged) 
+        {
+            combatClip = bossStats.GetComponent<EnemyManager>().secondPhaseBGM;
+            bgmChanged = true;
+            combatBGM.BGMPlay(combatClip);
+        }
+    }
+
+    void CombatBGMStop() 
+    {
+        combatBGM.BGMStop();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -80,6 +98,7 @@ public class BossRoomTrigger : MonoBehaviour
             bossHealthBar.SetActive(true);
             bossHealthBar.GetComponent<HealthBar>().SetMaxHealth(bossStats.maxHealth);
             bossStaminaBar.SetMaxStamina(bossStats.maxStamina);
+            combatBGM.BGMPlay(combatClip);
         }
     }
 
