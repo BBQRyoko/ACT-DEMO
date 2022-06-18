@@ -136,7 +136,7 @@ public class DamageCollider : MonoBehaviour
                     damageCollider.enabled = false;
                     enemyManager.GetComponentInChildren<EnemyAnimatorManager>().PlayTargetAnimation("GetHit_Up", true, true);
                     playerManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Defend(Counter)", true, true);
-                    playerManager.GetComponentInChildren<AnimatorManager>().generalAudio.volume = 0.15f;
+                    playerManager.GetComponentInChildren<AnimatorManager>().generalAudio.volume = 0.35f;
                     playerManager.GetComponentInChildren<AnimatorManager>().generalAudio.clip = playerManager.GetComponentInChildren<AnimatorManager>().sample_SFX.Bagua_SFX_List[0];
                     playerManager.GetComponentInChildren<AnimatorManager>().generalAudio.Play();
                     enemyStats.TakeStaminaDamage(120f);

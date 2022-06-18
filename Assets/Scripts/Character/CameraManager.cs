@@ -48,6 +48,7 @@ public class CameraManager : MonoBehaviour
 
     //互动提示
     public InteractPromptUI interactPrompt;
+    public Transform interactTransforms;
 
     //锁定系统
     public LayerMask visionBlockLayer;
@@ -402,7 +403,7 @@ public class CameraManager : MonoBehaviour
     }
     public void GenerateInteractPrompt(InteractSystem interact, string text = "Interact")
     {
-        var promptUp = Instantiate(interactPrompt, mainCanvas.transform);
+        var promptUp = Instantiate(interactPrompt, interactTransforms);
         promptUp.SetInteractObject(interact, text);
     }
     public void ClearLockOnTargets() 

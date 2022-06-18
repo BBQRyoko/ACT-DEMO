@@ -401,6 +401,8 @@ public class PlayerManager : CharacterManager
                 playerAttacker.isUsingPowerArrow = true;
                 weaponSlotManager.LoadPowerArrowOnSlot();
                 playerAttacker.PowerArrowSetUp();
+                generalAudio.clip = sfxList.curSFX_List[8];
+                generalAudio.Play();
                 //添加一个完成音效提醒玩家
             }
             else 

@@ -100,8 +100,8 @@ public class BaGuaManager : MonoBehaviour
             {
                 realPiviot.gameObject.SetActive(true);
             }
-            float x = curPos.x + (inputManager.baguaInputX * 210 * (curPos.x / 960));
-            float y = curPos.y + (inputManager.baguaInputY * 210 * (curPos.x / 960));
+            float x = curPos.x + (inputManager.baguaInputX * 205 * (curPos.x / 960));
+            float y = curPos.y + (inputManager.baguaInputY * 205 * (curPos.x / 960));
             RectTransform rect = realPiviot.GetComponent<RectTransform>();
             rect.position = new Vector2(x, y);
         }

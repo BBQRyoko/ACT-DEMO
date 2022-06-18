@@ -6,6 +6,7 @@ using TMPro;
 
 public class GuidePopup : MonoBehaviour
 {
+    PlayerManager playerManager;
     public enum tutorialType { 普通, 弹窗};
     public tutorialType curTutorialType;
     //当前只触发教程
@@ -20,12 +21,18 @@ public class GuidePopup : MonoBehaviour
     public int switchAttackNum;
     [SerializeField] TextMeshProUGUI attackCount;
 
+    private void Start()
+    {
+        playerManager = FindObjectOfType<PlayerManager>();
+    }
+
     private void Update()
     {
         if (playerEntered && switchAttackTutorial) 
         {
             SwitchTutorial();
         }
+        if (playerManager.isDead) guide.SetActive(false);
     }
     void SwitchTutorial() 
     {
