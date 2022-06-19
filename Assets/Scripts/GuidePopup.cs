@@ -6,12 +6,13 @@ using TMPro;
 
 public class GuidePopup : MonoBehaviour
 {
+    GameManager gameManager;
     PlayerManager playerManager;
     public enum tutorialType { 普通, 弹窗};
     public tutorialType curTutorialType;
     //当前只触发教程
     [SerializeField] GameObject guide;
-
+    [SerializeField] bool pauseMenu;
     //特殊教程
     bool playerEntered;
     [SerializeField] bool switchAttackTutorial;
@@ -23,6 +24,7 @@ public class GuidePopup : MonoBehaviour
 
     private void Start()
     {
+        if (pauseMenu) gameManager = FindObjectOfType<GameManager>();
         playerManager = FindObjectOfType<PlayerManager>();
     }
 
@@ -58,7 +60,8 @@ public class GuidePopup : MonoBehaviour
                 other.GetComponent<PlayerUIManager>().tutorialPopup = guide;
             }
             guide.SetActive(true);
-            if(switchAttackTutorial) playerEntered= true;
+            if (pauseMenu) gameManager.gamePaused = true;
+            if (switchAttackTutorial) playerEntered= true;
         }
     }
 

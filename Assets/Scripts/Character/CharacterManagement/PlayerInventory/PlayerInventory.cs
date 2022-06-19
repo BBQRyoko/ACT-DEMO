@@ -11,6 +11,7 @@ public class PlayerInventory : MonoBehaviour
     public int currentWeaponIndex;
     public WeaponItem curEquippedWeaponItem;
     public WeaponItem[] unequippedWeaponItems = new WeaponItem[2];
+    public WeaponItem katanaWeaponItem;
 
     public List<InventoryItemData> items;
     private void Awake()

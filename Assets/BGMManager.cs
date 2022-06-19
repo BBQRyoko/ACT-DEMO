@@ -19,7 +19,7 @@ public class BGMManager : MonoBehaviour
         {
             audioSource.clip = bgm;
             audioSource.Play();
-            DOTween.To(() => audioSource.volume, x => audioSource.volume = x, 0.2f, 0.75f).SetEase(Ease.InQuad);
+            DOTween.To(() => audioSource.volume, x => audioSource.volume = x, 0.12f, 0.75f).SetEase(Ease.InQuad);
         }
         else 
         {
@@ -28,7 +28,7 @@ public class BGMManager : MonoBehaviour
             {
                 audioSource.clip = bgm;
                 audioSource.Play();
-                DOTween.To(() => audioSource.volume, x => audioSource.volume = x, 0.2f, 0.25f).SetEase(Ease.InQuad);
+                DOTween.To(() => audioSource.volume, x => audioSource.volume = x, 0.12f, 0.25f).SetEase(Ease.InQuad);
             };
         }
     }

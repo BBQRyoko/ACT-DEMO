@@ -85,8 +85,8 @@ public class CameraManager : MonoBehaviour
         playerManager = FindObjectOfType<PlayerManager>();
         inputManager = FindObjectOfType<InputManager>();
         targetTransform = FindObjectOfType<PlayerManager>().transform;
-        lockOnMark = Instantiate(lockOnPrefab, mainCanvas.transform).GetComponent<Image>();
-        executeMark = Instantiate(executePrefab, mainCanvas.transform).GetComponent<Image>();
+        lockOnMark = Instantiate(lockOnPrefab, enemyUIs.transform).GetComponent<Image>();
+        executeMark = Instantiate(executePrefab, enemyUIs.transform).GetComponent<Image>();
         cameraTransform = Camera.main.transform;
         defaultPosition = cameraTransform.localPosition.z;
         //ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);
@@ -139,6 +139,7 @@ public class CameraManager : MonoBehaviour
     }
     public void HandleCameraRotation(float delta) 
     {
+        if (playerManager.gameStart) return;
         if (!playerManager.isAiming)
         {
             RotateCamera(delta);

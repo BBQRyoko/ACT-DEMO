@@ -148,6 +148,7 @@ public class EnemyStats : CharacterStats
                 {
                     if (enemyManager.isStunned)
                     {
+                        if (enemyWeaponSlotManager.weaponDamageCollider) enemyWeaponSlotManager.weaponDamageCollider.DisableDamageCollider();
                         GetComponentInChildren<EnemyAnimatorManager>().animator.SetBool("isStunned", false);
                         enemyManager.stunTimer = 0;
                         currStamina = maxStamina;
@@ -155,6 +156,7 @@ public class EnemyStats : CharacterStats
                     }
                     else 
                     {
+                        if (enemyWeaponSlotManager.weaponDamageCollider) enemyWeaponSlotManager.weaponDamageCollider.DisableDamageCollider();
                         animatorManager.PlayTargetAnimation("Hit_Large", true, true);
                         currStamina = 0;
                         hitGauge = 0;
@@ -190,6 +192,7 @@ public class EnemyStats : CharacterStats
         if (currStamina <= 0) 
         {
             animator.SetTrigger("isBreak");
+            if (enemyWeaponSlotManager.weaponDamageCollider) enemyWeaponSlotManager.weaponDamageCollider.DisableDamageCollider();
         }
     }
     public void StaminaRegen()

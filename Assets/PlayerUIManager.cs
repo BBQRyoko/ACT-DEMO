@@ -83,6 +83,7 @@ public class PlayerUIManager : MonoBehaviour
             {
                 tutorialPopup.SetActive(false);
                 tutorialPopup = null;
+                if (gameManager.gamePaused) gameManager.gamePaused = false;
             }
         }
     }

@@ -116,7 +116,6 @@ public class PlayerManager : CharacterManager
         if (gameStart)
         {
             wakeUp.SetActive(true);
-            playerStats.currHealth = 10;
             weaponSlotManager.mainWeapon_Unequipped.gameObject.SetActive(true);
             weaponSlotManager.mainArmedWeapon.SetActive(false);
             if (inputManager.interact_Input)
@@ -505,5 +504,31 @@ public class PlayerManager : CharacterManager
             playerStats.currStamina = 150f;
             baGuaManager.curEnergyCharge = 300f;
         }
+    }
+    public void StartFromLevel1()
+    {
+        PlayerInventory playerInventory = GetComponent<PlayerInventory>();
+        playerInventory.unequippedWeaponItems[1] = null;
+        playerStats.currHealth = 10;
+        baGuaManager.baguaGameobjectPrefabs[2].GetComponent<BaGuaEntry>().isOwned = false;
+        baGuaManager.baguaGameobjectPrefabs[3].GetComponent<BaGuaEntry>().isOwned = false;
+    }
+
+    public void StartFromLevel2() 
+    {
+        PlayerInventory playerInventory = GetComponent<PlayerInventory>();
+        playerInventory.unequippedWeaponItems[1] = playerInventory.katanaWeaponItem;
+        playerStats.currHealth = playerStats.maxHealth;
+        baGuaManager.baguaGameobjectPrefabs[2].GetComponent<BaGuaEntry>().isOwned = false;
+        baGuaManager.baguaGameobjectPrefabs[3].GetComponent<BaGuaEntry>().isOwned = false;
+    }
+
+    public void StartFromLevel3()
+    {
+        PlayerInventory playerInventory = GetComponent<PlayerInventory>();
+        playerInventory.unequippedWeaponItems[1] = playerInventory.katanaWeaponItem;
+        playerStats.currHealth = playerStats.maxHealth;
+        baGuaManager.baguaGameobjectPrefabs[2].GetComponent<BaGuaEntry>().isOwned = true;
+        baGuaManager.baguaGameobjectPrefabs[3].GetComponent<BaGuaEntry>().isOwned = false;
     }
 }

@@ -7,6 +7,7 @@ using DG.Tweening;
 public class BaGuaManager : MonoBehaviour
 {
     BaGuaPanel_UI baGuaPanel_UI;
+    PlayerUIManager playerUIManager;
     GameManager gameManager;
     InputManager inputManager;
     PlayerManager playerManager;
@@ -63,6 +64,7 @@ public class BaGuaManager : MonoBehaviour
     {
         baGuaPanel_UI = FindObjectOfType<BaGuaPanel_UI>();
         gameManager = FindObjectOfType<GameManager>();
+        playerUIManager = GetComponent<PlayerUIManager>();
         playerManager = GetComponent<PlayerManager>();
         playerStats = GetComponent<PlayerStats>();
         playerInventory = GetComponent<PlayerInventory>();
@@ -153,9 +155,9 @@ public class BaGuaManager : MonoBehaviour
 
                 rawImage.texture = baguaRawImage[baguasHolder[i]];
                 rect.localScale = Vector3.zero;
-                rect.DOScale(Vector3.one * 8f, 0.65f).SetEase(Ease.OutQuad).SetDelay(0.45f * i);
+                rect.DOScale(Vector3.one * 8f, 0.55f).SetEase(Ease.OutQuad).SetDelay(0.3f * i);
                 commandString += baguasHolder[i].ToString();
-                rawImage.DOFade(0, .6f).SetEase(Ease.OutQuad).SetDelay(0.45f * i).onComplete =
+                rawImage.DOFade(0, .5f).SetEase(Ease.OutQuad).SetDelay(0.3f * i).onComplete =
                     delegate ()
                     {
                         Destroy(baguaCharacter);

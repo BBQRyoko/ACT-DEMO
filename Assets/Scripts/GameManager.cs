@@ -2,22 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
+    public EventSystem eventSystem;
     PlayerManager playerManager;
     InputManager inputManager;
     [SerializeField] TutorialSystem tutorialSystem;
     public Transform curCheckPoint;
     [SerializeField] EnemyManager[] enemyList;
 
+    [SerializeField] GameObject titlePage;
+    [SerializeField] GameObject levelStartMenu;
+    [SerializeField] bool gameStartManager;
+
     bool restartMenuOn;
     public GameObject restartMenu;
     public GameObject pauseMenu;
     public bool gamePaused;
+    [SerializeField] Transform[] differentCheckPositions;
+
+    //MenuRelated
+    [SerializeField] GameObject pauseFirstButon;
+    [SerializeField] GameObject deadFirstButon;
+    public GameObject endFirstButon;
 
     private void Awake()
     {
+        eventSystem = FindObjectOfType<EventSystem>();
         playerManager = FindObjectOfType<PlayerManager>();
         inputManager = FindObjectOfType<InputManager>();
         Cursor.lockState = CursorLockMode.Locked;
@@ -25,6 +38,13 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (gameStartManager) 
+        {
+            titlePage.SetActive(true);
+            playerManager.gameStart = true;
+            gamePaused = true;
+        }
+
         if (gamePaused)
         {
             GamePause();
@@ -40,6 +60,31 @@ public class GameManager : MonoBehaviour
         tutorialSystem.OpenTutorial(tutorial);
         GamePause();
     }
+    public void GameStart(int index = 0) 
+    {
+        titlePage.SetActive(false);
+        levelStartMenu.SetActive(true);
+        gamePaused = false;
+        gameStartManager = false;
+        if (index == 0)
+        {
+            playerManager.transform.position = differentCheckPositions[0].position;
+            curCheckPoint = differentCheckPositions[0];
+            playerManager.StartFromLevel1();
+        }
+        else if (index == 1) 
+        {
+            playerManager.transform.position = differentCheckPositions[1].position;
+            curCheckPoint = differentCheckPositions[1];
+            playerManager.StartFromLevel2();
+        }
+        else if (index == 2)
+        {
+            playerManager.transform.position = differentCheckPositions[2].position;
+            curCheckPoint = differentCheckPositions[2];
+            playerManager.StartFromLevel3();
+        }
+    }
     public void PlayerDead() 
     {
         if (!restartMenuOn)
@@ -48,6 +93,7 @@ public class GameManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             restartMenu.SetActive(true);
             restartMenuOn = true;
+            eventSystem.SetSelectedGameObject(deadFirstButon);
         }
     }
 
@@ -76,7 +122,7 @@ public class GameManager : MonoBehaviour
         if (restartMenuOn) restartMenuOn = false;
     }
 
-    public void GameSlowDown(float slowRate = 0.65f)  
+    public void GameSlowDown(float slowRate = 0.45f)  
     {
         Time.timeScale = slowRate;
     }
@@ -98,6 +144,7 @@ public class GameManager : MonoBehaviour
     {
         if (!gamePaused)
         {
+            eventSystem.SetSelectedGameObject(pauseFirstButon);
             pauseMenu.SetActive(true);
             gamePaused = true;
         }
@@ -115,4 +162,5 @@ public class GameManager : MonoBehaviour
             if (!enemy.isDead) enemy.EnemyRestartReset();
         }
     }
+
 }

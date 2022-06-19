@@ -113,15 +113,18 @@ public class EnemyManager : CharacterManager
     bool itemDrop;
 
     [Header("FinalBossOnly")]
+    [SerializeField] GameManager gameManager;
     public bool isFinalBoss;
     [SerializeField] StaminaBar bossStaminaBar;
     public bool isPhaseChaging;
     public bool phaseChanged;
     public bool canExecute;
+    public bool healComplete;
     public GameObject windShield;
     public EnemyAttackAction[] boss2ndPhaseAttacks;
     public List<SpecialCondition> boss2ndPhaseConditionList;
     public AudioClip secondPhaseBGM;
+    [SerializeField] GameObject ending;
 
     private void Awake()
     {
@@ -180,6 +183,11 @@ public class EnemyManager : CharacterManager
                 collider_Self.enabled = false;
                 collider_Combat.enabled = false;
                 Destroy(gameObject.transform.parent.gameObject, 10f);
+            }
+            if (isFinalBoss) 
+            {
+                ending.SetActive(true);
+                gameManager.eventSystem.SetSelectedGameObject(gameManager.endFirstButon);
             }
         }
 
@@ -489,12 +497,20 @@ public class EnemyManager : CharacterManager
 
         if (phaseChanged) //boss二阶段的状态
         {
+            if (enemyStats.currHealth <= enemyStats.maxHealth && !healComplete) 
+            {
+                enemyStats.currHealth += 85f * Time.deltaTime ;
+                if (enemyStats.currHealth >= enemyStats.maxHealth) 
+                {
+                    enemyStats.currHealth = enemyStats.maxHealth;
+                    healComplete = true;
+                }
+            }
             if (combatStanceState.enemyAttacks != boss2ndPhaseAttacks) 
             {
                 combatStanceState.enemyAttacks = boss2ndPhaseAttacks;
                 combatStanceState.conditionList = boss2ndPhaseConditionList;
                 combatStanceState.combatCooldownManager.CombatCooldownReset();
-                enemyStats.currHealth = enemyStats.maxHealth;
                 enemyStats.maxStamina = 250f;
                 enemyStats.currStamina = enemyStats.maxStamina;
                 bossStaminaBar.SetMaxStamina(enemyStats.maxStamina);

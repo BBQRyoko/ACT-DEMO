@@ -161,8 +161,8 @@ public class BaGuaPanel_UI : MonoBehaviour
         //Dotween动画
         baguaIcon.color = new Color(1, 1, 1, 1);
         rect.localScale = Vector3.one * 1f;
-        rect.DOScale(new Vector3(0.15f, 0.15f, 0f), 0.3f).SetEase(Ease.InQuad);
-        baguaIcon.DOFade(0.25f, 0.35f).SetEase(Ease.InQuad).onComplete =
+        rect.DOScale(new Vector3(0.15f, 0.15f, 0f), 0.15f).SetEase(Ease.InQuad);
+        baguaIcon.DOFade(0.25f, 0.2f).SetEase(Ease.InQuad).onComplete =
                 delegate ()
                 {
                     baguaIcon.gameObject.SetActive(false);
