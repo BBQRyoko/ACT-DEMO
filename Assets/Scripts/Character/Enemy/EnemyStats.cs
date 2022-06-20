@@ -144,7 +144,7 @@ public class EnemyStats : CharacterStats
                         }
                     }
                 }
-                else if(currStamina <= 0)
+                else if(currStamina <= 0 && !enemyManager.phaseChanged)
                 {
                     if (enemyManager.isStunned)
                     {

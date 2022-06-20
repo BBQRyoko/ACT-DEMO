@@ -67,7 +67,8 @@ public class ProjectileDamager : MonoBehaviour
             else if (enemyManager)
             {
                 EnemyLocomotion enemyLocomotion = coveredCharacter.GetComponent<EnemyLocomotion>();
-                enemyManager.GetComponentInChildren<EnemyAnimatorManager>().animator.SetBool("isStunned", true);
+                if(!enemyManager.isStunned) enemyManager.GetComponentInChildren<EnemyAnimatorManager>().animator.SetTrigger("stunTrigger");
+                enemyLocomotion.GetComponentInChildren<EnemyWeaponSlotManager>().weaponDamageCollider.DisableDamageCollider();
                 enemyManager.isToronadoCovered = true;
                 tornadoHazard.TornadoLifeCheck();
                 coveredPlayer = coveredCharacter;

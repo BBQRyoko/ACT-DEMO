@@ -42,6 +42,10 @@ public class UnlockGua : InteractSystem
                 other.GetComponent<PlayerManager>().inInteractTrigger = true;
                 HandleInteractUI(this);
             }
+            else 
+            {
+                guide.SetActive(true);
+            }
         }
     }
 

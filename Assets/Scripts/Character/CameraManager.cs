@@ -139,7 +139,7 @@ public class CameraManager : MonoBehaviour
     }
     public void HandleCameraRotation(float delta) 
     {
-        if (playerManager.gameStart) return;
+        if (playerManager.gameStart || playerManager.gameComplete) return;
         if (!playerManager.isAiming)
         {
             RotateCamera(delta);

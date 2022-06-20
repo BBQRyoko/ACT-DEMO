@@ -187,6 +187,7 @@ public class EnemyManager : CharacterManager
             if (isFinalBoss) 
             {
                 ending.SetActive(true);
+                inputManager.GetComponent<PlayerManager>().gameComplete = true;
                 gameManager.eventSystem.SetSelectedGameObject(gameManager.endFirstButon);
             }
         }
@@ -463,6 +464,7 @@ public class EnemyManager : CharacterManager
             transform.rotation = enemyOriginalRotation;
         }
         curTarget = null;
+        if (patrolPos.Count > 1) curPatrolIndex = 1;
         if(enemyStats.currHealth < enemyStats.maxHealth) enemyStats.currHealth = enemyStats.maxHealth;
         if (curState != GetComponentInChildren<IdleState>()) curState = GetComponentInChildren<IdleState>();
         isDamaged = false;

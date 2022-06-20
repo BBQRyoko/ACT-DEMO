@@ -362,6 +362,7 @@ public class PlayerAttacker : MonoBehaviour
             baGuaManager.curEnergyCharge += 25;
             if (playerInventory.unequippedWeaponItems[1] != null) 
             {
+                noticeAudio.volume = 0.2f;
                 noticeAudio.clip = sample_SFX.Bagua_SFX_List[4];
                 noticeAudio.Play();
                 playerManager.transAttackTimer = 1.75f;

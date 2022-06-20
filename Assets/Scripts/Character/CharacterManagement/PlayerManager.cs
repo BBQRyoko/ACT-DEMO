@@ -23,6 +23,7 @@ public class PlayerManager : CharacterManager
     public bool isUsingRootMotion;
 
     public bool gameStart;
+    public bool gameComplete;
     public bool isFalling; //下落时
     public bool isGround; //在地面时
     public bool isCrouching; //下蹲时
@@ -159,7 +160,7 @@ public class PlayerManager : CharacterManager
     {
         if (!isDead)
         {
-            if (!gameStart) 
+            if (!gameStart && !gameComplete) 
             {
                 playerLocmotion.HandleAllMovement();
             }
@@ -169,6 +170,8 @@ public class PlayerManager : CharacterManager
             rig.isKinematic = true;
             gameObject.GetComponent<Collider>().enabled = false;
             playerLocmotion.characterColliderBlocker.enabled = false;
+            isHanging = false;
+            isClimbing = false;
             animator.SetBool("isHolding", false);
             cameraManager.currentLockOnTarget = null;
             cameraManager.isLockOn = false;

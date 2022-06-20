@@ -7,7 +7,7 @@ public class BossRoomTrigger : MonoBehaviour
 {
     [SerializeField] GameObject[] bossRoomFogWall;
     [SerializeField] PlayerManager playerManager;
-    [SerializeField] bool playerEntered;
+    public bool playerEntered;
     [SerializeField] EnemyStats bossStats;
     [SerializeField] GameObject bossHealthBar;
     [SerializeField] StaminaBar bossStaminaBar;
@@ -107,6 +107,13 @@ public class BossRoomTrigger : MonoBehaviour
         if (other.gameObject == bossStats.gameObject)
         {
             if (!bossStats.GetComponent<EnemyManager>().isTaijied && !playerEntered) bossStats.GetComponent<EnemyManager>().EnemyRestartReset();
+        }
+
+        if (other.CompareTag("Player")) 
+        {
+            playerEntered = false;
+            bossHealthBar.SetActive(false);
+            CombatBGMStop();
         }
     }
 }

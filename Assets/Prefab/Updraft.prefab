@@ -43723,7 +43723,8 @@ MonoBehaviour:
   promptOn: 0
   curInteractTime: 0
   defaultInteractTime: 0
-  maxJumpHeight: 14
+  interactText: 
+  maxJumpHeight: 20
   maxJumpTime: 2
   drafted: 0
 --- !u!136 &480651703

@@ -174,6 +174,7 @@ public class PlayerLocmotion : MonoBehaviour
             else
             {
                 curSpeed = sprintSpeed * (1 + playerStats.movementBuffRatio);
+                rotationSpeed = 6;
                 moveDirection *= curSpeed;
                 playerStats.CostStamina(15f * (1f + weaponSlotManager.weaponDamageCollider.weaponWeightRatio) * Time.deltaTime);
             }
@@ -190,6 +191,7 @@ public class PlayerLocmotion : MonoBehaviour
         }
         else
         {
+            rotationSpeed = 8;
             if (playerManager.isFalling)
             {
                 curSpeed = inAirMovementSpeed;

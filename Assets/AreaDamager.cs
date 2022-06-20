@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class AreaDamager : MonoBehaviour
 {
+    AnimatorManager animatorManager;
     [SerializeField] float curDamage;
     [SerializeField] float staminaDamage;
     [SerializeField] float radius;
     [SerializeField] float existDuration=3f;
     [SerializeField] bool isHeavy;
     bool exploed;
-
+    [SerializeField] AudioClip fireTexpAudio;
     private void Start()
     {
+        animatorManager = FindObjectOfType<AnimatorManager>();
         Destroy(gameObject,existDuration);
     }
 
@@ -30,6 +32,15 @@ public class AreaDamager : MonoBehaviour
             {
                 for (int i = 0; i < colliders.Length; i++)
                 {
+                    if (colliders[i].tag == "DestructibleObject")
+                    {
+                        DestructibleObject destructibleObject = colliders[i].GetComponent<DestructibleObject>();
+
+                        if (destructibleObject != null)
+                        {
+                            destructibleObject.ObjectDestroy();
+                        }
+                    }
                     CharacterManager character = colliders[i].GetComponent<CharacterManager>();
                     if (character != null)
                     {
@@ -54,6 +65,8 @@ public class AreaDamager : MonoBehaviour
                             //playerStats.TakeDamage(curDamage, hitDirection);
                         }
                     }
+                    animatorManager.generalAudio.clip = fireTexpAudio;
+                    animatorManager.generalAudio.Play();
                 }
             }
         }

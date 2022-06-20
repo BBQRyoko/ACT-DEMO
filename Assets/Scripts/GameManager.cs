@@ -106,6 +106,7 @@ public class GameManager : MonoBehaviour
         //黑屏那些
         restartMenu.SetActive(false);
         pauseMenu.SetActive(false);
+        BossRoomTrigger[] bossRoomTriggers = FindObjectsOfType<BossRoomTrigger>();
         playerManager.transform.position = curCheckPoint.position;
         playerManager.GetComponentInChildren<AnimatorManager>().animator.SetBool("isInteracting", false);
         playerManager.GetComponentInChildren<AnimatorManager>().animator.SetBool("isUsingRootMotion", false);
