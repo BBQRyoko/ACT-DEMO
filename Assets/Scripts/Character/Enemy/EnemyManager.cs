@@ -118,6 +118,7 @@ public class EnemyManager : CharacterManager
     [SerializeField] StaminaBar bossStaminaBar;
     public bool isPhaseChaging;
     public bool phaseChanged;
+    public bool phaseChangeProtect;
     public bool canExecute;
     public bool healComplete;
     public GameObject windShield;
@@ -465,7 +466,8 @@ public class EnemyManager : CharacterManager
         }
         curTarget = null;
         if (patrolPos.Count > 1) curPatrolIndex = 1;
-        if(enemyStats.currHealth < enemyStats.maxHealth) enemyStats.currHealth = enemyStats.maxHealth;
+        if (enemyStats.currHealth < enemyStats.maxHealth) enemyStats.currHealth = enemyStats.maxHealth;
+        if (enemyStats.currStamina < enemyStats.maxStamina) enemyStats.currStamina = enemyStats.maxStamina;
         if (curState != GetComponentInChildren<IdleState>()) curState = GetComponentInChildren<IdleState>();
         isDamaged = false;
         enemyAnimatorManager.animator.SetBool("canReset", true);

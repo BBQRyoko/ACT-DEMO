@@ -39,6 +39,7 @@ public class SamuraiBoss_Teleporting : MonoBehaviour
             if (!enemyManager.phaseChanged && !enemyManager.isInteracting && !enemyManager.isTaijied && !enemyManager.isStunned) 
             {
                 TeleportStartEvent();
+                enemyManager.phaseChangeProtect = true;
                 enemyManager.phaseChanged = true;
                 //给enemyManager加一个特殊条件，在结束前保持半血且无敌
             }

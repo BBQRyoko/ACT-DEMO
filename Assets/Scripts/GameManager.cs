@@ -143,7 +143,7 @@ public class GameManager : MonoBehaviour
 
     public void GamePausMenu() 
     {
-        if (!gamePaused)
+        if (!gamePaused && !playerManager.enteredBossRoom)
         {
             eventSystem.SetSelectedGameObject(pauseFirstButon);
             pauseMenu.SetActive(true);

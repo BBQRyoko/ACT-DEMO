@@ -24,6 +24,7 @@ public class PlayerManager : CharacterManager
 
     public bool gameStart;
     public bool gameComplete;
+    public bool enteredBossRoom;
     public bool isFalling; //下落时
     public bool isGround; //在地面时
     public bool isCrouching; //下蹲时
@@ -172,6 +173,8 @@ public class PlayerManager : CharacterManager
             playerLocmotion.characterColliderBlocker.enabled = false;
             isHanging = false;
             isClimbing = false;
+            cameraManager.availableTarget.Clear();
+            cameraManager.ClearLockOnTargets();
             animator.SetBool("isHolding", false);
             cameraManager.currentLockOnTarget = null;
             cameraManager.isLockOn = false;
@@ -330,6 +333,7 @@ public class PlayerManager : CharacterManager
         animatorManager.generalAudio.volume = 0.1f;
         animatorManager.generalAudio.clip = animatorManager.sample_SFX.ExecutionSFX;
         animatorManager.generalAudio.Play();
+        isGetingExecuted = true;
         isStunned = false;
     }
     public void HandleParryingCheck(float incomingDamage) 
@@ -475,7 +479,8 @@ public class PlayerManager : CharacterManager
             yinYangAbilityOn = false;
             animatorManager.PlayTargetAnimation("Ultimate", true, true);
             GameObject AT_Field_Temp = Instantiate(aT_Field_Prefab, aT_position.position, Quaternion.identity);
-            generalAudio.clip = sfxList.Bagua_SFX_List[0];
+            generalAudio.clip = sfxList.Bagua_SFX_List[4];
+            generalAudio.volume = 0.2f;
             generalAudio.Play();
             sample_VFX.baGuaRelated_List[0].Stop();
             sample_VFX.baGuaRelated_List[1].Play();

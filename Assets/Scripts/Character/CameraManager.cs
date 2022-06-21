@@ -429,6 +429,7 @@ public class CameraManager : MonoBehaviour
                 {
                     lockOnResetTimer = 0;
                     inputManager.lockOn_Flag = false;
+                    availableTarget.Clear();
                     ClearLockOnTargets();
                 }
             }

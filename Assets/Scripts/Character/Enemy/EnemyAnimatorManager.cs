@@ -105,17 +105,16 @@ public class EnemyAnimatorManager : MainAnimatorManager
         generalAudio.clip = sample_SFX.EquipSFX;
         generalAudio.Play();
     }
-    private void RotateTowardsTarget() 
+    private void RotateTowardsTargetOn() 
     {
-        if (rotatingWithPlayer)
-        {
-            rotatingWithPlayer = false;
-        }
-        else 
-        {
-            rotatingWithPlayer = true;
-        }
+        rotatingWithPlayer = true;
     }
+
+    private void RotateTowardsTargetOff() 
+    {
+        rotatingWithPlayer = false;
+    }
+
     private void ChangeRotateSpeed(float rotateSpeed) 
     {
         enemyManager.rotationSpeed = rotateSpeed;
@@ -221,6 +220,7 @@ public class EnemyAnimatorManager : MainAnimatorManager
         if (enemyManager.isPhaseChaging) 
         {
             enemyManager.isPhaseChaging = false;
+            enemyManager.phaseChangeProtect = false;
         }
     }
     IEnumerator Timer(int dur) //播放器暂停

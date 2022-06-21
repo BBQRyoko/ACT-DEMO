@@ -35,7 +35,7 @@ public class ItemPickUp : InteractSystem
         }
         else if (weaponInfoIndex == 1) 
         {
-            interactText = "武士刀(装备)";
+            interactText = "太刀(装备)";
         }
         else if (weaponInfoIndex == 2)
         {

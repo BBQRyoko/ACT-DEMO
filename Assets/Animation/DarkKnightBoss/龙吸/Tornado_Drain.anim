@@ -156687,11 +156687,18 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.46666667
-    functionName: RotateTowardsTarget
+  - time: 0.16666667
+    functionName: RotateTowardsTargetOn
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0.5
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.16666667
+    functionName: ChangeRotateSpeed
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 2
     intParameter: 0
     messageOptions: 0
   - time: 0.5
@@ -156715,15 +156722,8 @@ AnimationClip:
     floatParameter: 1
     intParameter: 0
     messageOptions: 0
-  - time: 1.4
-    functionName: ChangeRotateSpeed
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 1.25
-    intParameter: 0
-    messageOptions: 0
   - time: 4.9333334
-    functionName: RotateTowardsTarget
+    functionName: RotateTowardsTargetOff
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

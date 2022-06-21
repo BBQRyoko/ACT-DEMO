@@ -114,7 +114,7 @@ MonoBehaviour:
   promptOn: 0
   curInteractTime: 0
   defaultInteractTime: 0.5
-  interactText: "\u6B66\u58EB\u5200(\u88C5\u5907)"
+  interactText: Katana(Equip)
   weaponInfoIndex: 1
   weaponItemInfo: {fileID: 11400000, guid: 1765f0767a832ac41bb3aabfe48b9d91, type: 2}
   weaponList:

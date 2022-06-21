@@ -25,7 +25,7 @@ public class AttackState : State
             enemyManager.alertTimer = 0;
         }
 
-        if (enemyManager.isPhaseChaging) 
+        if (enemyManager.isPhaseChaging || enemyManager.phaseChangeProtect) 
         {
             return idleState;
         }

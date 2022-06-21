@@ -59112,7 +59112,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.16666667
-    functionName: RotateTowardsTarget
+    functionName: RotateTowardsTargetOn
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -59151,5 +59151,12 @@ AnimationClip:
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 1
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.3333334
+    functionName: RotateTowardsTargetOff
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
     intParameter: 0
     messageOptions: 0

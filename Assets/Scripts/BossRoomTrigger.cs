@@ -51,6 +51,7 @@ public class BossRoomTrigger : MonoBehaviour
         {
             playerEntered = false;
             bossHealthBar.SetActive(false);
+            playerManager.enteredBossRoom = false;
             CombatBGMStop();
         }
 
@@ -60,6 +61,7 @@ public class BossRoomTrigger : MonoBehaviour
             if (!katanaRequired)
             {
                 playerEntered = false;
+                playerManager.enteredBossRoom = false;
                 if (combatClip) combatBGM.BGMStop();
                 Destroy(this.gameObject);
             }
@@ -99,6 +101,7 @@ public class BossRoomTrigger : MonoBehaviour
             bossHealthBar.GetComponent<HealthBar>().SetMaxHealth(bossStats.maxHealth);
             bossStaminaBar.SetMaxStamina(bossStats.maxStamina);
             combatBGM.BGMPlay(combatClip);
+            playerManager.enteredBossRoom = true;
         }
     }
 
@@ -112,6 +115,7 @@ public class BossRoomTrigger : MonoBehaviour
         if (other.CompareTag("Player")) 
         {
             playerEntered = false;
+            playerManager.enteredBossRoom = false;
             bossHealthBar.SetActive(false);
             CombatBGMStop();
         }

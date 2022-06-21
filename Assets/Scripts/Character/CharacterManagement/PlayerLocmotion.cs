@@ -132,7 +132,7 @@ public class PlayerLocmotion : MonoBehaviour
     }
     private void HandleMovement()
     {
-        if (playerManager.isInteracting || playerManager.isAttacking || playerManager.isStunned)
+        if (playerManager.isInteracting || playerManager.isAttacking || playerManager.isStunned || playerManager.isGetingExecuted)
             return;
 
         float curSpeed = (movementSpeed - 5 * (weaponSlotManager.weaponDamageCollider.weaponWeightRatio)) * (1 + playerStats.movementBuffRatio);

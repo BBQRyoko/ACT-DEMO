@@ -53681,7 +53681,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.13333334
-    functionName: RotateTowardsTarget
+    functionName: RotateTowardsTargetOn
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -53695,7 +53695,7 @@ AnimationClip:
     intParameter: 1
     messageOptions: 0
   - time: 0.21666667
-    functionName: RotateTowardsTarget
+    functionName: RotateTowardsTargetOff
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
