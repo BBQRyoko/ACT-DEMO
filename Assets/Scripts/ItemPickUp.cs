@@ -31,15 +31,15 @@ public class ItemPickUp : InteractSystem
         }
         if (weaponInfoIndex == 0)
         {
-            interactText = "大剑(装备)";
+            interactText = "GreatSword(Equip)";
         }
         else if (weaponInfoIndex == 1) 
         {
-            interactText = "太刀(装备)";
+            interactText = "Katana(Equip)";
         }
         else if (weaponInfoIndex == 2)
         {
-            interactText = "弓(装备)";
+            interactText = "Bow(Equip)";
         }
         weaponItemInfo = weaponList[weaponInfoIndex];
         weaponPrefabs[weaponInfoIndex].SetActive(true);

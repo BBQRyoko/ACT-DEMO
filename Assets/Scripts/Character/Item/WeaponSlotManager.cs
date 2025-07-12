@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class WeaponSlotManager : MonoBehaviour
 {
+    GameManager gameManager;
     InputManager inputManager;
     PlayerManager playerManager;
     PlayerAttacker playerAttacker;
     PlayerInventory playerInventory;
+    PlayerEffectsManager playerEffectsManager;
     Animator animator;
     [SerializeField] Sample_VFX sample_VFX;
 
@@ -29,10 +31,12 @@ public class WeaponSlotManager : MonoBehaviour
 
     private void Awake()
     {
+        gameManager = FindObjectOfType<GameManager>();
         inputManager = GetComponentInParent<InputManager>();
         playerManager = GetComponentInParent<PlayerManager>();
         playerAttacker = GetComponentInParent<PlayerAttacker>();
         playerInventory = GetComponentInParent<PlayerInventory>();
+        playerEffectsManager = GetComponentInParent<PlayerEffectsManager>();
         animator = GetComponent<Animator>();
         unequippedWeaponSlots = GetComponentsInChildren<WeaponSlot>();
         foreach(WeaponSlot weapon in unequippedWeaponSlots) 
@@ -87,6 +91,7 @@ public class WeaponSlotManager : MonoBehaviour
             {
                 GetComponentInChildren<WeaponSlotManager>().mainArmedWeapon.SetActive(false);
                 GetComponentInChildren<WeaponSlotManager>().mainWeapon_Unequipped.gameObject.SetActive(true);
+                gameManager.WeaponSwitchStart();
                 AttackSwitchAnimatorController();
                 playerManager.isWeaponSwitching = true;
                 UnloadArrowOnSlot();

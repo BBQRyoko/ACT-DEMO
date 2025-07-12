@@ -51,8 +51,8 @@ public class AreaDamager : MonoBehaviour
                             Vector3 hitDirection = transform.position - enemyStats.transform.position;
                             hitDirection.y = 0;
                             hitDirection.Normalize();
-
-                            enemyStats.TakeDamage(curDamage, staminaDamage, isHeavy, hitDirection);
+                            Vector3 contactPoint = enemyStats.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
+                            enemyStats.TakeDamage(curDamage, staminaDamage, isHeavy, hitDirection, contactPoint);
                             exploed = true;
                         }
                         if (playerStats != null)

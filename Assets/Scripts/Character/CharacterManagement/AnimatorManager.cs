@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AnimatorManager : MainAnimatorManager
 {
+    GameManager gameManager;
     PlayerManager playerManager;
     PlayerLocmotion playerLocmotion;
     PlayerInventory playerInventory;
@@ -29,6 +30,7 @@ public class AnimatorManager : MainAnimatorManager
 
     private void Awake()
     {
+        gameManager = FindObjectOfType<GameManager>();
         animator = GetComponent<Animator>();
         playerManager = GetComponentInParent<PlayerManager>();
         playerLocmotion = GetComponentInParent<PlayerLocmotion>();
@@ -208,6 +210,10 @@ public class AnimatorManager : MainAnimatorManager
     private void AnimatorPlaySpeed(float playRate) //控制动画器的播放速度
     {
         animator.speed = playRate;
+    }
+    private void WeaponSwitchSlowDownEvent() 
+    {
+        gameManager.WeaponSwitchEnd();
     }
     private void MovingDuringAnimation(float movingForce) 
     {

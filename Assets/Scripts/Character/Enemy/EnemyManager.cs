@@ -13,7 +13,7 @@ public class EnemyManager : CharacterManager
     EnemyAnimatorManager enemyAnimatorManager;
     EnemyWeaponSlotManager enemyWeaponSlotManager;
     EnemyStats enemyStats;
-
+    CharacterEffecsManager enemyEffecsManager;
     [Header("Reset")]
     [SerializeField] Vector3 enemyOriginalPosition;
     [SerializeField] Quaternion enemyOriginalRotation;
@@ -140,6 +140,7 @@ public class EnemyManager : CharacterManager
         enemyRig = GetComponent<Rigidbody>();
         combatCooldownManager = GetComponentInChildren<CombatCooldownManager>();
         combatStanceState = GetComponentInChildren<CombatStanceState>();
+        enemyEffecsManager = GetComponent<CharacterEffecsManager>();
         navMeshAgent.enabled = false;
         curDetectionRadius = detectionRadius;
         enemyOriginalPosition = transform.position;
@@ -354,18 +355,24 @@ public class EnemyManager : CharacterManager
             }
         }
     }
-    public void HandleParryingCheck(float staminaDamage)
+    public void HandleParryingCheck(float staminaDamage, Vector3 hitPos)
     {
         enemyStats.currStamina -= staminaDamage;
         if (enemyStats.currStamina > 0)
         {
             enemyAnimatorManager.PlayTargetAnimation("Block_1", true, true);
+            enemyEffecsManager.PlayHitParryVFX(hitPos);
             isBlocking = true;
         }
         else
         {
+            AudioSource attackAudioSource = GetComponentInChildren<AudioSource>();
+            attackAudioSource.volume = 0.1f;
             enemyStats.currStamina = 0;
+            attackAudioSource.clip = GetComponentInChildren<Sample_SFX>().blockFailedSFX;
+            attackAudioSource.Play();
             enemyAnimatorManager.PlayTargetAnimation("ParryBreak", true, true);
+            enemyEffecsManager.PlayHitParryVFX(hitPos,true);
         }
     }
     void AmbushEnemy()

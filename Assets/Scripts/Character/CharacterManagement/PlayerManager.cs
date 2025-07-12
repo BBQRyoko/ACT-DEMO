@@ -17,6 +17,7 @@ public class PlayerManager : CharacterManager
     [SerializeField] Sample_VFX sample_VFX;
     BaGuaManager baGuaManager;
     Rigidbody rig;
+    CharacterEffecsManager playerEffecsManager;
 
     [Header("运动状态")]
     public bool isInteracting;
@@ -111,6 +112,7 @@ public class PlayerManager : CharacterManager
         animatorManager = GetComponentInChildren<AnimatorManager>();
         weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
         parryCollider = GetComponentInChildren<ParryCollider>();
+        playerEffecsManager = GetComponent<CharacterEffecsManager>();
         rig = GetComponent<Rigidbody>();
     }
     private void Update()
@@ -173,6 +175,9 @@ public class PlayerManager : CharacterManager
             playerLocmotion.characterColliderBlocker.enabled = false;
             isHanging = false;
             isClimbing = false;
+            gameManager.gameSlowed = false;
+            gameManager.isSwitchEnding = false;
+            gameManager.switchScreenEffect.SetActive(false);
             cameraManager.availableTarget.Clear();
             cameraManager.ClearLockOnTargets();
             animator.SetBool("isHolding", false);
@@ -336,7 +341,7 @@ public class PlayerManager : CharacterManager
         isGetingExecuted = true;
         isStunned = false;
     }
-    public void HandleParryingCheck(float incomingDamage) 
+    public void HandleParryingCheck(float incomingDamage, Vector3 hitPos) 
     {
         PlayerInventory playerInventory = GetComponent<PlayerInventory>();
         PlayerAttacker playerAttacker = GetComponent<PlayerAttacker>();
@@ -354,12 +359,18 @@ public class PlayerManager : CharacterManager
         {
             staminaRegenPauseTimer = 1.5f;
             animator.SetTrigger("isDefendSuccess");
+            playerEffecsManager.PlayHitParryVFX(hitPos);
         }
         else
         {
+            AudioSource attackAudioSource = GetComponentInChildren<AudioSource>();
+            attackAudioSource.volume = 0.1f;
             playerStats.currStamina = 0;
             animator.SetTrigger("isDefendFailed");
             animatorManager.animator.SetBool("isDefending", false);
+            attackAudioSource.clip = sfxList.blockFailedSFX;
+            attackAudioSource.Play();
+            playerEffecsManager.PlayHitParryVFX(hitPos, true);
             animator.SetBool("isHolding", false);
             animator.ResetTrigger("isHoldingCancel");
             inputManager.weaponAbility_Input = false;

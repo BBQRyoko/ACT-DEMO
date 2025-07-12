@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-
 public class GameManager : MonoBehaviour
 {
     public EventSystem eventSystem;
@@ -16,11 +15,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject titlePage;
     [SerializeField] GameObject levelStartMenu;
     [SerializeField] bool gameStartManager;
+    public GameObject switchScreenEffect;
 
     bool restartMenuOn;
     public GameObject restartMenu;
     public GameObject pauseMenu;
     public bool gamePaused;
+    public bool gameSlowed;
+    public bool isWeaponSwitchSlow;
+    public bool isSwitchEnding;
+    public float slowPeriod;
     [SerializeField] Transform[] differentCheckPositions;
 
     //MenuRelated
@@ -51,7 +55,28 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            if(!inputManager.baGua_Input && !restartMenuOn) Resume();
+            if (!inputManager.baGua_Input && !restartMenuOn && !gameSlowed)
+            {
+                Resume();
+            }
+            else if (gameSlowed) 
+            {
+                if (isSwitchEnding)
+                {
+                    Time.timeScale = 0.65f;
+                }
+                else 
+                {
+                    Time.timeScale = 0.01f;
+                }
+
+                if (Time.realtimeSinceStartup >= slowPeriod)
+                {
+                    gameSlowed = false;
+                    isSwitchEnding = false;
+                    switchScreenEffect.SetActive(false);
+                }
+            }
         }
     }
 
@@ -91,6 +116,9 @@ public class GameManager : MonoBehaviour
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+            gameSlowed = false;
+            isWeaponSwitchSlow = false;
+            isSwitchEnding = false;
             restartMenu.SetActive(true);
             restartMenuOn = true;
             eventSystem.SetSelectedGameObject(deadFirstButon);
@@ -122,12 +150,10 @@ public class GameManager : MonoBehaviour
         if (gamePaused) gamePaused = false;
         if (restartMenuOn) restartMenuOn = false;
     }
-
     public void GameSlowDown(float slowRate = 0.45f)  
     {
         Time.timeScale = slowRate;
     }
-
     void GamePause() 
     {
         Time.timeScale = 0.000000001f;
@@ -140,7 +166,6 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1;
     }
-
     public void GamePausMenu() 
     {
         if (!gamePaused && !playerManager.enteredBossRoom)
@@ -163,5 +188,21 @@ public class GameManager : MonoBehaviour
             if (!enemy.isDead) enemy.EnemyRestartReset();
         }
     }
-
+    public void GameSlowDownByTime(float time = 0.1f) 
+    {
+        gameSlowed = true;
+        slowPeriod = Time.realtimeSinceStartup + time;
+    }
+    public void WeaponSwitchStart() 
+    {
+        isWeaponSwitchSlow = true;
+        switchScreenEffect.SetActive(true);
+    }
+    public void WeaponSwitchEnd(float time = 1.5f) 
+    {
+        gameSlowed = true;
+        slowPeriod = Time.realtimeSinceStartup + time;
+        isWeaponSwitchSlow = false;
+        isSwitchEnding = true;
+    }
 }

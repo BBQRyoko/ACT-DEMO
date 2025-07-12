@@ -44,7 +44,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa2723b90c033984caad196dc65a8a58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventSystem: {fileID: 0}
   tutorialSystem: {fileID: 0}
   curCheckPoint: {fileID: 0}
-  enemiesWillSpawn: []
+  enemyList: []
+  titlePage: {fileID: 0}
+  levelStartMenu: {fileID: 0}
+  gameStartManager: 1
+  switchScreenEffect: {fileID: 0}
   restartMenu: {fileID: 0}
+  pauseMenu: {fileID: 0}
+  gamePaused: 0
+  gameSlowed: 0
+  isWeaponSwitchSlow: 0
+  isSwitchEnding: 0
+  slowPeriod: 0
+  differentCheckPositions:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  pauseFirstButon: {fileID: 0}
+  deadFirstButon: {fileID: 0}
+  endFirstButon: {fileID: 0}

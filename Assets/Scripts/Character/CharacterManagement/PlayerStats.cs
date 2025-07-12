@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerStats : CharacterStats
 {
+    CameraManager cameraManager;
     InputManager inputManager;
     PlayerManager playerManager;
     PlayerInventory playerInventory;
@@ -12,6 +13,7 @@ public class PlayerStats : CharacterStats
     PlayerAttacker playerAttacker;
     AnimatorManager animatorManager;
     WeaponSlotManager weaponSlotManager;
+    CharacterEffecsManager playerEffectManager;
 
     [Header("数值buff类参数")]
     public float attackBuffRatio = 0;
@@ -23,12 +25,14 @@ public class PlayerStats : CharacterStats
 
     private void Awake()
     {
+        cameraManager = FindObjectOfType<CameraManager>();
         inputManager = GetComponent<InputManager>();
         playerManager = GetComponent<PlayerManager>();
         playerInventory = GetComponent<PlayerInventory>();
         animatorManager = GetComponentInChildren<AnimatorManager>();
         weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
         playerAttacker = GetComponent<PlayerAttacker>();
+        playerEffectManager = GetComponent<CharacterEffecsManager>();
     }
     private void Start()
     {
@@ -60,7 +64,7 @@ public class PlayerStats : CharacterStats
             eyePos = crouchPos;
         }
     }
-    public void TakeDamage(float damage, Vector3 collisionDirection, bool isHeavy = false)
+    public void TakeDamage(float damage, Vector3 collisionDirection, Vector3 hitPos, bool isHeavy = false)
     {
         float damageAngle = Vector3.SignedAngle(collisionDirection, playerManager.transform.forward, Vector3.up);
         if (playerManager.isImmuAttack) damage = damage * 0.65f;
@@ -81,13 +85,12 @@ public class PlayerStats : CharacterStats
             currStamina = maxStamina;
         }
 
-        //stun状态会被取消
-
         if (currHealth <= 0)
         {
             currHealth = 0;
             animatorManager.animator.SetTrigger("isDead");
             playerManager.isDead = true;
+            playerEffectManager.PlayHitBloodVFX(playerManager.lockOnTransform.position, damage, true);
         }
         else
         {
@@ -238,6 +241,8 @@ public class PlayerStats : CharacterStats
                     animatorManager.PlayTargetAnimation("Hit_Large", true, true);
                 }
             } //左
+            cameraManager.HitPostProcessing();
+            playerEffectManager.PlayHitBloodVFX(hitPos,damage);
         }
         //攻击被打断时保证取消状态
         playerManager.cantBeInterrupted = false;

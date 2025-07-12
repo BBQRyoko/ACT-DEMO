@@ -26,8 +26,8 @@ public class PlayerLocmotion : MonoBehaviour
 
     [Header("落地检测")]
     [SerializeField] LayerMask groundLayer;
-    float rayCastHeightOffset = 0.5f;
-    float radius = 0.1f;
+    [SerializeField] float rayCastHeightOffset = 0.5f;
+    [SerializeField] float radius = 0.1f;
     public float inAirTimer;
 
     [Header("移动参数")]

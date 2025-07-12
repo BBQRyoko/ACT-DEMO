@@ -59,6 +59,8 @@ Material:
     - _Depthpower: 0.1
     - _Emission: 4
     - _Opacity: 2
+    - _QueueControl: 0
+    - _QueueOffset: 0
     - _Usecenterglow: 0
     - _Usedepth: 1
     m_Colors:

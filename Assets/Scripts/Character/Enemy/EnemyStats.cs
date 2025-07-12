@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class EnemyStats : CharacterStats
 {
+    GameManager gameManager;
     CameraManager cameraManager;
     EnemyManager enemyManager;
     Animator animator;
     IdleState idleState;
     EnemyAnimatorManager animatorManager;
     EnemyWeaponSlotManager enemyWeaponSlotManager;
+    CharacterEffecsManager enemyEffecsManager;
 
     float hitGauge;
     //Boss 血条
@@ -17,12 +19,14 @@ public class EnemyStats : CharacterStats
 
     private void Awake()
     {
+        gameManager = FindObjectOfType<GameManager>();
         cameraManager = FindObjectOfType<CameraManager>();
         enemyManager = GetComponent<EnemyManager>();
         animator = GetComponentInChildren<Animator>();
         animatorManager = GetComponentInChildren<EnemyAnimatorManager>();
         enemyWeaponSlotManager = GetComponentInChildren<EnemyWeaponSlotManager>();
         idleState = GetComponentInChildren<IdleState>();
+        enemyEffecsManager = GetComponent<CharacterEffecsManager>();
     }
     private void Start()
     {
@@ -37,7 +41,7 @@ public class EnemyStats : CharacterStats
     {
         StaminaRegen();
     }
-    public void TakeDamage(float damage, float staminaDamage, bool isHeavy, Vector3 collisionDir, CharacterStats characterStats = null)
+    public void TakeDamage(float damage, float staminaDamage, bool isHeavy, Vector3 collisionDir, Vector3 hitPos, CharacterStats characterStats = null)
     {
         if (!enemyManager.isDodging)
         {
@@ -64,6 +68,9 @@ public class EnemyStats : CharacterStats
                 currHealth = 0;
                 enemyWeaponSlotManager.CloseWeaponDamageCollider();
                 enemyManager.isDead = true;
+                enemyEffecsManager.PlayHitBloodVFX(enemyManager.targetMarkTransform.position,damage,true);
+                gameManager.gameSlowed = true;
+                gameManager.GameSlowDownByTime();
             }
             else
             {
@@ -163,6 +170,7 @@ public class EnemyStats : CharacterStats
                     }
                 }
 
+                enemyEffecsManager.PlayHitBloodVFX(hitPos, damage);
 
                 if (enemyManager.canAlertOthers && !enemyManager.calledAlready) 
                 {
@@ -209,7 +217,7 @@ public class EnemyStats : CharacterStats
             }
         }
 
-        if (!enemyManager.isInteracting && hitGauge >0 ) 
+        if (!enemyManager.isInteracting && hitGauge >0) 
         {
             hitGauge -= Time.deltaTime * enemyManager.hitGaugeRecoveryRate;
         }

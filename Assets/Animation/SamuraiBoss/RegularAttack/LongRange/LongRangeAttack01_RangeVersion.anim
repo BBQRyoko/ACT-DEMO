@@ -100816,6 +100816,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0.5
+    functionName: AnimatorPlaySound
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 6
+    messageOptions: 0
   - time: 0.6333333
     functionName: AnimatorPlaySpeed
     data: 
@@ -100836,4 +100843,11 @@ AnimationClip:
     objectReferenceParameter: {fileID: 11400000, guid: d7282e91403292a40afc6860f2da4cc5, type: 2}
     floatParameter: 0
     intParameter: 0
+    messageOptions: 0
+  - time: 1.2666667
+    functionName: AnimatorPlaySound
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 6
     messageOptions: 0

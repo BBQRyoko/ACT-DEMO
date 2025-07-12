@@ -162,8 +162,8 @@ public class ProjectileDamager : MonoBehaviour
                     Vector3 hitDirection = transform.position - playerStats.transform.position;
                     hitDirection.y = 0;
                     hitDirection.Normalize();
-
-                    playerStats.TakeDamage(curDamage, hitDirection, isHeavy);
+                    Vector3 contactPoint = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
+                    playerStats.TakeDamage(curDamage, hitDirection, contactPoint, isHeavy);
                     if (hitAudio)
                     {
                         playerStats.GetComponentInChildren<AnimatorManager>().generalAudio.clip = hitAudio;
@@ -199,7 +199,8 @@ public class ProjectileDamager : MonoBehaviour
                     int random = Random.Range(0, i - 1);
                     attackAudioSource.clip = sample_SFX_Source.blockedSFX_List[random];
                     attackAudioSource.Play();
-                    playerManager.HandleParryingCheck(curDamage);
+                    Vector3 contactPoint = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
+                    playerManager.HandleParryingCheck(curDamage, contactPoint);
                     if (transform.parent)
                     {
                         Destroy(transform.parent.gameObject);
@@ -229,6 +230,8 @@ public class ProjectileDamager : MonoBehaviour
                     enemyManager.GetComponentInChildren<AudioSource>().Play();
                     playerManager.GetComponent<PlayerAttacker>().chargeValue += hitChargeAmount * 0.8f;
                     playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount * 0.8f);
+                    Vector3 contactPoint = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
+
                     if (playerManager.GetComponent<BaGuaManager>().isSwitchAttack)
                     {
                         playerManager.GetComponent<BaGuaManager>().curEnergyCharge += 50f;
@@ -236,11 +239,11 @@ public class ProjectileDamager : MonoBehaviour
                     }
                     if (isEnhanced)
                     {
-                        enemyManager.HandleParryingCheck(2 * staminaDamage);
+                        enemyManager.HandleParryingCheck(2 * staminaDamage, contactPoint);
                     }
                     else 
                     {
-                        enemyManager.HandleParryingCheck(staminaDamage / 2);
+                        enemyManager.HandleParryingCheck(staminaDamage / 2, contactPoint);
                     }
                     Destroy(transform.parent.gameObject);
                 }
@@ -249,7 +252,8 @@ public class ProjectileDamager : MonoBehaviour
                     Vector3 hitDirection = transform.position - enemyStats.transform.position;
                     hitDirection.y = 0;
                     hitDirection.Normalize();
-                    enemyStats.TakeDamage(curDamage, staminaDamage, isHeavy, hitDirection);
+                    Vector3 contactPoint = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
+                    enemyStats.TakeDamage(curDamage, staminaDamage, isHeavy, hitDirection, contactPoint);
                     enemyStats.GetComponent<EnemyManager>().curTarget = playerStats;
                     playerManager.GetComponent<PlayerAttacker>().chargeValue += hitChargeAmount;
                     playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount);

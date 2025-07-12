@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class CameraManager : MonoBehaviour
 {
+    GameManager gameManager;
     PlayerManager playerManager;
     InputManager inputManager;
     public Transform targetTransform; //需要跟随的目标(玩家)
     public Transform targetTransformWhileAiming; //弓箭瞄准时
     [SerializeField] Canvas mainCanvas;
     public Transform cameraPivotTransform; //相机pivot
+    public Transform cameraPivotStandardTransform;
+    public Transform cameraPivotZoomInTransform;
     public Transform cameraTransform; //相机object的位置
     public LayerMask ignoreLayers; //除了选定的层外都可以穿透
     float defaultPosition; //相机的初始Z点
@@ -79,9 +84,14 @@ public class CameraManager : MonoBehaviour
     public float maxLockOnDistance = 18f;
     public bool isLockOn;
 
+    //URP effect相关
+    [Header("PostProcessing")]
+    public Volume globalVolume;
+
     private void Awake()
     {
         singleton = this;
+        gameManager = FindObjectOfType<GameManager>();
         playerManager = FindObjectOfType<PlayerManager>();
         inputManager = FindObjectOfType<InputManager>();
         targetTransform = FindObjectOfType<PlayerManager>().transform;
@@ -95,12 +105,14 @@ public class CameraManager : MonoBehaviour
     {
         float delta = Time.fixedDeltaTime;
         FollowTarget(delta);
+        CameraPivotPositionUpdate(delta);
         CameraReset();
         HandleCameraRotation(delta);
         HandleCameraCollisions(delta);
         HandleLockOnMark();
         HandleExecutingMark();
         LockOnDistanceChecking();
+        GlobalPostProcessingController();
 
         if (currentLockOnTarget)
         {
@@ -125,18 +137,41 @@ public class CameraManager : MonoBehaviour
     {
         if (playerManager.isAiming)
         {
-            Vector3 targetPosition = Vector3.SmoothDamp(transform.position, targetTransformWhileAiming.position, ref cameraFollowVelocity, delta / (cameraFollowSpeed/5));
+            Vector3 targetPosition = Vector3.SmoothDamp(transform.position, targetTransformWhileAiming.position, ref cameraFollowVelocity, delta / (cameraFollowSpeed / 5));
             transform.position = targetPosition;
             inputManager.lockOn_Input = false;
             inputManager.lockOn_Flag = false;
             ClearLockOnTargets();
         }
-        else 
+        else
         {
-            Vector3 targetPosition = Vector3.SmoothDamp(transform.position, targetTransform.position, ref cameraFollowVelocity, delta / cameraFollowSpeed);
+            Vector3 targetPosition = Vector3.SmoothDamp(transform.position, targetTransform.position, ref cameraFollowVelocity, delta / (cameraFollowSpeed));
             transform.position = targetPosition;
         }
     }
+    public void CameraPivotPositionUpdate(float delta) 
+    {
+        if (playerManager.isAiming) return;
+        if (gameManager.isWeaponSwitchSlow)
+        {
+            Vector3 targetPosition = Vector3.SmoothDamp(cameraPivotTransform.position, cameraPivotZoomInTransform.position, ref cameraFollowVelocity, delta / (cameraFollowSpeed / 5));
+            cameraPivotTransform.position = targetPosition;
+        }
+        else
+        {
+            if (gameManager.isSwitchEnding)
+            {
+                Vector3 targetPosition = Vector3.SmoothDamp(cameraPivotTransform.position, cameraPivotStandardTransform.position, ref cameraFollowVelocity, delta / (cameraFollowSpeed / 3));
+                cameraPivotTransform.position = targetPosition;
+            }
+            else
+            {
+                Vector3 targetPosition = Vector3.SmoothDamp(cameraPivotTransform.position, cameraPivotStandardTransform.position, ref cameraFollowVelocity, delta / (cameraFollowSpeed));
+                cameraPivotTransform.position = targetPosition;
+            }
+        }
+    }
+
     public void HandleCameraRotation(float delta) 
     {
         if (playerManager.gameStart || playerManager.gameComplete) return;
@@ -440,5 +475,23 @@ public class CameraManager : MonoBehaviour
         dangerMark = Instantiate(dangerMark_Prefab, FindObjectOfType<Canvas>().transform).GetComponent<Image>();
         curEnemy = enemyManager;
         Destroy(dangerMark.gameObject, 1f);
+    }
+    public void HitPostProcessing() 
+    {
+        Vignette vignette;
+        globalVolume.profile.TryGet<Vignette>(out vignette);
+
+        vignette.intensity.value = 0.5f;
+    }
+
+    public void GlobalPostProcessingController() 
+    {
+        Vignette vignette;
+        globalVolume.profile.TryGet<Vignette>(out vignette);
+
+        if (vignette.intensity.value > 0) 
+        {
+            vignette.intensity.value -= 0.35f * Time.deltaTime;
+        }
     }
 }

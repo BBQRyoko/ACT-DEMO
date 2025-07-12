@@ -83,6 +83,8 @@ Material:
     - _InvFade: 1
     - _MotionAmount: 0.001
     - _Opacity: 1
+    - _QueueControl: 0
+    - _QueueOffset: 0
     - _Usecenterglow: 0
     - _Usedepth: 1
     - __dirty: 1

@@ -15,6 +15,7 @@ public class PlayerAttacker : MonoBehaviour
     AnimatorManager animatorManager;
     WeaponSlotManager weaponSlotManager;
     PlayerUIManager playerUIManager;
+    PlayerEffectsManager playerEffectsManager;
     [SerializeField] Sample_VFX sample_VFX;
     [SerializeField] Sample_SFX sample_SFX;
     [SerializeField] AudioSource generalAudio;
@@ -58,6 +59,7 @@ public class PlayerAttacker : MonoBehaviour
         playerUIManager = GetComponent<PlayerUIManager>();
         animatorManager = GetComponentInChildren<AnimatorManager>();
         weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
+        playerEffectsManager = GetComponent<PlayerEffectsManager>();
     }
     private void Update()
     {
@@ -98,6 +100,7 @@ public class PlayerAttacker : MonoBehaviour
                     }
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = 0;
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().hitChargeAmount = 0;
+                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<WeaponVFX>().PlayWeaponVFX();
                     animatorManager.pauseDuration = weapon.executionSkill[0].pauseDuration;
                     executionTarget.curTarget = playerStats;
                     executionTarget.getingExecute = true;
@@ -121,6 +124,7 @@ public class PlayerAttacker : MonoBehaviour
                     }
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = 0;
                     weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().hitChargeAmount = 0;
+                    weaponSlotManager.mainArmedWeapon.GetComponentInChildren<WeaponVFX>().PlayWeaponVFX();
                     animatorManager.pauseDuration = weapon.executionSkill[2].pauseDuration;
                     executionTarget.getingExecute = true;
                     executionTarget.HandleExecuted(weapon.executionSkill[3].skillName);
@@ -162,6 +166,7 @@ public class PlayerAttacker : MonoBehaviour
                             weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.springAttack[0].energyRestore;
                             weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().hitChargeAmount = weapon.springAttack[0].hitPoint;
                         }
+                        weaponSlotManager.mainArmedWeapon.GetComponentInChildren<WeaponVFX>().PlayWeaponVFX();
                         animatorManager.pauseDuration = weapon.springAttack[0].pauseDuration;
                         playerManager.GetComponent<PlayerStats>().currStamina -= weapon.springAttack[0].staminaCost;
                         playerManager.isImmuAttack = weapon.springAttack[0].isImmuAttack;
@@ -209,6 +214,7 @@ public class PlayerAttacker : MonoBehaviour
                                 weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.regularSkills[comboCount - 1].energyRestore;
                                 weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().hitChargeAmount = weapon.regularSkills[comboCount - 1].hitPoint;
                             }
+                            weaponSlotManager.mainArmedWeapon.GetComponentInChildren<WeaponVFX>().PlayWeaponVFX();
                         }
                         animatorManager.pauseDuration = weapon.regularSkills[comboCount - 1].pauseDuration;
                         playerManager.GetComponent<PlayerStats>().currStamina -= weapon.regularSkills[comboCount - 1].staminaCost;
@@ -329,6 +335,7 @@ public class PlayerAttacker : MonoBehaviour
                 weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().staminaDamage = weapon.transSkills[0].tenacityDamagePoint * (1 + playerStats.attackBuffRatio);
                 weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().energyRestoreAmount = weapon.transSkills[0].energyRestore;
                 weaponSlotManager.mainArmedWeapon.GetComponentInChildren<DamageCollider>().hitChargeAmount = weapon.transSkills[0].hitPoint;
+                weaponSlotManager.mainArmedWeapon.GetComponentInChildren<WeaponVFX>().PlayWeaponVFX();
                 playerManager.GetComponent<PlayerStats>().currStamina -= weapon.transSkills[0].staminaCost;
             }
             animatorManager.pauseDuration = weapon.transSkills[0].pauseDuration;

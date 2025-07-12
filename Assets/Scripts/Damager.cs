@@ -24,8 +24,8 @@ public class Damager : MonoBehaviour
                 Vector3 hitDirection = transform.position - playerStats.transform.position;
                 hitDirection.y = 0;
                 hitDirection.Normalize();
-
-                playerStats.TakeDamage(curDamage, hitDirection, isHeavy);
+                Vector3 contactPoint = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
+                playerStats.TakeDamage(curDamage, hitDirection, contactPoint, isHeavy);
 
                 if (stunEffect) 
                 {
@@ -62,7 +62,8 @@ public class Damager : MonoBehaviour
                 int random = Random.Range(0, i - 1);
                 attackAudioSource.clip = sample_SFX_Source.blockedSFX_List[random];
                 attackAudioSource.Play();
-                playerManager.HandleParryingCheck(curDamage);
+                Vector3 contactPoint = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
+                playerManager.HandleParryingCheck(curDamage, contactPoint);
                 Destroy(this.gameObject);
             }
         }
@@ -72,9 +73,11 @@ public class Damager : MonoBehaviour
             EnemyStats enemyStats = other.GetComponent<EnemyStats>();
             PlayerStats playerStats = FindObjectOfType<PlayerStats>();
             AnimatorManager animatorManager = playerStats.GetComponentInChildren<AnimatorManager>();
+
             if (enemyStats != null)
             {
-                enemyStats.TakeDamage(curDamage,staminaDamage, isHeavy,hitDirection);
+                Vector3 contactPoint = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
+                enemyStats.TakeDamage(curDamage,staminaDamage, isHeavy,hitDirection, contactPoint);
                 enemyStats.GetComponent<EnemyManager>().curTarget = playerStats;
                 animatorManager.generalAudio.volume = 0.1f;
                 animatorManager.generalAudio.clip = animatorManager.sample_SFX.Bagua_SFX_List[3];

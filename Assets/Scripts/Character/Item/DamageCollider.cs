@@ -85,6 +85,8 @@ public class DamageCollider : MonoBehaviour
                     damageCollider.enabled = false;
                     playerManager.GetComponent<PlayerAttacker>().chargeValue += hitChargeAmount * 0.8f;
                     playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount * 0.8f);
+                    Vector3 contactPoint = collision.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
+
                     if (playerManager.GetComponent<PlayerAttacker>().gsChargeLevel >= 1)
                     {
                         playerManager.GetComponent<PlayerAttacker>().gsChargeSlot -= 50;
@@ -96,11 +98,11 @@ public class DamageCollider : MonoBehaviour
                     }
                     if (isEnhanced)
                     {
-                        enemyManager.HandleParryingCheck(2 * staminaDamage);
+                        enemyManager.HandleParryingCheck(2 * staminaDamage, contactPoint);
                     }
                     else 
                     {
-                        enemyManager.HandleParryingCheck(staminaDamage/2);
+                        enemyManager.HandleParryingCheck(staminaDamage/2, contactPoint);
                     }
                     isEnhanced = false;
                     //HitPause(duration);
@@ -115,9 +117,9 @@ public class DamageCollider : MonoBehaviour
                 int random = Random.Range(0, i - 1);
                 attackAudioSource.clip = sample_SFX_Source.blockedSFX_List[random];
                 attackAudioSource.Play();
-
+                Vector3 contactPoint = collision.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
                 damageCollider.enabled = false;
-                playerManager1.HandleParryingCheck(curDamage);
+                playerManager1.HandleParryingCheck(curDamage, contactPoint);
             }
         }
         else if (collision.tag == "Player" && !isPlayer)
@@ -127,7 +129,6 @@ public class DamageCollider : MonoBehaviour
             hitDirection.Normalize();
 
             PlayerStats playerStats = collision.GetComponent<PlayerStats>();
-
             if (playerStats != null)
             {
                 if (playerStats.GetComponent<PlayerManager>().isPerfect) 
@@ -139,6 +140,8 @@ public class DamageCollider : MonoBehaviour
                     playerManager.GetComponentInChildren<AnimatorManager>().generalAudio.volume = 0.45f;
                     playerManager.GetComponentInChildren<AnimatorManager>().generalAudio.clip = playerManager.GetComponentInChildren<AnimatorManager>().sample_SFX.Bagua_SFX_List[0];
                     playerManager.GetComponentInChildren<AnimatorManager>().generalAudio.Play();
+                    Vector3 contactPoint = collision.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
+                    playerManager.GetComponent<PlayerEffectsManager>().PlayHitParryVFX(contactPoint, true);
                     enemyStats.TakeStaminaDamage(120f);
                 }
                 else if (!playerStats.GetComponent<PlayerManager>().damageAvoid && !playerStats.GetComponent<PlayerManager>().isPerfect)
@@ -148,7 +151,9 @@ public class DamageCollider : MonoBehaviour
                     int random = Random.Range(0, i - 1);
                     attackAudio.clip = sample_SFX.hittedSFX_List[random];
                     attackAudio.Play();
-                    playerStats.TakeDamage(curDamage, hitDirection, isHeavyAttack);
+                    Vector3 contactPoint = collision.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
+                    playerStats.TakeDamage(curDamage, hitDirection, contactPoint, isHeavyAttack);
+                    //受击VFX
                     //if (!playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget) 
                     //{
                     //    playerStats.GetComponent<PlayerManager>().cameraManager.currentLockOnTarget = enemyManager.lockOnTransform;
@@ -171,7 +176,8 @@ public class DamageCollider : MonoBehaviour
                 int random = Random.Range(0, i - 1);
                 attackAudio.clip = sample_SFX.hittedSFX_List[random];
                 attackAudio.Play();
-                enemyStats.TakeDamage(curDamage, staminaDamage, isHeavyAttack, hitDirection, playerManager.GetComponent<PlayerStats>());
+                Vector3 contactPoint = collision.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
+                enemyStats.TakeDamage(curDamage, staminaDamage, isHeavyAttack, hitDirection, contactPoint, playerManager.GetComponent<PlayerStats>());
                 //HitPause(duration);
                 playerManager.GetComponent<PlayerAttacker>().chargeValue += hitChargeAmount;
                 playerManager.GetComponent<BaGuaManager>().YinYangChargeUp(energyRestoreAmount);
